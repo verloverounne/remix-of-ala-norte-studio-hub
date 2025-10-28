@@ -1,165 +1,210 @@
-import { useState } from "react";
-import { Search, Filter } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { mockEquipment, categoryNames, statusNames, statusColors } from "@/lib/mockData";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import type { Equipment, Category, EquipmentWithCategory } from "@/types/supabase";
+import { Search, Filter } from "lucide-react";
 import equipmentHero from "@/assets/equipment-hero.jpg";
 
 const Equipos = () => {
+  const [equipment, setEquipment] = useState<EquipmentWithCategory[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [loading, setLoading] = useState(true);
 
-  const filteredEquipment = mockEquipment.filter((item) => {
-    const matchesSearch =
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.brand.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory =
-      selectedCategory === "all" || item.category === selectedCategory;
+  useEffect(() => {
+    fetchCategories();
+    fetchEquipment();
+  }, []);
+
+  const fetchCategories = async () => {
+    const { data, error } = await supabase
+      .from('categories')
+      .select('*')
+      .order('order_index');
+    
+    if (!error && data) {
+      setCategories(data);
+    }
+  };
+
+  const fetchEquipment = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('equipment')
+      .select(`
+        *,
+        categories (*)
+      `)
+      .order('order_index');
+    
+    if (!error && data) {
+      setEquipment(data);
+    }
+    setLoading(false);
+  };
+
+  const filteredEquipment = equipment.filter((item) => {
+    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         item.brand?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === "all" || item.categories?.slug === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
-  return (
-    <div className="min-h-screen pt-16">
-      {/* Hero Section */}
-      <section
-        className="relative h-[50vh] flex items-center justify-center bg-cover bg-center"
-        style={{ backgroundImage: `url(${equipmentHero})` }}
-      >
-        <div className="absolute inset-0 bg-foreground/60" />
-        <div className="relative z-10 container mx-auto px-4 text-center text-background">
-          <h1 className="text-5xl md:text-6xl font-heading font-bold mb-4">
-            Nuestros Equipos
-          </h1>
-          <p className="text-xl md:text-2xl max-w-2xl mx-auto">
-            Equipamiento profesional de primer nivel para tus producciones
-          </p>
-        </div>
-      </section>
+  const getStatusBadge = (status: string) => {
+    const statusConfig = {
+      available: { text: "DISPONIBLE", variant: "success" as const },
+      rented: { text: "RENTADO", variant: "destructive" as const },
+      maintenance: { text: "MANTENIMIENTO", variant: "outline" as const },
+    };
+    return statusConfig[status as keyof typeof statusConfig] || statusConfig.available;
+  };
 
-      {/* Filters Section */}
-      <section className="py-8 bg-card border-b">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Buscar equipos por nombre o marca..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
+  const handleCategoryClick = (categorySlug: string) => {
+    setSelectedCategory(categorySlug);
+  };
+
+  return (
+    <div className="min-h-screen bg-background pt-16">
+      {/* Hero Section Brutal */}
+      <div className="relative h-[400px] border-b-4 border-foreground overflow-hidden">
+        <img
+          src={equipmentHero}
+          alt="Equipos"
+          className="w-full h-full object-cover grayscale"
+        />
+        <div className="absolute inset-0 bg-foreground/80" />
+        <div className="absolute inset-0 grid-brutal opacity-20" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <h1 className="text-brutal text-background">EQUIPOS</h1>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-16">
+        {/* Filtros Brutales */}
+        <div className="mb-16 grid md:grid-cols-2 gap-6 border-4 border-foreground p-8 bg-card shadow-brutal-lg">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5" />
+            <Input
+              type="text"
+              placeholder="BUSCAR EQUIPO..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-12 h-14 text-lg border-3 border-foreground font-heading uppercase"
+            />
+          </div>
+          
+          <div className="relative">
+            <Filter className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 z-10" />
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-full md:w-[240px]">
-                <Filter className="mr-2 h-4 w-4" />
-                <SelectValue placeholder="Filtrar por categoría" />
+              <SelectTrigger className="h-14 pl-12 text-lg border-3 border-foreground font-heading uppercase">
+                <SelectValue placeholder="CATEGORÍA" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todas las categorías</SelectItem>
-                {Object.entries(categoryNames).map(([key, name]) => (
-                  <SelectItem key={key} value={key}>
-                    {name}
+              <SelectContent className="border-3 border-foreground bg-background z-50">
+                <SelectItem value="all" className="font-heading uppercase">TODAS</SelectItem>
+                {categories.map((cat) => (
+                  <SelectItem key={cat.id} value={cat.slug} className="font-heading uppercase">
+                    {cat.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
         </div>
-      </section>
 
-      {/* Equipment Grid */}
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          {filteredEquipment.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-lg text-muted-foreground">
-                No se encontraron equipos con los filtros seleccionados.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredEquipment.map((equipment) => (
-                <Card
-                  key={equipment.id}
-                  className="hover-lift transition-all duration-300 group"
+        {/* Grid de Equipos Asimétrico */}
+        {loading ? (
+          <div className="text-center py-20">
+            <p className="text-brutal text-3xl">CARGANDO...</p>
+          </div>
+        ) : filteredEquipment.length === 0 ? (
+          <div className="text-center py-20 border-4 border-foreground p-16">
+            <p className="text-brutal text-3xl mb-4">NO SE ENCONTRARON EQUIPOS</p>
+            <Button onClick={() => { setSearchTerm(""); setSelectedCategory("all"); }}>
+              LIMPIAR FILTROS
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredEquipment.map((item, index) => {
+              const statusBadge = getStatusBadge(item.status);
+              
+              return (
+                <Card 
+                  key={item.id}
+                  className={`overflow-hidden group ${index % 5 === 0 ? 'md:col-span-2' : ''}`}
                 >
-                  <div className="relative overflow-hidden">
-                    <img
-                      src={equipment.imageUrl}
-                      alt={equipment.name}
-                      className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
-                    <Badge
-                      className={`absolute top-2 right-2 ${statusColors[equipment.status]} text-white`}
-                    >
-                      {statusNames[equipment.status]}
-                    </Badge>
-                  </div>
-
-                  <CardHeader>
-                    <div className="flex items-start justify-between mb-2">
-                      <Badge variant="outline">
-                        {categoryNames[equipment.category]}
+                  <div className="aspect-video bg-muted relative overflow-hidden border-b-3 border-foreground">
+                    {item.image_url ? (
+                      <img
+                        src={item.image_url}
+                        alt={item.name}
+                        className="w-full h-full object-cover grayscale group-hover:scale-110 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="text-brutal text-4xl opacity-20">NO IMG</span>
+                      </div>
+                    )}
+                    
+                    {/* Badge de estado */}
+                    <div className="absolute top-4 right-4">
+                      <Badge variant={statusBadge.variant as any}>
+                        {statusBadge.text}
                       </Badge>
                     </div>
-                    <CardTitle className="text-xl">{equipment.name}</CardTitle>
-                    <CardDescription>
-                      {equipment.brand} {equipment.model}
-                    </CardDescription>
-                  </CardHeader>
+                  </div>
 
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      {equipment.description}
-                    </p>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Día:</span>
-                        <span className="font-semibold text-primary">
-                          ${equipment.pricePerDay.toLocaleString()}
+                  <CardContent className="p-6">
+                    {/* Categoría clickeable */}
+                    {item.categories && (
+                      <Badge 
+                        variant="secondary" 
+                        className="mb-3"
+                        onClick={() => handleCategoryClick(item.categories!.slug)}
+                      >
+                        {item.categories.name}
+                      </Badge>
+                    )}
+                    
+                    <h3 className="font-heading text-2xl mb-2 uppercase">{item.name}</h3>
+                    {item.brand && (
+                      <p className="text-muted-foreground font-mono mb-4">{item.brand}</p>
+                    )}
+                    
+                    <div className="border-t-2 border-foreground pt-4 mt-4">
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-primary font-heading text-4xl">
+                          ${(item.price_per_day / 1000).toFixed(0)}K
                         </span>
+                        <span className="text-muted-foreground font-mono">/día</span>
                       </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Semana:</span>
-                        <span className="font-semibold text-primary">
-                          ${equipment.pricePerWeek.toLocaleString()}
-                        </span>
-                      </div>
+                      {item.price_per_week && (
+                        <div className="text-sm text-muted-foreground mt-1 font-mono">
+                          Semana: ${(item.price_per_week / 1000).toFixed(0)}K
+                        </div>
+                      )}
                     </div>
                   </CardContent>
 
-                  <CardFooter className="flex gap-2">
-                    <Button
-                      variant="hero"
-                      className="flex-1"
-                      disabled={equipment.status !== "available"}
+                  <CardFooter className="p-6 pt-0">
+                    <Button 
+                      className="w-full" 
+                      disabled={item.status !== 'available'}
                     >
-                      Agregar a cotización
+                      {item.status === 'available' ? 'AGREGAR A COTIZACIÓN' : 'NO DISPONIBLE'}
                     </Button>
                   </CardFooter>
                 </Card>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

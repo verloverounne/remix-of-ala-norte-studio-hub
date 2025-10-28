@@ -1,53 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import type { Equipment, EquipmentWithCategory, EquipmentStatus } from "@/types/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit, Trash2, Download, Upload, Percent } from "lucide-react";
-import { mockEquipment, categoryNames, statusNames, statusColors } from "@/lib/mockData";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
+import { Search, Package } from "lucide-react";
 
 const Admin = () => {
+  const [equipment, setEquipment] = useState<EquipmentWithCategory[]>([]);
+  const [filteredEquipment, setFilteredEquipment] = useState<EquipmentWithCategory[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [confirmDialog, setConfirmDialog] = useState<{ open: boolean; equipmentId: string; currentStatus: EquipmentStatus; newStatus: EquipmentStatus; } | null>(null);
   const { toast } = useToast();
-  const [equipment] = useState(mockEquipment);
 
-  const handleAddEquipment = () => {
-    toast({
-      title: "Equipo agregado",
-      description: "El equipo se ha agregado correctamente.",
-    });
+  useEffect(() => { fetchEquipment(); }, []);
+  useEffect(() => {
+    const filtered = equipment.filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()) || item.brand?.toLowerCase().includes(searchTerm.toLowerCase()));
+    setFilteredEquipment(filtered);
+  }, [searchTerm, equipment]);
+
+  const fetchEquipment = async () => {
+    setLoading(true);
+    const { data, error } = await supabase.from('equipment').select(`*, categories (*)`).order('name');
+    if (!error && data) { setEquipment(data); setFilteredEquipment(data); }
+    setLoading(false);
   };
 
-  const handleDownloadBackup = () => {
-    const dataStr = JSON.stringify(equipment, null, 2);
-    const dataBlob = new Blob([dataStr], { type: "application/json" });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `ala-norte-backup-${new Date().toISOString().split("T")[0]}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
+  const handleStatusToggle = (equipmentId: string, currentStatus: EquipmentStatus) => {
+    const newStatus: EquipmentStatus = currentStatus === 'available' ? 'rented' : 'available';
+    setConfirmDialog({ open: true, equipmentId, currentStatus, newStatus });
+  };
 
-    toast({
-      title: "Backup descargado",
-      description: "El archivo de respaldo se ha descargado correctamente.",
-    });
+  const confirmStatusChange = async () => {
+    if (!confirmDialog) return;
+    const { equipmentId, newStatus } = confirmDialog;
+    const { error } = await supabase.from('equipment').update({ status: newStatus }).eq('id', equipmentId);
+    if (error) { toast({ title: "ERROR", description: "No se pudo actualizar", variant: "destructive" }); }
+    else { toast({ title: "ACTUALIZADO", description: `Estado: ${newStatus === 'available' ? 'DISPONIBLE' : 'RENTADO'}` }); fetchEquipment(); }
+    setConfirmDialog(null);
+  };
+
+  const getStatusBadge = (status: EquipmentStatus) => {
+    const config = { available: { text: "DISPONIBLE", variant: "success" as const }, rented: { text: "RENTADO", variant: "destructive" as const }, maintenance: { text: "MANTENIMIENTO", variant: "outline" as const } };
+    return config[status];
   };
 
   return (

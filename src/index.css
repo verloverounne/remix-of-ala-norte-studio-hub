@@ -8,104 +8,109 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Ala Norte - Modo Claro */
-    --background: 105 14% 91%; /* #E7EDE5 Off-White */
-    --foreground: 0 5% 10%; /* #1C1818 Negro */
+    /* BRUTALISMO 2026 - Modo Claro */
+    --background: 0 0% 98%; /* #FAFAFA Blanco brutal */
+    --foreground: 0 0% 8%; /* #141414 Negro */
 
-    --card: 105 14% 91%;
-    --card-foreground: 0 5% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
 
-    --popover: 105 14% 91%;
-    --popover-foreground: 0 5% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
 
-    /* Primario - Rojo Ala Norte */
-    --primary: 348 83% 47%; /* #DC143C */
-    --primary-foreground: 105 14% 91%;
+    /* Primario - Rojo Brutal */
+    --primary: 348 83% 47%; /* #DC143C Rojo Ala Norte */
+    --primary-foreground: 0 0% 98%;
     --primary-hover: 343 100% 33%; /* #A7002F */
     --primary-light: 355 82% 60%; /* #EF4350 */
-    --primary-lighter: 359 100% 69%; /* #FF6264 */
     --primary-dark: 343 100% 22%; /* #6E0022 */
 
-    /* Secundarios */
-    --secondary: 300 1% 25%; /* #3F3F40 Gris Oscuro */
-    --secondary-foreground: 105 14% 91%;
+    /* Secundario - Verde Brutal */
+    --secondary: 158 47% 64%; /* #70DDB0 Verde Ala Norte */
+    --secondary-foreground: 0 0% 8%;
+    --secondary-hover: 158 47% 54%;
 
-    --muted: 165 10% 80%; /* #C8D1CE Gris Muy Claro */
-    --muted-foreground: 60 4% 35%; /* #5B5B57 Gris Medio */
+    /* Neutrales Brutales */
+    --muted: 0 0% 90%; /* #E5E5E5 */
+    --muted-foreground: 0 0% 30%; /* #4D4D4D */
 
-    --accent: 355 82% 60%; /* #EF4350 */
-    --accent-foreground: 105 14% 91%;
+    --accent: 158 47% 64%; /* #70DDB0 Verde */
+    --accent-foreground: 0 0% 8%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 105 14% 91%;
+    --destructive: 348 83% 47%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 165 10% 80%;
-    --input: 165 10% 80%;
+    --border: 0 0% 8%; /* Bordes negros duros */
+    --input: 0 0% 8%;
     --ring: 348 83% 47%;
 
-    --radius: 0.75rem;
+    --radius: 0rem; /* Sin border-radius: BRUTAL */
 
-    /* Grises complementarios */
-    --gray-dark: 300 1% 25%; /* #3F3F40 */
-    --gray-medium: 60 4% 35%; /* #5B5B57 */
-    --gray-light: 190 4% 60%; /* #959A9C */
-    --gray-lighter: 165 10% 80%; /* #C8D1CE */
+    /* Grises Brutales */
+    --gray-dark: 0 0% 15%; /* #262626 */
+    --gray-medium: 0 0% 40%; /* #666666 */
+    --gray-light: 0 0% 70%; /* #B3B3B3 */
+    --gray-lighter: 0 0% 90%; /* #E5E5E5 */
 
-    /* Efectos y sombras */
-    --shadow-sm: 0 2px 8px hsl(348 83% 47% / 0.1);
-    --shadow-md: 0 4px 16px hsl(348 83% 47% / 0.15);
-    --shadow-lg: 0 8px 32px hsl(348 83% 47% / 0.2);
+    /* Sombras Brutales - Duras y sin blur */
+    --shadow-brutal: 8px 8px 0 hsl(0 0% 8%);
+    --shadow-brutal-sm: 4px 4px 0 hsl(0 0% 8%);
+    --shadow-brutal-lg: 12px 12px 0 hsl(0 0% 8%);
+    --shadow-brutal-red: 8px 8px 0 hsl(348 83% 47%);
     
-    /* Gradientes */
-    --gradient-primary: linear-gradient(135deg, hsl(348 83% 47%), hsl(355 82% 60%));
-    --gradient-hero: linear-gradient(135deg, hsl(0 5% 10% / 0.95), hsl(348 83% 47% / 0.8));
+    /* Gradientes Brutales */
+    --gradient-primary: linear-gradient(135deg, hsl(348 83% 47%), hsl(343 100% 33%));
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 8% / 0.95), hsl(348 83% 47% / 0.85));
+    --gradient-green: linear-gradient(135deg, hsl(158 47% 64%), hsl(158 47% 54%));
     
-    /* Transiciones */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Transiciones Brutales - Instantáneas o mecánicas */
+    --transition-brutal: all 0.1s linear;
+    --transition-none: none;
   }
 
   .dark {
-    /* Ala Norte - Modo Oscuro */
-    --background: 0 5% 10%; /* #1C1818 */
-    --foreground: 105 14% 91%; /* #E7EDE5 */
+    /* BRUTALISMO 2026 - Modo Oscuro */
+    --background: 0 0% 8%; /* #141414 Negro brutal */
+    --foreground: 0 0% 98%; /* #FAFAFA */
 
-    --card: 300 1% 25%; /* #3F3F40 */
-    --card-foreground: 105 14% 91%;
+    --card: 0 0% 12%; /* #1F1F1F */
+    --card-foreground: 0 0% 98%;
 
-    --popover: 60 4% 35%; /* #5B5B57 */
-    --popover-foreground: 105 14% 91%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 98%;
 
     --primary: 348 83% 47%; /* #DC143C */
-    --primary-foreground: 105 14% 91%;
+    --primary-foreground: 0 0% 98%;
     --primary-hover: 343 100% 33%;
     --primary-light: 355 82% 60%;
-    --primary-lighter: 359 100% 69%;
     --primary-dark: 343 100% 22%;
 
-    --secondary: 60 4% 35%;
-    --secondary-foreground: 105 14% 91%;
+    --secondary: 158 47% 64%; /* #70DDB0 */
+    --secondary-foreground: 0 0% 8%;
+    --secondary-hover: 158 47% 54%;
 
-    --muted: 300 1% 25%;
-    --muted-foreground: 190 4% 60%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 355 82% 60%;
-    --accent-foreground: 105 14% 91%;
+    --accent: 158 47% 64%;
+    --accent-foreground: 0 0% 8%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 105 14% 91%;
+    --destructive: 348 83% 47%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 300 1% 25%;
-    --input: 60 4% 35%;
+    --border: 0 0% 98%; /* Bordes blancos en oscuro */
+    --input: 0 0% 98%;
     --ring: 348 83% 47%;
 
-    --gray-dark: 300 1% 25%;
-    --gray-medium: 60 4% 35%;
-    --gray-light: 190 4% 60%;
-    --gray-lighter: 165 10% 80%;
+    --gray-dark: 0 0% 15%;
+    --gray-medium: 0 0% 40%;
+    --gray-light: 0 0% 70%;
+    --gray-lighter: 0 0% 90%;
 
-    --shadow-sm: 0 2px 8px hsl(0 0% 0% / 0.3);
-    --shadow-md: 0 4px 16px hsl(0 0% 0% / 0.4);
-    --shadow-lg: 0 8px 32px hsl(0 0% 0% / 0.5);
+    --shadow-brutal: 8px 8px 0 hsl(0 0% 98%);
+    --shadow-brutal-sm: 4px 4px 0 hsl(0 0% 98%);
+    --shadow-brutal-lg: 12px 12px 0 hsl(0 0% 98%);
+    --shadow-brutal-red: 8px 8px 0 hsl(348 83% 47%);
   }
 }
 
@@ -119,19 +124,62 @@ All colors MUST be HSL.
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-bold;
+    @apply font-heading font-bold uppercase tracking-wider;
+  }
+
+  h1 {
+    @apply text-6xl md:text-8xl;
+  }
+
+  h2 {
+    @apply text-5xl md:text-7xl;
+  }
+
+  h3 {
+    @apply text-3xl md:text-5xl;
   }
 }
 
 @layer utilities {
-  .hover-scale {
-    @apply transition-transform duration-300 hover:scale-105;
+  /* Efectos Brutales */
+  .shadow-brutal {
+    box-shadow: var(--shadow-brutal);
   }
 
-  .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
+  .shadow-brutal-sm {
+    box-shadow: var(--shadow-brutal-sm);
   }
 
+  .shadow-brutal-lg {
+    box-shadow: var(--shadow-brutal-lg);
+  }
+
+  .shadow-brutal-red {
+    box-shadow: var(--shadow-brutal-red);
+  }
+
+  .border-brutal {
+    @apply border-3 border-foreground;
+  }
+
+  .transition-brutal {
+    transition: var(--transition-brutal);
+  }
+
+  .transition-none {
+    transition: var(--transition-none);
+  }
+
+  /* Hover Brutales - Instantáneos */
+  .hover-brutal {
+    @apply transition-none hover:shadow-brutal;
+  }
+
+  .hover-brutal-red {
+    @apply transition-none hover:shadow-brutal-red hover:-translate-x-1 hover:-translate-y-1;
+  }
+
+  /* Gradientes */
   .gradient-primary {
     background: var(--gradient-primary);
   }
@@ -140,7 +188,33 @@ All colors MUST be HSL.
     background: var(--gradient-hero);
   }
 
-  .text-gradient {
-    @apply bg-gradient-to-r from-primary via-primary-light to-primary-lighter bg-clip-text text-transparent;
+  .gradient-green {
+    background: var(--gradient-green);
+  }
+
+  /* Tipografía Brutal */
+  .text-brutal {
+    @apply font-heading uppercase tracking-wider;
+  }
+
+  .text-glitch {
+    animation: glitch 0.3s steps(5) infinite;
+  }
+
+  @keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(2px, -2px); }
+    60% { transform: translate(-2px, -2px); }
+    80% { transform: translate(2px, 2px); }
+    100% { transform: translate(0); }
+  }
+
+  /* Grid visible brutalista */
+  .grid-brutal {
+    background-image: 
+      linear-gradient(hsl(var(--border)) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border)) 1px, transparent 1px);
+    background-size: 20px 20px;
   }
 }

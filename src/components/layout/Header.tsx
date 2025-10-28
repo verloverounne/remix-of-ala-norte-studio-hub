@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo-brutal.png";
 
 const navigation = [
-  { name: "Inicio", href: "/" },
-  { name: "Equipos", href: "/equipos" },
-  { name: "Espacios", href: "/espacios" },
-  { name: "Cotizador", href: "/cotizador" },
-  { name: "Contacto", href: "/contacto" },
+  { name: "INICIO", href: "/" },
+  { name: "EQUIPOS", href: "/equipos" },
+  { name: "ESPACIOS", href: "/espacios" },
+  { name: "COTIZADOR", href: "/cotizador" },
+  { name: "CONTACTO", href: "/contacto" },
 ];
 
 export const Header = () => {
@@ -32,26 +33,24 @@ export const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b-4 border-foreground shadow-brutal">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <span className="text-2xl font-heading font-bold text-gradient">
-              Ala Norte
-            </span>
+        <div className="flex h-20 items-center justify-between">
+          {/* Logo Brutal */}
+          <Link to="/" className="flex items-center">
+            <img src={logo} alt="Ala Norte" className="h-12 w-auto" />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:gap-8">
+          {/* Desktop Navigation Brutal */}
+          <div className="hidden md:flex md:items-center md:gap-1">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
+                className={`px-6 py-3 font-heading text-sm tracking-wider border-3 transition-none ${
                   location.pathname === item.href
-                    ? "text-primary"
-                    : "text-foreground/80"
+                    ? "bg-primary text-primary-foreground border-foreground shadow-brutal-sm"
+                    : "bg-transparent border-transparent hover:border-foreground hover:shadow-brutal-sm"
                 }`}
               >
                 {item.name}
@@ -59,13 +58,13 @@ export const Header = () => {
             ))}
           </div>
 
-          {/* Actions */}
+          {/* Actions Brutales */}
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="hidden md:inline-flex"
+              className="hidden md:inline-flex border-3 border-foreground"
             >
               {theme === "light" ? (
                 <Moon className="h-5 w-5" />
@@ -76,11 +75,11 @@ export const Header = () => {
 
             <Button
               asChild
-              variant="hero"
+              variant="default"
               size="sm"
               className="hidden md:inline-flex"
             >
-              <Link to="/admin">Admin</Link>
+              <Link to="/admin">ADMIN</Link>
             </Button>
 
             {/* Mobile menu button */}
@@ -88,7 +87,7 @@ export const Header = () => {
               variant="ghost"
               size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden"
+              className="md:hidden border-3 border-foreground"
             >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -99,27 +98,27 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation Brutal */}
         {mobileMenuOpen && (
-          <div className="md:hidden pb-4 animate-slide-in">
-            <div className="flex flex-col gap-2">
+          <div className="md:hidden pb-4 border-t-3 border-foreground mt-4">
+            <div className="flex flex-col gap-2 mt-4">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  className={`px-4 py-3 font-heading text-sm border-3 border-foreground transition-none ${
                     location.pathname === item.href
                       ? "bg-primary text-primary-foreground"
-                      : "hover:bg-accent"
+                      : "bg-background hover:bg-foreground hover:text-background"
                   }`}
                 >
                   {item.name}
                 </Link>
               ))}
-              <div className="flex items-center justify-between px-4 py-2">
-                <span className="text-sm font-medium">Tema</span>
-                <Button variant="ghost" size="icon" onClick={toggleTheme}>
+              <div className="flex items-center justify-between px-4 py-3 border-3 border-foreground">
+                <span className="font-heading text-sm">TEMA</span>
+                <Button variant="ghost" size="icon" onClick={toggleTheme} className="border-2 border-foreground">
                   {theme === "light" ? (
                     <Moon className="h-5 w-5" />
                   ) : (
@@ -127,8 +126,8 @@ export const Header = () => {
                   )}
                 </Button>
               </div>
-              <Button asChild variant="hero" size="sm" className="mx-4">
-                <Link to="/admin">Admin Panel</Link>
+              <Button asChild variant="default" size="sm">
+                <Link to="/admin">ADMIN PANEL</Link>
               </Button>
             </div>
           </div>

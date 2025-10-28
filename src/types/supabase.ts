@@ -1,0 +1,92 @@
+// Types for Supabase Database
+export type EquipmentStatus = 'available' | 'rented' | 'maintenance';
+
+export interface Category {
+  id: string;
+  name: string;
+  name_en: string;
+  slug: string;
+  description: string | null;
+  icon: string | null;
+  order_index: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Equipment {
+  id: string;
+  name: string;
+  name_en: string | null;
+  category_id: string | null;
+  brand: string | null;
+  model: string | null;
+  description: string | null;
+  specs: any;
+  price_per_day: number;
+  price_per_week: number | null;
+  status: EquipmentStatus;
+  image_url: string | null;
+  tags: string[];
+  featured: boolean;
+  order_index: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EquipmentWithCategory extends Equipment {
+  categories: Category | null;
+}
+
+export interface Quote {
+  id: string;
+  user_id: string | null;
+  client_name: string;
+  client_email: string;
+  client_phone: string;
+  start_date: string;
+  end_date: string;
+  comments: string | null;
+  total_amount: number;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface QuoteItem {
+  id: string;
+  quote_id: string;
+  equipment_id: string | null;
+  equipment_name: string;
+  quantity: number;
+  days: number;
+  price_per_day: number;
+  subtotal: number;
+  created_at: string;
+}
+
+export interface ContactInfo {
+  id: string;
+  whatsapp: string | null;
+  email: string | null;
+  phone: string | null;
+  address: string | null;
+  instagram: string | null;
+  facebook: string | null;
+  quote_message: string | null;
+  updated_at: string;
+}
+
+export interface Profile {
+  id: string;
+  display_name: string | null;
+  email: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UserRole {
+  id: string;
+  user_id: string;
+  role: 'admin' | 'user';
+  created_at: string;
+}

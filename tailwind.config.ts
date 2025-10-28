@@ -14,8 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        heading: ["Montserrat", "Inter", "system-ui", "sans-serif"],
+        sans: ["Space Mono", "Courier New", "monospace"],
+        heading: ["Bebas Neue", "Arial Black", "sans-serif"],
+        mono: ["Space Mono", "Courier New", "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -34,6 +35,7 @@ export default {
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          hover: "hsl(var(--secondary-hover))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -64,8 +66,13 @@ export default {
       },
       borderRadius: {
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        md: "var(--radius)",
+        sm: "var(--radius)",
+        none: "0",
+      },
+      borderWidth: {
+        '3': '3px',
+        '4': '4px',
       },
       keyframes: {
         "accordion-down": {
