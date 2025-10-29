@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Moon, Sun } from "lucide-react";
+import { Menu, X, Moon, Sun, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { useCart } from "@/hooks/useCart";
 import logo from "@/assets/logo-brutal.png";
 
 const navigation = [
@@ -16,6 +18,7 @@ export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const location = useLocation();
+  const { totalItems } = useCart();
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
@@ -38,7 +41,7 @@ export const Header = () => {
         <div className="flex h-20 items-center justify-between">
           {/* Logo Brutal */}
           <Link to="/" className="flex items-center">
-            <img src={logo} alt="Ala Norte" className="h-12 w-auto" />
+            <img src={logo} alt="Ala Norte" className="h-16 w-auto object-contain" />
           </Link>
 
           {/* Desktop Navigation Brutal */}
@@ -60,6 +63,26 @@ export const Header = () => {
 
           {/* Actions Brutales */}
           <div className="flex items-center gap-4">
+            {/* Cart Badge */}
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="relative hidden md:inline-flex border-3 border-foreground"
+            >
+              <Link to="/cotizador">
+                <ShoppingCart className="h-5 w-5" />
+                {totalItems > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                  >
+                    {totalItems}
+                  </Badge>
+                )}
+              </Link>
+            </Button>
+
             <Button
               variant="ghost"
               size="icon"
@@ -116,6 +139,18 @@ export const Header = () => {
                   {item.name}
                 </Link>
               ))}
+              <Link
+                to="/cotizador"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-3 font-heading text-sm border-3 border-foreground transition-none bg-background hover:bg-foreground hover:text-background flex items-center justify-between"
+              >
+                <span>CARRITO</span>
+                {totalItems > 0 && (
+                  <Badge variant="destructive" className="ml-2">
+                    {totalItems}
+                  </Badge>
+                )}
+              </Link>
               <div className="flex items-center justify-between px-4 py-3 border-3 border-foreground">
                 <span className="font-heading text-sm">TEMA</span>
                 <Button variant="ghost" size="icon" onClick={toggleTheme} className="border-2 border-foreground">

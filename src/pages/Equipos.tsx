@@ -6,8 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import type { Equipment, Category, EquipmentWithCategory } from "@/types/supabase";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, Plus, Minus } from "lucide-react";
 import equipmentHero from "@/assets/equipment-hero.jpg";
+import { useCart } from "@/hooks/useCart";
+import { useToast } from "@/hooks/use-toast";
 
 const Equipos = () => {
   const [equipment, setEquipment] = useState<EquipmentWithCategory[]>([]);
@@ -15,6 +17,9 @@ const Equipos = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [loading, setLoading] = useState(true);
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const { addItem } = useCart();
+  const { toast } = useToast();
 
   useEffect(() => {
     fetchCategories();
@@ -66,6 +71,33 @@ const Equipos = () => {
 
   const handleCategoryClick = (categorySlug: string) => {
     setSelectedCategory(categorySlug);
+  };
+
+  const getQuantity = (id: string) => quantities[id] || 1;
+
+  const updateQuantity = (id: string, delta: number) => {
+    const current = getQuantity(id);
+    const newValue = Math.max(1, current + delta);
+    setQuantities({ ...quantities, [id]: newValue });
+  };
+
+  const handleAddToCart = (item: EquipmentWithCategory) => {
+    const quantity = getQuantity(item.id);
+    addItem(
+      {
+        id: item.id,
+        name: item.name,
+        brand: item.brand || undefined,
+        pricePerDay: item.price_per_day,
+        imageUrl: item.image_url || undefined,
+      },
+      quantity
+    );
+    toast({
+      title: "Agregado a reserva",
+      description: `${quantity}x ${item.name} agregado al carrito`,
+    });
+    setQuantities({ ...quantities, [item.id]: 1 });
   };
 
   return (
@@ -191,12 +223,40 @@ const Equipos = () => {
                     </div>
                   </CardContent>
 
-                  <CardFooter className="p-6 pt-0">
+                  <CardFooter className="p-6 pt-0 space-y-4">
+                    {item.status === 'available' && (
+                      <div className="flex items-center gap-2 w-full">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => updateQuantity(item.id, -1)}
+                          className="flex-shrink-0"
+                        >
+                          <Minus className="h-4 w-4" />
+                        </Button>
+                        <Input
+                          type="number"
+                          min="1"
+                          value={getQuantity(item.id)}
+                          onChange={(e) => setQuantities({ ...quantities, [item.id]: Math.max(1, parseInt(e.target.value) || 1) })}
+                          className="text-center font-heading text-lg"
+                        />
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => updateQuantity(item.id, 1)}
+                          className="flex-shrink-0"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
                     <Button 
                       className="w-full" 
                       disabled={item.status !== 'available'}
+                      onClick={() => handleAddToCart(item)}
                     >
-                      {item.status === 'available' ? 'AGREGAR A COTIZACIÓN' : 'NO DISPONIBLE'}
+                      {item.status === 'available' ? 'AGREGAR A RESERVA' : 'NO DISPONIBLE'}
                     </Button>
                   </CardFooter>
                 </Card>

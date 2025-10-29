@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "./components/layout/Header";
 import { Footer } from "./components/layout/Footer";
 import { WhatsAppButton } from "./components/WhatsAppButton";
+import { CartProvider } from "./hooks/useCart";
 import Home from "./pages/Home";
 import Equipos from "./pages/Equipos";
 import Espacios from "./pages/Espacios";
@@ -19,25 +20,27 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Header />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/equipos" element={<Equipos />} />
-            <Route path="/espacios" element={<Espacios />} />
-            <Route path="/cotizador" element={<Cotizador />} />
-            <Route path="/contacto" element={<Contacto />} />
-            <Route path="/admin" element={<Admin />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <Footer />
-        <WhatsAppButton />
-      </BrowserRouter>
+      <CartProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Header />
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/equipos" element={<Equipos />} />
+              <Route path="/espacios" element={<Espacios />} />
+              <Route path="/cotizador" element={<Cotizador />} />
+              <Route path="/contacto" element={<Contacto />} />
+              <Route path="/admin" element={<Admin />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+          <Footer />
+          <WhatsAppButton />
+        </BrowserRouter>
+      </CartProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
