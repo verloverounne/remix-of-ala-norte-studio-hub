@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Space Mono", "Courier New", "monospace"],
-        heading: ["Bebas Neue", "Arial Black", "sans-serif"],
-        mono: ["Space Mono", "Courier New", "monospace"],
+        sans: ['"bebas-neue-pro"', 'sans-serif'],
+        heading: ['"bebas-neue-pro-expanded"', 'sans-serif'],
+        mono: ['"bebas-neue-pro"', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -4,12 +4,15 @@ import type { Equipment, EquipmentWithCategory, EquipmentStatus } from "@/types/
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Package } from "lucide-react";
+import { Search, Package, Plus, Edit, Trash2, Percent, Download, Upload } from "lucide-react";
 
 const Admin = () => {
   const [equipment, setEquipment] = useState<EquipmentWithCategory[]>([]);
@@ -102,11 +105,11 @@ const Admin = () => {
                           <SelectValue placeholder="Seleccionar categoría" />
                         </SelectTrigger>
                         <SelectContent>
-                          {Object.entries(categoryNames).map(([key, name]) => (
-                            <SelectItem key={key} value={key}>
-                              {name}
-                            </SelectItem>
-                          ))}
+                          <SelectItem value="cameras">Cámaras</SelectItem>
+                          <SelectItem value="lenses">Lentes</SelectItem>
+                          <SelectItem value="audio">Audio</SelectItem>
+                          <SelectItem value="lighting">Iluminación</SelectItem>
+                          <SelectItem value="grip">Grip</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -153,19 +156,19 @@ const Admin = () => {
                         className="flex items-center justify-between p-4 rounded-lg border hover:bg-accent/50 transition-colors"
                       >
                         <div className="flex items-center gap-4">
-                          <img
-                            src={item.imageUrl}
+                           <img
+                            src={item.image_url || "/placeholder.svg"}
                             alt={item.name}
-                            className="w-16 h-16 rounded object-cover"
+                            className="w-16 h-16 rounded object-cover border-2 border-foreground"
                           />
                           <div>
                             <h4 className="font-semibold">{item.name}</h4>
                             <div className="flex items-center gap-2 mt-1">
                               <Badge variant="outline">
-                                {categoryNames[item.category]}
+                                {item.categories?.name || "Sin categoría"}
                               </Badge>
-                              <Badge className={statusColors[item.status]}>
-                                {statusNames[item.status]}
+                              <Badge variant={getStatusBadge(item.status).variant}>
+                                {getStatusBadge(item.status).text}
                               </Badge>
                             </div>
                           </div>
@@ -227,7 +230,7 @@ const Admin = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button variant="hero" onClick={handleDownloadBackup}>
+                  <Button variant="hero">
                     <Download className="mr-2 h-4 w-4" />
                     Descargar Backup
                   </Button>
