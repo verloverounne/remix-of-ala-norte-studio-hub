@@ -31,8 +31,15 @@ const Admin = () => {
 
   const fetchEquipment = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from('equipment').select(`*, categories (*)`).order('name');
-    if (!error && data) { setEquipment(data); setFilteredEquipment(data); }
+    const { data, error } = await supabase.from('equipment').select(`*, categories (*), subcategories (*)`).order('name');
+    if (!error && data) { 
+      const transformedData = data.map((item: any) => ({
+        ...item,
+        images: Array.isArray(item.images) ? item.images : []
+      }));
+      setEquipment(transformedData); 
+      setFilteredEquipment(transformedData); 
+    }
     setLoading(false);
   };
 

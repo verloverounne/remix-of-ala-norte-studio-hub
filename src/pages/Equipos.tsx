@@ -54,12 +54,17 @@ const Equipos = () => {
       .from('equipment')
       .select(`
         *,
-        categories (*)
+        categories (*),
+        subcategories (*)
       `)
       .order('order_index');
     
     if (!error && data) {
-      setEquipment(data);
+      const transformedData = data.map((item: any) => ({
+        ...item,
+        images: Array.isArray(item.images) ? item.images : []
+      }));
+      setEquipment(transformedData);
     }
     setLoading(false);
   };

@@ -92,9 +92,12 @@ export type Database = {
           category_id: string | null
           created_at: string
           description: string | null
+          detailed_description: string | null
+          detailed_specs: Json | null
           featured: boolean | null
           id: string
           image_url: string | null
+          images: Json | null
           model: string | null
           name: string
           name_en: string | null
@@ -103,6 +106,7 @@ export type Database = {
           price_per_week: number | null
           specs: Json | null
           status: Database["public"]["Enums"]["equipment_status"] | null
+          subcategory_id: string | null
           tags: string[] | null
           updated_at: string
         }
@@ -111,9 +115,12 @@ export type Database = {
           category_id?: string | null
           created_at?: string
           description?: string | null
+          detailed_description?: string | null
+          detailed_specs?: Json | null
           featured?: boolean | null
           id?: string
           image_url?: string | null
+          images?: Json | null
           model?: string | null
           name: string
           name_en?: string | null
@@ -122,6 +129,7 @@ export type Database = {
           price_per_week?: number | null
           specs?: Json | null
           status?: Database["public"]["Enums"]["equipment_status"] | null
+          subcategory_id?: string | null
           tags?: string[] | null
           updated_at?: string
         }
@@ -130,9 +138,12 @@ export type Database = {
           category_id?: string | null
           created_at?: string
           description?: string | null
+          detailed_description?: string | null
+          detailed_specs?: Json | null
           featured?: boolean | null
           id?: string
           image_url?: string | null
+          images?: Json | null
           model?: string | null
           name?: string
           name_en?: string | null
@@ -141,6 +152,7 @@ export type Database = {
           price_per_week?: number | null
           specs?: Json | null
           status?: Database["public"]["Enums"]["equipment_status"] | null
+          subcategory_id?: string | null
           tags?: string[] | null
           updated_at?: string
         }
@@ -150,6 +162,13 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_subcategory_id_fkey"
+            columns: ["subcategory_id"]
+            isOneToOne: false
+            referencedRelation: "subcategories"
             referencedColumns: ["id"]
           },
         ]
@@ -273,6 +292,101 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      spaces: {
+        Row: {
+          amenities: Json | null
+          created_at: string
+          description: string | null
+          detailed_description: string | null
+          id: string
+          images: Json | null
+          name: string
+          order_index: number | null
+          price: number
+          promotion: string | null
+          slug: string
+          specs: Json | null
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          amenities?: Json | null
+          created_at?: string
+          description?: string | null
+          detailed_description?: string | null
+          id?: string
+          images?: Json | null
+          name: string
+          order_index?: number | null
+          price: number
+          promotion?: string | null
+          slug: string
+          specs?: Json | null
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amenities?: Json | null
+          created_at?: string
+          description?: string | null
+          detailed_description?: string | null
+          id?: string
+          images?: Json | null
+          name?: string
+          order_index?: number | null
+          price?: number
+          promotion?: string | null
+          slug?: string
+          specs?: Json | null
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      subcategories: {
+        Row: {
+          category_id: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          name_en: string | null
+          order_index: number | null
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          name_en?: string | null
+          order_index?: number | null
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          name_en?: string | null
+          order_index?: number | null
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subcategories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {

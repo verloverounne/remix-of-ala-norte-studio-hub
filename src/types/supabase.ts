@@ -13,19 +13,35 @@ export interface Category {
   updated_at: string;
 }
 
+export interface Subcategory {
+  id: string;
+  category_id: string;
+  name: string;
+  name_en: string;
+  slug: string;
+  description: string | null;
+  order_index: number;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Equipment {
   id: string;
   name: string;
   name_en: string | null;
   category_id: string | null;
+  subcategory_id: string | null;
   brand: string | null;
   model: string | null;
   description: string | null;
+  detailed_description: string | null;
   specs: any;
+  detailed_specs: any;
   price_per_day: number;
   price_per_week: number | null;
   status: EquipmentStatus;
   image_url: string | null;
+  images: string[];
   tags: string[];
   featured: boolean;
   order_index: number;
@@ -35,6 +51,24 @@ export interface Equipment {
 
 export interface EquipmentWithCategory extends Equipment {
   categories: Category | null;
+  subcategories: Subcategory | null;
+}
+
+export interface Space {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  detailed_description: string | null;
+  price: number;
+  promotion: string | null;
+  images: string[];
+  amenities: any[];
+  specs: any;
+  status: 'available' | 'unavailable';
+  order_index: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Quote {
