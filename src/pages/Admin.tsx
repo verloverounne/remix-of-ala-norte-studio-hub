@@ -10,6 +10,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Edit, Trash2, Percent } from "lucide-react";
 import { ImageUploader } from "@/components/ImageUploader";
@@ -29,6 +30,10 @@ const Admin = () => {
   
   // Space form state
   const [editingSpace, setEditingSpace] = useState<Space | null>(null);
+  
+  // Equipment edit modal state
+  const [editingEquipment, setEditingEquipment] = useState<EquipmentWithCategory | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   
   const { toast } = useToast();
 
@@ -120,12 +125,49 @@ const Admin = () => {
     }
   };
 
+  const handleEditEquipment = (equipment: EquipmentWithCategory) => {
+    setEditingEquipment(equipment);
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateEquipment = async () => {
+    if (!editingEquipment || !editingEquipment.name || !editingEquipment.price_per_day) {
+      toast({ title: "ERROR", description: "Nombre y precio son requeridos", variant: "destructive" });
+      return;
+    }
+
+    const { error } = await supabase.from('equipment').update({
+      name: editingEquipment.name,
+      name_en: editingEquipment.name_en || null,
+      category_id: editingEquipment.category_id || null,
+      subcategory_id: editingEquipment.subcategory_id || null,
+      brand: editingEquipment.brand || null,
+      model: editingEquipment.model || null,
+      description: editingEquipment.description || null,
+      price_per_day: editingEquipment.price_per_day,
+      price_per_week: editingEquipment.price_per_week || null,
+      image_url: editingEquipment.image_url || null,
+      images: editingEquipment.images || []
+    }).eq('id', editingEquipment.id);
+
+    if (error) {
+      toast({ title: "ERROR", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "ACTUALIZADO", description: "Equipo actualizado correctamente" });
+      setIsEditModalOpen(false);
+      setEditingEquipment(null);
+      fetchEquipment();
+    }
+  };
+
   const handleUpdateSpace = async (space: Space) => {
     const { error } = await supabase.from('spaces').update({
       name: space.name,
       description: space.description,
       price: space.price,
-      promotion: space.promotion
+      promotion: space.promotion,
+      images: space.images,
+      specs: space.specs
     }).eq('id', space.id);
 
     if (error) {
@@ -139,6 +181,10 @@ const Admin = () => {
 
   const filteredSubcategories = newEquipment.category_id 
     ? subcategories.filter(s => s.category_id === newEquipment.category_id)
+    : [];
+
+  const editFilteredSubcategories = editingEquipment?.category_id 
+    ? subcategories.filter(s => s.category_id === editingEquipment.category_id)
     : [];
 
   return (
@@ -258,9 +304,14 @@ const Admin = () => {
                             </div>
                           </div>
                         </div>
-                        <Button variant="ghost" size="icon" onClick={() => handleDeleteEquipment(item.id)}>
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
+                        <div className="flex gap-2">
+                          <Button variant="ghost" size="icon" onClick={() => handleEditEquipment(item)}>
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => handleDeleteEquipment(item.id)}>
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -344,6 +395,25 @@ const Admin = () => {
                               onChange={(e) => setEditingSpace({...editingSpace, promotion: e.target.value})}
                             />
                           </div>
+                          <div>
+                            <Label>Imágenes del Espacio (mínimo 4)</Label>
+                            <ImageUploader 
+                              images={editingSpace.images || []}
+                              onChange={(images) => setEditingSpace({...editingSpace, images})}
+                              maxImages={10}
+                            />
+                          </div>
+                          <div>
+                            <Label>Plano con Medidas (URL)</Label>
+                            <Input 
+                              value={editingSpace.specs?.floor_plan || ''} 
+                              onChange={(e) => setEditingSpace({
+                                ...editingSpace, 
+                                specs: {...(editingSpace.specs || {}), floor_plan: e.target.value}
+                              })}
+                              placeholder="URL del plano con medidas"
+                            />
+                          </div>
                           <div className="flex gap-2">
                             <Button onClick={() => handleUpdateSpace(editingSpace)}>Guardar</Button>
                             <Button variant="outline" onClick={() => setEditingSpace(null)}>Cancelar</Button>
@@ -393,6 +463,122 @@ const Admin = () => {
           </Tabs>
         </div>
       </section>
+
+      {/* Equipment Edit Modal */}
+      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Editar Equipo</DialogTitle>
+          </DialogHeader>
+          {editingEquipment && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Nombre *</Label>
+                <Input 
+                  value={editingEquipment.name} 
+                  onChange={(e) => setEditingEquipment({...editingEquipment, name: e.target.value})} 
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Nombre EN</Label>
+                <Input 
+                  value={editingEquipment.name_en || ''} 
+                  onChange={(e) => setEditingEquipment({...editingEquipment, name_en: e.target.value})} 
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Categoría</Label>
+                <Select 
+                  value={editingEquipment.category_id || ''} 
+                  onValueChange={(v) => setEditingEquipment({...editingEquipment, category_id: v, subcategory_id: null})}
+                >
+                  <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                  <SelectContent>
+                    {categories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Subcategoría</Label>
+                <Select 
+                  value={editingEquipment.subcategory_id || ''} 
+                  onValueChange={(v) => setEditingEquipment({...editingEquipment, subcategory_id: v})}
+                >
+                  <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                  <SelectContent>
+                    {editFilteredSubcategories.map((sub) => (
+                      <SelectItem key={sub.id} value={sub.id}>{sub.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Marca</Label>
+                <Input 
+                  value={editingEquipment.brand || ''} 
+                  onChange={(e) => setEditingEquipment({...editingEquipment, brand: e.target.value})} 
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Modelo</Label>
+                <Input 
+                  value={editingEquipment.model || ''} 
+                  onChange={(e) => setEditingEquipment({...editingEquipment, model: e.target.value})} 
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Precio por día *</Label>
+                <Input 
+                  type="number" 
+                  value={editingEquipment.price_per_day} 
+                  onChange={(e) => setEditingEquipment({...editingEquipment, price_per_day: parseInt(e.target.value)})} 
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Precio por semana</Label>
+                <Input 
+                  type="number" 
+                  value={editingEquipment.price_per_week || ''} 
+                  onChange={(e) => setEditingEquipment({...editingEquipment, price_per_week: e.target.value ? parseInt(e.target.value) : null})} 
+                />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <Label>Descripción</Label>
+                <Textarea 
+                  value={editingEquipment.description || ''} 
+                  onChange={(e) => setEditingEquipment({...editingEquipment, description: e.target.value})} 
+                />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <Label>Imagen Principal (URL)</Label>
+                <Input 
+                  value={editingEquipment.image_url || ''} 
+                  onChange={(e) => setEditingEquipment({...editingEquipment, image_url: e.target.value})} 
+                  placeholder="https://..." 
+                />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <Label>Imágenes Adicionales</Label>
+                <ImageUploader 
+                  images={editingEquipment.images || []}
+                  onChange={(images) => setEditingEquipment({...editingEquipment, images})}
+                  maxImages={10}
+                />
+              </div>
+              <div className="md:col-span-2 flex gap-2">
+                <Button onClick={handleUpdateEquipment} variant="hero">
+                  Actualizar Equipo
+                </Button>
+                <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>
+                  Cancelar
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
