@@ -20,6 +20,7 @@ const Admin = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [confirmDialog, setConfirmDialog] = useState<{ open: boolean; equipmentId: string; currentStatus: EquipmentStatus; newStatus: EquipmentStatus; } | null>(null);
+  const [editDialog, setEditDialog] = useState<{ open: boolean; equipment: EquipmentWithCategory | null }>({ open: false, equipment: null });
   const { toast } = useToast();
 
   useEffect(() => { fetchEquipment(); }, []);
@@ -52,6 +53,21 @@ const Admin = () => {
   const getStatusBadge = (status: EquipmentStatus) => {
     const config = { available: { text: "DISPONIBLE", variant: "success" as const }, rented: { text: "RENTADO", variant: "destructive" as const }, maintenance: { text: "MANTENIMIENTO", variant: "outline" as const } };
     return config[status];
+  };
+
+  const handleEdit = (item: EquipmentWithCategory) => {
+    setEditDialog({ open: true, equipment: item });
+  };
+
+  const handleDelete = async (equipmentId: string) => {
+    if (!confirm("¿Estás seguro de que quieres eliminar este equipo?")) return;
+    const { error } = await supabase.from('equipment').delete().eq('id', equipmentId);
+    if (error) {
+      toast({ title: "ERROR", description: "No se pudo eliminar", variant: "destructive" });
+    } else {
+      toast({ title: "ELIMINADO", description: "Equipo eliminado correctamente" });
+      fetchEquipment();
+    }
   };
 
   return (
@@ -174,10 +190,10 @@ const Admin = () => {
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Button variant="ghost" size="icon">
+                          <Button variant="ghost" size="icon" onClick={() => handleEdit(item)}>
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="icon">
+                          <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)}>
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
                         </div>
@@ -286,6 +302,60 @@ const Admin = () => {
           </Tabs>
         </div>
       </section>
+
+      {/* Edit Dialog */}
+      <AlertDialog open={editDialog.open} onOpenChange={(open) => setEditDialog({ open, equipment: null })}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Editar Equipo</AlertDialogTitle>
+            <AlertDialogDescription>
+              Modifica los datos del equipo: {editDialog.equipment?.name}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="edit-name">Nombre</Label>
+              <Input 
+                id="edit-name" 
+                defaultValue={editDialog.equipment?.name}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-price">Precio por día</Label>
+              <Input 
+                id="edit-price" 
+                type="number"
+                defaultValue={editDialog.equipment?.price_per_day}
+              />
+            </div>
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={() => {
+              toast({ title: "ACTUALIZADO", description: "Equipo actualizado (demo)" });
+              setEditDialog({ open: false, equipment: null });
+            }}>
+              Guardar Cambios
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Status Change Confirmation Dialog */}
+      <AlertDialog open={confirmDialog?.open || false} onOpenChange={(open) => !open && setConfirmDialog(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmar cambio de estado</AlertDialogTitle>
+            <AlertDialogDescription>
+              ¿Estás seguro de cambiar el estado a {confirmDialog?.newStatus === 'available' ? 'DISPONIBLE' : 'RENTADO'}?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmStatusChange}>Confirmar</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

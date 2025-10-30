@@ -170,7 +170,7 @@ const Equipos = () => {
                   key={item.id}
                   className={`overflow-hidden group ${index % 5 === 0 ? 'md:col-span-2' : ''}`}
                 >
-                  <div className="aspect-video bg-muted relative overflow-hidden border-b-3 border-foreground">
+                  <div className="aspect-video bg-muted relative overflow-hidden border-b-2 border-foreground">
                     {item.image_url ? (
                       <img
                         src={item.image_url}
@@ -178,7 +178,7 @@ const Equipos = () => {
                         className="w-full h-full object-cover grayscale group-hover:scale-110 transition-transform duration-300"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center">
+                      <div className="w-full h-full flex items-center justify-center bg-muted">
                         <span className="text-brutal text-4xl opacity-20">NO IMG</span>
                       </div>
                     )}

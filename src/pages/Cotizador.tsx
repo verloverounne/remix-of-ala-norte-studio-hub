@@ -187,7 +187,7 @@ Contactar cliente para coordinar entrega/retiro.
                     <Card key={item.id} className="overflow-hidden">
                       <div className="grid grid-cols-[80px_1fr_auto] gap-4 p-4">
                         {/* Image */}
-                        <div className="aspect-square bg-muted border-2 border-foreground overflow-hidden">
+                        <div className="aspect-square bg-muted overflow-hidden">
                           {item.imageUrl ? (
                             <img
                               src={item.imageUrl}
@@ -195,7 +195,7 @@ Contactar cliente para coordinar entrega/retiro.
                               className="w-full h-full object-cover grayscale"
                             />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center">
+                            <div className="w-full h-full flex items-center justify-center bg-muted">
                               <span className="text-xs font-heading opacity-20">IMG</span>
                             </div>
                           )}
@@ -321,6 +321,17 @@ Contactar cliente para coordinar entrega/retiro.
               <Card>
                 <CardHeader>
                   <CardTitle className="text-xl">DATOS DEL CLIENTE</CardTitle>
+                  <CardDescription>
+                    Completa tus datos para recibir la cotización.{" "}
+                    <a 
+                      href="https://docs.google.com/forms/d/e/1FAIpQLSf1JuBZQnlUe_-lGfKMzmaNI9386GKhpg32y54IpqBjpQk0hA/viewform"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline font-semibold"
+                    >
+                      ¿Eres cliente nuevo? Regístrate aquí
+                    </a>
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">

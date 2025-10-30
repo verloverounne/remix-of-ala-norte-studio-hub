@@ -36,12 +36,12 @@ export const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b-4 border-foreground shadow-brutal">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b-2 border-foreground">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           {/* Logo Brutal */}
           <Link to="/" className="flex items-center">
-            <img src={logo} alt="Ala Norte" className="h-16 w-auto object-contain" />
+            <img src={logo} alt="Ala Norte" className="h-12 w-auto object-contain" />
           </Link>
 
           {/* Desktop Navigation Brutal */}
@@ -50,7 +50,7 @@ export const Header = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className={`px-6 py-3 font-heading text-sm tracking-wider border-3 transition-none ${
+                className={`px-6 h-12 flex items-center justify-center font-heading text-sm tracking-wider border-2 transition-none ${
                   location.pathname === item.href
                     ? "bg-primary text-primary-foreground border-foreground shadow-brutal-sm"
                     : "bg-transparent border-transparent hover:border-foreground hover:shadow-brutal-sm"
@@ -62,13 +62,13 @@ export const Header = () => {
           </div>
 
           {/* Actions Brutales */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             {/* Cart Badge */}
             <Button
               asChild
               variant="ghost"
               size="icon"
-              className="relative hidden md:inline-flex border-3 border-foreground"
+              className="relative hidden md:inline-flex border-2 border-foreground h-12 w-12"
             >
               <Link to="/cotizador">
                 <ShoppingCart className="h-5 w-5" />
@@ -87,7 +87,7 @@ export const Header = () => {
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="hidden md:inline-flex border-3 border-foreground"
+              className="hidden md:inline-flex border-2 border-foreground h-12 w-12"
             >
               {theme === "light" ? (
                 <Moon className="h-5 w-5" />
@@ -98,9 +98,9 @@ export const Header = () => {
 
             <Button
               asChild
-              variant="default"
-              size="sm"
-              className="hidden md:inline-flex"
+              variant="outline"
+              size="default"
+              className="hidden md:inline-flex h-12"
             >
               <Link to="/admin">ADMIN</Link>
             </Button>
@@ -110,7 +110,7 @@ export const Header = () => {
               variant="ghost"
               size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden border-3 border-foreground"
+              className="md:hidden border-2 border-foreground"
             >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -123,14 +123,14 @@ export const Header = () => {
 
         {/* Mobile Navigation Brutal */}
         {mobileMenuOpen && (
-          <div className="md:hidden pb-4 border-t-3 border-foreground mt-4">
+          <div className="md:hidden pb-4 border-t-2 border-foreground mt-4">
             <div className="flex flex-col gap-2 mt-4">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`px-4 py-3 font-heading text-sm border-3 border-foreground transition-none ${
+                  className={`px-4 py-3 font-heading text-sm border-2 border-foreground transition-none ${
                     location.pathname === item.href
                       ? "bg-primary text-primary-foreground"
                       : "bg-background hover:bg-foreground hover:text-background"
@@ -142,7 +142,7 @@ export const Header = () => {
               <Link
                 to="/cotizador"
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-3 font-heading text-sm border-3 border-foreground transition-none bg-background hover:bg-foreground hover:text-background flex items-center justify-between"
+                className="px-4 py-3 font-heading text-sm border-2 border-foreground transition-none bg-background hover:bg-foreground hover:text-background flex items-center justify-between"
               >
                 <span>CARRITO</span>
                 {totalItems > 0 && (
@@ -151,7 +151,7 @@ export const Header = () => {
                   </Badge>
                 )}
               </Link>
-              <div className="flex items-center justify-between px-4 py-3 border-3 border-foreground">
+              <div className="flex items-center justify-between px-4 py-3 border-2 border-foreground">
                 <span className="font-heading text-sm">TEMA</span>
                 <Button variant="ghost" size="icon" onClick={toggleTheme} className="border-2 border-foreground">
                   {theme === "light" ? (

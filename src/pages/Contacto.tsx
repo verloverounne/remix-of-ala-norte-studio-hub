@@ -210,23 +210,29 @@ const Contacto = () => {
                 <CardContent>
                   <div className="flex gap-4">
                     <a
-                      href="#"
+                      href="https://www.facebook.com/alanortecinedigital"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-12 h-12 rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale"
                       aria-label="Facebook"
                     >
                       <Facebook className="h-5 w-5" />
                     </a>
                     <a
-                      href="#"
+                      href="https://www.instagram.com/alanortecinedigital/"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-12 h-12 rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale"
                       aria-label="Instagram"
                     >
                       <Instagram className="h-5 w-5" />
                     </a>
                     <a
-                      href="#"
+                      href="https://twitter.com/alanorte"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-12 h-12 rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale"
-                      aria-label="Twitter"
+                      aria-label="Twitter X"
                     >
                       <Twitter className="h-5 w-5" />
                     </a>
