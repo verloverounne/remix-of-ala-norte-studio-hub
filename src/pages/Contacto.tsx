@@ -161,9 +161,9 @@ const Contacto = () => {
                     <div>
                       <p className="font-semibold">Dirección</p>
                       <p className="text-muted-foreground">
-                        Av. Corrientes 1234, Piso 5
+                        V. S. de Liniers 1565
                         <br />
-                        C1043 CABA, Buenos Aires
+                        Vicente López, Buenos Aires
                         <br />
                         Argentina
                       </p>
@@ -174,8 +174,7 @@ const Contacto = () => {
                     <Phone className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                     <div>
                       <p className="font-semibold">Teléfono</p>
-                      <p className="text-muted-foreground">+54 11 1234-5678</p>
-                      <p className="text-muted-foreground">+54 11 8765-4321</p>
+                      <p className="text-muted-foreground">+54 (11) 4718-0732</p>
                     </div>
                   </div>
 
@@ -183,8 +182,7 @@ const Contacto = () => {
                     <Mail className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                     <div>
                       <p className="font-semibold">Email</p>
-                      <p className="text-muted-foreground">info@alanorte.com</p>
-                      <p className="text-muted-foreground">rental@alanorte.com</p>
+                      <p className="text-muted-foreground">info@alanortecinedigital.com</p>
                     </div>
                   </div>
 

@@ -151,6 +151,44 @@ Contactar cliente para coordinar entrega/retiro.
       {/* Main Section */}
       <section className="py-16">
         <div className="container mx-auto px-4 max-w-7xl">
+          {/* Instrucciones */}
+          <Card className="mb-8 border-4 border-primary">
+            <CardHeader className="bg-primary/10">
+              <CardTitle className="font-heading text-2xl">CÓMO RESERVAR</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <ol className="space-y-3 font-heading">
+                <li className="flex items-start gap-3">
+                  <span className="font-bold text-primary text-xl">1.</span>
+                  <span>SELECCIONA TU EQUIPAMIENTO desde el catálogo y agrega las cantidades necesarias</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="font-bold text-primary text-xl">2.</span>
+                  <span>INDICA LAS FECHAS DE RESERVA en el calendario (fecha inicio y fin)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="font-bold text-primary text-xl">3.</span>
+                  <span>SI NO ERES CLIENTE, <a 
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSf1JuBZQnlUe_-lGfKMzmaNI9386GKhpg32y54IpqBjpQk0hA/viewform"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary underline hover:no-underline font-bold"
+                  >
+                    REGÍSTRATE AQUÍ
+                  </a></span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="font-bold text-primary text-xl">4.</span>
+                  <span>COMPLETA EL FORMULARIO con tus datos de contacto</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="font-bold text-primary text-xl">5.</span>
+                  <span>ENVÍA TU COTIZACIÓN por WhatsApp o Email</span>
+                </li>
+              </ol>
+            </CardContent>
+          </Card>
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Cart Items - 2 columns */}
             <Card className="lg:col-span-2">

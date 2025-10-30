@@ -10,6 +10,7 @@ import { Search, Filter, Plus, Minus } from "lucide-react";
 import equipmentHero from "@/assets/equipment-hero.jpg";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
+import { EquipmentModal } from "@/components/EquipmentModal";
 
 const Equipos = () => {
   const [equipment, setEquipment] = useState<EquipmentWithCategory[]>([]);
@@ -18,6 +19,8 @@ const Equipos = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [loading, setLoading] = useState(true);
   const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [selectedEquipment, setSelectedEquipment] = useState<EquipmentWithCategory | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const { addItem } = useCart();
   const { toast } = useToast();
 
@@ -98,6 +101,11 @@ const Equipos = () => {
       description: `${quantity}x ${item.name} agregado al carrito`,
     });
     setQuantities({ ...quantities, [item.id]: 1 });
+  };
+
+  const handleViewDetails = (item: EquipmentWithCategory) => {
+    setSelectedEquipment(item);
+    setModalOpen(true);
   };
 
   return (
@@ -223,14 +231,14 @@ const Equipos = () => {
                     </div>
                   </CardContent>
 
-                  <CardFooter className="p-6 pt-0 space-y-4">
+                  <CardFooter className="p-6 pt-0 flex flex-col gap-2">
                     {item.status === 'available' && (
                       <div className="flex items-center gap-2 w-full">
                         <Button
                           variant="outline"
                           size="icon"
                           onClick={() => updateQuantity(item.id, -1)}
-                          className="flex-shrink-0"
+                          className="flex-shrink-0 h-10 w-10"
                         >
                           <Minus className="h-4 w-4" />
                         </Button>
@@ -239,25 +247,34 @@ const Equipos = () => {
                           min="1"
                           value={getQuantity(item.id)}
                           onChange={(e) => setQuantities({ ...quantities, [item.id]: Math.max(1, parseInt(e.target.value) || 1) })}
-                          className="text-center font-heading text-lg"
+                          className="text-center font-heading text-lg h-10 w-16"
                         />
                         <Button
                           variant="outline"
                           size="icon"
                           onClick={() => updateQuantity(item.id, 1)}
-                          className="flex-shrink-0"
+                          className="flex-shrink-0 h-10 w-10"
                         >
                           <Plus className="h-4 w-4" />
                         </Button>
                       </div>
                     )}
-                    <Button 
-                      className="w-full" 
-                      disabled={item.status !== 'available'}
-                      onClick={() => handleAddToCart(item)}
-                    >
-                      {item.status === 'available' ? 'AGREGAR A RESERVA' : 'NO DISPONIBLE'}
-                    </Button>
+                    <div className="flex gap-2 w-full">
+                      <Button 
+                        className="flex-1" 
+                        disabled={item.status !== 'available'}
+                        onClick={() => handleAddToCart(item)}
+                      >
+                        {item.status === 'available' ? 'AGREGAR' : 'NO DISPONIBLE'}
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="flex-1"
+                        onClick={() => handleViewDetails(item)}
+                      >
+                        DETALLES
+                      </Button>
+                    </div>
                   </CardFooter>
                 </Card>
               );
@@ -265,6 +282,13 @@ const Equipos = () => {
           </div>
         )}
       </div>
+      
+      {/* Equipment Modal */}
+      <EquipmentModal 
+        equipment={selectedEquipment}
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+      />
     </div>
   );
 };

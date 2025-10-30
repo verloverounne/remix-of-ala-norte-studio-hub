@@ -84,10 +84,11 @@ const Admin = () => {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <Tabs defaultValue="equipment" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4 lg:w-auto">
+            <TabsList className="grid w-full grid-cols-5 lg:w-auto">
               <TabsTrigger value="equipment">Equipos</TabsTrigger>
               <TabsTrigger value="prices">Precios</TabsTrigger>
-              <TabsTrigger value="backup">Backup</TabsTrigger>
+              <TabsTrigger value="availability">Disponibilidad</TabsTrigger>
+              <TabsTrigger value="spaces">Espacios</TabsTrigger>
               <TabsTrigger value="config">Config</TabsTrigger>
             </TabsList>
 
@@ -205,7 +206,7 @@ const Admin = () => {
             </TabsContent>
 
             {/* Prices Tab */}
-            <TabsContent value="prices">
+            <TabsContent value="prices" className="space-y-6">
               <Card>
                 <CardHeader>
                   <CardTitle>Actualización Masiva de Precios</CardTitle>
@@ -234,37 +235,83 @@ const Admin = () => {
                   </p>
                 </CardContent>
               </Card>
-            </TabsContent>
 
-            {/* Backup Tab */}
-            <TabsContent value="backup" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Descargar Backup</CardTitle>
-                  <CardDescription>
-                    Descarga todos los datos en formato JSON
-                  </CardDescription>
+                  <CardTitle>Editar Precios Individuales</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Button variant="hero">
-                    <Download className="mr-2 h-4 w-4" />
-                    Descargar Backup
-                  </Button>
+                  <div className="space-y-2 max-h-96 overflow-y-auto">
+                    {equipment.length > 0 ? equipment.map((item) => (
+                      <div key={item.id} className="flex items-center gap-4 p-3 border rounded">
+                        <p className="flex-1 font-heading">{item.name}</p>
+                        <Input type="number" defaultValue={item.price_per_day} className="w-32" />
+                        <Button size="sm">Actualizar</Button>
+                      </div>
+                    )) : <p className="text-muted-foreground">No hay equipos cargados</p>}
+                  </div>
                 </CardContent>
               </Card>
+            </TabsContent>
 
+            {/* Availability Tab */}
+            <TabsContent value="availability">
               <Card>
                 <CardHeader>
-                  <CardTitle>Restaurar desde Backup</CardTitle>
-                  <CardDescription>
-                    Sube un archivo de backup para restaurar los datos
-                  </CardDescription>
+                  <CardTitle>Gestión de Disponibilidad</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Button variant="outline">
-                    <Upload className="mr-2 h-4 w-4" />
-                    Subir Archivo
-                  </Button>
+                  <div className="space-y-2">
+                    {equipment.length > 0 ? equipment.map((item) => (
+                      <div key={item.id} className="flex items-center justify-between p-3 border rounded">
+                        <div className="flex-1">
+                          <p className="font-heading">{item.name}</p>
+                          <Badge>{item.status}</Badge>
+                        </div>
+                        <Select defaultValue={item.status}>
+                          <SelectTrigger className="w-40">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="available">Disponible</SelectItem>
+                            <SelectItem value="rented">Rentado</SelectItem>
+                            <SelectItem value="maintenance">Mantenimiento</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )) : <p className="text-muted-foreground">No hay equipos cargados</p>}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Spaces Tab */}
+            <TabsContent value="spaces">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Gestión de Espacios</CardTitle>
+                  <CardDescription>Edita precios, descripciones y promociones</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="border p-4 rounded">
+                      <h4 className="font-heading text-lg mb-4">GALERÍA DE FILMACIÓN</h4>
+                      <div className="space-y-3">
+                        <Input placeholder="Precio" defaultValue="70000" />
+                        <Textarea placeholder="Descripción" rows={3} />
+                        <Input placeholder="Promoción" defaultValue="20% descuento en equipos" />
+                        <Button>Guardar</Button>
+                      </div>
+                    </div>
+                    <div className="border p-4 rounded">
+                      <h4 className="font-heading text-lg mb-4">SALA DE SONIDO</h4>
+                      <div className="space-y-3">
+                        <Input placeholder="Precio" defaultValue="50000" />
+                        <Textarea placeholder="Descripción" rows={3} />
+                        <Button>Guardar</Button>
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
