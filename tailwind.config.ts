@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"bebas-neue-pro"', 'sans-serif'],
+        sans: ['"bebas-neue-pro-expanded"', 'sans-serif'],
         heading: ['"bebas-neue-pro-expanded"', 'sans-serif'],
-        mono: ['"bebas-neue-pro"', 'monospace'],
+        mono: ['"bebas-neue-pro-expanded"', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",

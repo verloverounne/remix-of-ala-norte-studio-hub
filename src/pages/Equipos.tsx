@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -13,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { EquipmentModal } from "@/components/EquipmentModal";
 
 const Equipos = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [equipment, setEquipment] = useState<EquipmentWithCategory[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,7 +29,13 @@ const Equipos = () => {
   useEffect(() => {
     fetchCategories();
     fetchEquipment();
-  }, []);
+    
+    // Check URL params for category filter
+    const categoryParam = searchParams.get('category');
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+    }
+  }, [searchParams]);
 
   const fetchCategories = async () => {
     const { data, error } = await supabase
@@ -231,42 +239,8 @@ const Equipos = () => {
                     </div>
                   </CardContent>
 
-                  <CardFooter className="p-6 pt-0 flex flex-col gap-2">
-                    {item.status === 'available' && (
-                      <div className="flex items-center gap-2 w-full">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => updateQuantity(item.id, -1)}
-                          className="flex-shrink-0 h-10 w-10"
-                        >
-                          <Minus className="h-4 w-4" />
-                        </Button>
-                        <Input
-                          type="number"
-                          min="1"
-                          value={getQuantity(item.id)}
-                          onChange={(e) => setQuantities({ ...quantities, [item.id]: Math.max(1, parseInt(e.target.value) || 1) })}
-                          className="text-center font-heading text-lg h-10 w-16"
-                        />
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => updateQuantity(item.id, 1)}
-                          className="flex-shrink-0 h-10 w-10"
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    )}
+                   <CardFooter className="p-6 pt-0 flex flex-col gap-3">
                     <div className="flex gap-2 w-full">
-                      <Button 
-                        className="flex-1" 
-                        disabled={item.status !== 'available'}
-                        onClick={() => handleAddToCart(item)}
-                      >
-                        {item.status === 'available' ? 'AGREGAR' : 'NO DISPONIBLE'}
-                      </Button>
                       <Button 
                         variant="outline" 
                         className="flex-1"
@@ -275,6 +249,41 @@ const Equipos = () => {
                         DETALLES
                       </Button>
                     </div>
+                    {item.status === 'available' && (
+                      <div className="flex items-center gap-2 w-full">
+                        <div className="flex items-center gap-1">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => updateQuantity(item.id, -1)}
+                            className="h-10 w-10"
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <Input
+                            type="number"
+                            min="1"
+                            value={getQuantity(item.id)}
+                            onChange={(e) => setQuantities({ ...quantities, [item.id]: Math.max(1, parseInt(e.target.value) || 1) })}
+                            className="text-center font-heading text-lg h-10 w-20"
+                          />
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => updateQuantity(item.id, 1)}
+                            className="h-10 w-10"
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <Button 
+                          className="flex-1" 
+                          onClick={() => handleAddToCart(item)}
+                        >
+                          AGREGAR
+                        </Button>
+                      </div>
+                    )}
                   </CardFooter>
                 </Card>
               );

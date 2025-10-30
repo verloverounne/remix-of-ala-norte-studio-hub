@@ -352,7 +352,7 @@ const Admin = () => {
 
       {/* Edit Dialog */}
       <AlertDialog open={editDialog.open} onOpenChange={(open) => setEditDialog({ open, equipment: null })}>
-        <AlertDialogContent>
+        <AlertDialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <AlertDialogHeader>
             <AlertDialogTitle>Editar Equipo</AlertDialogTitle>
             <AlertDialogDescription>
@@ -368,11 +368,60 @@ const Admin = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-price">Precio por día</Label>
+              <Label htmlFor="edit-brand">Marca</Label>
               <Input 
-                id="edit-price" 
-                type="number"
-                defaultValue={editDialog.equipment?.price_per_day}
+                id="edit-brand" 
+                defaultValue={editDialog.equipment?.brand || ''}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-model">Modelo</Label>
+              <Input 
+                id="edit-model" 
+                defaultValue={editDialog.equipment?.model || ''}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-description">Descripción</Label>
+              <Textarea 
+                id="edit-description" 
+                rows={3}
+                defaultValue={editDialog.equipment?.description || ''}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="edit-price">Precio por día</Label>
+                <Input 
+                  id="edit-price" 
+                  type="number"
+                  defaultValue={editDialog.equipment?.price_per_day}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-price-week">Precio por semana</Label>
+                <Input 
+                  id="edit-price-week" 
+                  type="number"
+                  defaultValue={editDialog.equipment?.price_per_week || ''}
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-image-url">URL de Imagen</Label>
+              <Input 
+                id="edit-image-url" 
+                defaultValue={editDialog.equipment?.image_url || ''}
+                placeholder="https://..."
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-specs">Especificaciones (JSON)</Label>
+              <Textarea 
+                id="edit-specs" 
+                rows={4}
+                defaultValue={JSON.stringify(editDialog.equipment?.specs || [], null, 2)}
+                placeholder='["Especificación 1", "Especificación 2"]'
               />
             </div>
           </div>
