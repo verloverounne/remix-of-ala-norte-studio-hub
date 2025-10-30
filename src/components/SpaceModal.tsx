@@ -2,21 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-
-interface Space {
-  id: number;
-  name: string;
-  images: string[];
-  description: string;
-  capacity: string;
-  size: string;
-  amenities: string[];
-  price: string;
-  schedule?: string;
-  discount?: string;
-  optionals?: string[];
-  specs?: string[];
-}
+import type { Space } from "@/types/supabase";
 
 interface SpaceModalProps {
   space: Space | null;
@@ -26,6 +12,10 @@ interface SpaceModalProps {
 
 export const SpaceModal = ({ space, open, onOpenChange }: SpaceModalProps) => {
   if (!space) return null;
+
+  const specs = space.specs as any || {};
+  const amenities = Array.isArray(space.amenities) ? space.amenities : [];
+  const images = Array.isArray(space.images) ? space.images : [];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -48,69 +38,86 @@ export const SpaceModal = ({ space, open, onOpenChange }: SpaceModalProps) => {
           </div>
 
           {/* Carrusel de imágenes */}
-          <div>
-            <h3 className="font-heading text-xl mb-4 uppercase">IMÁGENES DEL ESPACIO</h3>
-            <Carousel className="w-full">
-              <CarouselContent>
-                {space.images.map((img, index) => (
-                  <CarouselItem key={index}>
-                    <div className="aspect-video bg-muted overflow-hidden border-2 border-foreground">
-                      <img
-                        src={img}
-                        alt={`${space.name} - ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              {space.images.length > 1 && (
-                <>
-                  <CarouselPrevious />
-                  <CarouselNext />
-                </>
-              )}
-            </Carousel>
-          </div>
+          {images.length > 0 && (
+            <div>
+              <h3 className="font-heading text-xl mb-4 uppercase">IMÁGENES DEL ESPACIO</h3>
+              <Carousel className="w-full">
+                <CarouselContent>
+                  {images.map((img, index) => (
+                    <CarouselItem key={index}>
+                      <div className="aspect-video bg-muted overflow-hidden border-2 border-foreground">
+                        <img
+                          src={img}
+                          alt={`${space.name} - ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                {images.length > 1 && (
+                  <>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </>
+                )}
+              </Carousel>
+            </div>
+          )}
 
           {/* Descripción detallada */}
-          <div>
-            <h3 className="font-heading text-xl mb-2 uppercase">DESCRIPCIÓN</h3>
-            <p className="text-muted-foreground font-heading leading-relaxed">
-              {space.description}
-            </p>
-          </div>
+          {space.description && (
+            <div>
+              <h3 className="font-heading text-xl mb-2 uppercase">DESCRIPCIÓN</h3>
+              <p className="text-muted-foreground font-heading leading-relaxed">
+                {space.description}
+              </p>
+            </div>
+          )}
+
+          {space.detailed_description && (
+            <div>
+              <h3 className="font-heading text-xl mb-2 uppercase">DETALLES</h3>
+              <p className="text-muted-foreground font-heading leading-relaxed">
+                {space.detailed_description}
+              </p>
+            </div>
+          )}
 
           {/* Información del espacio */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div className="border-2 border-foreground p-4">
-              <p className="text-sm text-muted-foreground font-heading mb-1">CAPACIDAD</p>
-              <p className="font-heading text-lg">{space.capacity}</p>
-            </div>
-            <div className="border-2 border-foreground p-4">
-              <p className="text-sm text-muted-foreground font-heading mb-1">TAMAÑO</p>
-              <p className="font-heading text-lg">{space.size}</p>
-            </div>
+            {specs.capacity && (
+              <div className="border-2 border-foreground p-4">
+                <p className="text-sm text-muted-foreground font-heading mb-1">CAPACIDAD</p>
+                <p className="font-heading text-lg">{specs.capacity}</p>
+              </div>
+            )}
+            {specs.size && (
+              <div className="border-2 border-foreground p-4">
+                <p className="text-sm text-muted-foreground font-heading mb-1">TAMAÑO</p>
+                <p className="font-heading text-lg">{specs.size}</p>
+              </div>
+            )}
             <div className="border-2 border-foreground p-4">
               <p className="text-sm text-muted-foreground font-heading mb-1">PRECIO</p>
-              <p className="font-heading text-lg text-primary">${space.price}</p>
+              <p className="font-heading text-lg text-primary">${space.price.toLocaleString()}</p>
             </div>
           </div>
 
           {/* Horarios */}
-          {space.schedule && (
+          {specs.schedule && (
             <div>
               <h3 className="font-heading text-xl mb-2 uppercase">HORARIOS Y VALORES</h3>
-              <p className="text-muted-foreground font-heading">{space.schedule}</p>
+              <p className="text-muted-foreground font-heading">{specs.schedule}</p>
             </div>
           )}
 
           {/* Amenities incluidos */}
-          {space.amenities.length > 0 && (
+          {amenities.length > 0 && (
             <div>
               <h3 className="font-heading text-xl mb-2 uppercase">INCLUYE</h3>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                {space.amenities.map((amenity, index) => (
+                {amenities.map((amenity: string, index: number) => (
                   <li key={index} className="flex items-start gap-2">
                     <span className="text-primary font-heading">•</span>
                     <span className="text-muted-foreground font-heading">{amenity}</span>
@@ -121,11 +128,11 @@ export const SpaceModal = ({ space, open, onOpenChange }: SpaceModalProps) => {
           )}
 
           {/* Especificaciones técnicas */}
-          {space.specs && space.specs.length > 0 && (
+          {specs.specs_list && Array.isArray(specs.specs_list) && specs.specs_list.length > 0 && (
             <div>
               <h3 className="font-heading text-xl mb-2 uppercase">ESPECIFICACIONES</h3>
               <ul className="space-y-2">
-                {space.specs.map((spec, index) => (
+                {specs.specs_list.map((spec: string, index: number) => (
                   <li key={index} className="flex items-start gap-2">
                     <span className="text-primary font-heading">•</span>
                     <span className="text-muted-foreground font-heading">{spec}</span>
@@ -136,11 +143,11 @@ export const SpaceModal = ({ space, open, onOpenChange }: SpaceModalProps) => {
           )}
 
           {/* Opcionales */}
-          {space.optionals && space.optionals.length > 0 && (
+          {specs.optionals && Array.isArray(specs.optionals) && specs.optionals.length > 0 && (
             <div>
               <h3 className="font-heading text-xl mb-2 uppercase">OPCIONALES</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                {space.optionals.map((optional, index) => (
+                {specs.optionals.map((optional: string, index: number) => (
                   <div key={index} className="border-2 border-foreground p-3 text-center">
                     <p className="font-heading text-sm">{optional}</p>
                   </div>
@@ -149,10 +156,10 @@ export const SpaceModal = ({ space, open, onOpenChange }: SpaceModalProps) => {
             </div>
           )}
 
-          {/* Descuentos */}
-          {space.discount && (
+          {/* Promoción */}
+          {space.promotion && (
             <div className="bg-primary/10 border-2 border-primary p-4">
-              <p className="font-heading text-lg text-primary">{space.discount}</p>
+              <p className="font-heading text-lg text-primary">{space.promotion}</p>
             </div>
           )}
 
