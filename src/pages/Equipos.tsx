@@ -184,17 +184,31 @@ const Equipos = () => {
           {/* Sidebar Filtros */}
           <aside className="lg:col-span-1">
             <div className="sticky top-20 border-4 border-foreground p-6 bg-card shadow-brutal">
-              {/* Búsqueda */}
+              {/* Búsqueda con botón limpiar */}
               <div className="mb-6">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" />
-                  <Input
-                    type="text"
-                    placeholder="BUSCAR..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 border-2 border-foreground font-heading uppercase"
-                  />
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" />
+                    <Input
+                      type="text"
+                      placeholder="BUSCAR..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10 border-2 border-foreground font-heading uppercase"
+                    />
+                  </div>
+                  {(searchTerm || selectedSubcategories.length > 0 || selectedCategories.length > 0) && (
+                    <Button 
+                      variant="outline" 
+                      onClick={() => {
+                        setSearchTerm("");
+                        setSelectedSubcategories([]);
+                        setSelectedCategories([]);
+                      }}
+                    >
+                      LIMPIAR
+                    </Button>
+                  )}
                 </div>
               </div>
               
@@ -205,21 +219,6 @@ const Equipos = () => {
                 selectedCategories={selectedCategories}
                 onCategoriesChange={setSelectedCategories}
               />
-              
-              {/* Botón limpiar filtros */}
-              {(searchTerm || selectedSubcategories.length > 0 || selectedCategories.length > 0) && (
-                <Button 
-                  variant="outline" 
-                  className="w-full mt-4"
-                  onClick={() => {
-                    setSearchTerm("");
-                    setSelectedSubcategories([]);
-                    setSelectedCategories([]);
-                  }}
-                >
-                  LIMPIAR FILTROS
-                </Button>
-              )}
             </div>
           </aside>
 

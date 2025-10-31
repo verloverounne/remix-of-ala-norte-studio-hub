@@ -35,6 +35,17 @@ const Admin = () => {
   const [editingEquipment, setEditingEquipment] = useState<EquipmentWithCategory | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   
+  // Price update state
+  const [massPercentage, setMassPercentage] = useState<string>("");
+  const [individualPrices, setIndividualPrices] = useState<Record<string, number>>({});
+  
+  // Config state
+  const [contactInfo, setContactInfo] = useState({
+    whatsapp: "",
+    email: "",
+    quote_message: ""
+  });
+  
   const { toast } = useToast();
 
   useEffect(() => { 
@@ -43,7 +54,13 @@ const Admin = () => {
 
   const fetchAll = async () => {
     setLoading(true);
-    await Promise.all([fetchEquipment(), fetchCategories(), fetchSubcategories(), fetchSpaces()]);
+    await Promise.all([
+      fetchEquipment(), 
+      fetchCategories(), 
+      fetchSubcategories(), 
+      fetchSpaces(),
+      fetchContactInfo()
+    ]);
     setLoading(false);
   };
 
@@ -78,6 +95,17 @@ const Admin = () => {
         specs: item.specs || {}
       }));
       setSpaces(transformed);
+    }
+  };
+
+  const fetchContactInfo = async () => {
+    const { data } = await supabase.from('contact_info').select('*').limit(1).single();
+    if (data) {
+      setContactInfo({
+        whatsapp: data.whatsapp || "",
+        email: data.email || "",
+        quote_message: data.quote_message || ""
+      });
     }
   };
 
@@ -167,6 +195,7 @@ const Admin = () => {
       price: space.price,
       promotion: space.promotion,
       images: space.images,
+      amenities: space.amenities,
       specs: space.specs
     }).eq('id', space.id);
 
@@ -176,6 +205,73 @@ const Admin = () => {
       toast({ title: "ACTUALIZADO", description: "Espacio actualizado" });
       setEditingSpace(null);
       fetchSpaces();
+    }
+  };
+
+  const handleMassPriceUpdate = async () => {
+    const percentage = parseFloat(massPercentage);
+    if (isNaN(percentage)) {
+      toast({ title: "ERROR", description: "Porcentaje inválido", variant: "destructive" });
+      return;
+    }
+
+    const updates = equipment.map(item => {
+      const newPrice = Math.round(item.price_per_day * (1 + percentage / 100));
+      return supabase.from('equipment')
+        .update({ price_per_day: newPrice })
+        .eq('id', item.id);
+    });
+
+    const results = await Promise.all(updates);
+    const hasError = results.some(r => r.error);
+
+    if (hasError) {
+      toast({ title: "ERROR", description: "Error al actualizar algunos precios", variant: "destructive" });
+    } else {
+      toast({ title: "ACTUALIZADO", description: `Precios actualizados ${percentage > 0 ? '+' : ''}${percentage}%` });
+      setMassPercentage("");
+      fetchEquipment();
+    }
+  };
+
+  const handleIndividualPriceUpdate = async (equipmentId: string) => {
+    const newPrice = individualPrices[equipmentId];
+    if (!newPrice || newPrice <= 0) {
+      toast({ title: "ERROR", description: "Precio inválido", variant: "destructive" });
+      return;
+    }
+
+    const { error } = await supabase.from('equipment')
+      .update({ price_per_day: newPrice })
+      .eq('id', equipmentId);
+
+    if (error) {
+      toast({ title: "ERROR", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "ACTUALIZADO", description: "Precio actualizado" });
+      fetchEquipment();
+    }
+  };
+
+  const handleUpdateContactInfo = async () => {
+    // First check if a record exists
+    const { data: existing } = await supabase.from('contact_info').select('id').limit(1).single();
+    
+    let error;
+    if (existing) {
+      // Update existing record
+      ({ error } = await supabase.from('contact_info')
+        .update(contactInfo)
+        .eq('id', existing.id));
+    } else {
+      // Insert new record
+      ({ error } = await supabase.from('contact_info').insert(contactInfo));
+    }
+
+    if (error) {
+      toast({ title: "ERROR", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "GUARDADO", description: "Configuración actualizada correctamente" });
     }
   };
 
@@ -378,9 +474,15 @@ const Admin = () => {
                   <div className="flex gap-4 items-end">
                     <div className="flex-1 space-y-2">
                       <Label>Porcentaje</Label>
-                      <Input type="number" placeholder="10" step="0.1" />
+                      <Input 
+                        type="number" 
+                        placeholder="10" 
+                        step="0.1" 
+                        value={massPercentage}
+                        onChange={(e) => setMassPercentage(e.target.value)}
+                      />
                     </div>
-                    <Button variant="hero">
+                    <Button variant="hero" onClick={handleMassPriceUpdate}>
                       <Percent className="mr-2 h-4 w-4" />
                       Aplicar
                     </Button>
@@ -398,8 +500,18 @@ const Admin = () => {
                     {equipment.map((item) => (
                       <div key={item.id} className="flex items-center gap-4 p-3 border rounded">
                         <p className="flex-1 font-heading">{item.name}</p>
-                        <Input type="number" defaultValue={item.price_per_day} className="w-32" />
-                        <Button size="sm">Actualizar</Button>
+                        <Input 
+                          type="number" 
+                          defaultValue={item.price_per_day}
+                          onChange={(e) => setIndividualPrices({
+                            ...individualPrices, 
+                            [item.id]: parseInt(e.target.value)
+                          })}
+                          className="w-32" 
+                        />
+                        <Button size="sm" onClick={() => handleIndividualPriceUpdate(item.id)}>
+                          Actualizar
+                        </Button>
                       </div>
                     ))}
                   </div>
@@ -443,25 +555,59 @@ const Admin = () => {
                               onChange={(e) => setEditingSpace({...editingSpace, promotion: e.target.value})}
                             />
                           </div>
-                          <div>
-                            <Label>Imágenes del Espacio (mínimo 4)</Label>
-                            <ImageUploader 
-                              images={editingSpace.images || []}
-                              onChange={(images) => setEditingSpace({...editingSpace, images})}
-                              maxImages={10}
-                            />
-                          </div>
-                          <div>
-                            <Label>Plano con Medidas (URL)</Label>
-                            <Input 
-                              value={editingSpace.specs?.floor_plan || ''} 
-                              onChange={(e) => setEditingSpace({
-                                ...editingSpace, 
-                                specs: {...(editingSpace.specs || {}), floor_plan: e.target.value}
-                              })}
-                              placeholder="URL del plano con medidas"
-                            />
-                          </div>
+                           <div>
+                             <Label>Imágenes del Espacio (mínimo 4)</Label>
+                             <ImageUploader 
+                               images={editingSpace.images || []}
+                               onChange={(images) => setEditingSpace({...editingSpace, images})}
+                               maxImages={10}
+                             />
+                           </div>
+                           <div>
+                             <Label>Amenidades (una por línea)</Label>
+                             <Textarea 
+                               value={(editingSpace.amenities || []).join('\n')}
+                               onChange={(e) => setEditingSpace({
+                                 ...editingSpace, 
+                                 amenities: e.target.value.split('\n').filter(a => a.trim())
+                               })}
+                               rows={5}
+                               placeholder="WiFi\nAire acondicionado\nCocina equipada"
+                             />
+                           </div>
+                           <div>
+                             <Label>Capacidad</Label>
+                             <Input 
+                               value={editingSpace.specs?.capacity || ''} 
+                               onChange={(e) => setEditingSpace({
+                                 ...editingSpace, 
+                                 specs: {...(editingSpace.specs || {}), capacity: e.target.value}
+                               })}
+                               placeholder="10 personas"
+                             />
+                           </div>
+                           <div>
+                             <Label>Tamaño</Label>
+                             <Input 
+                               value={editingSpace.specs?.size || ''} 
+                               onChange={(e) => setEditingSpace({
+                                 ...editingSpace, 
+                                 specs: {...(editingSpace.specs || {}), size: e.target.value}
+                               })}
+                               placeholder="50m²"
+                             />
+                           </div>
+                           <div>
+                             <Label>Horarios</Label>
+                             <Input 
+                               value={editingSpace.specs?.schedule || ''} 
+                               onChange={(e) => setEditingSpace({
+                                 ...editingSpace, 
+                                 specs: {...(editingSpace.specs || {}), schedule: e.target.value}
+                               })}
+                               placeholder="Lun-Vie 9:00-18:00"
+                             />
+                           </div>
                           <div className="flex gap-2">
                             <Button onClick={() => handleUpdateSpace(editingSpace)}>Guardar</Button>
                             <Button variant="outline" onClick={() => setEditingSpace(null)}>Cancelar</Button>
@@ -494,17 +640,33 @@ const Admin = () => {
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <Label>WhatsApp</Label>
-                    <Input placeholder="+54 11 1234-5678" />
+                    <Input 
+                      placeholder="+54 11 1234-5678"
+                      value={contactInfo.whatsapp}
+                      onChange={(e) => setContactInfo({...contactInfo, whatsapp: e.target.value})}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label>Email</Label>
-                    <Input type="email" placeholder="info@alanorte.com" />
+                    <Input 
+                      type="email" 
+                      placeholder="info@alanorte.com"
+                      value={contactInfo.email}
+                      onChange={(e) => setContactInfo({...contactInfo, email: e.target.value})}
+                    />
                   </div>
                   <div className="space-y-2">
-                    <Label>Mensaje adicional</Label>
-                    <Textarea placeholder="Mensaje para cotizaciones..." rows={4} />
+                    <Label>Mensaje adicional para cotizaciones</Label>
+                    <Textarea 
+                      placeholder="Mensaje para cotizaciones..."
+                      rows={4}
+                      value={contactInfo.quote_message}
+                      onChange={(e) => setContactInfo({...contactInfo, quote_message: e.target.value})}
+                    />
                   </div>
-                  <Button variant="hero">Guardar Configuración</Button>
+                  <Button variant="hero" onClick={handleUpdateContactInfo}>
+                    Guardar Configuración
+                  </Button>
                 </CardContent>
               </Card>
             </TabsContent>

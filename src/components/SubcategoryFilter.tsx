@@ -74,7 +74,8 @@ export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange
     <div className="space-y-4">
       <h3 className="font-heading font-bold text-lg uppercase">FILTROS</h3>
       
-      {categories.map(category => {
+      <div className="max-h-[60vh] overflow-y-auto pr-2 -mr-2">
+        {categories.map(category => {
         const categorySubcategories = getSubcategoriesForCategory(category.id);
         const isOpen = openCategories.has(category.id);
         
@@ -123,7 +124,8 @@ export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange
             )}
           </div>
         );
-      })}
+        })}
+      </div>
     </div>
   );
 };

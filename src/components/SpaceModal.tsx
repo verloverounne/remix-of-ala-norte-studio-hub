@@ -172,24 +172,6 @@ export const SpaceModal = ({ space, open, onOpenChange }: SpaceModalProps) => {
               </p>
             </div>
           </div>
-
-          {/* Sección de comentarios */}
-          <div>
-            <h3 className="font-heading text-xl mb-4 uppercase">COMENTARIOS</h3>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="comments" className="font-heading">
-                  ¿Tienes alguna pregunta sobre este espacio?
-                </Label>
-                <Textarea
-                  id="comments"
-                  placeholder="Escribe tu comentario o consulta..."
-                  rows={4}
-                  className="mt-2"
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </DialogContent>
     </Dialog>
