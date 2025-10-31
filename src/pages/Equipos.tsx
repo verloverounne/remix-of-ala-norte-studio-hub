@@ -18,6 +18,7 @@ const Equipos = () => {
   const [equipment, setEquipment] = useState<EquipmentWithCategory[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [selectedEquipment, setSelectedEquipment] = useState<EquipmentWithCategory | null>(null);
@@ -50,12 +51,73 @@ const Equipos = () => {
     setLoading(false);
   };
 
+  // Fuzzy search helper
+  const fuzzyMatch = (text: string, search: string): boolean => {
+    if (!search) return true;
+    text = text.toLowerCase();
+    search = search.toLowerCase();
+    
+    // Direct match
+    if (text.includes(search)) return true;
+    
+    // Character-by-character fuzzy matching
+    let searchIdx = 0;
+    for (let i = 0; i < text.length && searchIdx < search.length; i++) {
+      if (text[i] === search[searchIdx]) {
+        searchIdx++;
+      }
+    }
+    if (searchIdx === search.length) return true;
+    
+    // Levenshtein distance for typos
+    const words = text.split(/\s+/);
+    for (const word of words) {
+      if (levenshteinDistance(word, search) <= Math.max(1, Math.floor(search.length * 0.3))) {
+        return true;
+      }
+    }
+    
+    return false;
+  };
+
+  const levenshteinDistance = (str1: string, str2: string): number => {
+    const len1 = str1.length;
+    const len2 = str2.length;
+    const matrix: number[][] = [];
+
+    for (let i = 0; i <= len1; i++) {
+      matrix[i] = [i];
+    }
+    for (let j = 0; j <= len2; j++) {
+      matrix[0][j] = j;
+    }
+
+    for (let i = 1; i <= len1; i++) {
+      for (let j = 1; j <= len2; j++) {
+        const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j - 1] + cost
+        );
+      }
+    }
+
+    return matrix[len1][len2];
+  };
+
   const filteredEquipment = equipment.filter((item) => {
-    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.brand?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = fuzzyMatch(item.name, searchTerm) ||
+                         fuzzyMatch(item.brand || '', searchTerm) ||
+                         fuzzyMatch(item.model || '', searchTerm);
+    
+    const matchesCategory = selectedCategories.length === 0 || 
+                           (item.category_id && selectedCategories.includes(item.category_id));
+    
     const matchesSubcategory = selectedSubcategories.length === 0 || 
                                 (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
-    return matchesSearch && matchesSubcategory;
+    
+    return matchesSearch && matchesCategory && matchesSubcategory;
   });
 
   const getStatusBadge = (status: string) => {
@@ -136,20 +198,23 @@ const Equipos = () => {
                 </div>
               </div>
               
-              {/* Filtros por Subcategoría */}
+              {/* Filtros por Categoría y Subcategoría */}
               <SubcategoryFilter
                 selectedSubcategories={selectedSubcategories}
                 onSubcategoriesChange={setSelectedSubcategories}
+                selectedCategories={selectedCategories}
+                onCategoriesChange={setSelectedCategories}
               />
               
               {/* Botón limpiar filtros */}
-              {(searchTerm || selectedSubcategories.length > 0) && (
+              {(searchTerm || selectedSubcategories.length > 0 || selectedCategories.length > 0) && (
                 <Button 
                   variant="outline" 
                   className="w-full mt-4"
                   onClick={() => {
                     setSearchTerm("");
                     setSelectedSubcategories([]);
+                    setSelectedCategories([]);
                   }}
                 >
                   LIMPIAR FILTROS

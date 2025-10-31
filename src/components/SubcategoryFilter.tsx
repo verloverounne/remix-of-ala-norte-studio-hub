@@ -9,9 +9,11 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 interface SubcategoryFilterProps {
   selectedSubcategories: string[];
   onSubcategoriesChange: (subcategories: string[]) => void;
+  selectedCategories: string[];
+  onCategoriesChange: (categories: string[]) => void;
 }
 
-export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange }: SubcategoryFilterProps) => {
+export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange, selectedCategories, onCategoriesChange }: SubcategoryFilterProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [openCategories, setOpenCategories] = useState<Set<string>>(new Set());
@@ -50,6 +52,13 @@ export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange
     setOpenCategories(newOpen);
   };
 
+  const handleCategoryToggle = (categoryId: string) => {
+    const newSelected = selectedCategories.includes(categoryId)
+      ? selectedCategories.filter(id => id !== categoryId)
+      : [...selectedCategories, categoryId];
+    onCategoriesChange(newSelected);
+  };
+
   const handleSubcategoryToggle = (subcategoryId: string) => {
     const newSelected = selectedSubcategories.includes(subcategoryId)
       ? selectedSubcategories.filter(id => id !== subcategoryId)
@@ -71,16 +80,30 @@ export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange
         
         return (
           <div key={category.id} className="border-b border-border pb-4">
-            <button
-              onClick={() => toggleCategory(category.id)}
-              className="flex items-center justify-between w-full text-left font-semibold uppercase hover:text-primary transition-colors"
-            >
-              <span>{category.name}</span>
-              {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-            </button>
+            <div className="flex items-center space-x-2 mb-2">
+              <Checkbox
+                id={`cat-${category.id}`}
+                checked={selectedCategories.includes(category.id)}
+                onCheckedChange={() => handleCategoryToggle(category.id)}
+              />
+              <button
+                onClick={() => toggleCategory(category.id)}
+                className="flex items-center justify-between w-full text-left font-semibold uppercase hover:text-primary transition-colors"
+              >
+                <Label
+                  htmlFor={`cat-${category.id}`}
+                  className="cursor-pointer flex-1"
+                >
+                  {category.name}
+                </Label>
+                {categorySubcategories.length > 0 && (
+                  isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />
+                )}
+              </button>
+            </div>
             
-            {isOpen && (
-              <div className="mt-3 space-y-2 pl-4">
+            {isOpen && categorySubcategories.length > 0 && (
+              <div className="mt-3 space-y-2 pl-8">
                 {categorySubcategories.map(subcategory => (
                   <div key={subcategory.id} className="flex items-center space-x-2">
                     <Checkbox
