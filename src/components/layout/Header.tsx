@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Moon, Sun, ShoppingCart } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, Moon, Sun, ShoppingCart, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/hooks/useCart";
+import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/logo-brutal.png";
 
 const navigation = [
@@ -18,7 +19,9 @@ export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const location = useLocation();
+  const navigate = useNavigate();
   const { totalItems } = useCart();
+  const { user, isAdmin, signOut } = useAuth();
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
@@ -96,14 +99,52 @@ export const Header = () => {
               )}
             </Button>
 
-            <Button
-              asChild
-              variant="outline"
-              size="default"
-              className="hidden md:inline-flex h-12"
-            >
-              <Link to="/admin">ADMIN</Link>
-            </Button>
+            {user && isAdmin ? (
+              <>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="default"
+                  className="hidden md:inline-flex h-12"
+                >
+                  <Link to="/admin">ADMIN</Link>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => {
+                    signOut();
+                    navigate("/");
+                  }}
+                  className="hidden md:inline-flex border-2 border-foreground h-12 w-12"
+                  title="Cerrar sesión"
+                >
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </>
+            ) : user ? (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  signOut();
+                  navigate("/");
+                }}
+                className="hidden md:inline-flex border-2 border-foreground h-12 w-12"
+                title="Cerrar sesión"
+              >
+                <LogOut className="h-5 w-5" />
+              </Button>
+            ) : (
+              <Button
+                asChild
+                variant="outline"
+                size="default"
+                className="hidden md:inline-flex h-12"
+              >
+                <Link to="/auth">LOGIN</Link>
+              </Button>
+            )}
 
             {/* Mobile menu button */}
             <Button
@@ -161,9 +202,38 @@ export const Header = () => {
                   )}
                 </Button>
               </div>
-              <Button asChild variant="default" size="sm">
-                <Link to="/admin">ADMIN PANEL</Link>
-              </Button>
+              {user && isAdmin && (
+                <Button 
+                  asChild 
+                  variant="default" 
+                  size="sm"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Link to="/admin">ADMIN PANEL</Link>
+                </Button>
+              )}
+              {user ? (
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    signOut();
+                    navigate("/");
+                  }}
+                >
+                  CERRAR SESIÓN
+                </Button>
+              ) : (
+                <Button 
+                  asChild 
+                  variant="default" 
+                  size="sm"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Link to="/auth">LOGIN</Link>
+                </Button>
+              )}
             </div>
           </div>
         )}

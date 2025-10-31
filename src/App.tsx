@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "./components/layout/Header";
 import { Footer } from "./components/layout/Footer";
 import { WhatsAppButton } from "./components/WhatsAppButton";
+import { ScrollToTop } from "./components/ScrollToTop";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import { CartProvider } from "./hooks/useCart";
 import Home from "./pages/Home";
 import Equipos from "./pages/Equipos";
@@ -13,6 +15,7 @@ import Espacios from "./pages/Espacios";
 import Cotizador from "./pages/Cotizador";
 import Contacto from "./pages/Contacto";
 import Admin from "./pages/Admin";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +27,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <Header />
           <main>
             <Routes>
@@ -32,7 +36,15 @@ const App = () => (
               <Route path="/espacios" element={<Espacios />} />
               <Route path="/cotizador" element={<Cotizador />} />
               <Route path="/contacto" element={<Contacto />} />
-              <Route path="/admin" element={<Admin />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route 
+                path="/admin" 
+                element={
+                  <ProtectedRoute requireAdmin>
+                    <Admin />
+                  </ProtectedRoute>
+                } 
+              />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
