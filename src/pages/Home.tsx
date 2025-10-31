@@ -81,85 +81,71 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-background pt-16">
-      {/* Hero Section con Scroll Horizontal y Parallax */}
-      <section className="relative h-[90vh] overflow-hidden border-b-4 border-foreground">
-        <div className="absolute inset-0 bg-foreground/90" />
+      {/* Hero Section - Full Slider with 360 Tours */}
+      <section className="relative h-screen overflow-hidden border-b-4 border-foreground">
+        <div className="absolute inset-0 bg-foreground/95" />
         
-        <div className="relative z-10 h-full flex flex-col">
-          {/* Título Hero */}
-          <div className="container mx-auto px-4 pt-12">
-            <h1 className="font-heading font-bold text-background text-6xl md:text-8xl leading-none mb-8">
-              RENTAL
-              <br />
-              AUDIOVISUAL
-            </h1>
-          </div>
-
-          {/* Scroll Horizontal con Espacios 360 */}
-          <div 
-            ref={scrollContainerRef}
-            className="flex-1 overflow-x-auto overflow-y-hidden scroll-smooth hide-scrollbar"
-            style={{ scrollSnapType: "x mandatory" }}
-          >
-            <div className="flex gap-8 h-full px-4 pb-8">
-              {spaces360.map((space, index) => (
-                <div
-                  key={space.id}
-                  className="space-card flex-shrink-0 w-[80vw] md:w-[60vw] h-full relative border-4 border-background overflow-hidden"
-                  style={{ 
-                    scrollSnapAlign: "center",
-                    transition: "transform 0.1s ease-out" 
-                  }}
-                >
-                  {/* Placeholder para iframe A-Frame */}
-                  <div className="w-full h-full bg-gray-dark/50 flex items-center justify-center relative">
-                    <div className="text-center z-10 relative">
-                      <p className="font-heading text-background text-4xl md:text-6xl mb-2">
-                        {space.title}
+        <div 
+          ref={scrollContainerRef}
+          className="relative z-10 h-full overflow-x-auto overflow-y-hidden scroll-smooth hide-scrollbar"
+          style={{ scrollSnapType: "x mandatory" }}
+        >
+          <div className="flex h-full">
+            {spaces360.map((space, index) => (
+              <div
+                key={space.id}
+                className="space-card flex-shrink-0 w-screen h-full relative overflow-hidden"
+                style={{ 
+                  scrollSnapAlign: "start",
+                  transition: "transform 0.1s ease-out" 
+                }}
+              >
+                {/* Iframe placeholder for 360 tour */}
+                <div className="w-full h-full bg-gray-dark/50 flex items-center justify-center relative">
+                  <div className="text-center z-10 relative p-8">
+                    <p className="font-heading text-background text-5xl md:text-7xl mb-4 font-bold">
+                      {space.title}
+                    </p>
+                    <p className="font-heading text-background/80 text-2xl md:text-4xl mb-6">
+                      {space.subtitle}
+                    </p>
+                    <div className="border-4 border-background/30 rounded-lg p-6 bg-foreground/30 backdrop-blur-sm">
+                      <p className="text-background/60 text-lg mb-2">
+                        Iframe Placeholder para Recorrido 360°
                       </p>
-                      <p className="font-heading text-background/70 text-xl md:text-2xl">
-                        {space.subtitle}
-                      </p>
-                      <p className="text-background/50 mt-4 text-sm">
-                        [Vista 360° - A-Frame]
+                      <p className="text-background/40 text-sm">
+                        Aquí se integrará el tour virtual interactivo
                       </p>
                     </div>
-                    {/* Aquí irá el iframe de A-Frame en el futuro */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-foreground/30" />
-                  </div>
-
-                  {/* Texto parallax superpuesto */}
-                  <div 
-                    className="absolute bottom-8 left-8 right-8 text-background"
-                    style={{ 
-                      transform: `translateY(${index * 10}px)`,
-                      transition: "transform 0.3s ease-out" 
-                    }}
-                  >
-                    <div className="border-l-4 border-primary pl-4">
-                      <p className="font-heading text-lg opacity-80">ESPACIO {space.id}</p>
-                      <Button asChild variant="hero" className="mt-4">
-                        <Link to="/espacios">VER DETALLES</Link>
+                    <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                      <Button asChild variant="hero" size="lg">
+                        <Link to="/espacios">VER ESPACIOS</Link>
+                      </Button>
+                      <Button asChild variant="secondary" size="lg">
+                        <Link to="/equipos">
+                          VER EQUIPOS <ArrowRight className="ml-2" />
+                        </Link>
                       </Button>
                     </div>
                   </div>
+                  {/* Future iframe will go here */}
+                  {/* <iframe src="360-tour-url" className="w-full h-full" /> */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-foreground/20 via-transparent to-foreground/40" />
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {/* CTA Buttons */}
-          <div className="container mx-auto px-4 pb-12">
-            <div className="flex flex-col sm:flex-row gap-6">
-              <Button asChild variant="hero" size="lg">
-                <Link to="/equipos">
-                  VER EQUIPOS <ArrowRight className="ml-2" />
-                </Link>
-              </Button>
-              <Button asChild variant="secondary" size="lg">
-                <Link to="/cotizador">COTIZAR AHORA</Link>
-              </Button>
-            </div>
+                {/* Navigation indicator */}
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+                  {spaces360.map((_, i) => (
+                    <div
+                      key={i}
+                      className={`h-2 rounded-full transition-all ${
+                        i === index ? 'w-12 bg-primary' : 'w-2 bg-background/40'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Edit, Trash2, Percent } from "lucide-react";
+import { Plus, Edit, Trash2, Percent, Download, Upload } from "lucide-react";
 import { ImageUploader } from "@/components/ImageUploader";
 
 const Admin = () => {
@@ -187,6 +187,53 @@ const Admin = () => {
     ? subcategories.filter(s => s.category_id === editingEquipment.category_id)
     : [];
 
+  const handleExportBackup = async () => {
+    try {
+      const backup = {
+        timestamp: new Date().toISOString(),
+        version: "1.0",
+        data: {
+          equipment,
+          categories,
+          subcategories,
+          spaces
+        }
+      };
+
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `alanorte-backup-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast({ title: "✓ BACKUP CREADO", description: "Datos exportados correctamente" });
+    } catch (error) {
+      toast({ title: "ERROR", description: "Error al exportar datos", variant: "destructive" });
+    }
+  };
+
+  const handleImportBackup = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      const backup = JSON.parse(text);
+      
+      toast({ 
+        title: "INFORMACIÓN", 
+        description: "La restauración de backup requiere acceso directo a la base de datos. Por favor, contacta al administrador del sistema.",
+        variant: "destructive"
+      });
+    } catch (error) {
+      toast({ title: "ERROR", description: "Archivo de backup inválido", variant: "destructive" });
+    }
+  };
+
   return (
     <div className="min-h-screen pt-16 bg-muted/30">
       <section className="gradient-primary text-primary-foreground py-12">
@@ -199,11 +246,12 @@ const Admin = () => {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <Tabs defaultValue="equipment" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4 lg:w-auto">
+            <TabsList className="grid w-full grid-cols-5 lg:w-auto">
               <TabsTrigger value="equipment">Equipos</TabsTrigger>
               <TabsTrigger value="prices">Precios</TabsTrigger>
               <TabsTrigger value="spaces">Espacios</TabsTrigger>
               <TabsTrigger value="config">Config</TabsTrigger>
+              <TabsTrigger value="backup">Backup</TabsTrigger>
             </TabsList>
 
             {/* Equipment Tab */}
@@ -457,6 +505,63 @@ const Admin = () => {
                     <Textarea placeholder="Mensaje para cotizaciones..." rows={4} />
                   </div>
                   <Button variant="hero">Guardar Configuración</Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Backup Tab */}
+            <TabsContent value="backup">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Backup y Restauración</CardTitle>
+                  <CardDescription>Gestiona copias de seguridad de la base de datos</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="border-l-4 border-primary pl-4 py-2">
+                      <h3 className="font-heading font-bold text-lg mb-2">Exportar Base de Datos</h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Descarga un archivo JSON con todos los datos de equipos, categorías, subcategorías y espacios.
+                      </p>
+                      <Button onClick={handleExportBackup} variant="hero">
+                        <Download className="mr-2 h-4 w-4" />
+                        Descargar Backup JSON
+                      </Button>
+                    </div>
+
+                    <div className="border-l-4 border-secondary pl-4 py-2">
+                      <h3 className="font-heading font-bold text-lg mb-2">Importar Base de Datos</h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Restaura los datos desde un archivo de backup JSON previamente exportado.
+                        <span className="block mt-2 text-yellow-600 font-semibold">
+                          ⚠️ Esta función requiere acceso directo a la base de datos.
+                        </span>
+                      </p>
+                      <div className="flex items-center gap-4">
+                        <Input 
+                          type="file" 
+                          accept=".json"
+                          onChange={handleImportBackup}
+                          className="max-w-xs"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="border-l-4 border-muted pl-4 py-2 bg-muted/20">
+                      <h3 className="font-heading font-bold text-lg mb-2">Código Fuente del Sitio</h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Para obtener una copia completa del código fuente del sitio web, puedes:
+                      </p>
+                      <ul className="text-sm text-muted-foreground space-y-2 mb-4 list-disc list-inside">
+                        <li>Conectar el proyecto a GitHub desde la interfaz de Lovable</li>
+                        <li>Usar el modo Dev para ver y descargar archivos individuales</li>
+                        <li>Exportar el proyecto completo desde la configuración</li>
+                      </ul>
+                      <p className="text-xs text-muted-foreground italic">
+                        El código fuente se gestiona mejor mediante control de versiones (Git) en lugar de backups manuales.
+                      </p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
