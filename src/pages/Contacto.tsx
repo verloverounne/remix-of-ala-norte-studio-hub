@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import Map from "@/components/Map";
 
 const Contacto = () => {
   const { toast } = useToast();
@@ -238,10 +239,14 @@ const Contacto = () => {
                 </CardContent>
               </Card>
 
-              {/* Map placeholder */}
+              {/* Map */}
               <Card className="overflow-hidden">
-                <div className="h-64 bg-muted flex items-center justify-center">
-                  <p className="text-muted-foreground">Mapa integrado aquí</p>
+                <div className="h-96">
+                  <Map 
+                    address="V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina"
+                    latitude={-34.527}
+                    longitude={-58.475}
+                  />
                 </div>
               </Card>
             </div>
