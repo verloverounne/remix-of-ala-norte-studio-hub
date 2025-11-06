@@ -23,7 +23,9 @@ const Equipos = () => {
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [selectedEquipment, setSelectedEquipment] = useState<EquipmentWithCategory | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const { addItem } = useCart();
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [budgetRange, setBudgetRange] = useState<[number, number]>([0, 100000]);
+  const { addItem, items, calculateSubtotal } = useCart();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -125,6 +127,9 @@ const Equipos = () => {
     return matchesSearch && matchesCategory && matchesSubcategory && matchesBrand && matchesBudget;
   });
 
+  // Get unique brands from equipment
+  const uniqueBrands = Array.from(new Set(equipment.map(e => e.brand).filter(Boolean))) as string[];
+
   const getStatusBadge = (status: string) => {
     const statusConfig = {
       available: { text: "DISPONIBLE", variant: "success" as const },
@@ -166,13 +171,6 @@ const Equipos = () => {
     setSelectedEquipment(item);
     setModalOpen(true);
   };
-
-  const { items, calculateSubtotal } = useCart();
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [budgetRange, setBudgetRange] = useState<[number, number]>([0, 100000]);
-
-  // Get unique brands from equipment
-  const uniqueBrands = Array.from(new Set(equipment.map(e => e.brand).filter(Boolean))) as string[];
 
   return (
     <div className="min-h-screen bg-background pt-14 sm:pt-16">
