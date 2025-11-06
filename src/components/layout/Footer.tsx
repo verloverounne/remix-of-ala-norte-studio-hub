@@ -97,6 +97,9 @@ export const Footer = () => {
                 </svg>
               </a>
             </div>
+            <p className="text-xs text-background/70 mt-2">
+              Síguenos en nuestras redes para ver contenido exclusivo y novedades
+            </p>
           </div>
         </div>
 

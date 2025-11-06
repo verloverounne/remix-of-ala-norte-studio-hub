@@ -45,7 +45,9 @@ const Admin = () => {
   const [contactInfo, setContactInfo] = useState({
     whatsapp: "",
     email: "",
-    quote_message: ""
+    quote_message: "",
+    instagram: "",
+    instagram_token: ""
   });
   
   const { toast } = useToast();
@@ -106,7 +108,9 @@ const Admin = () => {
       setContactInfo({
         whatsapp: data.whatsapp || "",
         email: data.email || "",
-        quote_message: data.quote_message || ""
+        quote_message: data.quote_message || "",
+        instagram: data.instagram || "",
+        instagram_token: data.instagram_token || ""
       });
     }
   };
@@ -691,6 +695,33 @@ const Admin = () => {
                       onChange={(e) => setContactInfo({...contactInfo, quote_message: e.target.value})}
                     />
                   </div>
+                  
+                  <div className="border-t-2 border-foreground pt-4 mt-6">
+                    <h3 className="font-heading font-bold text-lg mb-4">Configuración de Instagram</h3>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Usuario de Instagram</Label>
+                        <Input 
+                          placeholder="@alanortecinedigital"
+                          value={contactInfo.instagram}
+                          onChange={(e) => setContactInfo({...contactInfo, instagram: e.target.value})}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Token de Acceso (opcional)</Label>
+                        <Input 
+                          type="password"
+                          placeholder="Token de Instagram API"
+                          value={contactInfo.instagram_token}
+                          onChange={(e) => setContactInfo({...contactInfo, instagram_token: e.target.value})}
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          Para mostrar historias reales de Instagram, necesitas un token de acceso de la API de Instagram.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
                   <Button variant="hero" onClick={handleUpdateContactInfo}>
                     Guardar Configuración
                   </Button>

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
+import { SearchBar } from "@/components/SearchBar";
 import logo from "@/assets/logo-brutal.png";
 
 const navigation = [
@@ -66,6 +67,9 @@ export const Header = () => {
 
           {/* Actions Brutales */}
           <div className="flex items-center gap-2">
+            {/* Search */}
+            <SearchBar />
+            
             {/* Cart Badge */}
             <Button
               asChild
