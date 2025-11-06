@@ -116,15 +116,15 @@ export const SearchBar = () => {
           variant="ghost"
           size="icon"
           onClick={() => setIsOpen(true)}
-          className="border-2 border-foreground h-12 w-12"
+          className="border-2 border-foreground h-10 w-10 sm:h-12 sm:w-12"
           aria-label="Abrir búsqueda"
         >
-          <Search className="h-5 w-5" />
+          <Search className="h-4 w-4 sm:h-5 sm:w-5" />
         </Button>
       ) : (
-        <div className="absolute right-0 top-0 w-80 bg-background border-2 border-foreground shadow-brutal-lg z-50">
+        <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 top-20 sm:top-0 w-auto sm:w-80 md:w-96 bg-background border-2 border-foreground shadow-brutal-lg z-50">
           <div className="flex items-center gap-2 p-3 border-b-2 border-foreground">
-            <Search className="h-5 w-5" />
+            <Search className="h-5 w-5 shrink-0" />
             <Input
               type="text"
               placeholder="Buscar..."
@@ -140,7 +140,7 @@ export const SearchBar = () => {
                 setIsOpen(false);
                 setQuery("");
               }}
-              className="h-8 w-8"
+              className="h-8 w-8 shrink-0"
             >
               <X className="h-4 w-4" />
             </Button>
