@@ -12,6 +12,11 @@ import { CartProvider } from "./hooks/useCart";
 import Home from "./pages/Home";
 import Equipos from "./pages/Equipos";
 import Espacios from "./pages/Espacios";
+import Servicios from "./pages/Servicios";
+import Comunidad from "./pages/Comunidad";
+import Nosotros from "./pages/Nosotros";
+import Soporte from "./pages/Soporte";
+import Blog from "./pages/Blog";
 import Cotizador from "./pages/Cotizador";
 import Contacto from "./pages/Contacto";
 import Admin from "./pages/Admin";
@@ -34,6 +39,11 @@ const App = () => (
               <Route path="/" element={<Home />} />
               <Route path="/equipos" element={<Equipos />} />
               <Route path="/espacios" element={<Espacios />} />
+              <Route path="/servicios" element={<Servicios />} />
+              <Route path="/comunidad" element={<Comunidad />} />
+              <Route path="/nosotros" element={<Nosotros />} />
+              <Route path="/soporte" element={<Soporte />} />
+              <Route path="/blog" element={<Blog />} />
               <Route path="/cotizador" element={<Cotizador />} />
               <Route path="/contacto" element={<Contacto />} />
               <Route path="/auth" element={<Auth />} />

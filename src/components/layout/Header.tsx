@@ -11,7 +11,11 @@ const navigation = [
   { name: "INICIO", href: "/" },
   { name: "EQUIPOS", href: "/equipos" },
   { name: "ESPACIOS", href: "/espacios" },
-  { name: "COTIZADOR", href: "/cotizador" },
+  { name: "SERVICIOS", href: "/servicios" },
+  { name: "COMUNIDAD", href: "/comunidad" },
+  { name: "NOSOTROS", href: "/nosotros" },
+  { name: "SOPORTE", href: "/soporte" },
+  { name: "BLOG", href: "/blog" },
   { name: "CONTACTO", href: "/contacto" },
 ];
 
