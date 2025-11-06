@@ -132,14 +132,14 @@ Contactar cliente para coordinar entrega/retiro.
   };
 
   return (
-    <div className="min-h-screen pt-16 bg-muted/30">
+    <div className="min-h-screen pt-14 sm:pt-16 bg-muted/30">
       {/* Hero Section */}
-      <section className="gradient-primary text-primary-foreground py-20 border-b-4 border-foreground">
+      <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20 border-b-4 border-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4 sm:mb-6">
             CARRITO DE RESERVA
           </h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto">
             {totalItems > 0 
               ? `Tienes ${totalItems} ${totalItems === 1 ? 'equipo' : 'equipos'} en tu carrito`
               : 'Agrega equipos desde el catálogo para comenzar'
@@ -149,14 +149,14 @@ Contactar cliente para coordinar entrega/retiro.
       </section>
 
       {/* Main Section */}
-      <section className="py-16">
+      <section className="py-8 sm:py-12 lg:py-16">
         <div className="container mx-auto px-4 max-w-7xl">
           {/* Instrucciones */}
-          <Card className="mb-8 border-4 border-primary">
+          <Card className="mb-6 sm:mb-8 border-2 sm:border-4 border-primary">
             <CardHeader className="bg-primary/10">
-              <CardTitle className="font-heading text-2xl">CÓMO RESERVAR</CardTitle>
+              <CardTitle className="font-heading text-lg sm:text-xl lg:text-2xl">CÓMO RESERVAR</CardTitle>
             </CardHeader>
-            <CardContent className="pt-6">
+            <CardContent className="pt-4 sm:pt-6">
               <ol className="space-y-3 font-heading">
                 <li className="flex items-start gap-3">
                   <span className="font-bold text-primary text-xl">1.</span>
@@ -189,9 +189,9 @@ Contactar cliente para coordinar entrega/retiro.
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Cart Items - 2 columns */}
-            <Card className="lg:col-span-2">
+            <Card className="lg:col-span-2 order-2 lg:order-1">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
@@ -291,7 +291,7 @@ Contactar cliente para coordinar entrega/retiro.
             </Card>
 
             {/* Form & Summary - 1 column */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6 order-1 lg:order-2">
               {/* Dates Card */}
               <Card>
                 <CardHeader>

@@ -41,20 +41,20 @@ export const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b-2 border-foreground">
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
+      <nav className="container mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex h-16 sm:h-20 items-center justify-between">
           {/* Logo Brutal */}
           <Link to="/" className="flex items-center">
-            <img src={logo} alt="Ala Norte" className="h-12 w-auto object-contain" />
+            <img src={logo} alt="Ala Norte" className="h-8 sm:h-10 md:h-12 w-auto object-contain" />
           </Link>
 
           {/* Desktop Navigation Brutal */}
-          <div className="hidden md:flex md:items-center md:gap-1">
+          <div className="hidden lg:flex lg:items-center lg:gap-1">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
-                className={`px-6 h-12 flex items-center justify-center font-heading text-sm tracking-wider border-2 transition-none ${
+                className={`px-4 xl:px-6 h-10 xl:h-12 flex items-center justify-center font-heading text-xs xl:text-sm tracking-wider border-2 transition-none ${
                   location.pathname === item.href
                     ? "bg-primary text-primary-foreground border-foreground shadow-brutal-sm"
                     : "bg-transparent border-transparent hover:border-foreground hover:shadow-brutal-sm"
@@ -66,7 +66,7 @@ export const Header = () => {
           </div>
 
           {/* Actions Brutales */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             {/* Search */}
             <SearchBar />
             
@@ -75,14 +75,14 @@ export const Header = () => {
               asChild
               variant="ghost"
               size="icon"
-              className="relative hidden md:inline-flex border-2 border-foreground h-12 w-12"
+              className="relative hidden sm:inline-flex border-2 border-foreground h-10 w-10 sm:h-12 sm:w-12"
             >
               <Link to="/cotizador">
-                <ShoppingCart className="h-5 w-5" />
+                <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
                 {totalItems > 0 && (
                   <Badge 
                     variant="destructive" 
-                    className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                    className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center p-0 text-[10px] sm:text-xs"
                   >
                     {totalItems}
                   </Badge>
@@ -94,12 +94,12 @@ export const Header = () => {
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="hidden md:inline-flex border-2 border-foreground h-12 w-12"
+              className="hidden sm:inline-flex border-2 border-foreground h-10 w-10 sm:h-12 sm:w-12"
             >
               {theme === "light" ? (
-                <Moon className="h-5 w-5" />
+                <Moon className="h-4 w-4 sm:h-5 sm:w-5" />
               ) : (
-                <Sun className="h-5 w-5" />
+                <Sun className="h-4 w-4 sm:h-5 sm:w-5" />
               )}
             </Button>
 
@@ -108,8 +108,8 @@ export const Header = () => {
                 <Button
                   asChild
                   variant="outline"
-                  size="default"
-                  className="hidden md:inline-flex h-12"
+                  size="sm"
+                  className="hidden lg:inline-flex h-10 xl:h-12 text-xs xl:text-sm"
                 >
                   <Link to="/admin">ADMIN</Link>
                 </Button>
@@ -120,10 +120,10 @@ export const Header = () => {
                     signOut();
                     navigate("/");
                   }}
-                  className="hidden md:inline-flex border-2 border-foreground h-12 w-12"
+                  className="hidden lg:inline-flex border-2 border-foreground h-10 w-10 xl:h-12 xl:w-12"
                   title="Cerrar sesión"
                 >
-                  <LogOut className="h-5 w-5" />
+                  <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
                 </Button>
               </>
             ) : user ? (
@@ -134,17 +134,17 @@ export const Header = () => {
                   signOut();
                   navigate("/");
                 }}
-                className="hidden md:inline-flex border-2 border-foreground h-12 w-12"
+                className="hidden lg:inline-flex border-2 border-foreground h-10 w-10 xl:h-12 xl:w-12"
                 title="Cerrar sesión"
               >
-                <LogOut className="h-5 w-5" />
+                <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
               </Button>
             ) : (
               <Button
                 asChild
                 variant="outline"
-                size="default"
-                className="hidden md:inline-flex h-12"
+                size="sm"
+                className="hidden lg:inline-flex h-10 xl:h-12 text-xs xl:text-sm"
               >
                 <Link to="/auth">LOGIN</Link>
               </Button>
@@ -155,12 +155,12 @@ export const Header = () => {
               variant="ghost"
               size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden border-2 border-foreground"
+              className="lg:hidden border-2 border-foreground h-10 w-10"
             >
               {mobileMenuOpen ? (
-                <X className="h-6 w-6" />
+                <X className="h-5 w-5" />
               ) : (
-                <Menu className="h-6 w-6" />
+                <Menu className="h-5 w-5" />
               )}
             </Button>
           </div>
@@ -168,8 +168,8 @@ export const Header = () => {
 
         {/* Mobile Navigation Brutal */}
         {mobileMenuOpen && (
-          <div className="md:hidden pb-4 border-t-2 border-foreground mt-4">
-            <div className="flex flex-col gap-2 mt-4">
+          <div className="lg:hidden pb-4 border-t-2 border-foreground mt-2">
+            <div className="flex flex-col gap-2 mt-2">
               {navigation.map((item) => (
                 <Link
                   key={item.name}

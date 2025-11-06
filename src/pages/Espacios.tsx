@@ -45,32 +45,32 @@ const Espacios = () => {
   };
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen pt-14 sm:pt-16">
       {/* Hero Section */}
-      <section className="gradient-primary text-primary-foreground py-20">
+      <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4 sm:mb-6">
             NUESTROS ESPACIOS
           </h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto font-heading">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto font-heading">
             ESTUDIOS PROFESIONALES EQUIPADOS CON TECNOLOGÍA DE VANGUARDIA PARA TUS PRODUCCIONES
           </p>
         </div>
       </section>
 
       {/* Spaces Section */}
-      <section className="py-16">
+      <section className="py-8 sm:py-12 lg:py-16">
         <div className="container mx-auto px-4">
           {loading ? (
-            <div className="text-center py-20">
-              <p className="text-brutal text-3xl">CARGANDO...</p>
+            <div className="text-center py-12 sm:py-16 lg:py-20">
+              <p className="text-2xl sm:text-3xl lg:text-brutal">CARGANDO...</p>
             </div>
           ) : spaces.length === 0 ? (
-            <div className="text-center py-20 border-4 border-foreground p-16">
-              <p className="text-brutal text-3xl mb-4">NO HAY ESPACIOS DISPONIBLES</p>
+            <div className="text-center py-12 sm:py-16 lg:py-20 border-2 sm:border-4 border-foreground p-8 sm:p-12 lg:p-16">
+              <p className="text-2xl sm:text-3xl lg:text-brutal mb-4">NO HAY ESPACIOS DISPONIBLES</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
               {spaces.map((space) => (
                 <Card
                   key={space.id}
@@ -210,17 +210,17 @@ const Espacios = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-secondary">
+      <section className="py-12 sm:py-16 bg-secondary">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-heading font-bold mb-4">
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4">
             ¿NECESITAS UN ESPACIO PERSONALIZADO?
           </h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto font-heading">
+          <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading">
             CONTACTANOS PARA DISCUTIR TUS NECESIDADES ESPECÍFICAS Y CREAR EL AMBIENTE PERFECTO PARA TU PROYECTO.
           </p>
           <Button variant="hero" size="lg" asChild>
             <Link to="/contacto">
-              <MapPin className="mr-2 h-5 w-5" />
+              <MapPin className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
               CONTACTAR
             </Link>
           </Button>

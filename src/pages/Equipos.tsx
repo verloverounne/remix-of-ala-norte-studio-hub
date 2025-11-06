@@ -163,9 +163,9 @@ const Equipos = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-16">
+    <div className="min-h-screen bg-background pt-14 sm:pt-16">
       {/* Hero Section Brutal */}
-      <div className="relative h-[400px] border-b-4 border-foreground overflow-hidden">
+      <div className="relative h-[250px] sm:h-[350px] lg:h-[400px] border-b-4 border-foreground overflow-hidden">
         <img
           src={equipmentHero}
           alt="Equipos"
@@ -178,12 +178,12 @@ const Equipos = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-8 sm:py-12 lg:py-16">
         {/* Layout con Filtros Laterales */}
-        <div className="grid lg:grid-cols-4 gap-8">
+        <div className="grid lg:grid-cols-4 gap-6 lg:gap-8">
           {/* Sidebar Filtros */}
           <aside className="lg:col-span-1">
-            <div className="sticky top-20 border-4 border-foreground p-6 bg-card shadow-brutal">
+            <div className="lg:sticky lg:top-20 border-2 sm:border-4 border-foreground p-4 sm:p-6 bg-card shadow-brutal">
               {/* Búsqueda con botón limpiar */}
               <div className="mb-6">
                 <div className="flex gap-2">
@@ -225,19 +225,19 @@ const Equipos = () => {
           {/* Main Content - Grid de Equipos */}
           <main className="lg:col-span-3">
             {loading ? (
-              <div className="text-center py-20 border-4 border-foreground p-16">
-                <p className="text-brutal text-3xl">CARGANDO...</p>
+              <div className="text-center py-12 sm:py-16 lg:py-20 border-2 sm:border-4 border-foreground p-8 sm:p-12 lg:p-16">
+                <p className="text-2xl sm:text-3xl lg:text-brutal">CARGANDO...</p>
               </div>
             ) : filteredEquipment.length === 0 ? (
-              <div className="text-center py-20 border-4 border-foreground p-16">
-                <p className="text-brutal text-3xl mb-4">NO SE ENCONTRARON EQUIPOS</p>
+              <div className="text-center py-12 sm:py-16 lg:py-20 border-2 sm:border-4 border-foreground p-8 sm:p-12 lg:p-16">
+                <p className="text-2xl sm:text-3xl lg:text-brutal mb-4">NO SE ENCONTRARON EQUIPOS</p>
               </div>
             ) : (
               <>
-                <div className="mb-6 text-sm text-muted-foreground font-heading">
+                <div className="mb-4 sm:mb-6 text-xs sm:text-sm text-muted-foreground font-heading">
                   Mostrando {filteredEquipment.length} equipo{filteredEquipment.length !== 1 ? 's' : ''}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                   {filteredEquipment.map((item, index) => {
               const statusBadge = getStatusBadge(item.status);
               

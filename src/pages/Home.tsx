@@ -125,9 +125,9 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background pt-16">
+    <div className="min-h-screen bg-background pt-14 sm:pt-16">
       {/* Hero Section - Full Slider with 360 Tours */}
-      <section className="relative h-screen overflow-hidden border-b-4 border-foreground">
+      <section className="relative h-[60vh] sm:h-[80vh] lg:h-screen overflow-hidden border-b-4 border-foreground">
         <div className="absolute inset-0 bg-foreground/95" />
         
         <div 
@@ -147,28 +147,28 @@ const Home = () => {
               >
                 {/* Iframe placeholder for 360 tour */}
                 <div className="w-full h-full bg-gray-dark/50 flex items-center justify-center relative">
-                  <div className="text-center z-10 relative p-8">
-                    <p className="font-heading text-background text-5xl md:text-7xl mb-4 font-bold">
+                  <div className="text-center z-10 relative p-4 sm:p-6 lg:p-8">
+                    <p className="font-heading text-background text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-2 sm:mb-4 font-bold">
                       {space.title}
                     </p>
-                    <p className="font-heading text-background/80 text-2xl md:text-4xl mb-6">
+                    <p className="font-heading text-background/80 text-lg sm:text-xl md:text-2xl lg:text-4xl mb-4 sm:mb-6">
                       {space.subtitle}
                     </p>
-                    <div className="border-4 border-background/30 rounded-lg p-6 bg-foreground/30 backdrop-blur-sm">
-                      <p className="text-background/60 text-lg mb-2">
+                    <div className="border-2 sm:border-4 border-background/30 rounded-lg p-3 sm:p-4 lg:p-6 bg-foreground/30 backdrop-blur-sm">
+                      <p className="text-background/60 text-sm sm:text-base lg:text-lg mb-1 sm:mb-2">
                         Iframe Placeholder para Recorrido 360°
                       </p>
-                      <p className="text-background/40 text-sm">
+                      <p className="text-background/40 text-xs sm:text-sm">
                         Aquí se integrará el tour virtual interactivo
                       </p>
                     </div>
-                    <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-                      <Button asChild variant="hero" size="lg">
+                    <div className="mt-4 sm:mt-6 lg:mt-8 flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center">
+                      <Button asChild variant="hero" size="sm" className="sm:text-base">
                         <Link to="/espacios">VER ESPACIOS</Link>
                       </Button>
-                      <Button asChild variant="secondary" size="lg">
+                      <Button asChild variant="secondary" size="sm" className="sm:text-base">
                         <Link to="/equipos">
-                          VER EQUIPOS <ArrowRight className="ml-2" />
+                          VER EQUIPOS <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                       </Button>
                     </div>
@@ -196,16 +196,16 @@ const Home = () => {
       </section>
 
       {/* Services Section */}
-      <section className="py-32 bg-background relative">
+      <section className="py-12 sm:py-16 lg:py-32 bg-background relative">
         <div className="container mx-auto px-4 relative">
-          <div className="mb-20 border-l-8 border-secondary pl-8">
-            <h2 className="font-heading text-brutal mb-4">SERVICIOS</h2>
-            <p className="text-xl text-muted-foreground font-heading max-w-2xl">
+          <div className="mb-8 sm:mb-12 lg:mb-20 border-l-4 sm:border-l-8 border-secondary pl-4 sm:pl-8">
+            <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">SERVICIOS</h2>
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-heading max-w-2xl">
               SOLUCIONES COMPLETAS PARA TUS PROYECTOS AUDIOVISUALES
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {services.map((service, index) => (
               <Link key={index} to={service.link}>
                 <Card className="group hover:shadow-brutal-red hover:-translate-x-2 hover:-translate-y-2 transition-none h-full cursor-pointer">
@@ -230,11 +230,11 @@ const Home = () => {
       {/* Featured Equipment Section - Full Width Slider */}
       {featuredEquipment.length > 0 && (
         <section className="relative border-y-4 border-foreground bg-muted/30 overflow-hidden">
-          <div className="py-20">
-            <div className="container mx-auto px-4 mb-12">
-              <div className="border-l-8 border-primary pl-8">
-                <h2 className="font-heading text-brutal mb-4">EQUIPOS DESTACADOS</h2>
-                <p className="text-xl text-muted-foreground font-heading">
+          <div className="py-12 sm:py-16 lg:py-20">
+            <div className="container mx-auto px-4 mb-8 sm:mb-12">
+              <div className="border-l-4 sm:border-l-8 border-primary pl-4 sm:pl-8">
+                <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">EQUIPOS DESTACADOS</h2>
+                <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-heading">
                   TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
                 </p>
               </div>
@@ -288,17 +288,17 @@ const Home = () => {
       )}
 
       {/* CTA Section */}
-      <section className="py-32 bg-primary text-primary-foreground relative border-y-4 border-foreground">
+      <section className="py-12 sm:py-20 lg:py-32 bg-primary text-primary-foreground relative border-y-4 border-foreground">
         <div className="container mx-auto px-4 relative">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="font-heading text-brutal mb-8">
+            <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-4 sm:mb-6 lg:mb-8">
               ¿LISTO PARA TU
               <br />
               PRÓXIMO PROYECTO?
             </h2>
-            <p className="text-2xl mb-12 font-heading">
+            <p className="text-base sm:text-lg lg:text-2xl mb-6 sm:mb-8 lg:mb-12 font-heading">
               OBTÉN UNA COTIZACIÓN PERSONALIZADA EN MINUTOS.
-              <br />
+              <br className="hidden sm:block" />
               NUESTRO EQUIPO ESTÁ LISTO PARA AYUDARTE.
             </p>
             <Button asChild variant="outline" size="lg" className="bg-background text-foreground">
@@ -309,16 +309,16 @@ const Home = () => {
       </section>
 
       {/* About Us Section - Team Profiles */}
-      <section className="py-32 bg-background relative">
+      <section className="py-12 sm:py-20 lg:py-32 bg-background relative">
         <div className="container mx-auto px-4 relative">
-          <div className="mb-20 text-center">
-            <h2 className="font-heading text-brutal mb-6">NUESTRO EQUIPO</h2>
-            <p className="text-xl text-muted-foreground font-heading max-w-3xl mx-auto mb-16">
+          <div className="mb-12 sm:mb-16 lg:mb-20 text-center">
+            <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-4 sm:mb-6">NUESTRO EQUIPO</h2>
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-heading max-w-3xl mx-auto mb-8 sm:mb-12 lg:mb-16">
               Los dueños y especialistas de Ala Norte que hacen posible tus proyectos audiovisuales.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 mb-12 sm:mb-16">
             <Card className="border-3 border-foreground shadow-brutal overflow-hidden">
               <div className="aspect-square bg-muted overflow-hidden border-b-3 border-foreground">
                 <img 
@@ -384,16 +384,16 @@ const Home = () => {
 
       {/* Blog Section */}
       {blogPosts.length > 0 && (
-        <section className="py-32 bg-muted/30 relative border-y-4 border-foreground">
+        <section className="py-12 sm:py-20 lg:py-32 bg-muted/30 relative border-y-4 border-foreground">
           <div className="container mx-auto px-4 relative">
-            <div className="mb-20 border-l-8 border-secondary pl-8">
-              <h2 className="font-heading text-brutal mb-4">ÚLTIMAS NOVEDADES</h2>
-              <p className="text-xl text-muted-foreground font-heading">
+            <div className="mb-8 sm:mb-12 lg:mb-20 border-l-4 sm:border-l-8 border-secondary pl-4 sm:pl-8">
+              <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">ÚLTIMAS NOVEDADES</h2>
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-heading">
                 CONSEJOS, TUTORIALES Y CASOS DE ÉXITO
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12">
               {blogPosts.map((post) => (
                 <Card key={post.id} className="border-2 border-foreground shadow-brutal overflow-hidden hover:shadow-brutal-lg transition-shadow">
                   <div className="aspect-video bg-muted overflow-hidden">

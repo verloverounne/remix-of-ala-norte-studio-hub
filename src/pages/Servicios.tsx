@@ -72,15 +72,15 @@ const Servicios = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen pt-14 sm:pt-16 lg:pt-20">
       {/* Hero Section */}
-      <section className="py-16 bg-muted/50">
+      <section className="py-12 sm:py-16 bg-muted/50">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="font-heading text-4xl md:text-6xl mb-6 tracking-tight">
+            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-4 sm:mb-6 tracking-tight">
               MÁS QUE EQUIPOS, SOMOS TU EQUIPO
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
               Ofrecemos servicios integrales para que tu producción sea un éxito. 
               Desde asesoría técnica hasta capacitaciones, estamos para apoyarte en cada paso.
             </p>
@@ -89,12 +89,12 @@ const Servicios = () => {
       </section>
 
       {/* Services Grid */}
-      <section className="py-16">
+      <section className="py-12 sm:py-16">
         <div className="container mx-auto px-4">
-          <h2 className="font-heading text-3xl md:text-4xl mb-12 text-center">
+          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl mb-8 sm:mb-12 text-center">
             NUESTROS SERVICIOS
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {services.map((service, index) => (
               <Card key={index} className="border-2 border-foreground shadow-brutal hover:shadow-brutal-lg transition-shadow">
                 <CardHeader>
