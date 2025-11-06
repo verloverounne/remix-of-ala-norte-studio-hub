@@ -8,9 +8,9 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  CarouselApi,
 } from "@/components/ui/carousel";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const services = [
   {
@@ -68,6 +68,8 @@ const Home = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [featuredEquipment, setFeaturedEquipment] = useState<any[]>([]);
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [equipmentApi, setEquipmentApi] = useState<CarouselApi>();
+  const [currentEquipmentSlide, setCurrentEquipmentSlide] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -123,6 +125,14 @@ const Home = () => {
       }
     ]);
   }, []);
+
+  useEffect(() => {
+    if (!equipmentApi) return;
+
+    equipmentApi.on("select", () => {
+      setCurrentEquipmentSlide(equipmentApi.selectedScrollSnap());
+    });
+  }, [equipmentApi]);
 
   return (
     <div className="min-h-screen bg-background pt-14 sm:pt-16">
@@ -195,6 +205,152 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Tabs Section - Diferenciales */}
+      <section className="py-12 sm:py-16 lg:py-24 bg-muted/30 border-y-4 border-foreground">
+        <div className="container mx-auto px-4">
+          <div className="mb-8 sm:mb-12 border-l-4 sm:border-l-8 border-primary pl-4 sm:pl-8">
+            <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">DIFERENCIALES</h2>
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-heading">
+              LO QUE NOS HACE ÚNICOS EN LA INDUSTRIA
+            </p>
+          </div>
+
+          <Tabs defaultValue="galeria" className="w-full">
+            <TabsList className="w-full grid grid-cols-2 lg:grid-cols-4 h-auto gap-2 bg-transparent mb-8">
+              <TabsTrigger 
+                value="galeria" 
+                className="font-heading text-sm sm:text-base lg:text-lg py-3 sm:py-4 border-2 border-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                GALERÍA
+              </TabsTrigger>
+              <TabsTrigger 
+                value="red" 
+                className="font-heading text-sm sm:text-base lg:text-lg py-3 sm:py-4 border-2 border-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                RED FEDERAL
+              </TabsTrigger>
+              <TabsTrigger 
+                value="talleres" 
+                className="font-heading text-sm sm:text-base lg:text-lg py-3 sm:py-4 border-2 border-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                TALLERES
+              </TabsTrigger>
+              <TabsTrigger 
+                value="soporte" 
+                className="font-heading text-sm sm:text-base lg:text-lg py-3 sm:py-4 border-2 border-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                SOPORTE
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="galeria" className="mt-0">
+              <Card className="border-3 border-foreground shadow-brutal">
+                <CardContent className="p-6 sm:p-8 lg:p-12">
+                  <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl mb-4 sm:mb-6">GALERÍA DE PRODUCCIONES</h3>
+                  <p className="text-base sm:text-lg text-muted-foreground font-heading mb-6">
+                    Espacios profesionales diseñados específicamente para producciones de alto nivel. Desde sets de filmación hasta estudios de fotografía completamente equipados.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="aspect-video bg-muted border-2 border-foreground"></div>
+                    <div className="aspect-video bg-muted border-2 border-foreground"></div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="red" className="mt-0">
+              <Card className="border-3 border-foreground shadow-brutal">
+                <CardContent className="p-6 sm:p-8 lg:p-12">
+                  <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl mb-4 sm:mb-6">RED FEDERAL</h3>
+                  <p className="text-base sm:text-lg text-muted-foreground font-heading mb-6">
+                    Presencia en todo el país con equipos de última generación. Accede a nuestros servicios desde cualquier punto de Argentina con la misma calidad y profesionalismo.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="p-6 border-2 border-foreground bg-background">
+                      <p className="font-heading text-lg font-bold mb-2">Buenos Aires</p>
+                      <p className="text-sm text-muted-foreground">Centro principal</p>
+                    </div>
+                    <div className="p-6 border-2 border-foreground bg-background">
+                      <p className="font-heading text-lg font-bold mb-2">Córdoba</p>
+                      <p className="text-sm text-muted-foreground">Hub central</p>
+                    </div>
+                    <div className="p-6 border-2 border-foreground bg-background">
+                      <p className="font-heading text-lg font-bold mb-2">Mendoza</p>
+                      <p className="text-sm text-muted-foreground">Sede regional</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="talleres" className="mt-0">
+              <Card className="border-3 border-foreground shadow-brutal">
+                <CardContent className="p-6 sm:p-8 lg:p-12">
+                  <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl mb-4 sm:mb-6">TALLERES Y CAPACITACIÓN</h3>
+                  <p className="text-base sm:text-lg text-muted-foreground font-heading mb-6">
+                    Formación continua con profesionales de la industria. Aprende las últimas técnicas y tendencias en producción audiovisual con nuestros workshops especializados.
+                  </p>
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-4 p-4 border-2 border-foreground bg-background">
+                      <Camera className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                      <div>
+                        <p className="font-heading font-bold mb-1">Cinematografía Avanzada</p>
+                        <p className="text-sm text-muted-foreground">Técnicas profesionales de cámara y composición</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4 p-4 border-2 border-foreground bg-background">
+                      <Lightbulb className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                      <div>
+                        <p className="font-heading font-bold mb-1">Iluminación Profesional</p>
+                        <p className="text-sm text-muted-foreground">Domina el arte de la luz en producciones</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4 p-4 border-2 border-foreground bg-background">
+                      <Mic className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                      <div>
+                        <p className="font-heading font-bold mb-1">Audio para Cine</p>
+                        <p className="text-sm text-muted-foreground">Captura y diseño sonoro de alto nivel</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="soporte" className="mt-0">
+              <Card className="border-3 border-foreground shadow-brutal">
+                <CardContent className="p-6 sm:p-8 lg:p-12">
+                  <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl mb-4 sm:mb-6">SOPORTE 24/7</h3>
+                  <p className="text-base sm:text-lg text-muted-foreground font-heading mb-6">
+                    Asistencia técnica especializada disponible cuando la necesites. Nuestro equipo de expertos está listo para resolver cualquier inconveniente durante tu producción.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="p-6 border-3 border-primary bg-primary/5">
+                      <h4 className="font-heading text-xl font-bold mb-3">Asistencia Técnica</h4>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Soporte inmediato para configuración y troubleshooting de equipos durante tu alquiler.
+                      </p>
+                      <Button variant="outline" size="sm" asChild>
+                        <Link to="/soporte">MÁS INFO</Link>
+                      </Button>
+                    </div>
+                    <div className="p-6 border-3 border-foreground bg-background">
+                      <h4 className="font-heading text-xl font-bold mb-3">Asesoramiento</h4>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Consultoría sobre el mejor equipamiento para tu proyecto específico.
+                      </p>
+                      <Button variant="outline" size="sm" asChild>
+                        <Link to="/contacto">CONTACTAR</Link>
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </section>
+
       {/* Services Section */}
       <section className="py-12 sm:py-16 lg:py-32 bg-background relative">
         <div className="container mx-auto px-4 relative">
@@ -240,7 +396,7 @@ const Home = () => {
               </div>
             </div>
 
-            <Carousel className="w-full">
+            <Carousel className="w-full" setApi={setEquipmentApi}>
               <CarouselContent className="-ml-0">
                 {featuredEquipment.map((equipment) => (
                   <CarouselItem key={equipment.id} className="pl-0 basis-full">
@@ -278,11 +434,21 @@ const Home = () => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <div className="container mx-auto px-4 relative">
-                <CarouselPrevious className="absolute left-8 top-1/2 -translate-y-1/2" />
-                <CarouselNext className="absolute right-8 top-1/2 -translate-y-1/2" />
-              </div>
             </Carousel>
+
+            {/* Navigation dots */}
+            <div className="flex justify-center gap-3 mt-8">
+              {featuredEquipment.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => equipmentApi?.scrollTo(index)}
+                  className={`h-2 rounded-full transition-all ${
+                    index === currentEquipmentSlide ? 'w-12 bg-primary' : 'w-2 bg-foreground/40'
+                  }`}
+                  aria-label={`Ir al equipo ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </section>
       )}
@@ -311,9 +477,9 @@ const Home = () => {
       {/* About Us Section - Team Profiles */}
       <section className="py-12 sm:py-20 lg:py-32 bg-background relative">
         <div className="container mx-auto px-4 relative">
-          <div className="mb-12 sm:mb-16 lg:mb-20 text-center">
-            <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-4 sm:mb-6">NUESTRO EQUIPO</h2>
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-heading max-w-3xl mx-auto mb-8 sm:mb-12 lg:mb-16">
+          <div className="mb-12 sm:mb-16 lg:mb-20 border-l-4 sm:border-l-8 border-secondary pl-4 sm:pl-8">
+            <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">NUESTRO EQUIPO</h2>
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-heading max-w-3xl">
               Los dueños y especialistas de Ala Norte que hacen posible tus proyectos audiovisuales.
             </p>
           </div>
@@ -458,8 +624,6 @@ const Home = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
           </Carousel>
         </div>
       </section>
@@ -502,10 +666,6 @@ const Home = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <div className="container mx-auto px-4 relative">
-              <CarouselPrevious className="absolute left-8 top-1/2 -translate-y-1/2" />
-              <CarouselNext className="absolute right-8 top-1/2 -translate-y-1/2" />
-            </div>
           </Carousel>
         </div>
       </section>
