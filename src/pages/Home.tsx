@@ -227,55 +227,61 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Equipment Section */}
+      {/* Featured Equipment Section - Full Width Slider */}
       {featuredEquipment.length > 0 && (
-        <section className="py-32 bg-muted/30 relative border-y-4 border-foreground">
-          <div className="container mx-auto px-4 relative">
-            <div className="mb-20 border-l-8 border-primary pl-8">
-              <h2 className="font-heading text-brutal mb-4">EQUIPOS DESTACADOS</h2>
-              <p className="text-xl text-muted-foreground font-heading">
-                TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
-              </p>
+        <section className="relative border-y-4 border-foreground bg-muted/30 overflow-hidden">
+          <div className="py-20">
+            <div className="container mx-auto px-4 mb-12">
+              <div className="border-l-8 border-primary pl-8">
+                <h2 className="font-heading text-brutal mb-4">EQUIPOS DESTACADOS</h2>
+                <p className="text-xl text-muted-foreground font-heading">
+                  TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
+                </p>
+              </div>
             </div>
 
             <Carousel className="w-full">
-              <CarouselContent>
+              <CarouselContent className="-ml-0">
                 {featuredEquipment.map((equipment) => (
-                  <CarouselItem key={equipment.id} className="md:basis-1/2 lg:basis-1/3">
+                  <CarouselItem key={equipment.id} className="pl-0 basis-full">
                     <Link to={`/equipos?id=${equipment.id}`}>
-                      <Card className="group hover:shadow-brutal-lg hover:-translate-x-1 hover:-translate-y-1 transition-none h-full">
-                        <CardContent className="p-6">
-                          <div className="aspect-video bg-muted rounded border-2 border-foreground mb-4 overflow-hidden">
-                            {equipment.image_url && (
-                              <img 
-                                src={equipment.image_url} 
-                                alt={equipment.name}
-                                className="w-full h-full object-cover"
-                              />
+                      <div className="relative h-[70vh] bg-foreground/95 overflow-hidden group cursor-pointer">
+                        {equipment.image_url && (
+                          <img 
+                            src={equipment.image_url} 
+                            alt={equipment.name}
+                            className="w-full h-full object-cover opacity-40 group-hover:opacity-50 transition-opacity"
+                          />
+                        )}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center z-10 p-8 max-w-4xl">
+                            <h3 className="font-heading text-6xl md:text-8xl mb-6 uppercase text-background">
+                              {equipment.name}
+                            </h3>
+                            {equipment.featured_copy && (
+                              <p className="text-xl md:text-2xl text-background/80 mb-8 font-heading">
+                                {equipment.featured_copy}
+                              </p>
                             )}
+                            <div className="flex items-center justify-center gap-6 mb-6">
+                              <span className="font-heading text-4xl text-primary bg-background/90 px-8 py-4 border-3 border-background shadow-brutal">
+                                ${equipment.price_per_day}/día
+                              </span>
+                            </div>
+                            <Button variant="hero" size="lg" className="group-hover:shadow-brutal-lg transition-shadow">
+                              VER DETALLES <ArrowRight className="ml-2" />
+                            </Button>
                           </div>
-                          <h3 className="font-heading text-lg mb-2 uppercase">
-                            {equipment.name}
-                          </h3>
-                          {equipment.featured_copy && (
-                            <p className="text-sm text-muted-foreground mb-3">
-                              {equipment.featured_copy}
-                            </p>
-                          )}
-                          <div className="flex items-center justify-between">
-                            <span className="font-heading text-xl text-primary">
-                              ${equipment.price_per_day}/día
-                            </span>
-                            <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                          </div>
-                        </CardContent>
-                      </Card>
+                        </div>
+                      </div>
                     </Link>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
+              <div className="container mx-auto px-4 relative">
+                <CarouselPrevious className="absolute left-8 top-1/2 -translate-y-1/2" />
+                <CarouselNext className="absolute right-8 top-1/2 -translate-y-1/2" />
+              </div>
             </Carousel>
           </div>
         </section>
@@ -302,53 +308,67 @@ const Home = () => {
         </div>
       </section>
 
-      {/* About Us Section */}
+      {/* About Us Section - Team Profiles */}
       <section className="py-32 bg-background relative">
         <div className="container mx-auto px-4 relative">
           <div className="mb-20 text-center">
-            <h2 className="font-heading text-brutal mb-6">MÁS QUE EQUIPOS,<br />SOMOS TU EQUIPO</h2>
+            <h2 className="font-heading text-brutal mb-6">NUESTRO EQUIPO</h2>
             <p className="text-xl text-muted-foreground font-heading max-w-3xl mx-auto mb-16">
-              En Ala Norte, combinamos tecnología de punta con experiencia profesional 
-              para llevar tus proyectos audiovisuales al siguiente nivel.
+              Los dueños y especialistas de Ala Norte que hacen posible tus proyectos audiovisuales.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <Card className="border-2 border-foreground shadow-brutal">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+            <Card className="border-3 border-foreground shadow-brutal overflow-hidden">
+              <div className="aspect-square bg-muted overflow-hidden border-b-3 border-foreground">
+                <img 
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=600&fit=crop"
+                  alt="Especialista en Sonido"
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <CardContent className="p-8 text-center">
-                <div className="w-20 h-20 border-4 border-foreground bg-primary flex items-center justify-center mx-auto mb-6 shadow-brutal-sm">
-                  <Music className="h-10 w-10 text-primary-foreground" />
-                </div>
-                <h3 className="font-heading text-2xl mb-4 uppercase">SONIDO</h3>
-                <p className="text-muted-foreground font-heading text-sm">
-                  Especialistas en captura y postproducción de audio profesional para cine, 
-                  música y contenido digital.
+                <h3 className="font-heading text-2xl mb-2 uppercase">JUAN PÉREZ</h3>
+                <div className="w-16 h-1 bg-primary mx-auto mb-4"></div>
+                <p className="text-primary font-heading text-lg mb-4 uppercase">Sonido</p>
+                <p className="text-muted-foreground font-heading text-sm leading-relaxed">
+                  Especialista en captura y postproducción de audio profesional con más de 15 años de experiencia en cine, música y contenido digital.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-foreground shadow-brutal">
+            <Card className="border-3 border-foreground shadow-brutal overflow-hidden">
+              <div className="aspect-square bg-muted overflow-hidden border-b-3 border-foreground">
+                <img 
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=600&fit=crop"
+                  alt="Especialista en Fotografía"
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <CardContent className="p-8 text-center">
-                <div className="w-20 h-20 border-4 border-foreground bg-primary flex items-center justify-center mx-auto mb-6 shadow-brutal-sm">
-                  <Camera className="h-10 w-10 text-primary-foreground" />
-                </div>
-                <h3 className="font-heading text-2xl mb-4 uppercase">FOTOGRAFÍA</h3>
-                <p className="text-muted-foreground font-heading text-sm">
-                  Equipo fotográfico de última generación para proyectos comerciales, 
-                  cinematográficos y artísticos.
+                <h3 className="font-heading text-2xl mb-2 uppercase">MARÍA GONZÁLEZ</h3>
+                <div className="w-16 h-1 bg-primary mx-auto mb-4"></div>
+                <p className="text-primary font-heading text-lg mb-4 uppercase">Cámara</p>
+                <p className="text-muted-foreground font-heading text-sm leading-relaxed">
+                  Directora de fotografía con experiencia en proyectos comerciales, cinematográficos y artísticos de alto nivel.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-foreground shadow-brutal">
+            <Card className="border-3 border-foreground shadow-brutal overflow-hidden">
+              <div className="aspect-square bg-muted overflow-hidden border-b-3 border-foreground">
+                <img 
+                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=600&fit=crop"
+                  alt="Especialista en Postproducción"
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <CardContent className="p-8 text-center">
-                <div className="w-20 h-20 border-4 border-foreground bg-primary flex items-center justify-center mx-auto mb-6 shadow-brutal-sm">
-                  <Film className="h-10 w-10 text-primary-foreground" />
-                </div>
-                <h3 className="font-heading text-2xl mb-4 uppercase">POSTPRODUCCIÓN</h3>
-                <p className="text-muted-foreground font-heading text-sm">
-                  Espacios equipados y tecnología avanzada para edición, color grading 
-                  y finalización de proyectos.
+                <h3 className="font-heading text-2xl mb-2 uppercase">CARLOS LÓPEZ</h3>
+                <div className="w-16 h-1 bg-primary mx-auto mb-4"></div>
+                <p className="text-primary font-heading text-lg mb-4 uppercase">Postproducción</p>
+                <p className="text-muted-foreground font-heading text-sm leading-relaxed">
+                  Experto en edición, color grading y finalización de proyectos con tecnología de última generación.
                 </p>
               </CardContent>
             </Card>
@@ -440,6 +460,52 @@ const Home = () => {
             </CarouselContent>
             <CarouselPrevious />
             <CarouselNext />
+          </Carousel>
+        </div>
+      </section>
+
+      {/* Instagram Stories Section - Full Width */}
+      <section className="relative border-y-4 border-foreground bg-foreground overflow-hidden">
+        <div className="py-20">
+          <div className="container mx-auto px-4 mb-12">
+            <div className="border-l-8 border-primary pl-8">
+              <h2 className="font-heading text-brutal mb-4 text-background">SIGUENOS EN INSTAGRAM</h2>
+              <p className="text-xl text-background/80 font-heading">
+                NUESTROS ÚLTIMOS PROYECTOS Y DETRÁS DE CÁMARAS
+              </p>
+            </div>
+          </div>
+
+          <Carousel className="w-full">
+            <CarouselContent className="-ml-0">
+              {[1, 2, 3, 4, 5].map((story) => (
+                <CarouselItem key={story} className="pl-0 basis-full md:basis-1/3 lg:basis-1/4">
+                  <div className="relative aspect-[9/16] bg-muted overflow-hidden group cursor-pointer border-4 border-background">
+                    <img 
+                      src={`https://images.unsplash.com/photo-${1492691527719 + story}-6dd46a0f1123?w=600&h=900&fit=crop`}
+                      alt={`Instagram Story ${story}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <p className="text-background font-heading text-sm uppercase">
+                          Ver en Instagram
+                        </p>
+                      </div>
+                    </div>
+                    <div className="absolute top-4 left-4 right-4 flex gap-1">
+                      <div className="h-1 flex-1 bg-background/40 rounded-full overflow-hidden">
+                        <div className="h-full bg-background w-full"></div>
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="container mx-auto px-4 relative">
+              <CarouselPrevious className="absolute left-8 top-1/2 -translate-y-1/2" />
+              <CarouselNext className="absolute right-8 top-1/2 -translate-y-1/2" />
+            </div>
           </Carousel>
         </div>
       </section>
