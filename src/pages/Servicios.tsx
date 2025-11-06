@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Phone, Send, Headphones, GraduationCap, Package, Shield, MapPin, Calendar } from "lucide-react";
+import { Phone, Send, Headphones, GraduationCap, Package, MapPin, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Servicios = () => {
@@ -29,11 +29,6 @@ const Servicios = () => {
       icon: <Package className="h-8 w-8" />,
       title: "Combos Personalizados",
       description: "Arma tu paquete ideal. Te armamos combos a medida según las necesidades de tu producción."
-    },
-    {
-      icon: <Shield className="h-8 w-8" />,
-      title: "Seguros y Garantías",
-      description: "Trabajá tranquilo. Todos nuestros equipos están asegurados y con garantía de funcionamiento."
     }
   ];
 
