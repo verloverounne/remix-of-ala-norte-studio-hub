@@ -8,15 +8,11 @@ import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/logo-brutal.png";
 
 const navigation = [
-  { name: "INICIO", href: "/" },
   { name: "EQUIPOS", href: "/equipos" },
   { name: "ESPACIOS", href: "/espacios" },
   { name: "SERVICIOS", href: "/servicios" },
   { name: "COMUNIDAD", href: "/comunidad" },
-  { name: "NOSOTROS", href: "/nosotros" },
   { name: "SOPORTE", href: "/soporte" },
-  { name: "BLOG", href: "/blog" },
-  { name: "CONTACTO", href: "/contacto" },
 ];
 
 export const Header = () => {

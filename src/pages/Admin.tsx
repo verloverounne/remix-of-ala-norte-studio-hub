@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Edit, Trash2, Percent, Download, Upload } from "lucide-react";
 import { ImageUploader } from "@/components/ImageUploader";
+import { Switch } from "@/components/ui/switch";
 
 const Admin = () => {
   const [equipment, setEquipment] = useState<EquipmentWithCategory[]>([]);
@@ -25,7 +26,8 @@ const Admin = () => {
   // Equipment form state
   const [newEquipment, setNewEquipment] = useState({
     name: "", name_en: "", category_id: "", subcategory_id: "", brand: "", model: "",
-    description: "", price_per_day: "", price_per_week: "", image_url: "", images: [] as string[]
+    description: "", price_per_day: "", price_per_week: "", image_url: "", images: [] as string[],
+    featured: false, featured_copy: ""
   });
   
   // Space form state
@@ -127,7 +129,9 @@ const Admin = () => {
       price_per_week: newEquipment.price_per_week ? parseInt(newEquipment.price_per_week) : null,
       image_url: newEquipment.image_url || null,
       images: newEquipment.images,
-      status: 'available'
+      status: 'available',
+      featured: newEquipment.featured,
+      featured_copy: newEquipment.featured_copy || null
     });
 
     if (error) {
@@ -136,7 +140,8 @@ const Admin = () => {
       toast({ title: "CREADO", description: "Equipo creado correctamente" });
       setNewEquipment({
         name: "", name_en: "", category_id: "", subcategory_id: "", brand: "", model: "",
-        description: "", price_per_day: "", price_per_week: "", image_url: "", images: []
+        description: "", price_per_day: "", price_per_week: "", image_url: "", images: [],
+        featured: false, featured_copy: ""
       });
       fetchEquipment();
     }
@@ -175,7 +180,9 @@ const Admin = () => {
       price_per_day: editingEquipment.price_per_day,
       price_per_week: editingEquipment.price_per_week || null,
       image_url: editingEquipment.image_url || null,
-      images: editingEquipment.images || []
+      images: editingEquipment.images || [],
+      featured: editingEquipment.featured || false,
+      featured_copy: editingEquipment.featured_copy || null
     }).eq('id', editingEquipment.id);
 
     if (error) {
@@ -421,6 +428,26 @@ const Admin = () => {
                         maxImages={10}
                       />
                     </div>
+                    <div className="space-y-2 md:col-span-2">
+                      <div className="flex items-center justify-between">
+                        <Label>Equipo Destacado</Label>
+                        <Switch 
+                          checked={newEquipment.featured}
+                          onCheckedChange={(checked) => setNewEquipment({...newEquipment, featured: checked})}
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground">Los equipos destacados aparecerán en la página principal</p>
+                    </div>
+                    {newEquipment.featured && (
+                      <div className="space-y-2 md:col-span-2">
+                        <Label>Descripción para Destacados</Label>
+                        <Textarea 
+                          value={newEquipment.featured_copy} 
+                          onChange={(e) => setNewEquipment({...newEquipment, featured_copy: e.target.value})}
+                          placeholder="Texto breve que aparecerá en la home para este equipo destacado"
+                        />
+                      </div>
+                    )}
                   </div>
                   <Button onClick={handleCreateEquipment} className="mt-4" variant="hero">
                     <Plus className="mr-2 h-4 w-4" />
@@ -834,6 +861,26 @@ const Admin = () => {
                   maxImages={10}
                 />
               </div>
+              <div className="space-y-2 md:col-span-2">
+                <div className="flex items-center justify-between">
+                  <Label>Equipo Destacado</Label>
+                  <Switch 
+                    checked={editingEquipment.featured || false}
+                    onCheckedChange={(checked) => setEditingEquipment({...editingEquipment, featured: checked})}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">Los equipos destacados aparecerán en la página principal</p>
+              </div>
+              {editingEquipment.featured && (
+                <div className="space-y-2 md:col-span-2">
+                  <Label>Descripción para Destacados</Label>
+                  <Textarea 
+                    value={editingEquipment.featured_copy || ''} 
+                    onChange={(e) => setEditingEquipment({...editingEquipment, featured_copy: e.target.value})}
+                    placeholder="Texto breve que aparecerá en la home para este equipo destacado"
+                  />
+                </div>
+              )}
               <div className="md:col-span-2 flex gap-2">
                 <Button onClick={handleUpdateEquipment} variant="hero">
                   Actualizar Equipo

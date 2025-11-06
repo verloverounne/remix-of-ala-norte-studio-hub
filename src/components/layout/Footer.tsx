@@ -18,7 +18,7 @@ export const Footer = () => {
 
           {/* Links */}
           <div className="space-y-4">
-            <h4 className="font-semibold">Navegación</h4>
+            <h4 className="font-semibold">Navegación Rápida</h4>
             <ul className="space-y-2">
               <li>
                 <Link to="/" className="text-sm hover:text-primary transition-brutal">
@@ -33,6 +33,16 @@ export const Footer = () => {
               <li>
                 <Link to="/espacios" className="text-sm hover:text-primary transition-brutal">
                   Espacios
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog" className="text-sm hover:text-primary transition-brutal">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link to="/nosotros" className="text-sm hover:text-primary transition-brutal">
+                  Nosotros
                 </Link>
               </li>
               <li>

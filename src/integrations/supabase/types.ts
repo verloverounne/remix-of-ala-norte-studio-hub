@@ -95,6 +95,7 @@ export type Database = {
           detailed_description: string | null
           detailed_specs: Json | null
           featured: boolean | null
+          featured_copy: string | null
           id: string
           image_url: string | null
           images: Json | null
@@ -118,6 +119,7 @@ export type Database = {
           detailed_description?: string | null
           detailed_specs?: Json | null
           featured?: boolean | null
+          featured_copy?: string | null
           id?: string
           image_url?: string | null
           images?: Json | null
@@ -141,6 +143,7 @@ export type Database = {
           detailed_description?: string | null
           detailed_specs?: Json | null
           featured?: boolean | null
+          featured_copy?: string | null
           id?: string
           image_url?: string | null
           images?: Json | null

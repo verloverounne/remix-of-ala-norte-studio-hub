@@ -44,6 +44,7 @@ export interface Equipment {
   images: string[];
   tags: string[];
   featured: boolean;
+  featured_copy: string | null;
   order_index: number;
   created_at: string;
   updated_at: string;
