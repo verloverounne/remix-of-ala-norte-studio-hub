@@ -149,7 +149,7 @@ const Blog = () => {
       </section>
 
       {/* Categories */}
-      <section className="py-8 bg-muted/30 sticky top-20 z-10 border-b-2 border-foreground">
+      <section className="py-8 bg-muted sticky top-20 z-10 border-b-2 border-foreground">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center justify-center gap-2">
             {categories.map((category) => (

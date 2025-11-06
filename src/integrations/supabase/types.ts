@@ -14,6 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_articles: {
+        Row: {
+          author_id: string | null
+          category_id: string | null
+          content: string
+          created_at: string
+          excerpt: string | null
+          featured: boolean | null
+          id: string
+          image_url: string | null
+          published: boolean | null
+          slug: string
+          title: string
+          title_en: string | null
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string | null
+          category_id?: string | null
+          content: string
+          created_at?: string
+          excerpt?: string | null
+          featured?: boolean | null
+          id?: string
+          image_url?: string | null
+          published?: boolean | null
+          slug: string
+          title: string
+          title_en?: string | null
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string | null
+          category_id?: string | null
+          content?: string
+          created_at?: string
+          excerpt?: string | null
+          featured?: boolean | null
+          id?: string
+          image_url?: string | null
+          published?: boolean | null
+          slug?: string
+          title?: string
+          title_en?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_articles_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_articles_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "blog_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          name_en: string | null
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          name_en?: string | null
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          name_en?: string | null
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       categories: {
         Row: {
           created_at: string
