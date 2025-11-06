@@ -345,8 +345,15 @@ const Admin = () => {
     <div className="min-h-screen pt-16 bg-muted/30">
       <section className="gradient-primary text-primary-foreground py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-heading font-bold mb-2">Panel de Administración</h1>
-          <p className="text-lg">Gestiona equipos, espacios y configuraciones</p>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h1 className="text-4xl font-heading font-bold mb-2">Panel de Administración</h1>
+              <p className="text-lg">Gestiona equipos, espacios y configuraciones</p>
+            </div>
+            <Button asChild variant="secondary" size="lg" className="font-heading">
+              <a href="/admin/blog">Gestionar Blog</a>
+            </Button>
+          </div>
         </div>
       </section>
 

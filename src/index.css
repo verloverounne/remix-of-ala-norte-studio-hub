@@ -216,4 +216,50 @@ All colors MUST be HSL.
   }
 
   /* Grid removed per user request */
+
+  /* Rich text editor styles */
+  .prose {
+    @apply text-foreground;
+  }
+
+  .prose h2 {
+    @apply text-3xl font-heading mt-8 mb-4;
+  }
+
+  .prose h3 {
+    @apply text-2xl font-heading mt-6 mb-3;
+  }
+
+  .prose p {
+    @apply mb-4 leading-relaxed;
+  }
+
+  .prose ul, .prose ol {
+    @apply mb-4 ml-6;
+  }
+
+  .prose a {
+    @apply text-primary underline hover:no-underline;
+  }
+
+  .prose img {
+    @apply rounded-none my-6 border-2 border-foreground;
+  }
+
+  .prose blockquote {
+    @apply border-l-4 border-primary pl-4 italic my-6;
+  }
+}
+
+/* React Quill editor styles */
+.ql-toolbar {
+  @apply border-b-2 border-foreground bg-background rounded-t-none !important;
+}
+
+.ql-container {
+  @apply border-0 bg-background !important;
+}
+
+.ql-editor {
+  @apply min-h-[300px] text-foreground !important;
 }

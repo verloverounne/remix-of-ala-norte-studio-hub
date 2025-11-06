@@ -1,124 +1,80 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, Calendar, User, ArrowRight } from "lucide-react";
 
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+interface Article {
+  id: string;
+  title: string;
+  excerpt: string;
+  slug: string;
+  image_url: string;
+  featured: boolean;
+  created_at: string;
+  blog_categories: {
+    name: string;
+  };
+  profiles: {
+    display_name: string;
+  };
+}
+
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const categories = [
-    "Todos",
-    "Equipos",
-    "Técnicas",
-    "Entrevistas",
-    "Proyectos",
-    "Tutoriales"
-  ];
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  const articles = [
-    {
-      id: 1,
-      title: "Cómo elegir la cámara perfecta para tu próximo proyecto",
-      category: "Equipos",
-      author: "Carlos Martínez",
-      date: "10 Nov 2025",
-      image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&h=500&fit=crop",
-      excerpt: "Guía completa para seleccionar la cámara ideal según tu presupuesto, género y necesidades técnicas.",
-      featured: true
-    },
-    {
-      id: 2,
-      title: "Entrevista: Directores de Fotografía Argentinos",
-      category: "Entrevistas",
-      author: "Laura Fernández",
-      date: "5 Nov 2025",
-      image: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800&h=500&fit=crop",
-      excerpt: "Conversamos con tres DF's sobre su experiencia, workflow y consejos para jóvenes cineastas.",
-      featured: true
-    },
-    {
-      id: 3,
-      title: "Behind the Scenes: Rodaje en Bariloche",
-      category: "Proyectos",
-      author: "María González",
-      date: "1 Nov 2025",
-      image: "https://images.unsplash.com/photo-1515634928627-2a4e0dae3ddf?w=800&h=500&fit=crop",
-      excerpt: "Un vistazo al proceso de filmación de un documental en la Patagonia con equipos Ala Norte.",
-      featured: true
-    },
-    {
-      id: 4,
-      title: "Iluminación natural vs artificial: ¿Cuándo usar cada una?",
-      category: "Técnicas",
-      author: "Juan Pérez",
-      date: "28 Oct 2025",
-      image: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&h=500&fit=crop",
-      excerpt: "Consejos prácticos para aprovechar la luz natural y complementarla con luces artificiales.",
-      featured: false
-    },
-    {
-      id: 5,
-      title: "Tutorial: Configuración básica de cámaras RED",
-      category: "Tutoriales",
-      author: "Carlos Martínez",
-      date: "25 Oct 2025",
-      image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=500&fit=crop",
-      excerpt: "Paso a paso para configurar correctamente tu cámara RED antes del rodaje.",
-      featured: false
-    },
-    {
-      id: 6,
-      title: "Los mejores lentes para cine independiente",
-      category: "Equipos",
-      author: "Laura Fernández",
-      date: "22 Oct 2025",
-      image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&h=500&fit=crop",
-      excerpt: "Análisis de los lentes más versátiles y accesibles para producciones con presupuesto ajustado.",
-      featured: false
-    },
-    {
-      id: 7,
-      title: "Sonido directo: Errores comunes y cómo evitarlos",
-      category: "Técnicas",
-      author: "María González",
-      date: "18 Oct 2025",
-      image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&h=500&fit=crop",
-      excerpt: "Los 10 errores más frecuentes en sonido directo y soluciones prácticas para cada uno.",
-      featured: false
-    },
-    {
-      id: 8,
-      title: "Entrevista: Productora independiente 'Luz del Sur'",
-      category: "Entrevistas",
-      author: "Juan Pérez",
-      date: "15 Oct 2025",
-      image: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&h=500&fit=crop",
-      excerpt: "Hablamos con los fundadores sobre su trayectoria y proyectos en desarrollo.",
-      featured: false
-    },
-    {
-      id: 9,
-      title: "Caso de éxito: Cortometraje 'La Espera'",
-      category: "Proyectos",
-      author: "Carlos Martínez",
-      date: "12 Oct 2025",
-      image: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=800&h=500&fit=crop",
-      excerpt: "Cómo un pequeño equipo logró ganar en Mar del Plata con equipos Ala Norte.",
-      featured: false
-    }
-  ];
+  const fetchData = async () => {
+    const [categoriesRes, articlesRes] = await Promise.all([
+      supabase.from('blog_categories').select('*').order('name'),
+      supabase
+        .from('blog_articles')
+        .select(`
+          *,
+          blog_categories(name),
+          profiles(display_name)
+        `)
+        .eq('published', true)
+        .order('created_at', { ascending: false })
+    ]);
+
+    if (categoriesRes.data) setCategories(categoriesRes.data);
+    if (articlesRes.data) setArticles(articlesRes.data);
+    setLoading(false);
+  };
 
   const popularArticles = articles.filter(a => a.featured).slice(0, 3);
 
   const filteredArticles = articles.filter(article => {
     const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         article.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !selectedCategory || selectedCategory === "Todos" || article.category === selectedCategory;
+                         article.excerpt?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = !selectedCategory || article.blog_categories?.name === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen pt-20 flex items-center justify-center">
+        <p className="font-heading text-xl">Cargando...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-20">
@@ -152,14 +108,21 @@ const Blog = () => {
       <section className="py-8 bg-muted sticky top-20 z-10 border-b-2 border-foreground">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center justify-center gap-2">
+            <Button
+              variant={!selectedCategory ? "default" : "outline"}
+              onClick={() => setSelectedCategory(null)}
+              className="font-heading"
+            >
+              Todos
+            </Button>
             {categories.map((category) => (
               <Button
-                key={category}
-                variant={selectedCategory === category || (!selectedCategory && category === "Todos") ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category === "Todos" ? null : category)}
+                key={category.id}
+                variant={selectedCategory === category.name ? "default" : "outline"}
+                onClick={() => setSelectedCategory(category.name)}
                 className="font-heading"
               >
-                {category}
+                {category.name}
               </Button>
             ))}
           </div>
@@ -177,42 +140,44 @@ const Blog = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filteredArticles.map((article) => (
-                  <Card key={article.id} className="border-2 border-foreground shadow-brutal overflow-hidden hover:shadow-brutal-lg transition-shadow">
-                    <div className="relative h-48 overflow-hidden">
-                      <img 
-                        src={article.image} 
-                        alt={article.title}
-                        className="w-full h-full object-cover"
-                      />
-                      <Badge className="absolute top-2 right-2 bg-background/90 text-foreground border-2 border-foreground">
-                        {article.category}
-                      </Badge>
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="font-heading text-lg line-clamp-2">
-                        {article.title}
-                      </CardTitle>
-                      <CardDescription className="flex items-center gap-4 text-xs">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {article.date}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <User className="h-3 w-3" />
-                          {article.author}
-                        </span>
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
-                        {article.excerpt}
-                      </p>
-                      <Button variant="outline" className="w-full font-heading group">
-                        LEER MÁS
-                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                      </Button>
-                    </CardContent>
-                  </Card>
+                  <Link key={article.id} to={`/blog/${article.slug}`}>
+                    <Card className="border-2 border-foreground shadow-brutal overflow-hidden hover:shadow-brutal-lg transition-shadow h-full">
+                      <div className="relative h-48 overflow-hidden">
+                        <img 
+                          src={article.image_url} 
+                          alt={article.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <Badge className="absolute top-2 right-2 bg-background/90 text-foreground border-2 border-foreground">
+                          {article.blog_categories?.name}
+                        </Badge>
+                      </div>
+                      <CardHeader>
+                        <CardTitle className="font-heading text-lg line-clamp-2">
+                          {article.title}
+                        </CardTitle>
+                        <CardDescription className="flex items-center gap-4 text-xs">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="h-3 w-3" />
+                            {new Date(article.created_at).toLocaleDateString('es-AR')}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <User className="h-3 w-3" />
+                            {article.profiles?.display_name || 'Ala Norte'}
+                          </span>
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
+                          {article.excerpt}
+                        </p>
+                        <Button variant="outline" className="w-full font-heading group">
+                          LEER MÁS
+                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 ))}
               </div>
               
@@ -236,15 +201,17 @@ const Blog = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {popularArticles.map((article) => (
-                    <div key={article.id} className="pb-4 border-b border-border last:border-0 last:pb-0">
-                      <h3 className="font-semibold text-sm mb-2 line-clamp-2">
-                        {article.title}
-                      </h3>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <Calendar className="h-3 w-3" />
-                        <span>{article.date}</span>
+                    <Link key={article.id} to={`/blog/${article.slug}`}>
+                      <div className="pb-4 border-b border-border last:border-0 last:pb-0 hover:bg-muted/50 p-2 -m-2 rounded transition-colors">
+                        <h3 className="font-semibold text-sm mb-2 line-clamp-2">
+                          {article.title}
+                        </h3>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <Calendar className="h-3 w-3" />
+                          <span>{new Date(article.created_at).toLocaleDateString('es-AR')}</span>
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </CardContent>
               </Card>

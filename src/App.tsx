@@ -17,6 +17,8 @@ import Comunidad from "./pages/Comunidad";
 import Nosotros from "./pages/Nosotros";
 import Soporte from "./pages/Soporte";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import AdminBlog from "./pages/AdminBlog";
 import Cotizador from "./pages/Cotizador";
 import Contacto from "./pages/Contacto";
 import Admin from "./pages/Admin";
@@ -44,6 +46,7 @@ const App = () => (
               <Route path="/nosotros" element={<Nosotros />} />
               <Route path="/soporte" element={<Soporte />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/cotizador" element={<Cotizador />} />
               <Route path="/contacto" element={<Contacto />} />
               <Route path="/auth" element={<Auth />} />
@@ -52,6 +55,14 @@ const App = () => (
                 element={
                   <ProtectedRoute requireAdmin>
                     <Admin />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/blog" 
+                element={
+                  <ProtectedRoute requireAdmin>
+                    <AdminBlog />
                   </ProtectedRoute>
                 } 
               />
