@@ -197,8 +197,8 @@ export const Header = () => {
                 )}
               </Link>
               <div className="flex items-center justify-between px-4 py-3 border-2 border-foreground">
-                <span className="font-heading text-sm">TEMA</span>
-                <Button variant="ghost" size="icon" onClick={toggleTheme} className="border-2 border-foreground">
+                <span className="font-heading text-sm">MODO</span>
+                <Button variant="ghost" size="icon" onClick={toggleTheme} className="border-2 border-foreground h-10 w-10">
                   {theme === "light" ? (
                     <Moon className="h-5 w-5" />
                   ) : (

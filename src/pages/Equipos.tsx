@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import type { EquipmentWithCategory } from "@/types/supabase";
-import { Search, Plus, Minus } from "lucide-react";
+import { Search, Plus, Minus, MessageCircle } from "lucide-react";
 import equipmentHero from "@/assets/equipment-hero.jpg";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
@@ -117,7 +117,12 @@ const Equipos = () => {
     const matchesSubcategory = selectedSubcategories.length === 0 || 
                                 (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
     
-    return matchesSearch && matchesCategory && matchesSubcategory;
+    const matchesBrand = selectedBrands.length === 0 || 
+                        (item.brand && selectedBrands.includes(item.brand));
+    
+    const matchesBudget = item.price_per_day >= budgetRange[0] && item.price_per_day <= budgetRange[1];
+    
+    return matchesSearch && matchesCategory && matchesSubcategory && matchesBrand && matchesBudget;
   });
 
   const getStatusBadge = (status: string) => {
@@ -162,6 +167,13 @@ const Equipos = () => {
     setModalOpen(true);
   };
 
+  const { items, calculateSubtotal } = useCart();
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [budgetRange, setBudgetRange] = useState<[number, number]>([0, 100000]);
+
+  // Get unique brands from equipment
+  const uniqueBrands = Array.from(new Set(equipment.map(e => e.brand).filter(Boolean))) as string[];
+
   return (
     <div className="min-h-screen bg-background pt-14 sm:pt-16">
       {/* Hero Section Brutal */}
@@ -179,9 +191,15 @@ const Equipos = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8 sm:py-12 lg:py-16">
+        {/* Intro Text */}
+        <div className="text-center mb-8">
+          <p className="text-xl sm:text-2xl font-heading text-muted-foreground">
+            Equipos curados y listos para tu proyecto
+          </p>
+        </div>
         {/* Layout con Filtros Laterales */}
-        <div className="grid lg:grid-cols-4 gap-6 lg:gap-8">
-          {/* Sidebar Filtros */}
+        <div className="grid lg:grid-cols-5 gap-6 lg:gap-8">
+          {/* Sidebar Filtros Izquierda */}
           <aside className="lg:col-span-1">
             <div className="lg:sticky lg:top-20 border-2 sm:border-4 border-foreground p-4 sm:p-6 bg-card shadow-brutal">
               {/* Búsqueda con botón limpiar */}
@@ -197,13 +215,15 @@ const Equipos = () => {
                       className="pl-10 border-2 border-foreground font-heading uppercase"
                     />
                   </div>
-                  {(searchTerm || selectedSubcategories.length > 0 || selectedCategories.length > 0) && (
+                   {(searchTerm || selectedSubcategories.length > 0 || selectedCategories.length > 0 || selectedBrands.length > 0) && (
                     <Button 
                       variant="outline" 
                       onClick={() => {
                         setSearchTerm("");
                         setSelectedSubcategories([]);
                         setSelectedCategories([]);
+                        setSelectedBrands([]);
+                        setBudgetRange([0, 100000]);
                       }}
                     >
                       LIMPIAR
@@ -219,6 +239,57 @@ const Equipos = () => {
                 selectedCategories={selectedCategories}
                 onCategoriesChange={setSelectedCategories}
               />
+
+              {/* Filtro por Marca */}
+              <div className="mt-6 border-t-2 border-foreground pt-6">
+                <h3 className="font-heading text-lg mb-3 uppercase">Marcas</h3>
+                <div className="space-y-2 max-h-48 overflow-y-auto">
+                  {uniqueBrands.map((brand) => (
+                    <label key={brand} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedBrands.includes(brand)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedBrands([...selectedBrands, brand]);
+                          } else {
+                            setSelectedBrands(selectedBrands.filter(b => b !== brand));
+                          }
+                        }}
+                        className="rounded border-2 border-foreground"
+                      />
+                      <span className="text-sm">{brand}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Filtro por Presupuesto */}
+              <div className="mt-6 border-t-2 border-foreground pt-6">
+                <h3 className="font-heading text-lg mb-3 uppercase">Presupuesto (por día)</h3>
+                <div className="space-y-4">
+                  <div className="flex gap-2 items-center">
+                    <Input
+                      type="number"
+                      placeholder="Min"
+                      value={budgetRange[0]}
+                      onChange={(e) => setBudgetRange([parseInt(e.target.value) || 0, budgetRange[1]])}
+                      className="border-2 border-foreground"
+                    />
+                    <span>-</span>
+                    <Input
+                      type="number"
+                      placeholder="Max"
+                      value={budgetRange[1]}
+                      onChange={(e) => setBudgetRange([budgetRange[0], parseInt(e.target.value) || 100000])}
+                      className="border-2 border-foreground"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    ${budgetRange[0].toLocaleString()} - ${budgetRange[1].toLocaleString()}
+                  </p>
+                </div>
+              </div>
             </div>
           </aside>
 
@@ -348,6 +419,68 @@ const Equipos = () => {
               </>
             )}
           </main>
+
+          {/* Sidebar Derecha - Carrito */}
+          <aside className="lg:col-span-1">
+            <div className="lg:sticky lg:top-20 border-2 sm:border-4 border-foreground p-4 sm:p-6 bg-card shadow-brutal">
+              <h3 className="font-heading text-xl mb-4 uppercase border-b-2 border-foreground pb-2">
+                Cotización
+              </h3>
+              
+              {items.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  Carrito vacío
+                </p>
+              ) : (
+                <div className="space-y-4">
+                  {items.map((item) => (
+                    <div key={item.id} className="text-sm border-b border-foreground/20 pb-2">
+                      <p className="font-heading truncate">{item.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {item.quantity}x ${item.pricePerDay.toLocaleString()}/día
+                      </p>
+                    </div>
+                  ))}
+                  
+                  <div className="border-t-2 border-foreground pt-4 mt-4">
+                    <div className="flex justify-between items-baseline mb-2">
+                      <span className="font-heading text-sm">Subtotal (1 día):</span>
+                      <span className="font-heading text-xl">${calculateSubtotal(1).toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline text-muted-foreground text-xs">
+                      <span>Semana:</span>
+                      <span>${calculateSubtotal(7).toLocaleString()}</span>
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    className="w-full mt-4" 
+                    onClick={() => window.location.href = '/cotizador'}
+                  >
+                    IR A COTIZAR
+                  </Button>
+                </div>
+              )}
+
+              {/* Banner WhatsApp */}
+              <div className="mt-6 p-4 border-2 border-primary bg-primary/5">
+                <p className="text-sm font-heading mb-2 text-center">
+                  ¿No sabés qué necesitás?
+                </p>
+                <Button 
+                  variant="outline" 
+                  className="w-full text-xs"
+                  onClick={() => {
+                    const phoneNumber = "5493624907592";
+                    const message = encodeURIComponent("Hola, necesito ayuda para elegir el equipo adecuado para mi proyecto.");
+                    window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
+                  }}
+                >
+                  Hablemos por WhatsApp
+                </Button>
+              </div>
+            </div>
+          </aside>
         </div>
       </div>
       

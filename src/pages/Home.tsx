@@ -9,6 +9,8 @@ import {
   CarouselContent,
   CarouselItem,
   CarouselApi,
+  CarouselPrevious,
+  CarouselNext,
 } from "@/components/ui/carousel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -604,28 +606,32 @@ const Home = () => {
             </p>
           </div>
 
-          <Carousel className="w-full max-w-5xl mx-auto">
-            <CarouselContent>
-              {testimonials.map((testimonial, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                  <Card className="border-2 border-foreground shadow-brutal h-full">
-                    <CardContent className="p-8">
-                      <div className="mb-6">
-                        <div className="text-primary font-heading text-6xl leading-none mb-4">"</div>
-                        <p className="font-heading text-sm leading-relaxed">
-                          {testimonial.content}
-                        </p>
-                      </div>
-                      <div className="border-t-3 border-foreground pt-4">
-                        <p className="font-heading text-lg uppercase">{testimonial.name}</p>
-                        <p className="text-sm text-muted-foreground font-heading">{testimonial.role}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
+          <div className="relative">
+            <Carousel className="w-full max-w-5xl mx-auto">
+              <CarouselContent>
+                {testimonials.map((testimonial, index) => (
+                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                    <Card className="border-2 border-foreground shadow-brutal h-full">
+                      <CardContent className="p-8">
+                        <div className="mb-6">
+                          <div className="text-primary font-heading text-6xl leading-none mb-4">"</div>
+                          <p className="font-heading text-sm leading-relaxed">
+                            {testimonial.content}
+                          </p>
+                        </div>
+                        <div className="border-t-3 border-foreground pt-4">
+                          <p className="font-heading text-lg uppercase">{testimonial.name}</p>
+                          <p className="text-sm text-muted-foreground font-heading">{testimonial.role}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-0 -translate-x-1/2" />
+              <CarouselNext className="right-0 translate-x-1/2" />
+            </Carousel>
+          </div>
         </div>
       </section>
 
@@ -641,33 +647,37 @@ const Home = () => {
             </div>
           </div>
 
-          <Carousel className="w-full">
-            <CarouselContent className="-ml-0">
-              {[1, 2, 3, 4, 5].map((story) => (
-                <CarouselItem key={story} className="pl-0 basis-full md:basis-1/3 lg:basis-1/4">
-                  <div className="relative aspect-[9/16] bg-muted overflow-hidden group cursor-pointer border-4 border-background">
-                    <img 
-                      src={`https://images.unsplash.com/photo-${1492691527719 + story}-6dd46a0f1123?w=600&h=900&fit=crop`}
-                      alt={`Instagram Story ${story}`}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <p className="text-background font-heading text-sm uppercase">
-                          Ver en Instagram
-                        </p>
+          <div className="relative">
+            <Carousel className="w-full">
+              <CarouselContent className="-ml-0">
+                {[1, 2, 3, 4, 5].map((story) => (
+                  <CarouselItem key={story} className="pl-0 basis-full md:basis-1/3 lg:basis-1/4">
+                    <div className="relative aspect-[9/16] bg-muted overflow-hidden group cursor-pointer border-4 border-background">
+                      <img 
+                        src={`https://images.unsplash.com/photo-${1492691527719 + story}-6dd46a0f1123?w=600&h=900&fit=crop`}
+                        alt={`Instagram Story ${story}`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="absolute bottom-0 left-0 right-0 p-6">
+                          <p className="text-background font-heading text-sm uppercase">
+                            Ver en Instagram
+                          </p>
+                        </div>
+                      </div>
+                      <div className="absolute top-4 left-4 right-4 flex gap-1">
+                        <div className="h-1 flex-1 bg-background/40 rounded-full overflow-hidden">
+                          <div className="h-full bg-background w-full"></div>
+                        </div>
                       </div>
                     </div>
-                    <div className="absolute top-4 left-4 right-4 flex gap-1">
-                      <div className="h-1 flex-1 bg-background/40 rounded-full overflow-hidden">
-                        <div className="h-full bg-background w-full"></div>
-                      </div>
-                    </div>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-0 -translate-x-1/2 bg-background text-foreground" />
+              <CarouselNext className="right-0 translate-x-1/2 bg-background text-foreground" />
+            </Carousel>
+          </div>
         </div>
       </section>
 

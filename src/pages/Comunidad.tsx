@@ -173,40 +173,42 @@ const Comunidad = () => {
             Mirá algunos de los proyectos en los que participamos.
           </p>
           
-          <Carousel className="w-full max-w-5xl mx-auto">
-            <CarouselContent>
-              {federalProjects.map((project, index) => (
-                <CarouselItem key={index} className="md:basis-1/2">
-                  <Card className="border-2 border-foreground shadow-brutal overflow-hidden">
-                    <div className="relative aspect-video bg-muted">
-                      <img 
-                        src={project.thumbnail} 
-                        alt={project.title}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center bg-foreground/20 hover:bg-foreground/40 transition-colors cursor-pointer">
-                        <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center border-4 border-background shadow-brutal-sm">
-                          <Video className="h-8 w-8 text-primary-foreground ml-1" />
+          <div className="relative">
+            <Carousel className="w-full max-w-5xl mx-auto">
+              <CarouselContent>
+                {federalProjects.map((project, index) => (
+                  <CarouselItem key={index} className="md:basis-1/2">
+                    <Card className="border-2 border-foreground shadow-brutal overflow-hidden">
+                      <div className="relative aspect-video bg-muted">
+                        <img 
+                          src={project.thumbnail} 
+                          alt={project.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-foreground/20 hover:bg-foreground/40 transition-colors cursor-pointer">
+                          <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center border-4 border-background shadow-brutal-sm">
+                            <Video className="h-8 w-8 text-primary-foreground ml-1" />
+                          </div>
                         </div>
+                        <Badge className="absolute top-2 right-2 bg-background/90 text-foreground border-2 border-foreground">
+                          <MapPin className="h-3 w-3 mr-1" />
+                          {project.region}
+                        </Badge>
                       </div>
-                      <Badge className="absolute top-2 right-2 bg-background/90 text-foreground border-2 border-foreground">
-                        <MapPin className="h-3 w-3 mr-1" />
-                        {project.region}
-                      </Badge>
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="font-heading text-lg">{project.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground">{project.description}</p>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
+                      <CardHeader>
+                        <CardTitle className="font-heading text-lg">{project.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground">{project.description}</p>
+                      </CardContent>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-0 -translate-x-1/2" />
+              <CarouselNext className="right-0 translate-x-1/2" />
+            </Carousel>
+          </div>
         </div>
       </section>
 
