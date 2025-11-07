@@ -3,15 +3,33 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Film, Video, Camera, Award, Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  CarouselApi,
 } from "@/components/ui/carousel";
 
 const Comunidad = () => {
+  const [federalProjectsApi, setFederalProjectsApi] = useState<CarouselApi>();
+  const [currentFederalSlide, setCurrentFederalSlide] = useState(0);
+
+  useEffect(() => {
+    if (!federalProjectsApi) return;
+
+    const updateSlide = () => {
+      setCurrentFederalSlide(federalProjectsApi.selectedScrollSnap());
+    };
+
+    federalProjectsApi.on("select", updateSlide);
+    updateSlide();
+
+    return () => {
+      federalProjectsApi.off("select", updateSlide);
+    };
+  }, [federalProjectsApi]);
+
   const federalProjects = [
     {
       title: "Largometraje 'Pampa Adentro'",
@@ -80,21 +98,21 @@ const Comunidad = () => {
   const testimonials = [
     {
       name: "Sofía Martínez",
-      region: "Córdoba",
+      region: "Gran Buenos Aires",
       project: "Largometraje 'Montañas'",
       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
       text: "Gracias a Ala Norte pudimos filmar en locaciones increíbles con el mejor equipo. El soporte fue impecable."
     },
     {
       name: "Tomás Ruiz",
-      region: "Mendoza",
+      region: "Corrientes",
       project: "Serie 'Viñedos'",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
       text: "La asesoría técnica fue clave para nuestra serie. Nos ayudaron a elegir las cámaras perfectas para exteriores."
     },
     {
       name: "Lucía Fernández",
-      region: "Patagonia",
+      region: "Chaco",
       project: "Documental 'Al Sur'",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop",
       text: "Filmar en la Patagonia con el respaldo de Ala Norte fue una experiencia única. Equipo de primer nivel."
@@ -105,14 +123,14 @@ const Comunidad = () => {
     {
       title: "Cortometraje 'La Espera'",
       category: "Ficción",
-      region: "Buenos Aires",
+      region: "Mendoza",
       image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=500&fit=crop",
       description: "Ganador en Festival de Mar del Plata. Filmado completamente con equipos Ala Norte."
     },
     {
       title: "Publicidad Coca-Cola Argentina",
       category: "Publicidad",
-      region: "Córdoba",
+      region: "Neuquén",
       image: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&h=500&fit=crop",
       description: "Campaña nacional filmada en 4K. Luces LED y cámaras de cine."
     },
@@ -158,6 +176,9 @@ const Comunidad = () => {
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
               Somos una red federal de creadores audiovisuales. Conectamos talento, compartimos proyectos y construimos la industria del futuro.
             </p>
+            <p className="text-xs text-muted-foreground/60 mt-4">
+              ⚠️ Contenido simulado para demostración. Prototipo funcional de frontend y backend.
+            </p>
           </div>
         </div>
       </section>
@@ -174,7 +195,11 @@ const Comunidad = () => {
           </p>
           
           <div className="relative">
-            <Carousel className="w-full max-w-5xl mx-auto">
+            <Carousel 
+              className="w-full max-w-5xl mx-auto"
+              setApi={setFederalProjectsApi}
+              opts={{ loop: true }}
+            >
               <CarouselContent>
                 {federalProjects.map((project, index) => (
                   <CarouselItem key={index} className="md:basis-1/2">
@@ -205,9 +230,21 @@ const Comunidad = () => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="left-0 -translate-x-1/2" />
-              <CarouselNext className="right-0 translate-x-1/2" />
             </Carousel>
+            
+            {/* Dot Navigation */}
+            <div className="flex justify-center gap-2 mt-6">
+              {federalProjects.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => federalProjectsApi?.scrollTo(index)}
+                  className={`h-2 rounded-full transition-all ${
+                    currentFederalSlide === index ? 'w-8 bg-primary' : 'w-2 bg-muted-foreground/30'
+                  }`}
+                  aria-label={`Ir al proyecto ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -215,9 +252,12 @@ const Comunidad = () => {
       {/* Testimonials by Region */}
       <section className="py-12 sm:py-16 bg-muted/30">
         <div className="container mx-auto px-4">
-          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl mb-8 sm:mb-12 text-center">
+          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl mb-4 sm:mb-8 text-center">
             TESTIMONIOS DE LA COMUNIDAD
           </h2>
+          <p className="text-xs text-muted-foreground/60 text-center mb-8">
+            ⚠️ Contenido simulado. Prototipo funcional.
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 max-w-6xl mx-auto">
             {testimonials.map((testimonial, index) => (
               <Card key={index} className="border-2 border-foreground shadow-brutal">
@@ -250,9 +290,12 @@ const Comunidad = () => {
       {/* Success Cases */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <h2 className="font-heading text-3xl md:text-4xl mb-12 text-center">
+          <h2 className="font-heading text-3xl md:text-4xl mb-4 text-center">
             CASOS DE ÉXITO DESTACADOS
           </h2>
+          <p className="text-xs text-muted-foreground/60 text-center mb-12">
+            ⚠️ Contenido simulado. Prototipo funcional.
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {successCases.map((project, index) => (
               <Card key={index} className="border-2 border-foreground shadow-brutal overflow-hidden">
@@ -290,9 +333,12 @@ const Comunidad = () => {
       {/* Blog Section */}
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
-          <h2 className="font-heading text-3xl md:text-4xl mb-12 text-center">
+          <h2 className="font-heading text-3xl md:text-4xl mb-4 text-center">
             DEL BLOG
           </h2>
+          <p className="text-xs text-muted-foreground/60 text-center mb-12">
+            ⚠️ Contenido simulado. Prototipo funcional.
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {blogPosts.map((post, index) => (
               <Card key={index} className="border-2 border-foreground shadow-brutal overflow-hidden hover:shadow-brutal-lg transition-shadow">
@@ -329,14 +375,17 @@ const Comunidad = () => {
       {/* Awards and Recognition Section */}
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center gap-4 mb-12">
+          <div className="flex items-center justify-center gap-4 mb-8">
             <Trophy className="h-10 w-10 text-primary" />
             <h2 className="font-heading text-3xl md:text-4xl text-center">
               PREMIOS Y DISTINCIONES
             </h2>
           </div>
-          <p className="text-center text-muted-foreground mb-12 max-w-3xl mx-auto text-lg">
+          <p className="text-center text-muted-foreground mb-4 max-w-3xl mx-auto text-lg">
             Orgullosos de ser parte de proyectos galardonados en festivales nacionales e internacionales.
+          </p>
+          <p className="text-xs text-muted-foreground/60 text-center mb-12">
+            ⚠️ Contenido simulado. Prototipo funcional.
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">

@@ -194,15 +194,18 @@ const Equipos = () => {
           <p className="text-xl sm:text-2xl font-heading text-muted-foreground">
             Equipos curados y listos para tu proyecto
           </p>
+          <p className="text-xs text-muted-foreground/60 mt-2">
+            ⚠️ Contenido simulado para demostración. Prototipo funcional de frontend y backend.
+          </p>
         </div>
         {/* Layout con Filtros Laterales */}
         <div className="grid lg:grid-cols-5 gap-6 lg:gap-8">
           {/* Sidebar Filtros Izquierda */}
           <aside className="lg:col-span-1">
-            <div className="lg:sticky lg:top-20 border-2 sm:border-4 border-foreground p-4 sm:p-6 bg-card shadow-brutal">
+            <div className="lg:sticky lg:top-20 border-2 sm:border-4 border-foreground p-4 sm:p-6 bg-card shadow-brutal max-h-[calc(100vh-6rem)] overflow-y-auto">
               {/* Búsqueda con botón limpiar */}
               <div className="mb-6">
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" />
                     <Input
@@ -210,12 +213,13 @@ const Equipos = () => {
                       placeholder="BUSCAR..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 border-2 border-foreground font-heading uppercase"
+                      className="pl-10 border-2 border-foreground font-heading uppercase text-sm"
                     />
                   </div>
                    {(searchTerm || selectedSubcategories.length > 0 || selectedCategories.length > 0 || selectedBrands.length > 0) && (
                     <Button 
                       variant="outline" 
+                      size="sm"
                       onClick={() => {
                         setSearchTerm("");
                         setSelectedSubcategories([]);
@@ -223,6 +227,7 @@ const Equipos = () => {
                         setSelectedBrands([]);
                         setBudgetRange([0, 100000]);
                       }}
+                      className="whitespace-nowrap"
                     >
                       LIMPIAR
                     </Button>
@@ -240,7 +245,7 @@ const Equipos = () => {
 
               {/* Filtro por Marca */}
               <div className="mt-6 border-t-2 border-foreground pt-6">
-                <h3 className="font-heading text-lg mb-3 uppercase">Marcas</h3>
+                <h3 className="font-heading text-base sm:text-lg mb-3 uppercase">Marcas</h3>
                 <div className="space-y-2 max-h-48 overflow-y-auto">
                   {uniqueBrands.map((brand) => (
                     <label key={brand} className="flex items-center gap-2 cursor-pointer">
@@ -256,7 +261,7 @@ const Equipos = () => {
                         }}
                         className="rounded border-2 border-foreground"
                       />
-                      <span className="text-sm">{brand}</span>
+                      <span className="text-xs sm:text-sm break-words">{brand}</span>
                     </label>
                   ))}
                 </div>
@@ -264,7 +269,7 @@ const Equipos = () => {
 
               {/* Filtro por Presupuesto */}
               <div className="mt-6 border-t-2 border-foreground pt-6">
-                <h3 className="font-heading text-lg mb-3 uppercase">Presupuesto (por día)</h3>
+                <h3 className="font-heading text-base sm:text-lg mb-3 uppercase">Presupuesto (por día)</h3>
                 <div className="space-y-4">
                   <div className="flex gap-2 items-center">
                     <Input
@@ -272,18 +277,18 @@ const Equipos = () => {
                       placeholder="Min"
                       value={budgetRange[0]}
                       onChange={(e) => setBudgetRange([parseInt(e.target.value) || 0, budgetRange[1]])}
-                      className="border-2 border-foreground"
+                      className="border-2 border-foreground text-xs"
                     />
-                    <span>-</span>
+                    <span className="text-xs">-</span>
                     <Input
                       type="number"
                       placeholder="Max"
                       value={budgetRange[1]}
                       onChange={(e) => setBudgetRange([budgetRange[0], parseInt(e.target.value) || 100000])}
-                      className="border-2 border-foreground"
+                      className="border-2 border-foreground text-xs"
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground break-words">
                     ${budgetRange[0].toLocaleString()} - ${budgetRange[1].toLocaleString()}
                   </p>
                 </div>
@@ -420,34 +425,34 @@ const Equipos = () => {
 
           {/* Sidebar Derecha - Carrito */}
           <aside className="lg:col-span-1">
-            <div className="lg:sticky lg:top-20 border-2 sm:border-4 border-foreground p-4 sm:p-6 bg-card shadow-brutal">
-              <h3 className="font-heading text-xl mb-4 uppercase border-b-2 border-foreground pb-2">
+            <div className="lg:sticky lg:top-20 border-2 sm:border-4 border-foreground p-4 sm:p-6 bg-card shadow-brutal max-h-[calc(100vh-6rem)] overflow-y-auto">
+              <h3 className="font-heading text-lg sm:text-xl mb-4 uppercase border-b-2 border-foreground pb-2">
                 Cotización
               </h3>
               
               {items.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-4">
+                <p className="text-xs sm:text-sm text-muted-foreground text-center py-4">
                   Carrito vacío
                 </p>
               ) : (
                 <div className="space-y-4">
                   {items.map((item) => (
                     <div key={item.id} className="text-sm border-b border-foreground/20 pb-2">
-                      <p className="font-heading truncate">{item.name}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="font-heading truncate text-xs sm:text-sm">{item.name}</p>
+                      <p className="text-xs text-muted-foreground break-words">
                         {item.quantity}x ${item.pricePerDay.toLocaleString()}/día
                       </p>
                     </div>
                   ))}
                   
                   <div className="border-t-2 border-foreground pt-4 mt-4">
-                    <div className="flex justify-between items-baseline mb-2">
-                      <span className="font-heading text-sm">Subtotal (1 día):</span>
-                      <span className="font-heading text-xl">${calculateSubtotal(1).toLocaleString()}</span>
+                    <div className="flex justify-between items-baseline mb-2 gap-2">
+                      <span className="font-heading text-xs sm:text-sm">Subtotal (1 día):</span>
+                      <span className="font-heading text-base sm:text-xl break-words">${calculateSubtotal(1).toLocaleString()}</span>
                     </div>
-                    <div className="flex justify-between items-baseline text-muted-foreground text-xs">
+                    <div className="flex justify-between items-baseline text-muted-foreground text-xs gap-2">
                       <span>Semana:</span>
-                      <span>${calculateSubtotal(7).toLocaleString()}</span>
+                      <span className="break-words">${calculateSubtotal(7).toLocaleString()}</span>
                     </div>
                   </div>
                   
@@ -462,11 +467,12 @@ const Equipos = () => {
 
               {/* Banner WhatsApp */}
               <div className="mt-6 p-4 border-2 border-primary bg-primary/5">
-                <p className="text-sm font-heading mb-2 text-center">
+                <p className="text-xs sm:text-sm font-heading mb-2 text-center break-words">
                   ¿No sabés qué necesitás?
                 </p>
                 <Button 
                   variant="outline" 
+                  size="sm"
                   className="w-full text-xs"
                   onClick={() => {
                     const phoneNumber = "5493624907592";
@@ -477,6 +483,11 @@ const Equipos = () => {
                   Hablemos por WhatsApp
                 </Button>
               </div>
+              
+              {/* Nota de advertencia */}
+              <p className="text-xs text-muted-foreground/60 mt-4 text-center">
+                ⚠️ Contenido simulado. Prototipo funcional.
+              </p>
             </div>
           </aside>
         </div>
