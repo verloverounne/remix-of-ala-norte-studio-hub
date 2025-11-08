@@ -62,8 +62,8 @@ const testimonials = [
 const spaces360 = [
   { id: 1, title: "GALERÍA DE FILMACIÓN", subtitle: "150 m²" },
   { id: 2, title: "SALA DE SONIDO", subtitle: "ProTools Ultimate" },
-  { id: 3, title: "ESPACIO FOTOGRÁFICO", subtitle: "Ciclorama 6x4m" },
-  { id: 4, title: "ESTUDIO PODCAST", subtitle: "Equipado" },
+  { id: 3, title: "ESPACIO SOCIAL & COCINA", subtitle: "Cocina Equipada" },
+  { id: 4, title: "BAÑO DE PRODUCCIÓN", subtitle: "Luz Especial para Maquillaje y Peinado" },
 ];
 
 const Home = () => {
