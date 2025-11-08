@@ -12,6 +12,7 @@ import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
 import { EquipmentModal } from "@/components/EquipmentModal";
 import { SubcategoryFilter } from "@/components/SubcategoryFilter";
+import { LazyImage } from "@/components/LazyImage";
 
 const Equipos = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -320,15 +321,16 @@ const Equipos = () => {
                         key={item.id}
                         className="overflow-hidden group"
                       >
-                  <div className="aspect-video bg-muted relative overflow-hidden border-b-2 border-foreground">
+                  <div className="relative">
                     {item.image_url ? (
-                      <img
+                      <LazyImage
                         src={item.image_url}
                         alt={item.name}
-                        className="w-full h-full object-cover grayscale group-hover:scale-110 transition-transform duration-300"
+                        className="grayscale group-hover:scale-110 transition-transform duration-300"
+                        placeholderClassName="border-b-2 border-foreground"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-muted">
+                      <div className="aspect-video w-full flex items-center justify-center bg-muted border-b-2 border-foreground">
                         <span className="text-brutal text-4xl opacity-20">NO IMG</span>
                       </div>
                     )}

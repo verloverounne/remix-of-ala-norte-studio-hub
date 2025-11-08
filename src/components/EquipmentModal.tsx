@@ -1,7 +1,10 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Separator } from "@/components/ui/separator";
 import type { EquipmentWithCategory } from "@/types/supabase";
+import { AvailabilityCalendar } from "./AvailabilityCalendar";
+import { RelatedEquipment } from "./RelatedEquipment";
 
 interface EquipmentModalProps {
   equipment: EquipmentWithCategory | null;
@@ -32,9 +35,9 @@ export const EquipmentModal = ({ equipment, open, onOpenChange }: EquipmentModal
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-heading text-3xl uppercase flex items-center gap-4">
+          <DialogTitle className="font-heading text-2xl sm:text-3xl uppercase flex items-center gap-2 sm:gap-4 flex-wrap">
             {equipment.name}
             <Badge variant={statusBadge.variant as any}>
               {statusBadge.text}
@@ -118,7 +121,7 @@ export const EquipmentModal = ({ equipment, open, onOpenChange }: EquipmentModal
           {/* Precios */}
           <div className="border-t-2 border-foreground pt-4">
             <h3 className="font-heading text-xl mb-4 uppercase">PRECIOS</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="border-2 border-foreground p-4">
                 <p className="text-sm text-muted-foreground font-heading">POR DÍA</p>
                 <p className="font-heading text-3xl text-primary">
@@ -135,6 +138,27 @@ export const EquipmentModal = ({ equipment, open, onOpenChange }: EquipmentModal
               )}
             </div>
           </div>
+
+          {/* Availability Calendar */}
+          {equipment.status === 'available' && (
+            <>
+              <Separator className="my-6" />
+              <AvailabilityCalendar
+                equipmentId={equipment.id}
+                pricePerDay={equipment.price_per_day}
+                pricePerWeek={equipment.price_per_week || undefined}
+                equipmentName={equipment.name}
+              />
+            </>
+          )}
+
+          {/* Related Equipment */}
+          <Separator className="my-6" />
+          <RelatedEquipment
+            equipmentId={equipment.id}
+            categoryId={equipment.category_id || undefined}
+            subcategoryId={equipment.subcategory_id || undefined}
+          />
         </div>
       </DialogContent>
     </Dialog>

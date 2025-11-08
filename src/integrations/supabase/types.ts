@@ -272,6 +272,86 @@ export type Database = {
           },
         ]
       }
+      equipment_availability: {
+        Row: {
+          created_at: string | null
+          date: string
+          equipment_id: string
+          id: string
+          quantity_available: number | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          date: string
+          equipment_id: string
+          id?: string
+          quantity_available?: number | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          date?: string
+          equipment_id?: string
+          id?: string
+          quantity_available?: number | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "equipment_availability_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "equipment"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      equipment_recommendations: {
+        Row: {
+          created_at: string | null
+          equipment_id: string
+          id: string
+          reason: string | null
+          recommended_id: string
+          score: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          equipment_id: string
+          id?: string
+          reason?: string | null
+          recommended_id: string
+          score?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          equipment_id?: string
+          id?: string
+          reason?: string | null
+          recommended_id?: string
+          score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "equipment_recommendations_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "equipment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_recommendations_recommended_id_fkey"
+            columns: ["recommended_id"]
+            isOneToOne: false
+            referencedRelation: "equipment"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -391,6 +471,65 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      reservations: {
+        Row: {
+          created_at: string | null
+          customer_email: string | null
+          customer_name: string | null
+          customer_phone: string | null
+          end_date: string
+          equipment_id: string
+          id: string
+          notes: string | null
+          quantity: number | null
+          start_date: string
+          status: string | null
+          total_price: number
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          end_date: string
+          equipment_id: string
+          id?: string
+          notes?: string | null
+          quantity?: number | null
+          start_date: string
+          status?: string | null
+          total_price: number
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          end_date?: string
+          equipment_id?: string
+          id?: string
+          notes?: string | null
+          quantity?: number | null
+          start_date?: string
+          status?: string | null
+          total_price?: number
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "equipment"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       spaces: {
         Row: {

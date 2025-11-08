@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import Fuse from "fuse.js";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -11,6 +12,9 @@ interface SearchResult {
   title: string;
   description?: string;
   url: string;
+  imageUrl?: string;
+  price?: number;
+  availability?: string;
 }
 
 export const SearchBar = () => {
@@ -18,15 +22,19 @@ export const SearchBar = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [searchData, setSearchData] = useState<SearchResult[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const searchRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const loadSearchData = async () => {
+      setLoading(true);
       // Fetch equipment
       const { data: equipment } = await supabase
         .from('equipment')
-        .select('id, name, description, brand, model')
+        .select('id, name, description, brand, model, price_per_day, status, image_url')
         .eq('status', 'available');
 
       // Fetch spaces
@@ -50,7 +58,10 @@ export const SearchBar = () => {
           type: 'equipment' as const,
           title: `${e.name}${e.brand ? ` - ${e.brand}` : ''}${e.model ? ` ${e.model}` : ''}`,
           description: e.description || undefined,
-          url: `/equipos?item=${e.id}`
+          url: `/equipos?item=${e.id}`,
+          imageUrl: e.image_url || undefined,
+          price: e.price_per_day,
+          availability: e.status
         })),
         // Spaces
         ...(spaces || []).map(s => ({
@@ -62,31 +73,40 @@ export const SearchBar = () => {
       ];
 
       setSearchData(data);
+      setLoading(false);
     };
 
     loadSearchData();
   }, []);
 
+  // Debounced search effect
   useEffect(() => {
     if (query.trim().length < 2) {
       setResults([]);
+      setSelectedIndex(-1);
       return;
     }
 
-    const fuse = new Fuse(searchData, {
-      keys: ['title', 'description'],
-      threshold: 0.3,
-      includeScore: true
-    });
+    const timer = setTimeout(() => {
+      const fuse = new Fuse(searchData, {
+        keys: ['title', 'description'],
+        threshold: 0.3,
+        includeScore: true
+      });
 
-    const searchResults = fuse.search(query);
-    setResults(searchResults.slice(0, 8).map(r => r.item));
+      const searchResults = fuse.search(query);
+      setResults(searchResults.slice(0, 8).map(r => r.item));
+      setSelectedIndex(-1);
+    }, 300); // 300ms debounce
+
+    return () => clearTimeout(timer);
   }, [query, searchData]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setIsOpen(false);
+        setSelectedIndex(-1);
       }
     };
 
@@ -98,6 +118,43 @@ export const SearchBar = () => {
     navigate(url);
     setIsOpen(false);
     setQuery("");
+    setSelectedIndex(-1);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (results.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedIndex(prev => (prev < results.length - 1 ? prev + 1 : 0));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedIndex(prev => (prev > 0 ? prev - 1 : results.length - 1));
+    } else if (e.key === 'Enter' && selectedIndex >= 0) {
+      e.preventDefault();
+      handleResultClick(results[selectedIndex].url);
+    } else if (e.key === 'Escape') {
+      setIsOpen(false);
+      setSelectedIndex(-1);
+    }
+  };
+
+  const highlightMatch = (text: string, query: string) => {
+    if (!query) return text;
+    const parts = text.split(new RegExp(`(${query})`, 'gi'));
+    return (
+      <>
+        {parts.map((part, i) =>
+          part.toLowerCase() === query.toLowerCase() ? (
+            <mark key={i} className="bg-primary/30 font-semibold">
+              {part}
+            </mark>
+          ) : (
+            part
+          )
+        )}
+      </>
+    );
   };
 
   const getTypeLabel = (type: string) => {
@@ -115,7 +172,10 @@ export const SearchBar = () => {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            setIsOpen(true);
+            setTimeout(() => inputRef.current?.focus(), 100);
+          }}
           className="border-2 border-foreground h-10 w-10 sm:h-12 sm:w-12"
           aria-label="Abrir búsqueda"
         >
@@ -124,12 +184,14 @@ export const SearchBar = () => {
       ) : (
         <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 top-20 sm:top-0 w-auto sm:w-80 md:w-96 bg-background border-2 border-foreground shadow-brutal-lg z-50">
           <div className="flex items-center gap-2 p-3 border-b-2 border-foreground">
-            <Search className="h-5 w-5 shrink-0" />
+            <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
             <Input
+              ref={inputRef}
               type="text"
-              placeholder="Buscar..."
+              placeholder="Buscar equipos, espacios..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
               autoFocus
               className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
             />
@@ -139,6 +201,7 @@ export const SearchBar = () => {
               onClick={() => {
                 setIsOpen(false);
                 setQuery("");
+                setSelectedIndex(-1);
               }}
               className="h-8 w-8 shrink-0"
             >
@@ -146,37 +209,66 @@ export const SearchBar = () => {
             </Button>
           </div>
           
-          {results.length > 0 && (
+          {query.trim().length >= 2 && results.length > 0 && (
             <div className="max-h-96 overflow-y-auto">
-              {results.map((result, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleResultClick(result.url)}
-                  className="w-full text-left p-3 hover:bg-muted border-b border-foreground/20 last:border-0 transition-none"
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex-1 min-w-0">
-                      <p className="font-heading text-sm font-semibold truncate">
-                        {result.title}
-                      </p>
-                      {result.description && (
-                        <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
-                          {result.description}
-                        </p>
+              {results.map((result, index) => {
+                const isEquipment = result.type === 'equipment';
+                
+                return (
+                  <button
+                    key={index}
+                    onClick={() => handleResultClick(result.url)}
+                    className={`w-full text-left p-3 border-b border-foreground/20 last:border-0 transition-colors ${
+                      selectedIndex === index ? 'bg-muted' : 'hover:bg-muted/50'
+                    }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      {isEquipment && result.imageUrl && (
+                        <div className="w-12 h-12 shrink-0 bg-muted border border-foreground rounded overflow-hidden">
+                          <img
+                            src={result.imageUrl}
+                            alt=""
+                            className="w-full h-full object-cover grayscale"
+                          />
+                        </div>
                       )}
+                      
+                      <div className="flex-1 min-w-0">
+                        <p className="font-heading text-sm font-semibold truncate">
+                          {highlightMatch(result.title, query)}
+                        </p>
+                        {result.description && (
+                          <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
+                            {result.description}
+                          </p>
+                        )}
+                        {isEquipment && result.price && (
+                          <p className="text-xs text-primary font-mono mt-1">
+                            ${(result.price / 1000).toFixed(0)}K/día
+                          </p>
+                        )}
+                      </div>
+                      
+                      <Badge variant="secondary" className="shrink-0 text-xs">
+                        {getTypeLabel(result.type)}
+                      </Badge>
                     </div>
-                    <span className="text-xs bg-primary text-primary-foreground px-2 py-1 font-heading shrink-0">
-                      {getTypeLabel(result.type)}
-                    </span>
-                  </div>
-                </button>
-              ))}
+                  </button>
+                );
+              })}
             </div>
           )}
           
-          {query.trim().length >= 2 && results.length === 0 && (
+          {query.trim().length >= 2 && results.length === 0 && !loading && (
             <div className="p-6 text-center text-muted-foreground text-sm">
-              No se encontraron resultados
+              <p className="font-heading mb-1">No se encontraron resultados</p>
+              <p className="text-xs">Intenta con otras palabras clave</p>
+            </div>
+          )}
+          
+          {query.trim().length < 2 && (
+            <div className="p-6 text-center text-muted-foreground text-xs">
+              Escribe al menos 2 caracteres para buscar
             </div>
           )}
         </div>
