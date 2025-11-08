@@ -26,12 +26,23 @@ const Equipos = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [budgetRange, setBudgetRange] = useState<[number, number]>([0, 100000]);
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  const [unavailableEquipmentIds, setUnavailableEquipmentIds] = useState<Set<string>>(new Set());
   const { addItem, items, calculateSubtotal } = useCart();
   const { toast } = useToast();
 
   useEffect(() => {
     fetchEquipment();
   }, []);
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      checkAvailability();
+    } else {
+      setUnavailableEquipmentIds(new Set());
+    }
+  }, [startDate, endDate, equipment]);
 
   const fetchEquipment = async () => {
     setLoading(true);
@@ -52,6 +63,21 @@ const Equipos = () => {
       setEquipment(transformedData);
     }
     setLoading(false);
+  };
+
+  const checkAvailability = async () => {
+    if (!startDate || !endDate || equipment.length === 0) return;
+
+    const { data: unavailablePeriods, error } = await supabase
+      .from('equipment_unavailability')
+      .select('equipment_id')
+      .lte('start_date', endDate)
+      .gte('end_date', startDate);
+
+    if (!error && unavailablePeriods) {
+      const unavailableIds = new Set(unavailablePeriods.map(p => p.equipment_id));
+      setUnavailableEquipmentIds(unavailableIds);
+    }
   };
 
   // Fuzzy search helper
@@ -125,7 +151,9 @@ const Equipos = () => {
     
     const matchesBudget = item.price_per_day >= budgetRange[0] && item.price_per_day <= budgetRange[1];
     
-    return matchesSearch && matchesCategory && matchesSubcategory && matchesBrand && matchesBudget;
+    const matchesAvailability = !startDate || !endDate || !unavailableEquipmentIds.has(item.id);
+    
+    return matchesSearch && matchesCategory && matchesSubcategory && matchesBrand && matchesBudget && matchesAvailability;
   });
 
   // Get unique brands from equipment
@@ -217,7 +245,7 @@ const Equipos = () => {
                       className="pl-10 border-2 border-foreground font-heading uppercase text-sm"
                     />
                   </div>
-                   {(searchTerm || selectedSubcategories.length > 0 || selectedCategories.length > 0 || selectedBrands.length > 0) && (
+                   {(searchTerm || selectedSubcategories.length > 0 || selectedCategories.length > 0 || selectedBrands.length > 0 || startDate || endDate) && (
                     <Button 
                       variant="outline" 
                       size="sm"
@@ -227,6 +255,8 @@ const Equipos = () => {
                         setSelectedCategories([]);
                         setSelectedBrands([]);
                         setBudgetRange([0, 100000]);
+                        setStartDate("");
+                        setEndDate("");
                       }}
                       className="whitespace-nowrap"
                     >
@@ -292,6 +322,40 @@ const Equipos = () => {
                   <p className="text-xs text-muted-foreground break-words">
                     ${budgetRange[0].toLocaleString()} - ${budgetRange[1].toLocaleString()}
                   </p>
+                </div>
+              </div>
+
+              {/* Filtro por Disponibilidad */}
+              <div className="mt-6 border-t-2 border-foreground pt-6">
+                <h3 className="font-heading text-base sm:text-lg mb-3 uppercase">Disponibilidad</h3>
+                <p className="text-xs text-muted-foreground mb-4">
+                  Selecciona las fechas para ver disponibilidad de equipos
+                </p>
+                <div className="space-y-3">
+                  <div>
+                    <label className="text-xs font-heading uppercase mb-1 block">Fecha Inicio</label>
+                    <Input
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      className="border-2 border-foreground text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-heading uppercase mb-1 block">Fecha Fin</label>
+                    <Input
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      min={startDate}
+                      className="border-2 border-foreground text-xs"
+                    />
+                  </div>
+                  {startDate && endDate && unavailableEquipmentIds.size > 0 && (
+                    <p className="text-xs text-muted-foreground mt-2">
+                      {unavailableEquipmentIds.size} equipo{unavailableEquipmentIds.size !== 1 ? 's' : ''} no disponible{unavailableEquipmentIds.size !== 1 ? 's' : ''} en estas fechas
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
