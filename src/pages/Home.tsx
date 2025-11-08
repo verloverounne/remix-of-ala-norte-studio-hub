@@ -328,7 +328,7 @@ const Home = () => {
           <div className="mb-12 sm:mb-16 lg:mb-20 border-l-4 sm:border-l-8 border-secondary pl-4 sm:pl-8">
             <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">NUESTRO EQUIPO</h2>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-heading max-w-3xl">
-              Los dueños y especialistas de Ala Norte que hacen posible tus proyectos audiovisuales.
+              Los que estan al frentede A Ala Norte que hacen posible tus proyectos audiovisuales.
             </p>
           </div>
 
@@ -342,7 +342,7 @@ const Home = () => {
                 />
               </div>
               <CardContent className="p-8 text-center">
-                <h3 className="font-heading text-2xl mb-2 uppercase">JUAN PÉREZ</h3>
+                <h3 className="font-heading text-2xl mb-2 uppercase">Se</h3>
                 <div className="w-16 h-1 bg-primary mx-auto mb-4"></div>
                 <p className="text-primary font-heading text-lg mb-4 uppercase">Sonido</p>
                 <p className="text-muted-foreground font-heading text-sm leading-relaxed">
