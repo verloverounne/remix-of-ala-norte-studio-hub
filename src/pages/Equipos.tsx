@@ -29,12 +29,17 @@ const Equipos = () => {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [unavailableEquipmentIds, setUnavailableEquipmentIds] = useState<Set<string>>(new Set());
+  const [upcomingUnavailableIds, setUpcomingUnavailableIds] = useState<Set<string>>(new Set());
   const { addItem, items, calculateSubtotal } = useCart();
   const { toast } = useToast();
 
   useEffect(() => {
     fetchEquipment();
   }, []);
+
+  useEffect(() => {
+    checkUpcomingUnavailability();
+  }, [equipment]);
 
   useEffect(() => {
     if (startDate && endDate) {
@@ -63,6 +68,25 @@ const Equipos = () => {
       setEquipment(transformedData);
     }
     setLoading(false);
+  };
+
+  const checkUpcomingUnavailability = async () => {
+    if (equipment.length === 0) return;
+
+    const today = new Date();
+    const thirtyDaysFromNow = new Date();
+    thirtyDaysFromNow.setDate(today.getDate() + 30);
+
+    const { data: upcomingPeriods, error } = await supabase
+      .from('equipment_unavailability')
+      .select('equipment_id')
+      .lte('start_date', thirtyDaysFromNow.toISOString().split('T')[0])
+      .gte('end_date', today.toISOString().split('T')[0]);
+
+    if (!error && upcomingPeriods) {
+      const upcomingIds = new Set(upcomingPeriods.map(p => p.equipment_id));
+      setUpcomingUnavailableIds(upcomingIds);
+    }
   };
 
   const checkAvailability = async () => {
@@ -135,26 +159,44 @@ const Equipos = () => {
     return matrix[len1][len2];
   };
 
-  const filteredEquipment = equipment.filter((item) => {
-    const matchesSearch = fuzzyMatch(item.name, searchTerm) ||
-                         fuzzyMatch(item.brand || '', searchTerm) ||
-                         fuzzyMatch(item.model || '', searchTerm);
-    
-    const matchesCategory = selectedCategories.length === 0 || 
-                           (item.category_id && selectedCategories.includes(item.category_id));
-    
-    const matchesSubcategory = selectedSubcategories.length === 0 || 
-                                (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
-    
-    const matchesBrand = selectedBrands.length === 0 || 
-                        (item.brand && selectedBrands.includes(item.brand));
-    
-    const matchesBudget = item.price_per_day >= budgetRange[0] && item.price_per_day <= budgetRange[1];
-    
-    const matchesAvailability = !startDate || !endDate || !unavailableEquipmentIds.has(item.id);
-    
-    return matchesSearch && matchesCategory && matchesSubcategory && matchesBrand && matchesBudget && matchesAvailability;
-  });
+  const filteredEquipment = equipment
+    .filter((item) => {
+      const matchesSearch = fuzzyMatch(item.name, searchTerm) ||
+                           fuzzyMatch(item.brand || '', searchTerm) ||
+                           fuzzyMatch(item.model || '', searchTerm);
+      
+      const matchesCategory = selectedCategories.length === 0 || 
+                             (item.category_id && selectedCategories.includes(item.category_id));
+      
+      const matchesSubcategory = selectedSubcategories.length === 0 || 
+                                  (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
+      
+      const matchesBrand = selectedBrands.length === 0 || 
+                          (item.brand && selectedBrands.includes(item.brand));
+      
+      const matchesBudget = item.price_per_day >= budgetRange[0] && item.price_per_day <= budgetRange[1];
+      
+      return matchesSearch && matchesCategory && matchesSubcategory && matchesBrand && matchesBudget;
+    })
+    .sort((a, b) => {
+      // Primero verificar disponibilidad por fechas seleccionadas
+      const aUnavailableByDate = startDate && endDate && unavailableEquipmentIds.has(a.id);
+      const bUnavailableByDate = startDate && endDate && unavailableEquipmentIds.has(b.id);
+      
+      if (aUnavailableByDate && !bUnavailableByDate) return 1;
+      if (!aUnavailableByDate && bUnavailableByDate) return -1;
+      
+      // Si no hay filtro de fechas, ordenar por disponibilidad próxima
+      if (!startDate || !endDate) {
+        const aHasUpcoming = upcomingUnavailableIds.has(a.id);
+        const bHasUpcoming = upcomingUnavailableIds.has(b.id);
+        
+        if (aHasUpcoming && !bHasUpcoming) return 1;
+        if (!aHasUpcoming && bHasUpcoming) return -1;
+      }
+      
+      return 0;
+    });
 
   // Get unique brands from equipment
   const uniqueBrands = Array.from(new Set(equipment.map(e => e.brand).filter(Boolean))) as string[];
@@ -379,6 +421,9 @@ const Equipos = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                   {filteredEquipment.map((item, index) => {
               const statusBadge = getStatusBadge(item.status);
+              const isUnavailableByDate = startDate && endDate && unavailableEquipmentIds.has(item.id);
+              const hasUpcomingUnavailability = upcomingUnavailableIds.has(item.id);
+              const showUnavailable = isUnavailableByDate || (!startDate && !endDate && hasUpcomingUnavailability);
               
                     return (
                       <Card 
@@ -399,11 +444,17 @@ const Equipos = () => {
                       </div>
                     )}
                     
-                    {/* Badge de estado */}
-                    <div className="absolute top-4 right-4">
-                      <Badge variant={statusBadge.variant as any}>
-                        {statusBadge.text}
-                      </Badge>
+                    {/* Badge de disponibilidad */}
+                    <div className="absolute top-4 right-4 flex flex-col gap-2">
+                      {showUnavailable ? (
+                        <Badge variant="destructive" className="font-heading">
+                          NO DISPONIBLE
+                        </Badge>
+                      ) : (
+                        <Badge variant="success" className="font-heading">
+                          DISPONIBLE
+                        </Badge>
+                      )}
                     </div>
                   </div>
 
