@@ -29,7 +29,7 @@ const services = [
   },
   {
     icon: Mic,
-    title: "AUDIO PROFESIONAL",
+    title: "SONIDO PROFESIONAL",
     description: "Micrófonos, grabadoras y equipos de sonido de primer nivel.",
     link: "/equipos?category=audio",
   },
@@ -96,11 +96,7 @@ const Home = () => {
   useEffect(() => {
     // Fetch featured equipment
     const fetchFeaturedEquipment = async () => {
-      const { data } = await supabase
-        .from('equipment')
-        .select('*')
-        .eq('featured', true)
-        .limit(6);
+      const { data } = await supabase.from("equipment").select("*").eq("featured", true).limit(6);
       if (data) setFeaturedEquipment(data);
     };
     fetchFeaturedEquipment();
@@ -111,20 +107,20 @@ const Home = () => {
         id: 1,
         title: "Cómo elegir la cámara perfecta para tu próximo proyecto",
         image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&h=500&fit=crop",
-        date: "10 Nov 2025"
+        date: "10 Nov 2025",
       },
       {
         id: 2,
         title: "Entrevista: Directores de Fotografía Argentinos",
         image: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800&h=500&fit=crop",
-        date: "5 Nov 2025"
+        date: "5 Nov 2025",
       },
       {
         id: 3,
         title: "Behind the Scenes: Rodaje en Bariloche",
         image: "https://images.unsplash.com/photo-1515634928627-2a4e0dae3ddf?w=800&h=500&fit=crop",
-        date: "1 Nov 2025"
-      }
+        date: "1 Nov 2025",
+      },
     ]);
   }, []);
 
@@ -141,8 +137,8 @@ const Home = () => {
       {/* Hero Section - Full Slider with 360 Tours */}
       <section className="relative h-[60vh] sm:h-[80vh] lg:h-screen overflow-hidden border-b-4 border-foreground">
         <div className="absolute inset-0 bg-foreground/95" />
-        
-        <div 
+
+        <div
           ref={scrollContainerRef}
           className="relative z-10 h-full overflow-x-auto overflow-y-hidden scroll-smooth hide-scrollbar"
           style={{ scrollSnapType: "x mandatory" }}
@@ -152,9 +148,9 @@ const Home = () => {
               <div
                 key={space.id}
                 className="space-card flex-shrink-0 w-screen h-full relative overflow-hidden"
-                style={{ 
+                style={{
                   scrollSnapAlign: "start",
-                  transition: "transform 0.1s ease-out" 
+                  transition: "transform 0.1s ease-out",
                 }}
               >
                 {/* Iframe placeholder for 360 tour */}
@@ -196,7 +192,7 @@ const Home = () => {
                     <div
                       key={i}
                       className={`h-2 rounded-full transition-all ${
-                        i === index ? 'w-12 bg-primary' : 'w-2 bg-background/40'
+                        i === index ? "w-12 bg-primary" : "w-2 bg-background/40"
                       }`}
                     />
                   ))}
@@ -209,7 +205,6 @@ const Home = () => {
 
       {/* Services Section */}
       <section className="py-12 sm:py-16 lg:py-32 bg-background relative">
-
         <div className="container mx-auto px-4 relative">
           <div className="mb-8 sm:mb-12 lg:mb-20 border-l-4 sm:border-l-8 border-secondary pl-4 sm:pl-8">
             <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">SERVICIOS</h2>
@@ -226,12 +221,8 @@ const Home = () => {
                     <div className="w-16 h-16 border-4 border-foreground bg-primary flex items-center justify-center mb-6 shadow-brutal-sm">
                       <service.icon className="h-8 w-8 text-primary-foreground" />
                     </div>
-                    <h3 className="font-heading text-xl mb-4 uppercase tracking-wider">
-                      {service.title}
-                    </h3>
-                    <p className="font-heading text-sm text-muted-foreground leading-relaxed">
-                      {service.description}
-                    </p>
+                    <h3 className="font-heading text-xl mb-4 uppercase tracking-wider">{service.title}</h3>
+                    <p className="font-heading text-sm text-muted-foreground leading-relaxed">{service.description}</p>
                   </CardContent>
                 </Card>
               </Link>
@@ -260,8 +251,8 @@ const Home = () => {
                     <Link to={`/equipos?id=${equipment.id}`}>
                       <div className="relative h-[70vh] bg-foreground/95 overflow-hidden group cursor-pointer">
                         {equipment.image_url && (
-                          <img 
-                            src={equipment.image_url} 
+                          <img
+                            src={equipment.image_url}
                             alt={equipment.name}
                             className="w-full h-full object-cover opacity-40 group-hover:opacity-50 transition-opacity"
                           />
@@ -300,7 +291,7 @@ const Home = () => {
                   key={index}
                   onClick={() => equipmentApi?.scrollTo(index)}
                   className={`h-2 rounded-full transition-all ${
-                    index === currentEquipmentSlide ? 'w-12 bg-primary' : 'w-2 bg-foreground/40'
+                    index === currentEquipmentSlide ? "w-12 bg-primary" : "w-2 bg-foreground/40"
                   }`}
                   aria-label={`Ir al equipo ${index + 1}`}
                 />
@@ -344,7 +335,7 @@ const Home = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 mb-12 sm:mb-16">
             <Card className="border-3 border-foreground shadow-brutal overflow-hidden">
               <div className="aspect-square bg-muted overflow-hidden border-b-3 border-foreground">
-                <img 
+                <img
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=600&fit=crop"
                   alt="Especialista en Sonido"
                   className="w-full h-full object-cover"
@@ -355,14 +346,15 @@ const Home = () => {
                 <div className="w-16 h-1 bg-primary mx-auto mb-4"></div>
                 <p className="text-primary font-heading text-lg mb-4 uppercase">Sonido</p>
                 <p className="text-muted-foreground font-heading text-sm leading-relaxed">
-                  Especialista en captura y postproducción de audio profesional con más de 15 años de experiencia en cine, música y contenido digital.
+                  Especialista en captura y postproducción de audio profesional con más de 15 años de experiencia en
+                  cine, música y contenido digital.
                 </p>
               </CardContent>
             </Card>
 
             <Card className="border-3 border-foreground shadow-brutal overflow-hidden">
               <div className="aspect-square bg-muted overflow-hidden border-b-3 border-foreground">
-                <img 
+                <img
                   src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=600&fit=crop"
                   alt="Especialista en Fotografía"
                   className="w-full h-full object-cover"
@@ -373,14 +365,15 @@ const Home = () => {
                 <div className="w-16 h-1 bg-primary mx-auto mb-4"></div>
                 <p className="text-primary font-heading text-lg mb-4 uppercase">Cámara</p>
                 <p className="text-muted-foreground font-heading text-sm leading-relaxed">
-                  Directora de fotografía con experiencia en proyectos comerciales, cinematográficos y artísticos de alto nivel.
+                  Directora de fotografía con experiencia en proyectos comerciales, cinematográficos y artísticos de
+                  alto nivel.
                 </p>
               </CardContent>
             </Card>
 
             <Card className="border-3 border-foreground shadow-brutal overflow-hidden">
               <div className="aspect-square bg-muted overflow-hidden border-b-3 border-foreground">
-                <img 
+                <img
                   src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=600&fit=crop"
                   alt="Especialista en Postproducción"
                   className="w-full h-full object-cover"
@@ -417,26 +410,26 @@ const Home = () => {
 
           <Tabs defaultValue="galeria" className="w-full">
             <TabsList className="w-full grid grid-cols-2 lg:grid-cols-4 h-auto gap-2 bg-transparent mb-6">
-              <TabsTrigger 
-                value="galeria" 
+              <TabsTrigger
+                value="galeria"
                 className="font-heading text-sm sm:text-base py-3 border border-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               >
                 Galería
               </TabsTrigger>
-              <TabsTrigger 
-                value="red" 
+              <TabsTrigger
+                value="red"
                 className="font-heading text-sm sm:text-base py-3 border border-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               >
                 Red Federal
               </TabsTrigger>
-              <TabsTrigger 
-                value="talleres" 
+              <TabsTrigger
+                value="talleres"
                 className="font-heading text-sm sm:text-base py-3 border border-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               >
                 Talleres
               </TabsTrigger>
-              <TabsTrigger 
-                value="soporte" 
+              <TabsTrigger
+                value="soporte"
                 className="font-heading text-sm sm:text-base py-3 border border-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               >
                 Soporte
@@ -448,7 +441,8 @@ const Home = () => {
                 <CardContent className="p-6 sm:p-8">
                   <h3 className="font-heading text-xl sm:text-2xl lg:text-3xl mb-4">Galería de Producciones</h3>
                   <p className="text-sm sm:text-base text-muted-foreground font-heading mb-6">
-                    Espacios profesionales diseñados específicamente para producciones de alto nivel. Desde sets de filmación hasta estudios de fotografía completamente equipados.
+                    Espacios profesionales diseñados específicamente para producciones de alto nivel. Desde sets de
+                    filmación hasta estudios de fotografía completamente equipados.
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="aspect-video bg-muted border border-foreground"></div>
@@ -463,7 +457,8 @@ const Home = () => {
                 <CardContent className="p-6 sm:p-8">
                   <h3 className="font-heading text-xl sm:text-2xl lg:text-3xl mb-4">Red Federal</h3>
                   <p className="text-sm sm:text-base text-muted-foreground font-heading mb-6">
-                    Presencia en todo el país con equipos de última generación. Accede a nuestros servicios desde cualquier punto de Argentina con la misma calidad y profesionalismo.
+                    Presencia en todo el país con equipos de última generación. Accede a nuestros servicios desde
+                    cualquier punto de Argentina con la misma calidad y profesionalismo.
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="p-4 border border-foreground bg-background">
@@ -488,7 +483,8 @@ const Home = () => {
                 <CardContent className="p-6 sm:p-8">
                   <h3 className="font-heading text-xl sm:text-2xl lg:text-3xl mb-4">Talleres y Capacitación</h3>
                   <p className="text-sm sm:text-base text-muted-foreground font-heading mb-6">
-                    Formación continua con profesionales de la industria. Aprende las últimas técnicas y tendencias en producción audiovisual con nuestros workshops especializados.
+                    Formación continua con profesionales de la industria. Aprende las últimas técnicas y tendencias en
+                    producción audiovisual con nuestros workshops especializados.
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-start gap-4 p-4 border border-foreground bg-background">
@@ -522,7 +518,8 @@ const Home = () => {
                 <CardContent className="p-6 sm:p-8">
                   <h3 className="font-heading text-xl sm:text-2xl lg:text-3xl mb-4">Soporte 24/7</h3>
                   <p className="text-sm sm:text-base text-muted-foreground font-heading mb-6">
-                    Asistencia técnica especializada disponible cuando la necesites. Nuestro equipo de expertos está listo para resolver cualquier inconveniente durante tu producción.
+                    Asistencia técnica especializada disponible cuando la necesites. Nuestro equipo de expertos está
+                    listo para resolver cualquier inconveniente durante tu producción.
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="p-4 border-2 border-primary bg-primary/5">
@@ -564,19 +561,16 @@ const Home = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12">
               {blogPosts.map((post) => (
-                <Card key={post.id} className="border-2 border-foreground shadow-brutal overflow-hidden hover:shadow-brutal-lg transition-shadow">
+                <Card
+                  key={post.id}
+                  className="border-2 border-foreground shadow-brutal overflow-hidden hover:shadow-brutal-lg transition-shadow"
+                >
                   <div className="aspect-video bg-muted overflow-hidden">
-                    <img 
-                      src={post.image} 
-                      alt={post.title}
-                      className="w-full h-full object-cover"
-                    />
+                    <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
                   </div>
                   <CardContent className="p-6">
                     <p className="text-xs text-muted-foreground mb-2 font-heading">{post.date}</p>
-                    <h3 className="font-heading text-lg mb-4 line-clamp-2">
-                      {post.title}
-                    </h3>
+                    <h3 className="font-heading text-lg mb-4 line-clamp-2">{post.title}</h3>
                     <Button asChild variant="outline" size="sm" className="w-full font-heading">
                       <Link to="/blog">LEER MÁS</Link>
                     </Button>
@@ -601,9 +595,7 @@ const Home = () => {
         <div className="container mx-auto px-4 relative">
           <div className="mb-20 border-l-8 border-secondary pl-8">
             <h2 className="font-heading text-brutal mb-4">TESTIMONIOS</h2>
-            <p className="text-xl text-muted-foreground font-heading">
-              LO QUE DICEN NUESTROS CLIENTES
-            </p>
+            <p className="text-xl text-muted-foreground font-heading">LO QUE DICEN NUESTROS CLIENTES</p>
           </div>
 
           <div className="relative">
@@ -615,9 +607,7 @@ const Home = () => {
                       <CardContent className="p-8">
                         <div className="mb-6">
                           <div className="text-primary font-heading text-6xl leading-none mb-4">"</div>
-                          <p className="font-heading text-sm leading-relaxed">
-                            {testimonial.content}
-                          </p>
+                          <p className="font-heading text-sm leading-relaxed">{testimonial.content}</p>
                         </div>
                         <div className="border-t-3 border-foreground pt-4">
                           <p className="font-heading text-lg uppercase">{testimonial.name}</p>
@@ -641,9 +631,7 @@ const Home = () => {
           <div className="container mx-auto px-4 mb-12">
             <div className="border-l-8 border-primary pl-8">
               <h2 className="font-heading text-brutal mb-4 text-background">SIGUENOS EN INSTAGRAM</h2>
-              <p className="text-xl text-background/80 font-heading">
-                NUESTROS ÚLTIMOS PROYECTOS Y DETRÁS DE CÁMARAS
-              </p>
+              <p className="text-xl text-background/80 font-heading">NUESTROS ÚLTIMOS PROYECTOS Y DETRÁS DE CÁMARAS</p>
             </div>
           </div>
 
@@ -653,16 +641,14 @@ const Home = () => {
                 {[1, 2, 3, 4, 5].map((story) => (
                   <CarouselItem key={story} className="pl-0 basis-full md:basis-1/3 lg:basis-1/4">
                     <div className="relative aspect-[9/16] bg-muted overflow-hidden group cursor-pointer border-4 border-background">
-                      <img 
+                      <img
                         src={`https://images.unsplash.com/photo-${1492691527719 + story}-6dd46a0f1123?w=600&h=900&fit=crop`}
                         alt={`Instagram Story ${story}`}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                         <div className="absolute bottom-0 left-0 right-0 p-6">
-                          <p className="text-background font-heading text-sm uppercase">
-                            Ver en Instagram
-                          </p>
+                          <p className="text-background font-heading text-sm uppercase">Ver en Instagram</p>
                         </div>
                       </div>
                       <div className="absolute top-4 left-4 right-4 flex gap-1">
