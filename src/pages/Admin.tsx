@@ -12,9 +12,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Edit, Trash2, Percent, Download, Upload } from "lucide-react";
+import { Plus, Edit, Trash2, Percent, Download, Upload, Calendar as CalendarIcon, X } from "lucide-react";
 import { ImageUploader } from "@/components/ImageUploader";
 import { Switch } from "@/components/ui/switch";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+
+interface UnavailabilityPeriod {
+  id: string;
+  equipment_id: string;
+  start_date: string;
+  end_date: string;
+  created_at: string;
+}
 
 const Admin = () => {
   const [equipment, setEquipment] = useState<EquipmentWithCategory[]>([]);
@@ -36,6 +46,10 @@ const Admin = () => {
   // Equipment edit modal state
   const [editingEquipment, setEditingEquipment] = useState<EquipmentWithCategory | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  
+  // Unavailability periods state
+  const [unavailabilityPeriods, setUnavailabilityPeriods] = useState<UnavailabilityPeriod[]>([]);
+  const [newPeriod, setNewPeriod] = useState({ start_date: "", end_date: "" });
   
   // Price update state
   const [massPercentage, setMassPercentage] = useState<string>("");
@@ -162,9 +176,74 @@ const Admin = () => {
     }
   };
 
-  const handleEditEquipment = (equipment: EquipmentWithCategory) => {
+  const handleEditEquipment = async (equipment: EquipmentWithCategory) => {
     setEditingEquipment(equipment);
     setIsEditModalOpen(true);
+    await fetchUnavailabilityPeriods(equipment.id);
+  };
+
+  const fetchUnavailabilityPeriods = async (equipmentId: string) => {
+    const { data, error } = await supabase
+      .from('equipment_unavailability')
+      .select('*')
+      .eq('equipment_id', equipmentId)
+      .order('start_date', { ascending: true });
+
+    if (!error && data) {
+      setUnavailabilityPeriods(data);
+    }
+  };
+
+  const handleAddUnavailabilityPeriod = async () => {
+    if (!editingEquipment || !newPeriod.start_date || !newPeriod.end_date) {
+      toast({ 
+        title: "ERROR", 
+        description: "Ambas fechas son requeridas", 
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    if (new Date(newPeriod.start_date) > new Date(newPeriod.end_date)) {
+      toast({ 
+        title: "ERROR", 
+        description: "La fecha de inicio debe ser anterior a la fecha de fin", 
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    const { error } = await supabase.from('equipment_unavailability').insert({
+      equipment_id: editingEquipment.id,
+      start_date: newPeriod.start_date,
+      end_date: newPeriod.end_date
+    });
+
+    if (error) {
+      toast({ title: "ERROR", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "AGREGADO", description: "Periodo de no disponibilidad agregado" });
+      setNewPeriod({ start_date: "", end_date: "" });
+      fetchUnavailabilityPeriods(editingEquipment.id);
+    }
+  };
+
+  const handleDeleteUnavailabilityPeriod = async (periodId: string) => {
+    if (!confirm("¿Eliminar este periodo?")) return;
+    
+    const { error } = await supabase
+      .from('equipment_unavailability')
+      .delete()
+      .eq('id', periodId);
+
+    if (error) {
+      toast({ title: "ERROR", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "ELIMINADO", description: "Periodo eliminado" });
+      if (editingEquipment) {
+        fetchUnavailabilityPeriods(editingEquipment.id);
+      }
+    }
   };
 
   const handleUpdateEquipment = async () => {
@@ -919,7 +998,90 @@ const Admin = () => {
                   />
                 </div>
               )}
-              <div className="md:col-span-2 flex gap-2">
+
+              {/* Unavailability Periods Section */}
+              <div className="md:col-span-2 border-t-2 border-foreground pt-6 mt-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <CalendarIcon className="h-5 w-5" />
+                  <h3 className="font-heading text-lg font-bold">PERIODOS DE NO DISPONIBILIDAD</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Define rangos de fechas en los que este equipo no estará disponible (mantenimiento, reparaciones, etc.)
+                </p>
+
+                {/* Add new period */}
+                <Card className="mb-4 border-2">
+                  <CardContent className="pt-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <Label>Fecha inicio</Label>
+                        <Input
+                          type="date"
+                          value={newPeriod.start_date}
+                          onChange={(e) => setNewPeriod({...newPeriod, start_date: e.target.value})}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Fecha fin</Label>
+                        <Input
+                          type="date"
+                          value={newPeriod.end_date}
+                          onChange={(e) => setNewPeriod({...newPeriod, end_date: e.target.value})}
+                          min={newPeriod.start_date}
+                        />
+                      </div>
+                    </div>
+                    <Button 
+                      onClick={handleAddUnavailabilityPeriod} 
+                      className="mt-3 w-full"
+                      size="sm"
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      Agregar Periodo
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                {/* List of periods */}
+                <div className="space-y-2">
+                  {unavailabilityPeriods.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center py-4 border-2 border-dashed rounded">
+                      No hay periodos de no disponibilidad configurados
+                    </p>
+                  ) : (
+                    unavailabilityPeriods.map((period) => (
+                      <div 
+                        key={period.id} 
+                        className="flex items-center justify-between p-3 border-2 rounded bg-muted/30"
+                      >
+                        <div className="flex items-center gap-3">
+                          <CalendarIcon className="h-4 w-4 text-muted-foreground" />
+                          <div>
+                            <p className="font-heading text-sm">
+                              {format(new Date(period.start_date), "d 'de' MMMM, yyyy", { locale: es })}
+                              {" → "}
+                              {format(new Date(period.end_date), "d 'de' MMMM, yyyy", { locale: es })}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {Math.ceil((new Date(period.end_date).getTime() - new Date(period.start_date).getTime()) / (1000 * 60 * 60 * 24)) + 1} días
+                            </p>
+                          </div>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleDeleteUnavailabilityPeriod(period.id)}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              <div className="md:col-span-2 flex gap-2 mt-6">
                 <Button onClick={handleUpdateEquipment} variant="hero">
                   Actualizar Equipo
                 </Button>

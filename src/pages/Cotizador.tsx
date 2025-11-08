@@ -1,8 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -10,11 +11,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { X, Calendar as CalendarIcon, Mail, Phone, Building2, ShoppingCart, Send } from "lucide-react";
+import { X, Calendar as CalendarIcon, Mail, Phone, Building2, ShoppingCart, Send, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/hooks/useCart";
 import { format, differenceInDays } from "date-fns";
 import { es } from "date-fns/locale";
+import { supabase } from "@/integrations/supabase/client";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Cotizador = () => {
   const { toast } = useToast();
@@ -29,6 +32,38 @@ const Cotizador = () => {
     endDate: "",
     comments: "",
   });
+
+  const [unavailableEquipment, setUnavailableEquipment] = useState<Set<string>>(new Set());
+  const [checkingAvailability, setCheckingAvailability] = useState(false);
+
+  // Check equipment availability when dates change
+  useEffect(() => {
+    if (formData.startDate && formData.endDate && items.length > 0) {
+      checkEquipmentAvailability();
+    }
+  }, [formData.startDate, formData.endDate, items]);
+
+  const checkEquipmentAvailability = async () => {
+    if (!formData.startDate || !formData.endDate) return;
+    
+    setCheckingAvailability(true);
+    const unavailable = new Set<string>();
+
+    for (const item of items) {
+      const { data, error } = await supabase
+        .from('equipment_unavailability')
+        .select('*')
+        .eq('equipment_id', item.id)
+        .or(`and(start_date.lte.${formData.endDate},end_date.gte.${formData.startDate})`);
+
+      if (!error && data && data.length > 0) {
+        unavailable.add(item.id);
+      }
+    }
+
+    setUnavailableEquipment(unavailable);
+    setCheckingAvailability(false);
+  };
 
   const days = useMemo(() => {
     if (!formData.startDate || !formData.endDate) return 1;
@@ -66,6 +101,16 @@ const Cotizador = () => {
       toast({
         title: "Error",
         description: "Por favor selecciona las fechas de reserva.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check if any equipment is unavailable
+    if (unavailableEquipment.size > 0) {
+      toast({
+        title: "Error",
+        description: "Hay equipos no disponibles en las fechas seleccionadas. Por favor elimínalos del carrito.",
         variant: "destructive",
       });
       return;
@@ -221,71 +266,103 @@ Contactar cliente para coordinar entrega/retiro.
                     </Button>
                   </div>
                 ) : (
-                  items.map((item) => (
-                    <Card key={item.id} className="overflow-hidden">
-                      <div className="grid grid-cols-[80px_1fr_auto] gap-4 p-4">
-                        {/* Image */}
-                        <div className="aspect-square bg-muted overflow-hidden">
-                          {item.imageUrl ? (
-                            <img
-                              src={item.imageUrl}
-                              alt={item.name}
-                              className="w-full h-full object-cover grayscale"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-muted">
-                              <span className="text-xs font-heading opacity-20">IMG</span>
+                  <>
+                    {unavailableEquipment.size > 0 && (
+                      <Alert variant="destructive" className="mb-4">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertDescription>
+                          Algunos equipos no están disponibles en las fechas seleccionadas. Elimínalos del carrito para continuar.
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                    {items.map((item) => {
+                      const isUnavailable = unavailableEquipment.has(item.id);
+                      return (
+                        <Card key={item.id} className={`overflow-hidden ${isUnavailable ? 'border-destructive border-2' : ''}`}>
+                          <div className="grid grid-cols-[80px_1fr_auto] gap-4 p-4">
+                            {/* Image */}
+                            <div className="aspect-square bg-muted overflow-hidden relative">
+                              {item.imageUrl ? (
+                                <img
+                                  src={item.imageUrl}
+                                  alt={item.name}
+                                  className={`w-full h-full object-cover ${isUnavailable ? 'grayscale opacity-50' : 'grayscale'}`}
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-muted">
+                                  <span className="text-xs font-heading opacity-20">IMG</span>
+                                </div>
+                              )}
+                              {isUnavailable && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-destructive/20">
+                                  <AlertCircle className="h-6 w-6 text-destructive" />
+                                </div>
+                              )}
                             </div>
-                          )}
-                        </div>
 
-                        {/* Info */}
-                        <div className="space-y-2">
-                          <h3 className="font-heading text-lg uppercase">{item.name}</h3>
-                          {item.brand && (
-                            <p className="text-sm text-muted-foreground font-mono">{item.brand}</p>
-                          )}
-                          <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2 border-2 border-foreground">
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                              >
-                                -
-                              </Button>
-                              <span className="font-heading w-8 text-center">{item.quantity}</span>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              >
-                                +
-                              </Button>
+                            {/* Info */}
+                            <div className="space-y-2">
+                              <div className="flex items-start gap-2">
+                                <h3 className="font-heading text-lg uppercase">{item.name}</h3>
+                                {isUnavailable && (
+                                  <Badge variant="destructive" className="text-xs">
+                                    NO DISPONIBLE
+                                  </Badge>
+                                )}
+                              </div>
+                              {item.brand && (
+                                <p className="text-sm text-muted-foreground font-mono">{item.brand}</p>
+                              )}
+                              <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2 border-2 border-foreground">
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-8 w-8"
+                                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                    disabled={isUnavailable}
+                                  >
+                                    -
+                                  </Button>
+                                  <span className="font-heading w-8 text-center">{item.quantity}</span>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-8 w-8"
+                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                    disabled={isUnavailable}
+                                  >
+                                    +
+                                  </Button>
+                                </div>
+                                <div className="text-sm">
+                                  <span className="text-muted-foreground">${item.pricePerDay.toLocaleString()}/día × {item.quantity} × {days} días</span>
+                                </div>
+                              </div>
+                              <div className="font-heading text-xl text-primary">
+                                ${(item.pricePerDay * item.quantity * days).toLocaleString()}
+                              </div>
+                              {isUnavailable && (
+                                <p className="text-xs text-destructive">
+                                  Este equipo tiene periodos de mantenimiento/reserva en las fechas seleccionadas
+                                </p>
+                              )}
                             </div>
-                            <div className="text-sm">
-                              <span className="text-muted-foreground">${item.pricePerDay.toLocaleString()}/día × {item.quantity} × {days} días</span>
-                            </div>
-                          </div>
-                          <div className="font-heading text-xl text-primary">
-                            ${(item.pricePerDay * item.quantity * days).toLocaleString()}
-                          </div>
-                        </div>
 
-                        {/* Remove */}
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => removeItem(item.id)}
-                          className="text-destructive hover:text-destructive"
-                        >
-                          <X className="h-5 w-5" />
-                        </Button>
-                      </div>
-                    </Card>
-                  ))
+                            {/* Remove */}
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => removeItem(item.id)}
+                              className="text-destructive hover:text-destructive"
+                            >
+                              <X className="h-5 w-5" />
+                            </Button>
+                          </div>
+                        </Card>
+                      );
+                    })}
+                  </>
                 )}
               </CardContent>
             </Card>

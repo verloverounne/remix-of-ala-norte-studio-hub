@@ -352,6 +352,38 @@ export type Database = {
           },
         ]
       }
+      equipment_unavailability: {
+        Row: {
+          created_at: string | null
+          end_date: string
+          equipment_id: string
+          id: string
+          start_date: string
+        }
+        Insert: {
+          created_at?: string | null
+          end_date: string
+          equipment_id: string
+          id?: string
+          start_date: string
+        }
+        Update: {
+          created_at?: string | null
+          end_date?: string
+          equipment_id?: string
+          id?: string
+          start_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "equipment_unavailability_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "equipment"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
