@@ -1,8 +1,8 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import type { Space } from "@/types/supabase";
+import { SpaceAvailabilityCalendar } from "./SpaceAvailabilityCalendar";
 
 interface SpaceModalProps {
   space: Space | null;
@@ -161,6 +161,18 @@ export const SpaceModal = ({ space, open, onOpenChange }: SpaceModalProps) => {
             <div className="bg-primary/10 border-2 border-primary p-4">
               <p className="font-heading text-lg text-primary">{space.promotion}</p>
             </div>
+          )}
+
+          {/* Availability Calendar */}
+          {space.status === 'available' && (
+            <>
+              <Separator className="my-6" />
+              <SpaceAvailabilityCalendar
+                spaceId={space.id}
+                price={space.price}
+                spaceName={space.name}
+              />
+            </>
           )}
 
           {/* Slider de trabajos realizados */}

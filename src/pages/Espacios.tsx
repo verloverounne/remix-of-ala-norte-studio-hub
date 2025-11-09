@@ -17,10 +17,6 @@ const Espacios = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   
-  // Date filter states
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [unavailableSpaceIds, setUnavailableSpaceIds] = useState<string[]>([]);
   const [upcomingUnavailableIds, setUpcomingUnavailableIds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -28,13 +24,6 @@ const Espacios = () => {
     checkUpcomingUnavailability();
   }, []);
 
-  useEffect(() => {
-    if (startDate && endDate) {
-      checkAvailability();
-    } else {
-      setUnavailableSpaceIds([]);
-    }
-  }, [startDate, endDate]);
 
   const fetchSpaces = async () => {
     setLoading(true);
@@ -73,45 +62,20 @@ const Espacios = () => {
     }
   };
 
-  const checkAvailability = async () => {
-    if (!startDate || !endDate) return;
-
-    const { data, error } = await supabase
-      .from('space_unavailability')
-      .select('space_id')
-      .or(`and(start_date.lte.${endDate},end_date.gte.${startDate})`);
-
-    if (!error && data) {
-      const ids = [...new Set(data.map(item => item.space_id))];
-      setUnavailableSpaceIds(ids);
-    }
-  };
 
   const handleViewDetails = (space: Space) => {
     setSelectedSpace(space);
     setModalOpen(true);
   };
 
-  const handleClearFilters = () => {
-    setStartDate("");
-    setEndDate("");
-    setUnavailableSpaceIds([]);
-  };
 
   const filteredSpaces = spaces
     .map(space => {
-      const matchesAvailability = startDate && endDate 
-        ? !unavailableSpaceIds.includes(space.id)
-        : true;
-      
       const isUpcomingUnavailable = upcomingUnavailableIds.includes(space.id);
       
       return { 
         ...space, 
-        matchesAvailability,
-        isAvailable: startDate && endDate 
-          ? matchesAvailability 
-          : !isUpcomingUnavailable
+        isAvailable: !isUpcomingUnavailable
       };
     })
     .sort((a, b) => {
@@ -133,55 +97,6 @@ const Espacios = () => {
         </div>
       </section>
 
-      {/* Filters Section */}
-      <section className="py-6 sm:py-8 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-heading">Filtrar por Disponibilidad</CardTitle>
-              <CardDescription className="font-heading">
-                Selecciona las fechas para ver disponibilidad de espacios
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="start-date" className="font-heading">Fecha Inicio</Label>
-                  <Input
-                    id="start-date"
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="end-date" className="font-heading">Fecha Fin</Label>
-                  <Input
-                    id="end-date"
-                    type="date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                  />
-                </div>
-                <div className="flex items-end">
-                  <Button 
-                    variant="outline" 
-                    onClick={handleClearFilters}
-                    className="w-full font-heading"
-                  >
-                    LIMPIAR FILTROS
-                  </Button>
-                </div>
-              </div>
-              {startDate && endDate && unavailableSpaceIds.length > 0 && (
-                <p className="text-sm text-muted-foreground mt-4 font-heading">
-                  {unavailableSpaceIds.length} espacio(s) no disponible(s) para las fechas seleccionadas
-                </p>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-      </section>
 
       {/* Spaces Section */}
       <section className="py-8 sm:py-12 lg:py-16">
