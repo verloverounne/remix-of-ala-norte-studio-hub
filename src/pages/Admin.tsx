@@ -26,6 +26,14 @@ interface UnavailabilityPeriod {
   created_at: string;
 }
 
+interface SpaceUnavailabilityPeriod {
+  id: string;
+  space_id: string;
+  start_date: string;
+  end_date: string;
+  created_at: string;
+}
+
 const Admin = () => {
   const [equipment, setEquipment] = useState<EquipmentWithCategory[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -50,6 +58,10 @@ const Admin = () => {
   // Unavailability periods state
   const [unavailabilityPeriods, setUnavailabilityPeriods] = useState<UnavailabilityPeriod[]>([]);
   const [newPeriod, setNewPeriod] = useState({ start_date: "", end_date: "" });
+  
+  // Space unavailability periods state
+  const [spaceUnavailabilityPeriods, setSpaceUnavailabilityPeriods] = useState<SpaceUnavailabilityPeriod[]>([]);
+  const [newSpacePeriod, setNewSpacePeriod] = useState({ start_date: "", end_date: "" });
   
   // Price update state
   const [massPercentage, setMassPercentage] = useState<string>("");
@@ -275,6 +287,75 @@ const Admin = () => {
       setIsEditModalOpen(false);
       setEditingEquipment(null);
       fetchEquipment();
+    }
+  };
+
+  const handleEditSpace = async (space: Space) => {
+    setEditingSpace(space);
+    await fetchSpaceUnavailabilityPeriods(space.id);
+  };
+
+  const fetchSpaceUnavailabilityPeriods = async (spaceId: string) => {
+    const { data, error } = await supabase
+      .from('space_unavailability')
+      .select('*')
+      .eq('space_id', spaceId)
+      .order('start_date', { ascending: true });
+
+    if (!error && data) {
+      setSpaceUnavailabilityPeriods(data);
+    }
+  };
+
+  const handleAddSpaceUnavailabilityPeriod = async () => {
+    if (!editingSpace || !newSpacePeriod.start_date || !newSpacePeriod.end_date) {
+      toast({ 
+        title: "ERROR", 
+        description: "Ambas fechas son requeridas", 
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    if (new Date(newSpacePeriod.start_date) > new Date(newSpacePeriod.end_date)) {
+      toast({ 
+        title: "ERROR", 
+        description: "La fecha de inicio debe ser anterior a la fecha de fin", 
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    const { error } = await supabase.from('space_unavailability').insert({
+      space_id: editingSpace.id,
+      start_date: newSpacePeriod.start_date,
+      end_date: newSpacePeriod.end_date
+    });
+
+    if (error) {
+      toast({ title: "ERROR", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "AGREGADO", description: "Periodo de no disponibilidad agregado" });
+      setNewSpacePeriod({ start_date: "", end_date: "" });
+      fetchSpaceUnavailabilityPeriods(editingSpace.id);
+    }
+  };
+
+  const handleDeleteSpaceUnavailabilityPeriod = async (periodId: string) => {
+    if (!confirm("¿Eliminar este periodo?")) return;
+    
+    const { error } = await supabase
+      .from('space_unavailability')
+      .delete()
+      .eq('id', periodId);
+
+    if (error) {
+      toast({ title: "ERROR", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "ELIMINADO", description: "Periodo eliminado" });
+      if (editingSpace) {
+        fetchSpaceUnavailabilityPeriods(editingSpace.id);
+      }
     }
   };
 
@@ -725,27 +806,97 @@ const Admin = () => {
                                placeholder="Lun-Vie 9:00-18:00"
                              />
                            </div>
-                          <div className="flex gap-2">
-                            <Button onClick={() => handleUpdateSpace(editingSpace)}>Guardar</Button>
-                            <Button variant="outline" onClick={() => setEditingSpace(null)}>Cancelar</Button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="space-y-2">
-                          <p className="text-sm text-muted-foreground">${space.price.toLocaleString()}</p>
-                          <p className="text-sm">{space.description}</p>
-                          {space.promotion && <p className="text-sm text-primary">{space.promotion}</p>}
-                          <Button size="sm" onClick={() => setEditingSpace(space)}>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Editar
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </TabsContent>
+                           
+                           {/* Space Unavailability Periods Section */}
+                           <div className="space-y-3 pt-4 border-t-2 border-foreground">
+                             <h4 className="font-heading font-bold text-lg">Periodos de No Disponibilidad</h4>
+                             <p className="text-sm text-muted-foreground">
+                               Bloquea fechas específicas cuando el espacio no esté disponible
+                             </p>
+                             
+                             <div className="grid grid-cols-2 gap-2">
+                               <div>
+                                 <Label>Fecha Inicio</Label>
+                                 <Input 
+                                   type="date"
+                                   value={newSpacePeriod.start_date}
+                                   onChange={(e) => setNewSpacePeriod({
+                                     ...newSpacePeriod,
+                                     start_date: e.target.value
+                                   })}
+                                 />
+                               </div>
+                               <div>
+                                 <Label>Fecha Fin</Label>
+                                 <Input 
+                                   type="date"
+                                   value={newSpacePeriod.end_date}
+                                   onChange={(e) => setNewSpacePeriod({
+                                     ...newSpacePeriod,
+                                     end_date: e.target.value
+                                   })}
+                                 />
+                               </div>
+                             </div>
+                             
+                             <Button 
+                               size="sm" 
+                               variant="outline"
+                               onClick={handleAddSpaceUnavailabilityPeriod}
+                             >
+                               <CalendarIcon className="mr-2 h-4 w-4" />
+                               Agregar Periodo
+                             </Button>
+
+                             {spaceUnavailabilityPeriods.length > 0 && (
+                               <div className="space-y-2 mt-4">
+                                 <Label>Periodos Bloqueados:</Label>
+                                 <div className="space-y-1 max-h-40 overflow-y-auto">
+                                   {spaceUnavailabilityPeriods.map((period) => (
+                                     <div 
+                                       key={period.id} 
+                                       className="flex items-center justify-between p-2 bg-muted rounded text-sm"
+                                     >
+                                       <span>
+                                         Del {format(new Date(period.start_date), 'dd/MM/yyyy', { locale: es })} al{' '}
+                                         {format(new Date(period.end_date), 'dd/MM/yyyy', { locale: es })}
+                                       </span>
+                                       <Button
+                                         size="icon"
+                                         variant="ghost"
+                                         onClick={() => handleDeleteSpaceUnavailabilityPeriod(period.id)}
+                                         className="h-6 w-6"
+                                       >
+                                         <X className="h-4 w-4 text-destructive" />
+                                       </Button>
+                                     </div>
+                                   ))}
+                                 </div>
+                               </div>
+                             )}
+                           </div>
+
+                           <div className="flex gap-2">
+                             <Button onClick={() => handleUpdateSpace(editingSpace)}>Guardar</Button>
+                             <Button variant="outline" onClick={() => setEditingSpace(null)}>Cancelar</Button>
+                           </div>
+                         </div>
+                       ) : (
+                         <div className="space-y-2">
+                           <p className="text-sm text-muted-foreground">${space.price.toLocaleString()}</p>
+                           <p className="text-sm">{space.description}</p>
+                           {space.promotion && <p className="text-sm text-primary">{space.promotion}</p>}
+                           <Button size="sm" onClick={() => handleEditSpace(space)}>
+                             <Edit className="mr-2 h-4 w-4" />
+                             Editar
+                           </Button>
+                         </div>
+                       )}
+                     </div>
+                   ))}
+                 </CardContent>
+               </Card>
+             </TabsContent>
 
             {/* Config Tab */}
             <TabsContent value="config">

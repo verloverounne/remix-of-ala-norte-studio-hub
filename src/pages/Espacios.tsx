@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { MapPin, Users, Ruler, Calendar } from "lucide-react";
 import { SpaceModal } from "@/components/SpaceModal";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
@@ -14,10 +16,25 @@ const Espacios = () => {
   const [selectedSpace, setSelectedSpace] = useState<Space | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  
+  // Date filter states
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [unavailableSpaceIds, setUnavailableSpaceIds] = useState<string[]>([]);
+  const [upcomingUnavailableIds, setUpcomingUnavailableIds] = useState<string[]>([]);
 
   useEffect(() => {
     fetchSpaces();
+    checkUpcomingUnavailability();
   }, []);
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      checkAvailability();
+    } else {
+      setUnavailableSpaceIds([]);
+    }
+  }, [startDate, endDate]);
 
   const fetchSpaces = async () => {
     setLoading(true);
@@ -39,10 +56,68 @@ const Espacios = () => {
     setLoading(false);
   };
 
+  const checkUpcomingUnavailability = async () => {
+    const today = new Date();
+    const thirtyDaysLater = new Date();
+    thirtyDaysLater.setDate(today.getDate() + 30);
+
+    const { data, error } = await supabase
+      .from('space_unavailability')
+      .select('space_id')
+      .lte('start_date', thirtyDaysLater.toISOString().split('T')[0])
+      .gte('end_date', today.toISOString().split('T')[0]);
+
+    if (!error && data) {
+      const ids = [...new Set(data.map(item => item.space_id))];
+      setUpcomingUnavailableIds(ids);
+    }
+  };
+
+  const checkAvailability = async () => {
+    if (!startDate || !endDate) return;
+
+    const { data, error } = await supabase
+      .from('space_unavailability')
+      .select('space_id')
+      .or(`and(start_date.lte.${endDate},end_date.gte.${startDate})`);
+
+    if (!error && data) {
+      const ids = [...new Set(data.map(item => item.space_id))];
+      setUnavailableSpaceIds(ids);
+    }
+  };
+
   const handleViewDetails = (space: Space) => {
     setSelectedSpace(space);
     setModalOpen(true);
   };
+
+  const handleClearFilters = () => {
+    setStartDate("");
+    setEndDate("");
+    setUnavailableSpaceIds([]);
+  };
+
+  const filteredSpaces = spaces
+    .map(space => {
+      const matchesAvailability = startDate && endDate 
+        ? !unavailableSpaceIds.includes(space.id)
+        : true;
+      
+      const isUpcomingUnavailable = upcomingUnavailableIds.includes(space.id);
+      
+      return { 
+        ...space, 
+        matchesAvailability,
+        isAvailable: startDate && endDate 
+          ? matchesAvailability 
+          : !isUpcomingUnavailable
+      };
+    })
+    .sort((a, b) => {
+      if (a.isAvailable === b.isAvailable) return 0;
+      return a.isAvailable ? -1 : 1;
+    });
 
   return (
     <div className="min-h-screen pt-14 sm:pt-16">
@@ -58,6 +133,56 @@ const Espacios = () => {
         </div>
       </section>
 
+      {/* Filters Section */}
+      <section className="py-6 sm:py-8 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-heading">Filtrar por Disponibilidad</CardTitle>
+              <CardDescription className="font-heading">
+                Selecciona las fechas para ver disponibilidad de espacios
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="start-date" className="font-heading">Fecha Inicio</Label>
+                  <Input
+                    id="start-date"
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="end-date" className="font-heading">Fecha Fin</Label>
+                  <Input
+                    id="end-date"
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                  />
+                </div>
+                <div className="flex items-end">
+                  <Button 
+                    variant="outline" 
+                    onClick={handleClearFilters}
+                    className="w-full font-heading"
+                  >
+                    LIMPIAR FILTROS
+                  </Button>
+                </div>
+              </div>
+              {startDate && endDate && unavailableSpaceIds.length > 0 && (
+                <p className="text-sm text-muted-foreground mt-4 font-heading">
+                  {unavailableSpaceIds.length} espacio(s) no disponible(s) para las fechas seleccionadas
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
       {/* Spaces Section */}
       <section className="py-8 sm:py-12 lg:py-16">
         <div className="container mx-auto px-4">
@@ -65,13 +190,13 @@ const Espacios = () => {
             <div className="text-center py-12 sm:py-16 lg:py-20">
               <p className="text-2xl sm:text-3xl lg:text-brutal">CARGANDO...</p>
             </div>
-          ) : spaces.length === 0 ? (
+          ) : filteredSpaces.length === 0 ? (
             <div className="text-center py-12 sm:py-16 lg:py-20 border-2 sm:border-4 border-foreground p-8 sm:p-12 lg:p-16">
               <p className="text-2xl sm:text-3xl lg:text-brutal mb-4">NO HAY ESPACIOS DISPONIBLES</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-              {spaces.map((space) => (
+              {filteredSpaces.map((space) => (
                 <Card
                   key={space.id}
                   className="hover-lift overflow-hidden transition-all duration-300"
@@ -88,9 +213,12 @@ const Espacios = () => {
                                 alt={`${space.name} - ${index + 1}`}
                                 className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                               />
-                              {index === 0 && space.status === 'available' && (
-                                <Badge className="absolute top-4 right-4 bg-green-500 text-white">
-                                  DISPONIBLE
+                              {index === 0 && (
+                                <Badge 
+                                  variant={space.isAvailable ? "default" : "destructive"}
+                                  className="absolute top-4 right-4"
+                                >
+                                  {space.isAvailable ? "DISPONIBLE" : "NO DISPONIBLE"}
                                 </Badge>
                               )}
                             </div>
