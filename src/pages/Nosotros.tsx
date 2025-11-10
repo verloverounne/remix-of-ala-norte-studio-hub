@@ -32,25 +32,25 @@ const Nosotros = () => {
     {
       name: "Juan Pérez",
       role: "Director General",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
+      image: "",
       bio: "15 años en la industria audiovisual. Apasionado por la tecnología y el cine."
     },
     {
       name: "María González",
       role: "Gerente de Operaciones",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop",
+      image: "",
       bio: "Experta en logística. Garantiza que cada equipo llegue perfecto a tiempo."
     },
     {
       name: "Carlos Martínez",
       role: "Jefe Técnico",
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
+      image: "",
       bio: "Ingeniero en sonido y DF. 10 años asesorando producciones profesionales."
     },
     {
       name: "Laura Fernández",
       role: "Atención al Cliente",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
+      image: "",
       bio: "Primera línea de contacto. Te ayuda a encontrar lo que necesitás."
     }
   ];
@@ -142,12 +142,19 @@ const Nosotros = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto">
             {team.map((member, index) => (
               <Card key={index} className="border-2 border-foreground shadow-brutal">
-                <div className="relative h-64 overflow-hidden">
-                  <img 
-                    src={member.image} 
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="relative h-64 overflow-hidden bg-muted flex items-center justify-center">
+                  {member.image ? (
+                    <img 
+                      src={member.image} 
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="text-center">
+                      <div className="text-6xl mb-2">👤</div>
+                      <p className="text-sm text-muted-foreground">FOTO PRÓXIMAMENTE</p>
+                    </div>
+                  )}
                 </div>
                 <CardHeader>
                   <CardTitle className="font-heading text-lg">{member.name}</CardTitle>
