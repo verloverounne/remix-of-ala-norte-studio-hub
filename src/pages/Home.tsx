@@ -374,7 +374,7 @@ const Home = () => {
             <Card className="border-3 border-foreground shadow-brutal overflow-hidden">
               <div className="aspect-square bg-muted overflow-hidden border-b-3 border-foreground">
                 <img
-                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=600&fit=crop"
+                  src="https://images.unsplash.com/"
                   alt="Especialista en Postproducción"
                   className="w-full h-full object-cover"
                 />
