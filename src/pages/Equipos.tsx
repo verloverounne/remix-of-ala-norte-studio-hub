@@ -582,24 +582,6 @@ const Equipos = () => {
                 </div>
               )}
 
-              {/* Banner WhatsApp */}
-              <div className="mt-6 p-4 border-2 border-primary bg-primary/5">
-                <p className="text-xs sm:text-sm font-heading mb-2 text-center break-words">
-                  ¿No sabés qué necesitás?
-                </p>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  className="w-full text-xs"
-                  onClick={() => {
-                    const phoneNumber = "5493624907592";
-                    const message = encodeURIComponent("Hola, necesito ayuda para elegir el equipo adecuado para mi proyecto.");
-                    window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
-                  }}
-                >
-                  Hablemos por WhatsApp
-                </Button>
-              </div>
               
               {/* Nota de advertencia */}
               <p className="text-xs text-muted-foreground/60 mt-4 text-center">
