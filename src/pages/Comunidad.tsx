@@ -32,9 +32,9 @@ const Comunidad = () => {
 
   const federalProjects = [
     {
-      title: "Largometraje 'Pampa Adentro'",
+      title: "Largometraje 'Mr. Bill & Funilab - Sequenza di Melanzane'",
       region: "Santa Fe",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Placeholder
+      videoUrl: "https://www.youtube.com/watch?v=WCrgI4ne1Kw", // Placeholder
       thumbnail: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800&h=450&fit=crop",
       description: "Rodaje completo en Entre Ríos con equipos Ala Norte. Cámaras RED y luces LED."
     },
