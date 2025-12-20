@@ -65,8 +65,11 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-background pt-14 sm:pt-16">
       {/* Hero Section - Full Slider with 360 Tours */}
-      <section className="relative h-[60vh] sm:h-[80vh] lg:h-screen overflow-hidden border-b-4 border-foreground">
-        <div className="absolute inset-0 bg-foreground/95" />
+      <section className="relative h-[60vh] sm:h-[80vh] lg:h-screen overflow-hidden">
+        <div className="absolute inset-0 bg-foreground" />
+        
+        {/* Vignette overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 z-[1] pointer-events-none" />
 
         <div
           ref={scrollContainerRef}
@@ -80,19 +83,19 @@ const Home = () => {
                 className="space-card flex-shrink-0 w-screen h-full relative overflow-hidden"
                 style={{
                   scrollSnapAlign: "start",
-                  transition: "transform 0.1s ease-out",
+                  transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 }}
               >
                 {/* Iframe placeholder for 360 tour */}
                 <div className="w-full h-full bg-gray-dark/50 flex items-center justify-center relative">
-                  <div className="text-center z-10 relative p-4 sm:p-6 lg:p-8">
-                    <p className="font-heading text-background text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-2 sm:mb-4 font-bold">
+                  <div className="text-center z-10 relative p-4 sm:p-6 lg:p-8 animate-cinema-reveal">
+                    <p className="font-heading text-background text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-2 sm:mb-4 font-semibold tracking-wide">
                       {space.title}
                     </p>
-                    <p className="font-heading text-background/80 text-lg sm:text-xl md:text-2xl lg:text-4xl mb-4 sm:mb-6">
+                    <p className="font-heading text-background/70 text-lg sm:text-xl md:text-2xl lg:text-3xl mb-4 sm:mb-6 font-light">
                       {space.subtitle}
                     </p>
-                    <div className="border-2 sm:border-4 border-background/30 rounded-lg p-3 sm:p-4 lg:p-6 bg-foreground/30 backdrop-blur-sm">
+                    <div className="rounded-xl p-3 sm:p-4 lg:p-6 bg-background/5 backdrop-blur-md border border-background/10">
                       <p className="text-background/60 text-sm sm:text-base lg:text-lg mb-1 sm:mb-2">
                         Iframe Placeholder para Recorrido 360°
                       </p>
@@ -100,11 +103,11 @@ const Home = () => {
                         Aquí se integrará el tour virtual interactivo
                       </p>
                     </div>
-                    <div className="mt-4 sm:mt-6 lg:mt-8 flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center">
-                      <Button asChild variant="hero" size="sm" className="sm:text-base">
+                    <div className="mt-4 sm:mt-6 lg:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                      <Button asChild variant="hero" size="default" className="shadow-cinema-red">
                         <Link to="/espacios">VER ESPACIOS</Link>
                       </Button>
-                      <Button asChild variant="secondary" size="sm" className="sm:text-base">
+                      <Button asChild variant="outline" size="default" className="bg-transparent border-background/30 text-background hover:bg-background/10 hover:border-background/50">
                         <Link to="/equipos">
                           VER EQUIPOS <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
@@ -113,16 +116,15 @@ const Home = () => {
                   </div>
                   {/* Future iframe will go here */}
                   {/* <iframe src="360-tour-url" className="w-full h-full" /> */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-foreground/20 via-transparent to-foreground/40" />
                 </div>
 
                 {/* Navigation indicator */}
-                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-20">
                   {spaces360.map((_, i) => (
                     <div
                       key={i}
-                      className={`h-2 rounded-full transition-all ${
-                        i === index ? "w-12 bg-primary" : "w-2 bg-background/40"
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        i === index ? "w-10 bg-primary shadow-cinema-glow" : "w-1.5 bg-background/30"
                       }`}
                     />
                   ))}
@@ -136,13 +138,13 @@ const Home = () => {
 
       {/* Featured Equipment Section - Full Width Slider */}
       {featuredEquipment.length > 0 && (
-        <section className="relative border-y-4 border-foreground bg-muted/30 overflow-hidden">
-          <div className="py-12 sm:py-16 lg:py-20">
-            <div className="container mx-auto px-4 mb-8 sm:mb-12">
-              <div className="border-l-4 sm:border-l-8 border-primary pl-4 sm:pl-8">
-                <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">EQUIPOS DESTACADOS</h2>
-                <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-heading">
-                  TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
+        <section className="relative bg-muted/30 overflow-hidden">
+          <div className="py-16 sm:py-20 lg:py-24">
+            <div className="container mx-auto px-4 mb-10 sm:mb-14">
+              <div className="border-l-2 sm:border-l-4 border-primary pl-4 sm:pl-6">
+                <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl mb-2 sm:mb-3 tracking-wide">EQUIPOS DESTACADOS</h2>
+                <p className="text-base sm:text-lg text-muted-foreground font-light">
+                  Tecnología de primer nivel para tus proyectos
                 </p>
               </div>
             </div>
@@ -152,30 +154,34 @@ const Home = () => {
                 {featuredEquipment.map((equipment) => (
                   <CarouselItem key={equipment.id} className="pl-0 basis-full">
                     <Link to={`/equipos?id=${equipment.id}`}>
-                      <div className="relative h-[70vh] bg-foreground/95 overflow-hidden group cursor-pointer">
+                      <div className="relative h-[60vh] sm:h-[70vh] bg-foreground overflow-hidden group cursor-pointer">
                         {equipment.image_url && (
                           <img
                             src={equipment.image_url}
                             alt={equipment.name}
-                            className="w-full h-full object-cover opacity-40 group-hover:opacity-50 transition-opacity"
+                            className="w-full h-full object-cover opacity-50 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700"
                           />
                         )}
+                        {/* Gradient overlays */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
+                        
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-center z-10 p-8 max-w-4xl">
-                            <h3 className="font-heading text-6xl md:text-8xl mb-6 uppercase text-background">
+                          <div className="text-center z-10 p-8 max-w-4xl animate-cinema-reveal">
+                            <h3 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4 sm:mb-6 uppercase text-background tracking-wide">
                               {equipment.name}
                             </h3>
                             {equipment.featured_copy && (
-                              <p className="text-xl md:text-2xl text-background/80 mb-8 font-heading">
+                              <p className="text-lg sm:text-xl md:text-2xl text-background/70 mb-6 sm:mb-8 font-light max-w-2xl mx-auto">
                                 {equipment.featured_copy}
                               </p>
                             )}
-                            <div className="flex items-center justify-center gap-6 mb-6">
-                              <span className="font-heading text-4xl text-primary bg-background/90 px-8 py-4 border-3 border-background shadow-brutal">
+                            <div className="flex items-center justify-center gap-6 mb-6 sm:mb-8">
+                              <span className="font-heading text-2xl sm:text-3xl text-primary bg-background/95 px-6 sm:px-8 py-3 sm:py-4 rounded-lg shadow-cinema-lg">
                                 ${equipment.price_per_day}/día
                               </span>
                             </div>
-                            <Button variant="hero" size="lg" className="group-hover:shadow-brutal-lg transition-shadow">
+                            <Button variant="hero" size="lg" className="shadow-cinema-red group-hover:shadow-cinema-glow transition-all duration-500">
                               VER DETALLES <ArrowRight className="ml-2" />
                             </Button>
                           </div>
@@ -188,13 +194,13 @@ const Home = () => {
             </Carousel>
 
             {/* Navigation dots */}
-            <div className="flex justify-center gap-3 mt-8">
+            <div className="flex justify-center gap-2 mt-8">
               {featuredEquipment.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => equipmentApi?.scrollTo(index)}
-                  className={`h-2 rounded-full transition-all ${
-                    index === currentEquipmentSlide ? "w-12 bg-primary" : "w-2 bg-foreground/40"
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    index === currentEquipmentSlide ? "w-10 bg-primary shadow-cinema-glow" : "w-1.5 bg-foreground/30"
                   }`}
                   aria-label={`Ir al equipo ${index + 1}`}
                 />

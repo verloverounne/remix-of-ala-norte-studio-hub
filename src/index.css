@@ -4,112 +4,119 @@
 
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
+CINEMA NOIR BOUTIQUE - Ala Norte 2026
 */
 
 @layer base {
   :root {
-    /* BRUTALISMO 2026 - Modo Claro */
-    --background: 0 0% 98%; /* #FAFAFA Blanco brutal */
-    --foreground: 0 0% 8%; /* #141414 Negro */
+    /* CINEMA NOIR BOUTIQUE - Modo Claro */
+    --background: 0 0% 97%; /* Off-white cinematográfico */
+    --foreground: 0 0% 6%; /* Negro profundo */
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 8%;
+    --card-foreground: 0 0% 6%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 8%;
+    --popover-foreground: 0 0% 6%;
 
-    /* Primario - Rojo Brutal */
+    /* Primario - Rojo Cinematográfico */
     --primary: 348 83% 47%; /* #DC143C Rojo Ala Norte */
     --primary-foreground: 0 0% 98%;
-    --primary-hover: 343 100% 33%; /* #A7002F */
-    --primary-light: 355 82% 60%; /* #EF4350 */
-    --primary-dark: 343 100% 22%; /* #6E0022 */
+    --primary-hover: 348 90% 55%;
+    --primary-light: 348 75% 60%;
+    --primary-lighter: 348 60% 75%;
+    --primary-dark: 348 90% 35%;
 
-    /* Secundario - Gris Brutal */
-    --secondary: 0 0% 20%; /* #333333 Gris oscuro */
+    /* Secundario */
+    --secondary: 0 0% 12%;
     --secondary-foreground: 0 0% 98%;
-    --secondary-hover: 0 0% 15%;
+    --secondary-hover: 0 0% 18%;
 
-    /* Neutrales Brutales */
-    --muted: 0 0% 90%; /* #E5E5E5 */
-    --muted-foreground: 0 0% 30%; /* #4D4D4D */
+    /* Neutrales Cinematográficos */
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 35%;
 
-    --accent: 348 83% 47%; /* Rojo para acentos */
+    --accent: 348 83% 47%;
     --accent-foreground: 0 0% 98%;
 
-    --destructive: 348 83% 47%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 8%; /* Bordes negros duros */
-    --input: 0 0% 8%;
+    --border: 0 0% 85%;
+    --input: 0 0% 85%;
     --ring: 348 83% 47%;
 
-    --radius: 0rem; /* Sin border-radius: BRUTAL */
+    --radius: 0.5rem;
 
-    /* Grises Brutales */
-    --gray-dark: 0 0% 15%; /* #262626 */
-    --gray-medium: 0 0% 40%; /* #666666 */
-    --gray-light: 0 0% 70%; /* #B3B3B3 */
-    --gray-lighter: 0 0% 90%; /* #E5E5E5 */
+    /* Grises Cinematográficos */
+    --gray-dark: 0 0% 12%;
+    --gray-medium: 0 0% 45%;
+    --gray-light: 0 0% 75%;
+    --gray-lighter: 0 0% 92%;
 
-    /* Sombras Brutales - Duras y sin blur pero sutiles */
-    --shadow-brutal: 4px 4px 0 hsl(0 0% 8%);
-    --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 8%);
-    --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 8%);
-    --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
+    /* Sombras Cinematográficas - Suaves y elegantes */
+    --shadow-cinema: 0 4px 24px -4px hsl(0 0% 0% / 0.12);
+    --shadow-cinema-sm: 0 2px 12px -2px hsl(0 0% 0% / 0.08);
+    --shadow-cinema-lg: 0 8px 40px -8px hsl(0 0% 0% / 0.18);
+    --shadow-cinema-glow: 0 0 40px hsl(348 83% 47% / 0.25);
+    --shadow-cinema-red: 0 8px 32px -8px hsl(348 83% 47% / 0.4);
     
-    /* Gradientes Brutales */
-    --gradient-primary: linear-gradient(135deg, hsl(348 83% 47%), hsl(343 100% 33%));
-    --gradient-hero: linear-gradient(135deg, hsl(0 0% 8% / 0.95), hsl(348 83% 47% / 0.85));
+    /* Gradientes Noir */
+    --gradient-primary: linear-gradient(135deg, hsl(348 83% 47%), hsl(348 90% 35%));
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 6% / 0.85), hsl(0 0% 6% / 0.6));
+    --gradient-noir: linear-gradient(180deg, hsl(0 0% 0% / 0.9) 0%, hsl(0 0% 0% / 0.4) 50%, transparent 100%);
+    --gradient-vignette: radial-gradient(ellipse at center, transparent 0%, hsl(0 0% 0% / 0.3) 100%);
     
-    /* Transiciones Brutales - Instantáneas o mecánicas */
-    --transition-brutal: all 0.1s linear;
-    --transition-none: none;
+    /* Transiciones Cinematográficas - Suaves y elegantes */
+    --transition-cinema: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    /* BRUTALISMO 2026 - Modo Oscuro */
-    --background: 0 0% 8%; /* #141414 Negro brutal */
-    --foreground: 0 0% 98%; /* #FAFAFA */
+    /* CINEMA NOIR BOUTIQUE - Modo Oscuro */
+    --background: 0 0% 4%; /* Negro profundo cinematográfico */
+    --foreground: 0 0% 95%;
 
-    --card: 0 0% 12%; /* #1F1F1F */
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 12%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 348 83% 47%; /* #DC143C */
+    --primary: 348 83% 50%;
     --primary-foreground: 0 0% 98%;
-    --primary-hover: 343 100% 33%;
-    --primary-light: 355 82% 60%;
-    --primary-dark: 343 100% 22%;
+    --primary-hover: 348 85% 58%;
+    --primary-light: 348 75% 60%;
+    --primary-lighter: 348 60% 75%;
+    --primary-dark: 348 90% 35%;
 
-    --secondary: 0 0% 20%; /* Gris oscuro */
-    --secondary-foreground: 0 0% 98%;
-    --secondary-hover: 0 0% 15%;
+    --secondary: 0 0% 16%;
+    --secondary-foreground: 0 0% 95%;
+    --secondary-hover: 0 0% 22%;
 
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 70%;
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 348 83% 47%; /* Rojo para acentos */
+    --accent: 348 83% 50%;
     --accent-foreground: 0 0% 98%;
 
-    --destructive: 348 83% 47%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 98%; /* Bordes blancos en oscuro */
-    --input: 0 0% 98%;
-    --ring: 348 83% 47%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 348 83% 50%;
 
-    --gray-dark: 0 0% 15%;
-    --gray-medium: 0 0% 40%;
+    --gray-dark: 0 0% 12%;
+    --gray-medium: 0 0% 45%;
     --gray-light: 0 0% 70%;
-    --gray-lighter: 0 0% 90%;
+    --gray-lighter: 0 0% 85%;
 
-    --shadow-brutal: 4px 4px 0 hsl(0 0% 98%);
-    --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 98%);
-    --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 98%);
-    --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
+    --shadow-cinema: 0 4px 24px -4px hsl(0 0% 0% / 0.4);
+    --shadow-cinema-sm: 0 2px 12px -2px hsl(0 0% 0% / 0.3);
+    --shadow-cinema-lg: 0 8px 40px -8px hsl(0 0% 0% / 0.5);
+    --shadow-cinema-glow: 0 0 60px hsl(348 83% 47% / 0.35);
+    --shadow-cinema-red: 0 8px 32px -8px hsl(348 83% 47% / 0.5);
   }
 }
 
@@ -124,64 +131,68 @@ All colors MUST be HSL.
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading uppercase tracking-wider;
-    font-weight: 700;
+    @apply font-heading uppercase tracking-wide;
+    font-weight: 600;
   }
   
   strong, b, .font-bold {
-    font-weight: 700;
+    font-weight: 600;
   }
 
   h1 {
-    @apply text-6xl md:text-8xl;
+    @apply text-5xl md:text-7xl lg:text-8xl leading-none;
   }
 
   h2 {
-    @apply text-5xl md:text-7xl;
+    @apply text-4xl md:text-5xl lg:text-6xl;
   }
 
   h3 {
-    @apply text-3xl md:text-5xl;
+    @apply text-2xl md:text-3xl lg:text-4xl;
   }
 }
 
 @layer utilities {
-  /* Efectos Brutales */
-  .shadow-brutal {
-    box-shadow: var(--shadow-brutal);
+  /* Efectos Cinematográficos */
+  .shadow-cinema {
+    box-shadow: var(--shadow-cinema);
   }
 
-  .shadow-brutal-sm {
-    box-shadow: var(--shadow-brutal-sm);
+  .shadow-cinema-sm {
+    box-shadow: var(--shadow-cinema-sm);
   }
 
-  .shadow-brutal-lg {
-    box-shadow: var(--shadow-brutal-lg);
+  .shadow-cinema-lg {
+    box-shadow: var(--shadow-cinema-lg);
   }
 
-  .shadow-brutal-red {
-    box-shadow: var(--shadow-brutal-red);
+  .shadow-cinema-glow {
+    box-shadow: var(--shadow-cinema-glow);
   }
 
-  .border-brutal {
-    @apply border-2 border-foreground;
+  .shadow-cinema-red {
+    box-shadow: var(--shadow-cinema-red);
   }
 
-  .transition-brutal {
-    transition: var(--transition-brutal);
+  .border-cinema {
+    @apply border border-border;
   }
 
-  .transition-none {
-    transition: var(--transition-none);
+  .transition-cinema {
+    transition: var(--transition-cinema);
   }
 
-  /* Hover Brutales - Instantáneos */
-  .hover-brutal {
-    @apply transition-none hover:shadow-brutal;
+  .transition-fast {
+    transition: var(--transition-fast);
   }
 
-  .hover-brutal-red {
-    @apply transition-none hover:shadow-brutal-red hover:-translate-x-1 hover:-translate-y-1;
+  /* Hover Cinematográficos */
+  .hover-cinema {
+    @apply transition-cinema hover:shadow-cinema-lg hover:-translate-y-1;
+  }
+
+  .hover-cinema-glow {
+    @apply transition-cinema hover:shadow-cinema-glow;
   }
 
   /* Gradientes */
@@ -193,29 +204,45 @@ All colors MUST be HSL.
     background: var(--gradient-hero);
   }
 
-  .gradient-green {
-    background: var(--gradient-green);
+  .gradient-noir {
+    background: var(--gradient-noir);
   }
 
-  /* Tipografía Brutal */
-  .text-brutal {
-    @apply font-heading uppercase tracking-wider;
+  .gradient-vignette {
+    background: var(--gradient-vignette);
   }
 
-  .text-glitch {
-    animation: glitch 0.3s steps(5) infinite;
+  /* Tipografía Cinematográfica */
+  .text-cinema {
+    @apply font-heading uppercase tracking-wide;
   }
 
-  @keyframes glitch {
-    0% { transform: translate(0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(2px, -2px); }
-    60% { transform: translate(-2px, -2px); }
-    80% { transform: translate(2px, 2px); }
-    100% { transform: translate(0); }
+  /* Efecto Film Grain */
+  .film-grain {
+    position: relative;
+  }
+  
+  .film-grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
   }
 
-  /* Grid removed per user request */
+  /* Vignette Effect */
+  .vignette {
+    position: relative;
+  }
+  
+  .vignette::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, hsl(0 0% 0% / 0.4) 100%);
+    pointer-events: none;
+  }
 
   /* Rich text editor styles */
   .prose {
@@ -239,21 +266,21 @@ All colors MUST be HSL.
   }
 
   .prose a {
-    @apply text-primary underline hover:no-underline;
+    @apply text-primary underline hover:no-underline transition-fast;
   }
 
   .prose img {
-    @apply rounded-none my-6 border-2 border-foreground;
+    @apply rounded-lg my-6;
   }
 
   .prose blockquote {
-    @apply border-l-4 border-primary pl-4 italic my-6;
+    @apply border-l-2 border-primary pl-6 italic my-6 text-muted-foreground;
   }
 }
 
 /* React Quill editor styles */
 .ql-toolbar {
-  @apply border-b-2 border-foreground bg-background rounded-t-none !important;
+  @apply border-b border-border bg-background rounded-t-lg !important;
 }
 
 .ql-container {
