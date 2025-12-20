@@ -4,119 +4,112 @@
 
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
-CINEMA NOIR BOUTIQUE - Ala Norte 2026
 */
 
 @layer base {
   :root {
-    /* CINEMA NOIR BOUTIQUE - Modo Claro */
-    --background: 0 0% 97%; /* Off-white cinematográfico */
-    --foreground: 0 0% 6%; /* Negro profundo */
+    /* BRUTALISMO 2026 - Modo Claro */
+    --background: 0 0% 98%; /* #FAFAFA Blanco brutal */
+    --foreground: 0 0% 8%; /* #141414 Negro */
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 6%;
+    --card-foreground: 0 0% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 6%;
+    --popover-foreground: 0 0% 8%;
 
-    /* Primario - Rojo Cinematográfico */
+    /* Primario - Rojo Brutal */
     --primary: 348 83% 47%; /* #DC143C Rojo Ala Norte */
     --primary-foreground: 0 0% 98%;
-    --primary-hover: 348 90% 55%;
-    --primary-light: 348 75% 60%;
-    --primary-lighter: 348 60% 75%;
-    --primary-dark: 348 90% 35%;
+    --primary-hover: 343 100% 33%; /* #A7002F */
+    --primary-light: 355 82% 60%; /* #EF4350 */
+    --primary-dark: 343 100% 22%; /* #6E0022 */
 
-    /* Secundario */
-    --secondary: 0 0% 12%;
+    /* Secundario - Gris Brutal */
+    --secondary: 0 0% 20%; /* #333333 Gris oscuro */
     --secondary-foreground: 0 0% 98%;
-    --secondary-hover: 0 0% 18%;
+    --secondary-hover: 0 0% 15%;
 
-    /* Neutrales Cinematográficos */
-    --muted: 0 0% 92%;
-    --muted-foreground: 0 0% 35%;
+    /* Neutrales Brutales */
+    --muted: 0 0% 90%; /* #E5E5E5 */
+    --muted-foreground: 0 0% 30%; /* #4D4D4D */
 
-    --accent: 348 83% 47%;
+    --accent: 348 83% 47%; /* Rojo para acentos */
     --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 348 83% 47%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 85%;
-    --input: 0 0% 85%;
+    --border: 0 0% 8%; /* Bordes negros duros */
+    --input: 0 0% 8%;
     --ring: 348 83% 47%;
 
-    --radius: 0.5rem;
+    --radius: 0rem; /* Sin border-radius: BRUTAL */
 
-    /* Grises Cinematográficos */
-    --gray-dark: 0 0% 12%;
-    --gray-medium: 0 0% 45%;
-    --gray-light: 0 0% 75%;
-    --gray-lighter: 0 0% 92%;
+    /* Grises Brutales */
+    --gray-dark: 0 0% 15%; /* #262626 */
+    --gray-medium: 0 0% 40%; /* #666666 */
+    --gray-light: 0 0% 70%; /* #B3B3B3 */
+    --gray-lighter: 0 0% 90%; /* #E5E5E5 */
 
-    /* Sombras Cinematográficas - Suaves y elegantes */
-    --shadow-cinema: 0 4px 24px -4px hsl(0 0% 0% / 0.12);
-    --shadow-cinema-sm: 0 2px 12px -2px hsl(0 0% 0% / 0.08);
-    --shadow-cinema-lg: 0 8px 40px -8px hsl(0 0% 0% / 0.18);
-    --shadow-cinema-glow: 0 0 40px hsl(348 83% 47% / 0.25);
-    --shadow-cinema-red: 0 8px 32px -8px hsl(348 83% 47% / 0.4);
+    /* Sombras Brutales - Duras y sin blur pero sutiles */
+    --shadow-brutal: 4px 4px 0 hsl(0 0% 8%);
+    --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 8%);
+    --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 8%);
+    --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
     
-    /* Gradientes Noir */
-    --gradient-primary: linear-gradient(135deg, hsl(348 83% 47%), hsl(348 90% 35%));
-    --gradient-hero: linear-gradient(180deg, hsl(0 0% 6% / 0.85), hsl(0 0% 6% / 0.6));
-    --gradient-noir: linear-gradient(180deg, hsl(0 0% 0% / 0.9) 0%, hsl(0 0% 0% / 0.4) 50%, transparent 100%);
-    --gradient-vignette: radial-gradient(ellipse at center, transparent 0%, hsl(0 0% 0% / 0.3) 100%);
+    /* Gradientes Brutales */
+    --gradient-primary: linear-gradient(135deg, hsl(348 83% 47%), hsl(343 100% 33%));
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 8% / 0.95), hsl(348 83% 47% / 0.85));
     
-    /* Transiciones Cinematográficas - Suaves y elegantes */
-    --transition-cinema: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Transiciones Brutales - Instantáneas o mecánicas */
+    --transition-brutal: all 0.1s linear;
+    --transition-none: none;
   }
 
   .dark {
-    /* CINEMA NOIR BOUTIQUE - Modo Oscuro */
-    --background: 0 0% 4%; /* Negro profundo cinematográfico */
-    --foreground: 0 0% 95%;
+    /* BRUTALISMO 2026 - Modo Oscuro */
+    --background: 0 0% 8%; /* #141414 Negro brutal */
+    --foreground: 0 0% 98%; /* #FAFAFA */
 
-    --card: 0 0% 8%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 12%; /* #1F1F1F */
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 348 83% 50%;
+    --primary: 348 83% 47%; /* #DC143C */
     --primary-foreground: 0 0% 98%;
-    --primary-hover: 348 85% 58%;
-    --primary-light: 348 75% 60%;
-    --primary-lighter: 348 60% 75%;
-    --primary-dark: 348 90% 35%;
+    --primary-hover: 343 100% 33%;
+    --primary-light: 355 82% 60%;
+    --primary-dark: 343 100% 22%;
 
-    --secondary: 0 0% 16%;
-    --secondary-foreground: 0 0% 95%;
-    --secondary-hover: 0 0% 22%;
+    --secondary: 0 0% 20%; /* Gris oscuro */
+    --secondary-foreground: 0 0% 98%;
+    --secondary-hover: 0 0% 15%;
 
-    --muted: 0 0% 14%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 348 83% 50%;
+    --accent: 348 83% 47%; /* Rojo para acentos */
     --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 348 83% 47%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 348 83% 50%;
+    --border: 0 0% 98%; /* Bordes blancos en oscuro */
+    --input: 0 0% 98%;
+    --ring: 348 83% 47%;
 
-    --gray-dark: 0 0% 12%;
-    --gray-medium: 0 0% 45%;
+    --gray-dark: 0 0% 15%;
+    --gray-medium: 0 0% 40%;
     --gray-light: 0 0% 70%;
-    --gray-lighter: 0 0% 85%;
+    --gray-lighter: 0 0% 90%;
 
-    --shadow-cinema: 0 4px 24px -4px hsl(0 0% 0% / 0.4);
-    --shadow-cinema-sm: 0 2px 12px -2px hsl(0 0% 0% / 0.3);
-    --shadow-cinema-lg: 0 8px 40px -8px hsl(0 0% 0% / 0.5);
-    --shadow-cinema-glow: 0 0 60px hsl(348 83% 47% / 0.35);
-    --shadow-cinema-red: 0 8px 32px -8px hsl(348 83% 47% / 0.5);
+    --shadow-brutal: 4px 4px 0 hsl(0 0% 98%);
+    --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 98%);
+    --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 98%);
+    --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
   }
 }
 
@@ -131,68 +124,64 @@ CINEMA NOIR BOUTIQUE - Ala Norte 2026
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading uppercase tracking-wide;
-    font-weight: 600;
+    @apply font-heading uppercase tracking-wider;
+    font-weight: 700;
   }
   
   strong, b, .font-bold {
-    font-weight: 600;
+    font-weight: 700;
   }
 
   h1 {
-    @apply text-5xl md:text-7xl lg:text-8xl leading-none;
+    @apply text-6xl md:text-8xl;
   }
 
   h2 {
-    @apply text-4xl md:text-5xl lg:text-6xl;
+    @apply text-5xl md:text-7xl;
   }
 
   h3 {
-    @apply text-2xl md:text-3xl lg:text-4xl;
+    @apply text-3xl md:text-5xl;
   }
 }
 
 @layer utilities {
-  /* Efectos Cinematográficos */
-  .shadow-cinema {
-    box-shadow: var(--shadow-cinema);
+  /* Efectos Brutales */
+  .shadow-brutal {
+    box-shadow: var(--shadow-brutal);
   }
 
-  .shadow-cinema-sm {
-    box-shadow: var(--shadow-cinema-sm);
+  .shadow-brutal-sm {
+    box-shadow: var(--shadow-brutal-sm);
   }
 
-  .shadow-cinema-lg {
-    box-shadow: var(--shadow-cinema-lg);
+  .shadow-brutal-lg {
+    box-shadow: var(--shadow-brutal-lg);
   }
 
-  .shadow-cinema-glow {
-    box-shadow: var(--shadow-cinema-glow);
+  .shadow-brutal-red {
+    box-shadow: var(--shadow-brutal-red);
   }
 
-  .shadow-cinema-red {
-    box-shadow: var(--shadow-cinema-red);
+  .border-brutal {
+    @apply border-2 border-foreground;
   }
 
-  .border-cinema {
-    @apply border border-border;
+  .transition-brutal {
+    transition: var(--transition-brutal);
   }
 
-  .transition-cinema {
-    transition: var(--transition-cinema);
+  .transition-none {
+    transition: var(--transition-none);
   }
 
-  .transition-fast {
-    transition: var(--transition-fast);
+  /* Hover Brutales - Instantáneos */
+  .hover-brutal {
+    @apply transition-none hover:shadow-brutal;
   }
 
-  /* Hover Cinematográficos */
-  .hover-cinema {
-    @apply transition-cinema hover:shadow-cinema-lg hover:-translate-y-1;
-  }
-
-  .hover-cinema-glow {
-    @apply transition-cinema hover:shadow-cinema-glow;
+  .hover-brutal-red {
+    @apply transition-none hover:shadow-brutal-red hover:-translate-x-1 hover:-translate-y-1;
   }
 
   /* Gradientes */
@@ -204,45 +193,29 @@ CINEMA NOIR BOUTIQUE - Ala Norte 2026
     background: var(--gradient-hero);
   }
 
-  .gradient-noir {
-    background: var(--gradient-noir);
+  .gradient-green {
+    background: var(--gradient-green);
   }
 
-  .gradient-vignette {
-    background: var(--gradient-vignette);
+  /* Tipografía Brutal */
+  .text-brutal {
+    @apply font-heading uppercase tracking-wider;
   }
 
-  /* Tipografía Cinematográfica */
-  .text-cinema {
-    @apply font-heading uppercase tracking-wide;
+  .text-glitch {
+    animation: glitch 0.3s steps(5) infinite;
   }
 
-  /* Efecto Film Grain */
-  .film-grain {
-    position: relative;
-  }
-  
-  .film-grain::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    opacity: 0.03;
-    pointer-events: none;
+  @keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(2px, -2px); }
+    60% { transform: translate(-2px, -2px); }
+    80% { transform: translate(2px, 2px); }
+    100% { transform: translate(0); }
   }
 
-  /* Vignette Effect */
-  .vignette {
-    position: relative;
-  }
-  
-  .vignette::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at center, transparent 40%, hsl(0 0% 0% / 0.4) 100%);
-    pointer-events: none;
-  }
+  /* Grid removed per user request */
 
   /* Rich text editor styles */
   .prose {
@@ -266,21 +239,21 @@ CINEMA NOIR BOUTIQUE - Ala Norte 2026
   }
 
   .prose a {
-    @apply text-primary underline hover:no-underline transition-fast;
+    @apply text-primary underline hover:no-underline;
   }
 
   .prose img {
-    @apply rounded-lg my-6;
+    @apply rounded-none my-6 border-2 border-foreground;
   }
 
   .prose blockquote {
-    @apply border-l-2 border-primary pl-6 italic my-6 text-muted-foreground;
+    @apply border-l-4 border-primary pl-4 italic my-6;
   }
 }
 
 /* React Quill editor styles */
 .ql-toolbar {
-  @apply border-b border-border bg-background rounded-t-lg !important;
+  @apply border-b-2 border-foreground bg-background rounded-t-none !important;
 }
 
 .ql-container {

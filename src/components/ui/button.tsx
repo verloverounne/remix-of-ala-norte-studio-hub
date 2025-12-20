@@ -5,23 +5,23 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-heading uppercase tracking-wide transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 rounded-md",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-heading uppercase tracking-wider transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-2 border-foreground",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary-hover hover:shadow-cinema-red hover:-translate-y-0.5",
-        hero: "bg-primary text-primary-foreground shadow-cinema-lg hover:shadow-cinema-red hover:-translate-y-1 text-lg border-0",
-        outline: "bg-transparent border border-foreground text-foreground hover:bg-foreground hover:text-background",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-hover hover:shadow-cinema hover:-translate-y-0.5",
-        ghost: "hover:bg-accent/10 hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline hover:text-primary-hover",
-        destructive: "bg-destructive text-destructive-foreground hover:opacity-90",
+        default: "bg-primary text-primary-foreground hover:shadow-brutal hover:-translate-x-1 hover:-translate-y-1",
+        hero: "bg-primary text-primary-foreground shadow-brutal-lg hover:shadow-brutal-red hover:-translate-x-2 hover:-translate-y-2 text-lg",
+        outline: "bg-transparent text-foreground hover:bg-foreground hover:text-background",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-hover hover:shadow-brutal hover:-translate-x-1 hover:-translate-y-1",
+        ghost: "border-0 hover:bg-accent hover:text-accent-foreground",
+        link: "border-0 text-primary underline-offset-4 hover:underline hover:text-primary-hover",
+        destructive: "bg-destructive text-destructive-foreground hover:shadow-brutal-red",
       },
       size: {
-        default: "h-11 px-6 py-2.5",
-        sm: "h-9 px-4 text-xs",
-        lg: "h-14 px-10 text-base font-semibold",
-        icon: "h-10 w-10",
+        default: "h-12 px-8 py-3",
+        sm: "h-10 px-6 text-xs",
+        lg: "h-16 px-12 text-lg font-bold",
+        icon: "h-12 w-12",
       },
     },
     defaultVariants: {

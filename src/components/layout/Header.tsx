@@ -40,24 +40,24 @@ export const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-cinema-sm">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b-2 border-foreground">
       <nav className="container mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex h-16 sm:h-18 items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center transition-cinema hover:opacity-80">
-            <img src={logo} alt="Ala Norte" className="h-8 sm:h-10 md:h-11 w-auto object-contain" />
+        <div className="flex h-16 sm:h-20 items-center justify-between">
+          {/* Logo Brutal */}
+          <Link to="/" className="flex items-center">
+            <img src={logo} alt="Ala Norte" className="h-8 sm:h-10 md:h-12 w-auto object-contain" />
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation Brutal */}
           <div className="hidden lg:flex lg:items-center lg:gap-1">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
-                className={`px-4 xl:px-5 h-9 flex items-center justify-center font-heading text-xs xl:text-sm tracking-wide rounded-md transition-cinema ${
+                className={`px-4 xl:px-6 h-10 xl:h-12 flex items-center justify-center font-heading text-xs xl:text-sm tracking-wider border-2 transition-none ${
                   location.pathname === item.href
-                    ? "bg-primary text-primary-foreground shadow-cinema-sm"
-                    : "text-foreground/80 hover:text-foreground hover:bg-muted"
+                    ? "bg-primary text-primary-foreground border-foreground shadow-brutal-sm"
+                    : "bg-transparent border-transparent hover:border-foreground hover:shadow-brutal-sm"
                 }`}
               >
                 {item.name}
@@ -65,7 +65,7 @@ export const Header = () => {
             ))}
           </div>
 
-          {/* Actions */}
+          {/* Actions Brutales */}
           <div className="flex items-center gap-1 sm:gap-2">
             {/* Search */}
             <SearchBar />
@@ -75,14 +75,14 @@ export const Header = () => {
               asChild
               variant="ghost"
               size="icon"
-              className="relative hidden sm:inline-flex h-9 w-9 sm:h-10 sm:w-10 rounded-full"
+              className="relative hidden sm:inline-flex border-2 border-foreground h-10 w-10 sm:h-12 sm:w-12"
             >
               <Link to="/cotizador">
                 <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
                 {totalItems > 0 && (
                   <Badge 
                     variant="destructive" 
-                    className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center p-0 text-[10px] sm:text-xs rounded-full animate-glow"
+                    className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center p-0 text-[10px] sm:text-xs"
                   >
                     {totalItems}
                   </Badge>
@@ -94,7 +94,7 @@ export const Header = () => {
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="hidden sm:inline-flex h-9 w-9 sm:h-10 sm:w-10 rounded-full"
+              className="hidden sm:inline-flex border-2 border-foreground h-10 w-10 sm:h-12 sm:w-12"
             >
               {theme === "light" ? (
                 <Moon className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -109,7 +109,7 @@ export const Header = () => {
                   asChild
                   variant="outline"
                   size="sm"
-                  className="hidden lg:inline-flex h-9 text-xs"
+                  className="hidden lg:inline-flex h-10 xl:h-12 text-xs xl:text-sm"
                 >
                   <Link to="/admin">ADMIN</Link>
                 </Button>
@@ -120,10 +120,10 @@ export const Header = () => {
                     signOut();
                     navigate("/");
                   }}
-                  className="hidden lg:inline-flex h-9 w-9 rounded-full"
+                  className="hidden lg:inline-flex border-2 border-foreground h-10 w-10 xl:h-12 xl:w-12"
                   title="Cerrar sesión"
                 >
-                  <LogOut className="h-4 w-4" />
+                  <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
                 </Button>
               </>
             ) : user ? (
@@ -134,17 +134,17 @@ export const Header = () => {
                   signOut();
                   navigate("/");
                 }}
-                className="hidden lg:inline-flex h-9 w-9 rounded-full"
+                className="hidden lg:inline-flex border-2 border-foreground h-10 w-10 xl:h-12 xl:w-12"
                 title="Cerrar sesión"
               >
-                <LogOut className="h-4 w-4" />
+                <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
               </Button>
             ) : (
               <Button
                 asChild
                 variant="outline"
                 size="sm"
-                className="hidden lg:inline-flex h-9 text-xs"
+                className="hidden lg:inline-flex h-10 xl:h-12 text-xs xl:text-sm"
               >
                 <Link to="/auth">LOGIN</Link>
               </Button>
@@ -155,7 +155,7 @@ export const Header = () => {
               variant="ghost"
               size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden h-9 w-9 rounded-full"
+              className="lg:hidden border-2 border-foreground h-10 w-10"
             >
               {mobileMenuOpen ? (
                 <X className="h-5 w-5" />
@@ -166,19 +166,19 @@ export const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation Brutal */}
         {mobileMenuOpen && (
-          <div className="lg:hidden pb-4 border-t border-border mt-2 animate-fade-in">
-            <div className="flex flex-col gap-2 mt-3">
+          <div className="lg:hidden pb-4 border-t-2 border-foreground mt-2">
+            <div className="flex flex-col gap-2 mt-2">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`px-4 py-3 font-heading text-sm rounded-md transition-cinema ${
+                  className={`px-4 py-3 font-heading text-sm border-2 border-foreground transition-none ${
                     location.pathname === item.href
                       ? "bg-primary text-primary-foreground"
-                      : "bg-muted hover:bg-muted/80"
+                      : "bg-background hover:bg-foreground hover:text-background"
                   }`}
                 >
                   {item.name}
@@ -187,18 +187,18 @@ export const Header = () => {
               <Link
                 to="/cotizador"
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-3 font-heading text-sm rounded-md transition-cinema bg-muted hover:bg-muted/80 flex items-center justify-between"
+                className="px-4 py-3 font-heading text-sm border-2 border-foreground transition-none bg-background hover:bg-foreground hover:text-background flex items-center justify-between"
               >
                 <span>CARRITO</span>
                 {totalItems > 0 && (
-                  <Badge variant="destructive" className="ml-2 rounded-full">
+                  <Badge variant="destructive" className="ml-2">
                     {totalItems}
                   </Badge>
                 )}
               </Link>
-              <div className="flex items-center justify-between px-4 py-3 bg-muted rounded-md">
+              <div className="flex items-center justify-between px-4 py-3 border-2 border-foreground">
                 <span className="font-heading text-sm">MODO</span>
-                <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-9 w-9 rounded-full">
+                <Button variant="ghost" size="icon" onClick={toggleTheme} className="border-2 border-foreground h-10 w-10">
                   {theme === "light" ? (
                     <Moon className="h-5 w-5" />
                   ) : (
