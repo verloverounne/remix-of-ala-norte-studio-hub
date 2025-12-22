@@ -127,15 +127,6 @@ const Equipos = () => {
       return matchesSearch && matchesCategory && matchesSubcategory;
     });
 
-  const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      available: { text: "DISPONIBLE", variant: "success" as const },
-      rented: { text: "RENTADO", variant: "destructive" as const },
-      maintenance: { text: "MANTENIMIENTO", variant: "outline" as const },
-    };
-    return statusConfig[status as keyof typeof statusConfig] || statusConfig.available;
-  };
-
 
   const getQuantity = (id: string) => quantities[id] || 1;
 
@@ -259,10 +250,6 @@ const Equipos = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                   {filteredEquipment.map((item, index) => {
-              const statusBadge = getStatusBadge(item.status);
-              const showUnavailable = item.status !== 'available';
-              
-              
                     return (
                       <Card 
                         key={item.id}
@@ -281,19 +268,6 @@ const Equipos = () => {
                         <span className="text-brutal text-4xl opacity-20">NO IMG</span>
                       </div>
                     )}
-                    
-                    {/* Badge de disponibilidad */}
-                    <div className="absolute top-4 right-4 flex flex-col gap-2">
-                      {showUnavailable ? (
-                        <Badge variant="destructive" className="font-heading">
-                          NO DISPONIBLE
-                        </Badge>
-                      ) : (
-                        <Badge variant="success" className="font-heading">
-                          DISPONIBLE
-                        </Badge>
-                      )}
-                    </div>
                   </div>
 
                       <CardContent className="p-6">
