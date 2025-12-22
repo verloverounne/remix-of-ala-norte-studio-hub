@@ -187,72 +187,93 @@ export type Database = {
           brand: string | null
           category_id: string | null
           created_at: string
+          descripcion_corta_en: string | null
+          descripcion_corta_es: string | null
           description: string | null
           detailed_description: string | null
           detailed_specs: Json | null
           featured: boolean | null
           featured_copy: string | null
           id: string
+          id_original: number | null
           image_url: string | null
           images: Json | null
           model: string | null
           name: string
           name_en: string | null
+          observaciones_internas: string | null
           order_index: number | null
           price_per_day: number
           price_per_week: number | null
+          sku_rentalos: string | null
           specs: Json | null
           status: Database["public"]["Enums"]["equipment_status"] | null
           subcategory_id: string | null
           tags: string[] | null
+          tamano: string | null
+          tipo_equipo: string | null
           updated_at: string
         }
         Insert: {
           brand?: string | null
           category_id?: string | null
           created_at?: string
+          descripcion_corta_en?: string | null
+          descripcion_corta_es?: string | null
           description?: string | null
           detailed_description?: string | null
           detailed_specs?: Json | null
           featured?: boolean | null
           featured_copy?: string | null
           id?: string
+          id_original?: number | null
           image_url?: string | null
           images?: Json | null
           model?: string | null
           name: string
           name_en?: string | null
+          observaciones_internas?: string | null
           order_index?: number | null
           price_per_day: number
           price_per_week?: number | null
+          sku_rentalos?: string | null
           specs?: Json | null
           status?: Database["public"]["Enums"]["equipment_status"] | null
           subcategory_id?: string | null
           tags?: string[] | null
+          tamano?: string | null
+          tipo_equipo?: string | null
           updated_at?: string
         }
         Update: {
           brand?: string | null
           category_id?: string | null
           created_at?: string
+          descripcion_corta_en?: string | null
+          descripcion_corta_es?: string | null
           description?: string | null
           detailed_description?: string | null
           detailed_specs?: Json | null
           featured?: boolean | null
           featured_copy?: string | null
           id?: string
+          id_original?: number | null
           image_url?: string | null
           images?: Json | null
           model?: string | null
           name?: string
           name_en?: string | null
+          observaciones_internas?: string | null
           order_index?: number | null
           price_per_day?: number
           price_per_week?: number | null
+          sku_rentalos?: string | null
           specs?: Json | null
           status?: Database["public"]["Enums"]["equipment_status"] | null
           subcategory_id?: string | null
           tags?: string[] | null
+          tamano?: string | null
+          tipo_equipo?: string | null
           updated_at?: string
         }
         Relationships: [
