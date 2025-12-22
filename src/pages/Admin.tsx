@@ -12,8 +12,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Edit, Trash2, Percent, Download, Upload, Calendar as CalendarIcon, X } from "lucide-react";
+import { Plus, Edit, Trash2, Percent, Download, Upload, Calendar as CalendarIcon, X, Image as ImageIcon } from "lucide-react";
 import { ImageUploader } from "@/components/ImageUploader";
+import { EquipmentImageUploader } from "@/components/EquipmentImageUploader";
 import { Switch } from "@/components/ui/switch";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -520,9 +521,13 @@ const Admin = () => {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <Tabs defaultValue="equipment" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5 lg:w-auto">
+            <TabsList className="grid w-full grid-cols-6 lg:w-auto">
               <TabsTrigger value="equipment">Equipos</TabsTrigger>
               <TabsTrigger value="prices">Precios</TabsTrigger>
+              <TabsTrigger value="images">
+                <ImageIcon className="h-4 w-4 mr-1" />
+                Imágenes
+              </TabsTrigger>
               <TabsTrigger value="spaces">Espacios</TabsTrigger>
               <TabsTrigger value="config">Config</TabsTrigger>
               <TabsTrigger value="backup">Backup</TabsTrigger>
@@ -715,6 +720,11 @@ const Admin = () => {
                   </div>
                 </CardContent>
               </Card>
+            </TabsContent>
+
+            {/* Images Tab */}
+            <TabsContent value="images">
+              <EquipmentImageUploader />
             </TabsContent>
 
             {/* Spaces Tab */}
