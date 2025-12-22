@@ -143,7 +143,8 @@ export const BulkImageAssigner = () => {
     fetchEquipment();
   };
 
-  const getEffectiveImageUrl = (eq: Equipment) => {
+  const getEffectiveImageUrl = (eq: Equipment | null) => {
+    if (!eq) return null;
     return pendingChanges[eq.id] || eq.image_url;
   };
 
@@ -282,7 +283,7 @@ export const BulkImageAssigner = () => {
                       className={cn(
                         "relative aspect-square rounded-md overflow-hidden border-2 transition-all",
                         selectedEquipment ? "hover:border-primary cursor-pointer" : "opacity-50 cursor-not-allowed",
-                        getEffectiveImageUrl(selectedEquipment!) === file.url ? "border-primary ring-2 ring-primary" : "border-transparent"
+                        selectedEquipment && getEffectiveImageUrl(selectedEquipment) === file.url ? "border-primary ring-2 ring-primary" : "border-transparent"
                       )}
                     >
                       <img
