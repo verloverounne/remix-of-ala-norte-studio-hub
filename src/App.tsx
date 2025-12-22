@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,22 +10,24 @@ import { WhatsAppButton } from "./components/WhatsAppButton";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { CartProvider } from "./hooks/useCart";
-import Home from "./pages/Home";
-import Equipos from "./pages/Equipos";
-import Espacios from "./pages/Espacios";
-import Servicios from "./pages/Servicios";
-import Comunidad from "./pages/Comunidad";
-import Nosotros from "./pages/Nosotros";
-import Soporte from "./pages/Soporte";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
-import AdminBlog from "./pages/AdminBlog";
-import Cotizador from "./pages/Cotizador";
-import Contacto from "./pages/Contacto";
-import Admin from "./pages/Admin";
-import Auth from "./pages/Auth";
-import Cartoni from "./pages/Cartoni";
-import NotFound from "./pages/NotFound";
+
+// Lazy load pages for code splitting
+const Home = lazy(() => import("./pages/Home"));
+const Equipos = lazy(() => import("./pages/Equipos"));
+const Espacios = lazy(() => import("./pages/Espacios"));
+const Servicios = lazy(() => import("./pages/Servicios"));
+const Comunidad = lazy(() => import("./pages/Comunidad"));
+const Nosotros = lazy(() => import("./pages/Nosotros"));
+const Soporte = lazy(() => import("./pages/Soporte"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+const AdminBlog = lazy(() => import("./pages/AdminBlog"));
+const Cotizador = lazy(() => import("./pages/Cotizador"));
+const Contacto = lazy(() => import("./pages/Contacto"));
+const Admin = lazy(() => import("./pages/Admin"));
+const Auth = lazy(() => import("./pages/Auth"));
+const Cartoni = lazy(() => import("./pages/Cartoni"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
@@ -38,7 +41,8 @@ const App = () => (
           <ScrollToTop />
           <Header />
           <main>
-            <Routes>
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+              <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/equipos" element={<Equipos />} />
               <Route path="/espacios" element={<Espacios />} />
@@ -70,7 +74,8 @@ const App = () => (
               />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
-            </Routes>
+              </Routes>
+            </Suspense>
           </main>
           <Footer />
           <WhatsAppButton />
