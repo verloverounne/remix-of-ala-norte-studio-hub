@@ -43,7 +43,13 @@ export const Header = () => {
         <div className="flex h-16 sm:h-20 items-center justify-between">
           {/* Logo Brutal */}
           <Link to="/" className="flex items-center">
-            <img src={logo} alt="Ala Norte" className="h-8 sm:h-10 md:h-12 w-auto object-contain" />
+            <img 
+              src={logo} 
+              alt="Ala Norte" 
+              width={48}
+              height={51}
+              className="h-8 sm:h-10 md:h-12 w-auto object-contain" 
+            />
           </Link>
 
           {/* Desktop Navigation Brutal */}
