@@ -24,12 +24,7 @@ const Equipos = () => {
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [selectedEquipment, setSelectedEquipment] = useState<EquipmentWithCategory | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [budgetRange, setBudgetRange] = useState<[number, number]>([0, 100000]);
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
-  const [unavailableEquipmentIds, setUnavailableEquipmentIds] = useState<Set<string>>(new Set());
-  const [upcomingUnavailableIds, setUpcomingUnavailableIds] = useState<Set<string>>(new Set());
+  // Removed: selectedBrands, budgetRange, startDate, endDate, unavailableEquipmentIds, upcomingUnavailableIds
   const { addItem, items, calculateSubtotal } = useCart();
   const { toast } = useToast();
 
@@ -37,17 +32,7 @@ const Equipos = () => {
     fetchEquipment();
   }, []);
 
-  useEffect(() => {
-    checkUpcomingUnavailability();
-  }, [equipment]);
-
-  useEffect(() => {
-    if (startDate && endDate) {
-      checkAvailability();
-    } else {
-      setUnavailableEquipmentIds(new Set());
-    }
-  }, [startDate, endDate, equipment]);
+  // Removed: checkUpcomingUnavailability and checkAvailability effects
 
   const fetchEquipment = async () => {
     setLoading(true);
@@ -70,39 +55,7 @@ const Equipos = () => {
     setLoading(false);
   };
 
-  const checkUpcomingUnavailability = async () => {
-    if (equipment.length === 0) return;
-
-    const today = new Date();
-    const thirtyDaysFromNow = new Date();
-    thirtyDaysFromNow.setDate(today.getDate() + 30);
-
-    const { data: upcomingPeriods, error } = await supabase
-      .from('equipment_unavailability')
-      .select('equipment_id')
-      .lte('start_date', thirtyDaysFromNow.toISOString().split('T')[0])
-      .gte('end_date', today.toISOString().split('T')[0]);
-
-    if (!error && upcomingPeriods) {
-      const upcomingIds = new Set(upcomingPeriods.map(p => p.equipment_id));
-      setUpcomingUnavailableIds(upcomingIds);
-    }
-  };
-
-  const checkAvailability = async () => {
-    if (!startDate || !endDate || equipment.length === 0) return;
-
-    const { data: unavailablePeriods, error } = await supabase
-      .from('equipment_unavailability')
-      .select('equipment_id')
-      .lte('start_date', endDate)
-      .gte('end_date', startDate);
-
-    if (!error && unavailablePeriods) {
-      const unavailableIds = new Set(unavailablePeriods.map(p => p.equipment_id));
-      setUnavailableEquipmentIds(unavailableIds);
-    }
-  };
+  // Removed: checkUpcomingUnavailability and checkAvailability functions
 
   // Fuzzy search helper
   const fuzzyMatch = (text: string, search: string): boolean => {
@@ -171,35 +124,8 @@ const Equipos = () => {
       const matchesSubcategory = selectedSubcategories.length === 0 || 
                                   (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
       
-      const matchesBrand = selectedBrands.length === 0 || 
-                          (item.brand && selectedBrands.includes(item.brand));
-      
-      const matchesBudget = item.price_per_day >= budgetRange[0] && item.price_per_day <= budgetRange[1];
-      
-      return matchesSearch && matchesCategory && matchesSubcategory && matchesBrand && matchesBudget;
-    })
-    .sort((a, b) => {
-      // Primero verificar disponibilidad por fechas seleccionadas
-      const aUnavailableByDate = startDate && endDate && unavailableEquipmentIds.has(a.id);
-      const bUnavailableByDate = startDate && endDate && unavailableEquipmentIds.has(b.id);
-      
-      if (aUnavailableByDate && !bUnavailableByDate) return 1;
-      if (!aUnavailableByDate && bUnavailableByDate) return -1;
-      
-      // Si no hay filtro de fechas, ordenar por disponibilidad próxima
-      if (!startDate || !endDate) {
-        const aHasUpcoming = upcomingUnavailableIds.has(a.id);
-        const bHasUpcoming = upcomingUnavailableIds.has(b.id);
-        
-        if (aHasUpcoming && !bHasUpcoming) return 1;
-        if (!aHasUpcoming && bHasUpcoming) return -1;
-      }
-      
-      return 0;
+      return matchesSearch && matchesCategory && matchesSubcategory;
     });
-
-  // Get unique brands from equipment
-  const uniqueBrands = Array.from(new Set(equipment.map(e => e.brand).filter(Boolean))) as string[];
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
@@ -287,7 +213,7 @@ const Equipos = () => {
                       className="pl-10 border-2 border-foreground font-heading uppercase text-sm"
                     />
                   </div>
-                   {(searchTerm || selectedSubcategories.length > 0 || selectedCategories.length > 0 || selectedBrands.length > 0 || startDate || endDate) && (
+                   {(searchTerm || selectedSubcategories.length > 0 || selectedCategories.length > 0) && (
                     <Button 
                       variant="outline" 
                       size="sm"
@@ -295,10 +221,6 @@ const Equipos = () => {
                         setSearchTerm("");
                         setSelectedSubcategories([]);
                         setSelectedCategories([]);
-                        setSelectedBrands([]);
-                        setBudgetRange([0, 100000]);
-                        setStartDate("");
-                        setEndDate("");
                       }}
                       className="whitespace-nowrap"
                     >
@@ -316,90 +238,7 @@ const Equipos = () => {
                 onCategoriesChange={setSelectedCategories}
               />
 
-              {/* Filtro por Marca */}
-              <div className="mt-6 border-t-2 border-foreground pt-6">
-                <h3 className="font-heading text-base sm:text-lg mb-3 uppercase">Marcas</h3>
-                <div className="space-y-2 max-h-48 overflow-y-auto">
-                  {uniqueBrands.map((brand) => (
-                    <label key={brand} className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={selectedBrands.includes(brand)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedBrands([...selectedBrands, brand]);
-                          } else {
-                            setSelectedBrands(selectedBrands.filter(b => b !== brand));
-                          }
-                        }}
-                        className="rounded border-2 border-foreground"
-                      />
-                      <span className="text-xs sm:text-sm break-words">{brand}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Filtro por Presupuesto */}
-              <div className="mt-6 border-t-2 border-foreground pt-6">
-                <h3 className="font-heading text-base sm:text-lg mb-3 uppercase">Presupuesto (por día)</h3>
-                <div className="space-y-4">
-                  <div className="flex gap-2 items-center">
-                    <Input
-                      type="number"
-                      placeholder="Min"
-                      value={budgetRange[0]}
-                      onChange={(e) => setBudgetRange([parseInt(e.target.value) || 0, budgetRange[1]])}
-                      className="border-2 border-foreground text-xs"
-                    />
-                    <span className="text-xs">-</span>
-                    <Input
-                      type="number"
-                      placeholder="Max"
-                      value={budgetRange[1]}
-                      onChange={(e) => setBudgetRange([budgetRange[0], parseInt(e.target.value) || 100000])}
-                      className="border-2 border-foreground text-xs"
-                    />
-                  </div>
-                  <p className="text-xs text-muted-foreground break-words">
-                    ${budgetRange[0].toLocaleString()} - ${budgetRange[1].toLocaleString()}
-                  </p>
-                </div>
-              </div>
-
-              {/* Filtro por Disponibilidad */}
-              <div className="mt-6 border-t-2 border-foreground pt-6">
-                <h3 className="font-heading text-base sm:text-lg mb-3 uppercase">Disponibilidad</h3>
-                <p className="text-xs text-muted-foreground mb-4">
-                  Selecciona las fechas para ver disponibilidad de equipos
-                </p>
-                <div className="space-y-3">
-                  <div>
-                    <label className="text-xs font-heading uppercase mb-1 block">Fecha Inicio</label>
-                    <Input
-                      type="date"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                      className="border-2 border-foreground text-xs"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-heading uppercase mb-1 block">Fecha Fin</label>
-                    <Input
-                      type="date"
-                      value={endDate}
-                      onChange={(e) => setEndDate(e.target.value)}
-                      min={startDate}
-                      className="border-2 border-foreground text-xs"
-                    />
-                  </div>
-                  {startDate && endDate && unavailableEquipmentIds.size > 0 && (
-                    <p className="text-xs text-muted-foreground mt-2">
-                      {unavailableEquipmentIds.size} equipo{unavailableEquipmentIds.size !== 1 ? 's' : ''} no disponible{unavailableEquipmentIds.size !== 1 ? 's' : ''} en estas fechas
-                    </p>
-                  )}
-                </div>
-              </div>
+              {/* Removed: Brand, Budget and Availability filters */}
             </div>
           </aside>
 
@@ -421,9 +260,8 @@ const Equipos = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                   {filteredEquipment.map((item, index) => {
               const statusBadge = getStatusBadge(item.status);
-              const isUnavailableByDate = startDate && endDate && unavailableEquipmentIds.has(item.id);
-              const hasUpcomingUnavailability = upcomingUnavailableIds.has(item.id);
-              const showUnavailable = isUnavailableByDate || (!startDate && !endDate && hasUpcomingUnavailability);
+              const showUnavailable = item.status !== 'available';
+              
               
                     return (
                       <Card 
