@@ -45,11 +45,6 @@ export const Footer = () => {
                   Nosotros
                 </Link>
               </li>
-              <li>
-                <Link to="/cotizador" className="text-sm hover:text-primary transition-brutal">
-                  Cotizador
-                </Link>
-              </li>
             </ul>
           </div>
 
