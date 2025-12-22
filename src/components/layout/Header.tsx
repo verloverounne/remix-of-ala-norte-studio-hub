@@ -74,6 +74,7 @@ export const Header = () => {
               size="icon"
               onClick={toggleTheme}
               className="hidden sm:inline-flex border-2 border-foreground h-10 w-10 sm:h-12 sm:w-12"
+              aria-label={theme === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"}
             >
               {theme === "light" ? (
                 <Moon className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -135,6 +136,7 @@ export const Header = () => {
               size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden border-2 border-foreground h-10 w-10"
+              aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
             >
               {mobileMenuOpen ? (
                 <X className="h-5 w-5" />
@@ -165,7 +167,7 @@ export const Header = () => {
               ))}
               <div className="flex items-center justify-between px-4 py-3 border-2 border-foreground">
                 <span className="font-heading text-sm">MODO</span>
-                <Button variant="ghost" size="icon" onClick={toggleTheme} className="border-2 border-foreground h-10 w-10">
+                <Button variant="ghost" size="icon" onClick={toggleTheme} className="border-2 border-foreground h-10 w-10" aria-label={theme === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"}>
                   {theme === "light" ? (
                     <Moon className="h-5 w-5" />
                   ) : (
