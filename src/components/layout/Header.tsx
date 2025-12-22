@@ -12,8 +12,6 @@ const navigation = [
   { name: "EQUIPOS", href: "/equipos" },
   { name: "ESPACIOS", href: "/espacios" },
   { name: "SERVICIOS", href: "/servicios" },
-  { name: "COMUNIDAD", href: "/comunidad" },
-  { name: "SOPORTE", href: "/soporte" },
 ];
 
 export const Header = () => {
@@ -70,25 +68,6 @@ export const Header = () => {
             {/* Search */}
             <SearchBar />
             
-            {/* Cart Badge */}
-            <Button
-              asChild
-              variant="ghost"
-              size="icon"
-              className="relative hidden sm:inline-flex border-2 border-foreground h-10 w-10 sm:h-12 sm:w-12"
-            >
-              <Link to="/cotizador">
-                <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
-                {totalItems > 0 && (
-                  <Badge 
-                    variant="destructive" 
-                    className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center p-0 text-[10px] sm:text-xs"
-                  >
-                    {totalItems}
-                  </Badge>
-                )}
-              </Link>
-            </Button>
 
             <Button
               variant="ghost"
@@ -184,18 +163,6 @@ export const Header = () => {
                   {item.name}
                 </Link>
               ))}
-              <Link
-                to="/cotizador"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-3 font-heading text-sm border-2 border-foreground transition-none bg-background hover:bg-foreground hover:text-background flex items-center justify-between"
-              >
-                <span>CARRITO</span>
-                {totalItems > 0 && (
-                  <Badge variant="destructive" className="ml-2">
-                    {totalItems}
-                  </Badge>
-                )}
-              </Link>
               <div className="flex items-center justify-between px-4 py-3 border-2 border-foreground">
                 <span className="font-heading text-sm">MODO</span>
                 <Button variant="ghost" size="icon" onClick={toggleTheme} className="border-2 border-foreground h-10 w-10">
