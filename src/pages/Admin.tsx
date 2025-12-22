@@ -14,7 +14,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Edit, Trash2, Percent, Download, Upload, Calendar as CalendarIcon, X, Image as ImageIcon } from "lucide-react";
 import { ImageUploader } from "@/components/ImageUploader";
+import { StorageImageSelector } from "@/components/StorageImageSelector";
 import { EquipmentImageUploader } from "@/components/EquipmentImageUploader";
+import { BulkImageAssigner } from "@/components/BulkImageAssigner";
 import { Switch } from "@/components/ui/switch";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -521,13 +523,14 @@ const Admin = () => {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <Tabs defaultValue="equipment" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-6 lg:w-auto">
+            <TabsList className="grid w-full grid-cols-7 lg:w-auto">
               <TabsTrigger value="equipment">Equipos</TabsTrigger>
               <TabsTrigger value="prices">Precios</TabsTrigger>
-              <TabsTrigger value="images">
+              <TabsTrigger value="assign-images">
                 <ImageIcon className="h-4 w-4 mr-1" />
-                Imágenes
+                Asignar
               </TabsTrigger>
+              <TabsTrigger value="images">Subir</TabsTrigger>
               <TabsTrigger value="spaces">Espacios</TabsTrigger>
               <TabsTrigger value="config">Config</TabsTrigger>
               <TabsTrigger value="backup">Backup</TabsTrigger>
@@ -593,8 +596,12 @@ const Admin = () => {
                       <Textarea value={newEquipment.description} onChange={(e) => setNewEquipment({...newEquipment, description: e.target.value})} />
                     </div>
                     <div className="space-y-2 md:col-span-2">
-                      <Label>Imagen Principal (URL)</Label>
-                      <Input value={newEquipment.image_url} onChange={(e) => setNewEquipment({...newEquipment, image_url: e.target.value})} placeholder="https://..." />
+                      <Label>Imagen Principal</Label>
+                      <StorageImageSelector 
+                        value={newEquipment.image_url} 
+                        onChange={(url) => setNewEquipment({...newEquipment, image_url: url})}
+                        placeholder="Seleccionar imagen del storage..."
+                      />
                     </div>
                     <div className="space-y-2 md:col-span-2">
                       <Label>Imágenes Adicionales</Label>
@@ -722,7 +729,12 @@ const Admin = () => {
               </Card>
             </TabsContent>
 
-            {/* Images Tab */}
+            {/* Assign Images Tab */}
+            <TabsContent value="assign-images">
+              <BulkImageAssigner />
+            </TabsContent>
+
+            {/* Upload Images Tab */}
             <TabsContent value="images">
               <EquipmentImageUploader />
             </TabsContent>
@@ -1124,11 +1136,11 @@ const Admin = () => {
                 />
               </div>
               <div className="space-y-2 md:col-span-2">
-                <Label>Imagen Principal (URL)</Label>
-                <Input 
+                <Label>Imagen Principal</Label>
+                <StorageImageSelector 
                   value={editingEquipment.image_url || ''} 
-                  onChange={(e) => setEditingEquipment({...editingEquipment, image_url: e.target.value})} 
-                  placeholder="https://..." 
+                  onChange={(url) => setEditingEquipment({...editingEquipment, image_url: url})}
+                  placeholder="Seleccionar imagen del storage..."
                 />
               </div>
               <div className="space-y-2 md:col-span-2">
