@@ -9,7 +9,7 @@ import { SearchBar } from "@/components/SearchBar";
 import logo from "@/assets/logo-brutal.png";
 
 const navigation = [
-  { name: "EQUIPOS", href: "/equipos" },
+  { name: "RENTAL", href: "/equipos" },
   { name: "ESPACIOS", href: "/espacios" },
   { name: "SERVICIOS", href: "/servicios" },
 ];
