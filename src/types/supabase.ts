@@ -48,6 +48,14 @@ export interface Equipment {
   order_index: number;
   created_at: string;
   updated_at: string;
+  // New columns from CSV import
+  sku_rentalos: string | null;
+  descripcion_corta_es: string | null;
+  descripcion_corta_en: string | null;
+  tamano: string | null;
+  tipo_equipo: string | null;
+  observaciones_internas: string | null;
+  id_original: number | null;
 }
 
 export interface EquipmentWithCategory extends Equipment {
