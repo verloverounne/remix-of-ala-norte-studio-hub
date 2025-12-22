@@ -106,7 +106,7 @@ const Home = () => {
                       </Button>
                       <Button asChild variant="secondary" size="sm" className="sm:text-base">
                         <Link to="/equipos">
-                          VER EQUIPOS <ArrowRight className="ml-2 h-4 w-4" />
+                          VER RENTAL <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                       </Button>
                     </div>
@@ -140,7 +140,7 @@ const Home = () => {
           <div className="py-12 sm:py-16 lg:py-20">
             <div className="container mx-auto px-4 mb-8 sm:mb-12">
               <div className="border-l-4 sm:border-l-8 border-primary pl-4 sm:pl-8">
-                <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">EQUIPOS DESTACADOS</h2>
+                <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">RENTAL DESTACADO</h2>
                 <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-heading">
                   TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
                 </p>
@@ -267,6 +267,45 @@ const Home = () => {
               <CarouselPrevious className="left-0 -translate-x-1/2 bg-background text-foreground" />
               <CarouselNext className="right-0 translate-x-1/2 bg-background text-foreground" />
             </Carousel>
+          </div>
+        </div>
+      </section>
+
+      {/* Cartoni Official Dealer Section */}
+      <section className="py-16 lg:py-24 bg-muted/30 border-y-4 border-foreground">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+            <div className="flex-shrink-0">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Cartoni_logo.svg/1200px-Cartoni_logo.svg.png"
+                alt="Cartoni Logo"
+                className="h-20 md:h-28 bg-foreground p-4 rounded-lg"
+              />
+            </div>
+            <div className="flex-1 text-center lg:text-left">
+              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mb-4">
+                SELLER & SERVICE <span className="text-primary">OFICIAL CARTONI</span>
+              </h2>
+              <p className="text-lg text-muted-foreground mb-6 max-w-2xl">
+                Ala Norte es representante oficial de Cartoni en Argentina. 
+                Venta, reparación y mantenimiento de trípodes y cabezales profesionales 
+                con garantía y repuestos originales.
+              </p>
+              <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+                <Button asChild variant="default" size="lg">
+                  <Link to="/cartoni">CONOCER MÁS</Link>
+                </Button>
+                <Button asChild variant="outline" size="lg">
+                  <a
+                    href="https://www.cartoni.com/dealers/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    VER EN CARTONI.COM
+                  </a>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </section>

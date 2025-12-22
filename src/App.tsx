@@ -23,6 +23,7 @@ import Cotizador from "./pages/Cotizador";
 import Contacto from "./pages/Contacto";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
+import Cartoni from "./pages/Cartoni";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -49,6 +50,7 @@ const App = () => (
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/cotizador" element={<Cotizador />} />
               <Route path="/contacto" element={<Contacto />} />
+              <Route path="/cartoni" element={<Cartoni />} />
               <Route path="/auth" element={<Auth />} />
               <Route 
                 path="/admin" 

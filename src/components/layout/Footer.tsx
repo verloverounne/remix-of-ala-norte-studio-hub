@@ -27,7 +27,7 @@ export const Footer = () => {
               </li>
               <li>
                 <Link to="/equipos" className="text-sm hover:text-primary transition-brutal">
-                  Equipos
+                  Rental
                 </Link>
               </li>
               <li>
