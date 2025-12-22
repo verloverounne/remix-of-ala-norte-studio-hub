@@ -4,7 +4,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { MapPin, Users, Ruler, Calendar } from "lucide-react";
+import { MapPin, Users, Ruler, Calendar, Eye } from "lucide-react";
+import Viewer360 from "@/components/Viewer360";
 import { SpaceModal } from "@/components/SpaceModal";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Link } from "react-router-dom";
@@ -94,6 +95,27 @@ const Espacios = () => {
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto font-heading">
             ESTUDIOS PROFESIONALES EQUIPADOS CON TECNOLOGÍA DE VANGUARDIA PARA TUS PRODUCCIONES
           </p>
+        </div>
+      </section>
+
+      {/* 360° Virtual Tour Section */}
+      <section className="py-12 sm:py-16 bg-secondary">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
+              <Eye className="inline-block mr-3 h-8 w-8" />
+              TOUR VIRTUAL 360°
+            </h2>
+            <p className="text-muted-foreground font-heading text-lg max-w-2xl mx-auto">
+              EXPLORÁ NUESTRO ESTUDIO DE FILMACIÓN EN UNA EXPERIENCIA INMERSIVA. ARRASTRÁ PARA MOVERTE.
+            </p>
+          </div>
+          <div className="max-w-5xl mx-auto">
+            <Viewer360 
+              imageSrc="/images/360-studio.jpg" 
+              height="500px" 
+            />
+          </div>
         </div>
       </section>
 
