@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { Maximize2, Minimize2 } from "lucide-react";
 
 declare global {
   namespace JSX {
@@ -17,7 +18,38 @@ interface Viewer360Props {
 
 const Viewer360 = ({ imageSrc, height = "500px" }: Viewer360Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLElement | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const toggleFullscreen = useCallback(() => {
+    if (!wrapperRef.current) return;
+
+    if (!document.fullscreenElement) {
+      wrapperRef.current.requestFullscreen().then(() => {
+        setIsFullscreen(true);
+      }).catch((err) => {
+        console.error('Error entering fullscreen:', err);
+      });
+    } else {
+      document.exitFullscreen().then(() => {
+        setIsFullscreen(false);
+      }).catch((err) => {
+        console.error('Error exiting fullscreen:', err);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
 
   useEffect(() => {
     // Load A-Frame script dynamically
@@ -42,16 +74,18 @@ const Viewer360 = ({ imageSrc, height = "500px" }: Viewer360Props) => {
       // Clear existing scene if any
       containerRef.current.innerHTML = '';
       
-      // Create scene HTML
+      const currentHeight = isFullscreen ? '100vh' : height;
+      
+      // Create scene HTML with 2x scale on the sky
       const sceneHTML = `
         <a-scene 
           embedded 
-          style="width: 100%; height: ${height};"
+          style="width: 100%; height: ${currentHeight};"
           vr-mode-ui="enabled: false"
           loading-screen="enabled: false"
         >
-          <a-sky src="${imageSrc}" rotation="0 -90 0"></a-sky>
-          <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true"></a-camera>
+          <a-sky src="${imageSrc}" rotation="0 -90 0" scale="2 2 2"></a-sky>
+          <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="60"></a-camera>
         </a-scene>
       `;
       
@@ -64,14 +98,36 @@ const Viewer360 = ({ imageSrc, height = "500px" }: Viewer360Props) => {
         containerRef.current.innerHTML = '';
       }
     };
-  }, [imageSrc, height]);
+  }, [imageSrc, height, isFullscreen]);
 
   return (
     <div 
-      ref={containerRef} 
-      className="w-full rounded-lg overflow-hidden border-4 border-foreground"
-      style={{ height }}
-    />
+      ref={wrapperRef}
+      className={`relative ${isFullscreen ? 'bg-black' : ''}`}
+    >
+      <div 
+        ref={containerRef} 
+        className={`w-full overflow-hidden cursor-pointer ${isFullscreen ? 'h-screen' : 'rounded-lg border-4 border-foreground'}`}
+        style={{ height: isFullscreen ? '100vh' : height }}
+        onClick={toggleFullscreen}
+      />
+      <button
+        onClick={toggleFullscreen}
+        className="absolute top-4 right-4 z-10 bg-background/80 hover:bg-background p-2 rounded-lg border-2 border-foreground transition-all hover:scale-105"
+        title={isFullscreen ? "Salir de pantalla completa (ESC)" : "Pantalla completa"}
+      >
+        {isFullscreen ? (
+          <Minimize2 className="h-6 w-6" />
+        ) : (
+          <Maximize2 className="h-6 w-6" />
+        )}
+      </button>
+      {!isFullscreen && (
+        <p className="text-center text-sm text-muted-foreground mt-2 font-heading">
+          CLICK PARA PANTALLA COMPLETA · ESC PARA SALIR
+        </p>
+      )}
+    </div>
   );
 };
 
