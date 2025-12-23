@@ -6,8 +6,19 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Check, Image as ImageIcon, Save, RefreshCw } from "lucide-react";
+import { Search, Check, Image as ImageIcon, Save, RefreshCw, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface Equipment {
   id: string;
@@ -29,6 +40,7 @@ export const BulkImageAssigner = () => {
   const [selectedEquipment, setSelectedEquipment] = useState<Equipment | null>(null);
   const [pendingChanges, setPendingChanges] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -143,6 +155,45 @@ export const BulkImageAssigner = () => {
     fetchEquipment();
   };
 
+  const handleDeleteEquipment = async (eq: Equipment) => {
+    setDeleting(eq.id);
+    
+    const { error } = await supabase
+      .from('equipment')
+      .delete()
+      .eq('id', eq.id);
+
+    setDeleting(null);
+
+    if (error) {
+      toast({ 
+        title: "Error al eliminar", 
+        description: error.message,
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    // Remover de la lista local
+    setEquipment(prev => prev.filter(e => e.id !== eq.id));
+    
+    // Si estaba seleccionado, deseleccionar
+    if (selectedEquipment?.id === eq.id) {
+      setSelectedEquipment(null);
+    }
+
+    // Remover cambios pendientes si existían
+    if (pendingChanges[eq.id]) {
+      const { [eq.id]: _, ...rest } = pendingChanges;
+      setPendingChanges(rest);
+    }
+
+    toast({ 
+      title: "Equipo eliminado", 
+      description: `${eq.name} ha sido eliminado correctamente` 
+    });
+  };
+
   const getEffectiveImageUrl = (eq: Equipment | null) => {
     if (!eq) return null;
     return pendingChanges[eq.id] || eq.image_url;
@@ -207,47 +258,89 @@ export const BulkImageAssigner = () => {
               <ScrollArea className="h-[500px] border rounded-md">
                 <div className="p-2 space-y-1">
                   {filteredEquipment.map((eq) => (
-                    <button
+                    <div
                       key={eq.id}
-                      onClick={() => setSelectedEquipment(eq)}
                       className={cn(
-                        "w-full flex items-center gap-3 p-2 rounded-md text-left transition-colors",
+                        "w-full flex items-center gap-3 p-2 rounded-md transition-colors",
                         selectedEquipment?.id === eq.id 
                           ? "bg-primary text-primary-foreground" 
                           : "hover:bg-muted",
                         pendingChanges[eq.id] && "ring-2 ring-primary"
                       )}
                     >
-                      <div className="w-12 h-12 rounded bg-muted overflow-hidden shrink-0">
-                        {getEffectiveImageUrl(eq) ? (
-                          <img 
-                            src={getEffectiveImageUrl(eq)!} 
-                            alt={eq.name} 
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display = 'none';
-                            }}
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <ImageIcon className="h-5 w-5 text-muted-foreground" />
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{eq.name}</p>
-                        <div className="flex gap-1 mt-1">
-                          {hasImage(eq) ? (
-                            <Badge variant="success" className="text-xs">Con imagen</Badge>
+                      <button
+                        onClick={() => setSelectedEquipment(eq)}
+                        className="flex items-center gap-3 flex-1 min-w-0 text-left"
+                      >
+                        <div className="w-12 h-12 rounded bg-muted overflow-hidden shrink-0">
+                          {getEffectiveImageUrl(eq) ? (
+                            <img 
+                              src={getEffectiveImageUrl(eq)!} 
+                              alt={eq.name} 
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).style.display = 'none';
+                              }}
+                            />
                           ) : (
-                            <Badge variant="destructive" className="text-xs">Sin imagen</Badge>
-                          )}
-                          {pendingChanges[eq.id] && (
-                            <Badge variant="outline" className="text-xs">Modificado</Badge>
+                            <div className="w-full h-full flex items-center justify-center">
+                              <ImageIcon className="h-5 w-5 text-muted-foreground" />
+                            </div>
                           )}
                         </div>
-                      </div>
-                    </button>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium truncate">{eq.name}</p>
+                          <div className="flex gap-1 mt-1">
+                            {hasImage(eq) ? (
+                              <Badge variant="success" className="text-xs">Con imagen</Badge>
+                            ) : (
+                              <Badge variant="destructive" className="text-xs">Sin imagen</Badge>
+                            )}
+                            {pendingChanges[eq.id] && (
+                              <Badge variant="outline" className="text-xs">Modificado</Badge>
+                            )}
+                          </div>
+                        </div>
+                      </button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className={cn(
+                              "shrink-0 h-8 w-8",
+                              selectedEquipment?.id === eq.id 
+                                ? "text-primary-foreground hover:bg-primary-foreground/20" 
+                                : "text-destructive hover:text-destructive hover:bg-destructive/10"
+                            )}
+                            disabled={deleting === eq.id}
+                          >
+                            {deleting === eq.id ? (
+                              <RefreshCw className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <Trash2 className="h-4 w-4" />
+                            )}
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>¿Eliminar equipo?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Esta acción eliminará permanentemente <strong>"{eq.name}"</strong> de la base de datos. Esta acción no se puede deshacer.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDeleteEquipment(eq)}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              Eliminar
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
                   ))}
                 </div>
               </ScrollArea>
