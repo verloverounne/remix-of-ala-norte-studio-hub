@@ -133,7 +133,6 @@ const Home = () => {
         </div>
       </section>
 
-
       {/* Featured Equipment Section - Full Width Slider */}
       {featuredEquipment.length > 0 && (
         <section className="relative border-y-4 border-foreground bg-muted/30 overflow-hidden">
@@ -225,52 +224,6 @@ const Home = () => {
         </div>
       </section>
 
-
-
-
-
-      {/* Instagram Stories Section - Full Width */}
-      <section className="relative border-y-4 border-foreground bg-foreground overflow-hidden">
-        <div className="py-20">
-          <div className="container mx-auto px-4 mb-12">
-            <div className="border-l-8 border-primary pl-8">
-              <h2 className="font-heading text-brutal mb-4 text-background">SIGUENOS EN INSTAGRAM</h2>
-              <p className="text-xl text-background/80 font-heading">NUESTROS ÚLTIMOS PROYECTOS Y DETRÁS DE CÁMARAS</p>
-            </div>
-          </div>
-
-          <div className="relative">
-            <Carousel className="w-full">
-              <CarouselContent className="-ml-0">
-                {[1, 2, 3, 4, 5].map((story) => (
-                  <CarouselItem key={story} className="pl-0 basis-full md:basis-1/3 lg:basis-1/4">
-                    <div className="relative aspect-[9/16] bg-muted overflow-hidden group cursor-pointer border-4 border-background">
-                      <img
-                        src={`https://images.unsplash.com/photo-${1492691527719 + story}-6dd46a0f1123?w=600&h=900&fit=crop`}
-                        alt={`Instagram Story ${story}`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div className="absolute bottom-0 left-0 right-0 p-6">
-                          <p className="text-background font-heading text-sm uppercase">Ver en Instagram</p>
-                        </div>
-                      </div>
-                      <div className="absolute top-4 left-4 right-4 flex gap-1">
-                        <div className="h-1 flex-1 bg-background/40 rounded-full overflow-hidden">
-                          <div className="h-full bg-background w-full"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="left-0 -translate-x-1/2 bg-background text-foreground" />
-              <CarouselNext className="right-0 translate-x-1/2 bg-background text-foreground" />
-            </Carousel>
-          </div>
-        </div>
-      </section>
-
       {/* Cartoni Official Dealer Section */}
       <section className="py-16 lg:py-24 bg-muted/30 border-y-4 border-foreground">
         <div className="container mx-auto px-4">
@@ -287,20 +240,15 @@ const Home = () => {
                 SELLER & SERVICE <span className="text-primary">OFICIAL CARTONI</span>
               </h2>
               <p className="text-lg text-muted-foreground mb-6 max-w-2xl">
-                Ala Norte es representante oficial de Cartoni en Argentina. 
-                Venta, reparación y mantenimiento de trípodes y cabezales profesionales 
-                con garantía y repuestos originales.
+                Ala Norte es representante oficial de Cartoni en Argentina. Venta, reparación y mantenimiento de
+                trípodes y cabezales profesionales con garantía y repuestos originales.
               </p>
               <div className="flex flex-wrap justify-center lg:justify-start gap-4">
                 <Button asChild variant="default" size="lg">
                   <Link to="/cartoni">CONOCER MÁS</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg">
-                  <a
-                    href="https://www.cartoni.com/dealers/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href="https://www.cartoni.com/dealers/" target="_blank" rel="noopener noreferrer">
                     VER EN CARTONI.COM
                   </a>
                 </Button>
