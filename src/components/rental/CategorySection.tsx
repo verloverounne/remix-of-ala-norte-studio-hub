@@ -170,12 +170,15 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                     key={item.id}
                     className="overflow-hidden group relative"
                   >
-                    {/* Cart quantity badge */}
-                    {cartQty > 0 && (
-                      <div className="absolute top-2 right-2 z-10 bg-primary text-primary-foreground rounded-full w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center font-heading text-xs sm:text-sm shadow-brutal-sm">
-                        {cartQty}
-                      </div>
-                    )}
+                    {/* Cart quantity badge with stock indicator */}
+                    <div className={cn(
+                      "absolute top-2 right-2 z-10 rounded-full px-2 py-0.5 flex items-center justify-center font-heading text-[10px] sm:text-xs shadow-brutal-sm",
+                      cartQty > 0 
+                        ? "bg-primary text-primary-foreground" 
+                        : "bg-muted text-muted-foreground border border-foreground/20"
+                    )}>
+                      {cartQty}/{item.stock_quantity}
+                    </div>
                     
                     <div className="relative aspect-square cursor-pointer" onClick={() => onViewDetails(item)}>
                       {item.image_url ? (
