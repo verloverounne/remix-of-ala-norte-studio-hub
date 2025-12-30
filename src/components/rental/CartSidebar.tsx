@@ -96,10 +96,16 @@ export const CartSidebar = ({
                     </span>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="w-7 h-7 border-2 border-foreground flex items-center justify-center hover:bg-foreground hover:text-background transition-colors"
+                      disabled={item.stockQuantity !== undefined && item.quantity >= item.stockQuantity}
+                      className="w-7 h-7 border-2 border-foreground flex items-center justify-center hover:bg-foreground hover:text-background transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-foreground"
                     >
                       <Plus className="w-3 h-3" />
                     </button>
+                    {item.stockQuantity !== undefined && (
+                      <span className="text-xs text-muted-foreground ml-1">
+                        (máx: {item.stockQuantity})
+                      </span>
+                    )}
                   </div>
                   
                   <div className="flex items-center gap-3">

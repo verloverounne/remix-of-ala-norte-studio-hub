@@ -97,6 +97,7 @@ export const RelatedEquipment = ({
       brand: item.brand || undefined,
       pricePerDay: item.price_per_day,
       imageUrl: item.image_url || undefined,
+      stockQuantity: item.stock_quantity,
     });
     
     toast({

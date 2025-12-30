@@ -7,6 +7,7 @@ export interface CartItem {
   pricePerDay: number;
   quantity: number;
   imageUrl?: string;
+  stockQuantity?: number;
 }
 
 interface CartContextType {
@@ -34,12 +35,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const addItem = (item: Omit<CartItem, "quantity">, quantity = 1) => {
     setItems((prev) => {
       const existing = prev.find((i) => i.id === item.id);
+      const maxStock = item.stockQuantity ?? Infinity;
+      
       if (existing) {
+        const newQuantity = Math.min(existing.quantity + quantity, maxStock);
         return prev.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + quantity } : i
+          i.id === item.id ? { ...i, quantity: newQuantity } : i
         );
       }
-      return [...prev, { ...item, quantity }];
+      return [...prev, { ...item, quantity: Math.min(quantity, maxStock) }];
     });
   };
 
@@ -53,7 +57,13 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     setItems((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, quantity } : i))
+      prev.map((i) => {
+        if (i.id === id) {
+          const maxStock = i.stockQuantity ?? Infinity;
+          return { ...i, quantity: Math.min(quantity, maxStock) };
+        }
+        return i;
+      })
     );
   };
 

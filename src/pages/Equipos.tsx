@@ -9,9 +9,7 @@ import { CategorySection, CategorySectionRef } from "@/components/rental/Categor
 import { FilterBar } from "@/components/rental/FilterBar";
 import { CartSidebar } from "@/components/rental/CartSidebar";
 
-interface EquipmentWithStock extends EquipmentWithCategory {
-  stock_quantity?: number;
-}
+type EquipmentWithStock = EquipmentWithCategory;
 
 interface Category {
   id: string;
@@ -205,6 +203,7 @@ const Equipos = () => {
       brand: item.brand || undefined,
       pricePerDay: item.price_per_day,
       imageUrl: item.image_url || undefined,
+      stockQuantity: item.stock_quantity,
     }, 1);
     
     toast({
