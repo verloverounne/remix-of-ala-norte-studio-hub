@@ -7,7 +7,7 @@ import { EquipmentModal } from "@/components/EquipmentModal";
 import { HeroCarouselRental } from "@/components/rental/HeroCarouselRental";
 import { CategorySection, CategorySectionRef } from "@/components/rental/CategorySection";
 import { FilterBar } from "@/components/rental/FilterBar";
-import { QuoteSidebar } from "@/components/rental/QuoteSidebar";
+import { CartSidebar } from "@/components/rental/CartSidebar";
 
 interface EquipmentWithStock extends EquipmentWithCategory {
   stock_quantity?: number;
@@ -30,7 +30,7 @@ const Equipos = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [heroHeight, setHeroHeight] = useState(0);
-  const { addItem, items, calculateSubtotal } = useCart();
+  const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
   const { toast } = useToast();
   
   const categoryRefs = useRef<Map<string, CategorySectionRef>>(new Map());
@@ -260,9 +260,9 @@ const Equipos = () => {
 
   // Calculate sticky top values - hero starts at top, navbar overlays when visible
   const heroTop = 0; // Hero starts at very top
-  const navbarHeight = 56; // For elements that need to be below navbar when visible
   const filterTop = heroHeight; // Filters below hero
   const categoryTitleTop = heroHeight + filterBarHeight; // Category titles below filters
+  const cartStickyTop = heroHeight + filterBarHeight + 16; // Cart sticky position
 
   return (
     <div className="min-h-screen bg-background">
@@ -335,13 +335,26 @@ const Equipos = () => {
             )}
           </main>
 
-          {/* Quote Sidebar */}
-          <aside className="lg:col-span-1">
-            <QuoteSidebar 
+          {/* Cart Sidebar - Sticky on desktop, drawer on mobile */}
+          <aside className="hidden lg:block lg:col-span-1">
+            <CartSidebar 
               items={items}
               calculateSubtotal={calculateSubtotal}
+              updateQuantity={updateQuantity}
+              removeItem={removeItem}
+              stickyTop={cartStickyTop}
             />
           </aside>
+          
+          {/* Mobile cart button/drawer */}
+          <div className="lg:hidden">
+            <CartSidebar 
+              items={items}
+              calculateSubtotal={calculateSubtotal}
+              updateQuantity={updateQuantity}
+              removeItem={removeItem}
+            />
+          </div>
         </div>
       </div>
       
