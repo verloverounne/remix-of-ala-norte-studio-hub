@@ -28,11 +28,36 @@ const Equipos = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [heroHeight, setHeroHeight] = useState(0);
+  const [autoplayEnabled, setAutoplayEnabled] = useState(true);
   const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
   const { toast } = useToast();
   
   const categoryRefs = useRef<Map<string, CategorySectionRef>>(new Map());
   const heroRef = useRef<HTMLDivElement>(null);
+  const mainContentRef = useRef<HTMLElement>(null);
+
+  // Stop autoplay when user scrolls in the equipment column
+  useEffect(() => {
+    const mainContent = mainContentRef.current;
+    if (!mainContent) return;
+
+    const handleScroll = () => {
+      if (autoplayEnabled) {
+        setAutoplayEnabled(false);
+      }
+    };
+
+    // Listen to scroll on the main content area
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [autoplayEnabled]);
+
+  const handleStopAutoplay = useCallback(() => {
+    setAutoplayEnabled(false);
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -275,6 +300,8 @@ const Equipos = () => {
           onCategoryChange={handleCategoryClick}
           activeCategory={activeCategory}
           equipmentCounts={equipmentCounts}
+          onStopAutoplay={handleStopAutoplay}
+          autoplayEnabled={autoplayEnabled}
         />
       </div>
 
@@ -304,7 +331,7 @@ const Equipos = () => {
 
         <div className="grid lg:grid-cols-4 gap-4 lg:gap-6">
           {/* Main Content - Category Sections */}
-          <main className="lg:col-span-3">
+          <main ref={mainContentRef} className="lg:col-span-3">
             {loading ? (
               <div className="text-center py-12 sm:py-16 border-2 sm:border-4 border-foreground p-8 sm:p-12">
                 <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>

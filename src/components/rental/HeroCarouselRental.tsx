@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Carousel,
@@ -9,6 +9,7 @@ import {
   CarouselNext,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
+import Autoplay from "embla-carousel-autoplay";
 
 interface HeroSlide {
   id: string;
@@ -30,19 +31,32 @@ interface HeroCarouselRentalProps {
   categories: Category[];
   activeCategory: string | null;
   equipmentCounts: Record<string, number>;
+  onStopAutoplay?: () => void;
+  autoplayEnabled?: boolean;
 }
 
 export const HeroCarouselRental = ({ 
   onCategoryChange, 
   categories,
   activeCategory,
-  equipmentCounts
+  equipmentCounts,
+  onStopAutoplay,
+  autoplayEnabled = true
 }: HeroCarouselRentalProps) => {
   const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
   const heroRef = useRef<HTMLDivElement>(null);
+  
+  const autoplayPlugin = useRef(
+    Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: false })
+  );
+
+  const stopAutoplay = useCallback(() => {
+    autoplayPlugin.current.stop();
+    onStopAutoplay?.();
+  }, [onStopAutoplay]);
 
   useEffect(() => {
     const fetchSlides = async () => {
@@ -104,9 +118,19 @@ export const HeroCarouselRental = ({
   };
 
   const handleChipClick = (categoryId: string, index: number) => {
+    stopAutoplay();
     scrollToSlide(index);
     onCategoryChange?.(categoryId);
   };
+
+  // Control autoplay based on prop
+  useEffect(() => {
+    if (!autoplayEnabled) {
+      autoplayPlugin.current.stop();
+    } else {
+      autoplayPlugin.current.play();
+    }
+  }, [autoplayEnabled]);
 
   // Placeholder slides when no images are configured
   const placeholderSlides: HeroSlide[] = categories.map((cat, index) => ({
@@ -134,7 +158,12 @@ export const HeroCarouselRental = ({
       className="border-b-4 border-foreground"
     >
       <section className="relative overflow-hidden">
-        <Carousel className="w-full" setApi={setApi}>
+        <Carousel 
+          className="w-full" 
+          setApi={setApi}
+          plugins={[autoplayPlugin.current]}
+          opts={{ loop: true }}
+        >
           <CarouselContent className="-ml-0">
             {displaySlides.map((slide) => (
               <CarouselItem key={slide.id} className="pl-0 basis-full">
