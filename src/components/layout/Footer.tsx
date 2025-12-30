@@ -31,8 +31,13 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/espacios" className="text-sm hover:text-primary transition-brutal">
-                  Espacios
+                <Link to="/galeria" className="text-sm hover:text-primary transition-brutal">
+                  Galería
+                </Link>
+              </li>
+              <li>
+                <Link to="/sala-grabacion" className="text-sm hover:text-primary transition-brutal">
+                  Sala de Grabación
                 </Link>
               </li>
               <li>

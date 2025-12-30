@@ -14,7 +14,7 @@ import { CartProvider } from "./hooks/useCart";
 // Lazy load pages for code splitting
 const Home = lazy(() => import("./pages/Home"));
 const Equipos = lazy(() => import("./pages/Equipos"));
-const Espacios = lazy(() => import("./pages/Espacios"));
+
 const Servicios = lazy(() => import("./pages/Servicios"));
 const Comunidad = lazy(() => import("./pages/Comunidad"));
 const Nosotros = lazy(() => import("./pages/Nosotros"));
@@ -48,7 +48,7 @@ const App = () => (
               <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/equipos" element={<Equipos />} />
-              <Route path="/espacios" element={<Espacios />} />
+              <Route path="/espacios" element={<Galeria />} />
               <Route path="/servicios" element={<Servicios />} />
               <Route path="/comunidad" element={<Comunidad />} />
               <Route path="/nosotros" element={<Nosotros />} />

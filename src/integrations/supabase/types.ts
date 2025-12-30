@@ -658,50 +658,98 @@ export type Database = {
       spaces: {
         Row: {
           amenities: Json | null
+          block_hours: number | null
+          block_price: number | null
           created_at: string
+          cta_text: string | null
           description: string | null
           detailed_description: string | null
+          discount_text: string | null
+          featured_image: string | null
+          features: Json | null
+          hero_subtitle: string | null
+          hero_title: string | null
           id: string
           images: Json | null
+          included_items: Json | null
+          layout_description: string | null
+          location: string | null
           name: string
+          optional_services: Json | null
           order_index: number | null
           price: number
           promotion: string | null
+          schedule_weekday: string | null
+          schedule_weekend: string | null
           slug: string
           specs: Json | null
           status: string | null
+          surface_area: string | null
+          tour_360_url: string | null
           updated_at: string
         }
         Insert: {
           amenities?: Json | null
+          block_hours?: number | null
+          block_price?: number | null
           created_at?: string
+          cta_text?: string | null
           description?: string | null
           detailed_description?: string | null
+          discount_text?: string | null
+          featured_image?: string | null
+          features?: Json | null
+          hero_subtitle?: string | null
+          hero_title?: string | null
           id?: string
           images?: Json | null
+          included_items?: Json | null
+          layout_description?: string | null
+          location?: string | null
           name: string
+          optional_services?: Json | null
           order_index?: number | null
           price: number
           promotion?: string | null
+          schedule_weekday?: string | null
+          schedule_weekend?: string | null
           slug: string
           specs?: Json | null
           status?: string | null
+          surface_area?: string | null
+          tour_360_url?: string | null
           updated_at?: string
         }
         Update: {
           amenities?: Json | null
+          block_hours?: number | null
+          block_price?: number | null
           created_at?: string
+          cta_text?: string | null
           description?: string | null
           detailed_description?: string | null
+          discount_text?: string | null
+          featured_image?: string | null
+          features?: Json | null
+          hero_subtitle?: string | null
+          hero_title?: string | null
           id?: string
           images?: Json | null
+          included_items?: Json | null
+          layout_description?: string | null
+          location?: string | null
           name?: string
+          optional_services?: Json | null
           order_index?: number | null
           price?: number
           promotion?: string | null
+          schedule_weekday?: string | null
+          schedule_weekend?: string | null
           slug?: string
           specs?: Json | null
           status?: string | null
+          surface_area?: string | null
+          tour_360_url?: string | null
           updated_at?: string
         }
         Relationships: []

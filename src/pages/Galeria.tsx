@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
-import { Eye } from "lucide-react";
+import { Eye, MapPin, Clock, Check, Ruler, Calendar, ArrowRight, Sparkles } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import type { Space } from "@/types/supabase";
+import Viewer360 from "@/components/Viewer360";
 
 interface GalleryImage {
   id: string;
@@ -12,111 +17,302 @@ interface GalleryImage {
 }
 
 const Galeria = () => {
-  const [images, setImages] = useState<GalleryImage[]>([]);
+  const [space, setSpace] = useState<Space | null>(null);
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchImages();
+    fetchData();
   }, []);
 
-  const fetchImages = async () => {
+  const fetchData = async () => {
     setLoading(true);
-    const { data, error } = await supabase
+    
+    // Fetch space data
+    const { data: spaceData } = await supabase
+      .from('spaces')
+      .select('*')
+      .eq('slug', 'galeria')
+      .single();
+    
+    if (spaceData) {
+      setSpace({
+        ...spaceData,
+        images: Array.isArray(spaceData.images) ? spaceData.images as string[] : [],
+        features: Array.isArray(spaceData.features) ? spaceData.features as string[] : [],
+        included_items: Array.isArray(spaceData.included_items) ? spaceData.included_items as string[] : [],
+        optional_services: Array.isArray(spaceData.optional_services) ? spaceData.optional_services as string[] : [],
+        amenities: Array.isArray(spaceData.amenities) ? spaceData.amenities as any[] : [],
+        specs: spaceData.specs || {}
+      } as Space);
+    }
+
+    // Fetch gallery images
+    const { data: images } = await supabase
       .from('gallery_images')
       .select('*')
       .eq('page_type', 'galeria')
       .order('order_index');
     
-    if (!error && data) {
-      setImages(data);
-    }
+    if (images) setGalleryImages(images);
+    
     setLoading(false);
   };
 
+  if (loading || !space) {
+    return (
+      <div className="min-h-screen pt-14 sm:pt-16 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  const heroImages = galleryImages.length > 0 
+    ? galleryImages.map(img => img.image_url) 
+    : space.images;
+
   return (
     <div className="min-h-screen pt-14 sm:pt-16">
-      {/* Hero Section */}
-      <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4 sm:mb-6">
-            GALERÍA
-          </h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto font-heading">
-            CONOCÉ NUESTRAS INSTALACIONES Y PRODUCCIONES
-          </p>
-        </div>
+      {/* Hero Section with Carousel */}
+      <section className="relative">
+        {heroImages.length > 0 ? (
+          <div className="relative">
+            <Carousel className="w-full" opts={{ loop: true }}>
+              <CarouselContent>
+                {heroImages.map((img, index) => (
+                  <CarouselItem key={index}>
+                    <div className="relative h-[50vh] sm:h-[60vh] lg:h-[70vh] overflow-hidden">
+                      <img
+                        src={img}
+                        alt={`${space.name} - ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              {heroImages.length > 1 && (
+                <>
+                  <CarouselPrevious className="left-4" />
+                  <CarouselNext className="right-4" />
+                </>
+              )}
+            </Carousel>
+            
+            {/* Hero Content Overlay */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 lg:p-12">
+              <div className="container mx-auto">
+                <Badge variant="secondary" className="mb-4 text-lg px-4 py-2">
+                  <Clock className="mr-2 h-4 w-4" />
+                  BLOQUES DE {space.block_hours || 4}HS
+                </Badge>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4">
+                  {space.hero_title || space.name}
+                </h1>
+                <p className="text-lg sm:text-xl md:text-2xl max-w-2xl mb-6 font-heading text-muted-foreground">
+                  {space.hero_subtitle || space.description}
+                </p>
+                
+                <div className="flex flex-wrap gap-4 items-center mb-6">
+                  <div className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg">
+                    <span className="text-2xl sm:text-3xl font-bold font-heading">
+                      ${(space.block_price || space.price)?.toLocaleString()}
+                    </span>
+                    <span className="text-sm opacity-80">/ bloque {space.block_hours || 4}hs</span>
+                  </div>
+                  {space.surface_area && (
+                    <div className="flex items-center gap-2 bg-secondary px-4 py-2 rounded-lg">
+                      <Ruler className="h-5 w-5" />
+                      <span className="font-heading font-bold">{space.surface_area}</span>
+                    </div>
+                  )}
+                  {space.location && (
+                    <div className="flex items-center gap-2 bg-secondary px-4 py-2 rounded-lg">
+                      <MapPin className="h-5 w-5" />
+                      <span className="font-heading">{space.location}</span>
+                    </div>
+                  )}
+                </div>
+
+                {space.discount_text && (
+                  <div className="inline-flex items-center gap-2 bg-primary/20 border-2 border-primary px-4 py-2 rounded-lg mb-6">
+                    <Sparkles className="h-5 w-5 text-primary" />
+                    <span className="font-heading font-bold text-primary">{space.discount_text}</span>
+                  </div>
+                )}
+
+                <Button variant="hero" size="lg" asChild className="text-lg">
+                  <Link to="/contacto">
+                    <Calendar className="mr-2 h-5 w-5" />
+                    {space.cta_text || "RESERVAR BLOQUE"}
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="gradient-primary text-primary-foreground py-16 sm:py-20 lg:py-24">
+            <div className="container mx-auto px-4 text-center">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4">
+                {space.hero_title || space.name}
+              </h1>
+              <p className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto font-heading">
+                {space.hero_subtitle || space.description}
+              </p>
+            </div>
+          </div>
+        )}
       </section>
 
-      {/* Main Carousel Section */}
-      <section className="py-12 sm:py-16 bg-background">
-        <div className="container mx-auto px-4">
-          {loading ? (
-            <div className="text-center py-12 sm:py-16 lg:py-20">
-              <p className="text-2xl sm:text-3xl font-heading">CARGANDO...</p>
-            </div>
-          ) : images.length === 0 ? (
-            <div className="text-center py-12 sm:py-16 lg:py-20 border-2 sm:border-4 border-foreground p-8 sm:p-12 lg:p-16">
-              <p className="text-2xl sm:text-3xl font-heading mb-4">NO HAY IMÁGENES DISPONIBLES</p>
-              <p className="text-muted-foreground font-heading">Las imágenes se cargarán desde el panel de administración.</p>
-            </div>
-          ) : (
-            <div className="max-w-6xl mx-auto">
-              <Carousel className="w-full" opts={{ loop: true }}>
-                <CarouselContent>
-                  {images.map((img) => (
-                    <CarouselItem key={img.id}>
-                      <div className="relative aspect-video overflow-hidden rounded-lg border-4 border-foreground shadow-brutal">
-                        <img
-                          src={img.image_url}
-                          alt={img.title || "Galería"}
-                          className="w-full h-full object-cover"
-                        />
-                        {(img.title || img.description) && (
-                          <div className="absolute bottom-0 left-0 right-0 bg-background/90 p-4 sm:p-6">
-                            {img.title && (
-                              <h3 className="text-lg sm:text-xl md:text-2xl font-heading font-bold">{img.title}</h3>
-                            )}
-                            {img.description && (
-                              <p className="text-sm sm:text-base text-muted-foreground mt-1 font-heading">{img.description}</p>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="left-2 sm:left-4" />
-                <CarouselNext className="right-2 sm:right-4" />
-              </Carousel>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Thumbnails Grid */}
-      {images.length > 0 && (
-        <section className="py-8 sm:py-12 bg-secondary">
+      {/* Features Section */}
+      {space.features && space.features.length > 0 && (
+        <section className="py-12 sm:py-16 bg-secondary">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold">
-                <Eye className="inline-block mr-3 h-8 w-8" />
-                TODAS LAS IMÁGENES
-              </h2>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {images.map((img) => (
-                <div key={img.id} className="aspect-square overflow-hidden rounded border-2 border-foreground shadow-brutal-sm hover:scale-105 transition-transform">
-                  <img
-                    src={img.image_url}
-                    alt={img.title || "Galería"}
-                    className="w-full h-full object-cover"
-                  />
+            <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-8 text-center">
+              CARACTERÍSTICAS DEL ESPACIO
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {space.features.map((feature, index) => (
+                <div 
+                  key={index} 
+                  className="flex items-start gap-3 bg-background border-2 border-foreground p-4 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform"
+                >
+                  <Check className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="font-heading">{feature}</span>
                 </div>
               ))}
             </div>
           </div>
         </section>
       )}
+
+      {/* Details Section with Featured Image */}
+      <section className="py-12 sm:py-16">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+            {/* Featured Image */}
+            <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border-4 border-foreground shadow-brutal">
+              <img
+                src={space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
+                alt={space.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Details */}
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">DETALLES DEL ESPACIO</h2>
+                <p className="text-muted-foreground font-heading text-lg">
+                  {space.detailed_description || space.description}
+                </p>
+              </div>
+
+              {/* Included Items */}
+              {space.included_items && space.included_items.length > 0 && (
+                <div>
+                  <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
+                    <Check className="h-5 w-5 text-primary" /> INCLUIDO EN EL BLOQUE
+                  </h3>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {space.included_items.map((item, index) => (
+                      <li key={index} className="flex items-center gap-2 text-muted-foreground">
+                        <span className="text-primary">•</span>
+                        <span className="font-heading">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Schedule Info */}
+              <div className="bg-secondary border-2 border-foreground p-4 rounded-lg">
+                <h3 className="font-heading font-bold mb-2 flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-primary" /> HORARIOS
+                </h3>
+                <p className="text-sm text-muted-foreground font-heading">
+                  {space.schedule_weekday}
+                </p>
+                <p className="text-sm text-muted-foreground font-heading">
+                  {space.schedule_weekend}
+                </p>
+              </div>
+
+              {/* Optional Services */}
+              {space.optional_services && space.optional_services.length > 0 && (
+                <div>
+                  <h3 className="text-xl font-heading font-bold mb-3">SERVICIOS OPCIONALES</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {space.optional_services.map((service, index) => (
+                      <Badge key={index} variant="outline" className="font-heading">
+                        {service}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Layout Description */}
+              {space.layout_description && (
+                <div className="bg-muted p-4 rounded-lg border-l-4 border-primary">
+                  <h3 className="font-heading font-bold mb-2">LAYOUT DEL ESTUDIO</h3>
+                  <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
+                </div>
+              )}
+
+              <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
+                <Link to="/contacto">
+                  <Calendar className="mr-2 h-5 w-5" />
+                  {space.cta_text || "RESERVAR BLOQUE"}
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 360° Virtual Tour Section */}
+      {space.tour_360_url && (
+        <section className="py-12 sm:py-16 bg-secondary">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
+                <Eye className="inline-block mr-3 h-8 w-8" />
+                TOUR VIRTUAL 360°
+              </h2>
+              <p className="text-muted-foreground font-heading text-lg max-w-2xl mx-auto">
+                EXPLORÁ NUESTRO ESTUDIO EN UNA EXPERIENCIA INMERSIVA. ARRASTRÁ PARA MOVERTE.
+              </p>
+            </div>
+            <div className="max-w-5xl mx-auto">
+              <Viewer360 
+                imageSrc={space.tour_360_url} 
+                height="500px" 
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* CTA Section */}
+      <section className="py-12 sm:py-16 bg-background">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4">
+            ¿LISTO PARA RESERVAR TU BLOQUE?
+          </h2>
+          <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading">
+            CONTACTANOS PARA CONOCER DISPONIBILIDAD Y COORDINAR TU PRODUCCIÓN.
+          </p>
+          <Button variant="hero" size="lg" asChild>
+            <Link to="/contacto">
+              <MapPin className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+              CONTACTAR
+            </Link>
+          </Button>
+        </div>
+      </section>
     </div>
   );
 };
