@@ -36,10 +36,8 @@ export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange
     if (categoriesData) setCategories(categoriesData);
     if (subcategoriesData) setSubcategories(subcategoriesData);
     
-    // Abrir todas las categorías por defecto
-    if (categoriesData) {
-      setOpenCategories(new Set(categoriesData.map(c => c.id)));
-    }
+    // Mantener todas las categorías colapsadas por defecto
+    setOpenCategories(new Set());
   };
 
   const toggleCategory = (categoryId: string) => {
