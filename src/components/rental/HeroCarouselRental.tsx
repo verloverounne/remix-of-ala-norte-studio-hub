@@ -122,10 +122,8 @@ export const HeroCarouselRental = ({
 
   if (loading) {
     return (
-      <div className="sticky top-14 sm:top-16 z-40">
-        <div className="h-[30vh] sm:h-[35vh] lg:h-[40vh] bg-muted animate-pulse flex items-center justify-center border-b-4 border-foreground">
-          <span className="text-muted-foreground font-heading">CARGANDO...</span>
-        </div>
+      <div className="h-[30vh] sm:h-[35vh] lg:h-[40vh] bg-muted animate-pulse flex items-center justify-center border-b-4 border-foreground">
+        <span className="text-muted-foreground font-heading">CARGANDO...</span>
       </div>
     );
   }
