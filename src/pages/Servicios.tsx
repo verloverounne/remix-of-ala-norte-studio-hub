@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Phone, Send, Headphones, GraduationCap, Package, MapPin, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
+import { InstitutionalSlider } from "@/components/InstitutionalSlider";
 
 const Servicios = () => {
   const services = [
@@ -73,6 +74,9 @@ const Servicios = () => {
 
   return (
     <div className="min-h-screen pt-14 sm:pt-16 lg:pt-20">
+      {/* Institutional Slider - Full Width */}
+      <InstitutionalSlider pageType="servicios" />
+
       {/* Hero Section */}
       <section className="py-12 sm:py-16 bg-muted/50">
         <div className="container mx-auto px-4">

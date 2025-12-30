@@ -12,7 +12,7 @@ import { StorageImageSelector } from "@/components/StorageImageSelector";
 
 interface GalleryImage {
   id: string;
-  page_type: 'galeria' | 'sala_grabacion';
+  page_type: 'galeria' | 'sala_grabacion' | 'home' | 'servicios';
   image_url: string;
   title: string | null;
   description: string | null;
@@ -26,7 +26,7 @@ interface GalleryManagerProps {
 export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedPageType, setSelectedPageType] = useState<'galeria' | 'sala_grabacion'>('galeria');
+  const [selectedPageType, setSelectedPageType] = useState<'galeria' | 'sala_grabacion' | 'home' | 'servicios'>('galeria');
   const [newImage, setNewImage] = useState({
     image_url: "",
     title: "",
@@ -175,6 +175,8 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
   const pageTypeLabels = {
     galeria: 'Galería',
     sala_grabacion: 'Sala de Grabación',
+    home: 'Home - Slider Institucional',
+    servicios: 'Servicios - Slider',
   };
 
   return (
@@ -184,19 +186,21 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ImageIcon className="h-5 w-5" />
-            Gestión de Galerías
+            Gestión de Galerías y Sliders
           </CardTitle>
-          <CardDescription>Administra las imágenes de las páginas Galería y Sala de Grabación</CardDescription>
+          <CardDescription>Administra las imágenes de las páginas Galería, Sala de Grabación, Home y Servicios</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-4 items-end">
             <div className="space-y-2">
-              <Label>Página</Label>
-              <Select value={selectedPageType} onValueChange={(v) => setSelectedPageType(v as 'galeria' | 'sala_grabacion')}>
-                <SelectTrigger className="w-[250px]">
+              <Label>Página / Slider</Label>
+              <Select value={selectedPageType} onValueChange={(v) => setSelectedPageType(v as 'galeria' | 'sala_grabacion' | 'home' | 'servicios')}>
+                <SelectTrigger className="w-[280px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="home">Home - Slider Institucional</SelectItem>
+                  <SelectItem value="servicios">Servicios - Slider</SelectItem>
                   <SelectItem value="galeria">Galería</SelectItem>
                   <SelectItem value="sala_grabacion">Sala de Grabación / Postproducción</SelectItem>
                 </SelectContent>

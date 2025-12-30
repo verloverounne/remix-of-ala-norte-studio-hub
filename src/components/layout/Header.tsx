@@ -15,6 +15,7 @@ const navigation = [
   { name: "GALERÍA", href: "/galeria" },
   { name: "SALA", href: "/sala-grabacion" },
   { name: "SERVICIOS", href: "/servicios" },
+  { name: "CONTACTO", href: "/contacto" },
 ];
 
 export const Header = () => {

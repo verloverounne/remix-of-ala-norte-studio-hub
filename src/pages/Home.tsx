@@ -11,6 +11,7 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
+import { InstitutionalSlider } from "@/components/InstitutionalSlider";
 
 const spaces360 = [
   { id: 1, title: "RECEPCIÓN DEL RENTAL", subtitle: "Ala Norte" },
@@ -63,6 +64,9 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-background pt-14 sm:pt-16">
+      {/* Institutional Slider - Before 360 Tour */}
+      <InstitutionalSlider pageType="home" />
+
       {/* Hero Section - Full Slider with 360 Tours */}
       <section className="relative h-[60vh] sm:h-[80vh] lg:h-screen overflow-hidden border-b-4 border-foreground">
         <div className="absolute inset-0 bg-foreground/95" />
