@@ -98,9 +98,9 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
       className="relative"
       style={{ scrollMarginTop: `${stickyTop + 8}px` }}
     >
-      {/* Sticky Category Header with Collapse */}
+      {/* Sticky Category Header with Collapse - z-20 */}
       <div 
-        className="sticky z-30 bg-background border-2 sm:border-4 border-foreground mb-0"
+        className="sticky z-20 bg-background border-2 sm:border-4 border-foreground mb-0"
         style={{ top: `${stickyTop}px` }}
       >
         <div className="flex items-center justify-between p-3 sm:p-4">

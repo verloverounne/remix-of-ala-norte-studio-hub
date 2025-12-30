@@ -249,19 +249,18 @@ const Equipos = () => {
     return () => window.removeEventListener('resize', updateFilterBarHeight);
   }, [loading]);
 
-  // Calculate sticky top values
-  const navbarHeight = 56; // sm:64px
-  const heroTop = navbarHeight;
-  const filterTop = heroTop + heroHeight;
-  const categoryTitleTop = filterTop + filterBarHeight;
+  // Calculate sticky top values - hero starts at top, navbar overlays when visible
+  const heroTop = 0; // Hero starts at very top
+  const navbarHeight = 56; // For elements that need to be below navbar when visible
+  const filterTop = heroHeight; // Filters below hero
+  const categoryTitleTop = heroHeight + filterBarHeight; // Category titles below filters
 
   return (
-    <div className="min-h-screen bg-background pt-14 sm:pt-16">
-      {/* Hero Carousel - Sticky z-40 */}
+    <div className="min-h-screen bg-background">
+      {/* Hero Carousel - Sticky at top, z-30 (below navbar z-50) */}
       <div 
         data-hero-carousel 
-        className="sticky z-40 bg-background"
-        style={{ top: `${heroTop}px` }}
+        className="sticky top-0 z-30 bg-background"
       >
         <HeroCarouselRental 
           categories={categories}
@@ -271,11 +270,11 @@ const Equipos = () => {
         />
       </div>
 
-      {/* Filter Bar - Sticky z-35 */}
+      {/* Filter Bar - Sticky z-25, below hero */}
       <div 
         ref={filterBarRef}
-        className="sticky z-[35] bg-background"
-        style={{ top: `${filterTop}px` }}
+        className="sticky z-[25] bg-background"
+        style={{ top: `${heroHeight}px` }}
       >
         <FilterBar
           searchTerm={searchTerm}
