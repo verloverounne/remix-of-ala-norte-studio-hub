@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Check, Image as ImageIcon, Save, RefreshCw, Trash2 } from "lucide-react";
+import { Search, Check, Image as ImageIcon, Save, RefreshCw, Trash2, Upload, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   AlertDialog,
@@ -41,6 +41,8 @@ export const BulkImageAssigner = () => {
   const [pendingChanges, setPendingChanges] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -79,6 +81,61 @@ export const BulkImageAssigner = () => {
       setStorageFiles(imageFiles);
     } catch (error) {
       console.error('Error fetching storage files:', error);
+    }
+  };
+
+  const sanitizeFileName = (name: string): string => {
+    return name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9._-]/g, "_")
+      .replace(/_+/g, "_")
+      .toLowerCase();
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Solo se permiten imágenes", variant: "destructive" });
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast({ title: "El tamaño máximo es 10MB", variant: "destructive" });
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const sanitizedName = sanitizeFileName(file.name);
+      const timestamp = Date.now();
+      const fileName = `${timestamp}_${sanitizedName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("equipment-images")
+        .upload(fileName, file, { cacheControl: "3600", upsert: false });
+
+      if (uploadError) throw uploadError;
+
+      const url = `https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/${fileName}`;
+      
+      toast({ title: "Imagen subida correctamente" });
+      
+      // Add to files list
+      setStorageFiles(prev => [{ name: fileName, url }, ...prev]);
+      
+      // If equipment is selected, assign the image
+      if (selectedEquipment) {
+        handleSelectImage(url);
+      }
+    } catch (error: any) {
+      toast({ title: "Error al subir", description: error.message, variant: "destructive" });
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -357,14 +414,36 @@ export const BulkImageAssigner = () => {
                   <span className="text-primary ml-2">→ {selectedEquipment.name}</span>
                 )}
               </h3>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Buscar imagen..."
-                  value={searchImage}
-                  onChange={(e) => setSearchImage(e.target.value)}
-                  className="pl-10"
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Buscar imagen..."
+                    value={searchImage}
+                    onChange={(e) => setSearchImage(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
                 />
+                <Button
+                  variant="hero"
+                  size="default"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                >
+                  {uploading ? (
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  ) : (
+                    <Upload className="h-4 w-4 mr-2" />
+                  )}
+                  {uploading ? "Subiendo..." : "Subir"}
+                </Button>
               </div>
               <ScrollArea className="h-[500px] border rounded-md">
                 <div className="grid grid-cols-4 gap-2 p-2">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Trash2, GripVertical, Image as ImageIcon } from "lucide-react";
+import { Plus, Trash2, GripVertical, Image as ImageIcon, Upload, Loader2 } from "lucide-react";
 import { StorageImageSelector } from "@/components/StorageImageSelector";
 
 interface GalleryImage {
@@ -32,7 +32,57 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
     title: "",
     description: "",
   });
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const sanitizeFileName = (name: string): string => {
+    return name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9._-]/g, "_")
+      .replace(/_+/g, "_")
+      .toLowerCase();
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Solo se permiten imágenes", variant: "destructive" });
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast({ title: "El tamaño máximo es 10MB", variant: "destructive" });
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const sanitizedName = sanitizeFileName(file.name);
+      const timestamp = Date.now();
+      const fileName = `${timestamp}_${sanitizedName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("equipment-images")
+        .upload(fileName, file, { cacheControl: "3600", upsert: false });
+
+      if (uploadError) throw uploadError;
+
+      const url = `https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/${fileName}`;
+      
+      toast({ title: "Imagen subida correctamente" });
+      setNewImage(prev => ({ ...prev, image_url: url }));
+    } catch (error: any) {
+      toast({ title: "Error al subir", description: error.message, variant: "destructive" });
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
 
   useEffect(() => {
     fetchImages();
@@ -169,16 +219,40 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2 md:col-span-2">
               <Label>Imagen *</Label>
-              <StorageImageSelector 
-                value={newImage.image_url} 
-                onChange={(url) => setNewImage({ ...newImage, image_url: url })}
-                placeholder="Seleccionar imagen del storage..."
-              />
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <StorageImageSelector 
+                    value={newImage.image_url} 
+                    onChange={(url) => setNewImage({ ...newImage, image_url: url })}
+                    placeholder="Seleccionar imagen del storage..."
+                  />
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+                <Button
+                  type="button"
+                  variant="hero"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                >
+                  {uploading ? (
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  ) : (
+                    <Upload className="h-4 w-4 mr-2" />
+                  )}
+                  {uploading ? "Subiendo..." : "Subir"}
+                </Button>
+              </div>
             </div>
             <div className="space-y-2">
               <Label>Título (opcional)</Label>
               <Input 
-                value={newImage.title} 
+                value={newImage.title}
                 onChange={(e) => setNewImage({ ...newImage, title: e.target.value })}
                 placeholder="Título de la imagen"
               />
