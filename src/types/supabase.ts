@@ -46,6 +46,7 @@ export interface Equipment {
   featured: boolean;
   featured_copy: string | null;
   order_index: number;
+  stock_quantity: number;
   created_at: string;
   updated_at: string;
   // New columns from CSV import

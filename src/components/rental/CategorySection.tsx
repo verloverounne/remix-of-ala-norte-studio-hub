@@ -15,9 +15,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import type { EquipmentWithCategory } from "@/types/supabase";
 
-interface EquipmentWithStock extends EquipmentWithCategory {
-  stock_quantity?: number;
-}
+type EquipmentWithStock = EquipmentWithCategory;
 
 interface Category {
   id: string;
