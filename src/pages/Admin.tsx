@@ -487,8 +487,118 @@ const Admin = () => {
   };
 
   const [isImporting, setIsImporting] = useState(false);
+  const [isUpdatingStock, setIsUpdatingStock] = useState(false);
 
-  const handleImportBackup = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  // Normalize name for matching (same logic as MergeEquipment)
+  const normalizeName = (name: string): string => {
+    return name
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]/g, "")
+      .trim();
+  };
+
+  const handleUpdateStockFromCSV = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setIsUpdatingStock(true);
+      const text = await file.text();
+      
+      // Parse CSV (semicolon separated)
+      const lines = text.split('\n').filter(line => line.trim());
+      if (lines.length < 2) {
+        toast({ title: "ERROR", description: "El archivo CSV está vacío", variant: "destructive" });
+        return;
+      }
+
+      // Parse header
+      const header = lines[0].split(';').map(h => h.replace(/"/g, '').trim());
+      const nombreIdx = header.findIndex(h => h.toLowerCase() === 'nombre');
+      const cantidadIdx = header.findIndex(h => h.toLowerCase() === 'cantidad');
+
+      if (nombreIdx === -1 || cantidadIdx === -1) {
+        toast({ title: "ERROR", description: "El CSV debe tener columnas 'Nombre' y 'Cantidad'", variant: "destructive" });
+        return;
+      }
+
+      // Build CSV map with quantities
+      const csvStockMap = new Map<string, number>();
+      
+      for (let i = 1; i < lines.length; i++) {
+        // Handle quoted fields with semicolons inside
+        const row = lines[i].match(/("([^"]|"")*"|[^;]*)(;("([^"]|"")*"|[^;]*))*/)
+          ? lines[i].split(/;(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(f => f.replace(/^"|"$/g, '').trim())
+          : lines[i].split(';').map(f => f.replace(/"/g, '').trim());
+        
+        if (row.length > Math.max(nombreIdx, cantidadIdx)) {
+          const nombre = row[nombreIdx];
+          const cantidad = parseInt(row[cantidadIdx]) || 1;
+          const normalizedName = normalizeName(nombre);
+          
+          // Sum quantities if same normalized name appears multiple times
+          const existing = csvStockMap.get(normalizedName) || 0;
+          csvStockMap.set(normalizedName, existing + cantidad);
+        }
+      }
+
+      toast({ title: "PROCESANDO", description: `Analizando ${csvStockMap.size} productos del CSV...` });
+
+      // Match with equipment and update
+      let updated = 0;
+      let notFound = 0;
+      const updates: { id: string; stock_quantity: number; name: string }[] = [];
+
+      for (const eq of equipment) {
+        const normalizedName = normalizeName(eq.name);
+        const stock = csvStockMap.get(normalizedName);
+        
+        if (stock !== undefined) {
+          updates.push({ id: eq.id, stock_quantity: stock, name: eq.name });
+        }
+      }
+
+      // Update in batches
+      const batchSize = 50;
+      for (let i = 0; i < updates.length; i += batchSize) {
+        const batch = updates.slice(i, i + batchSize);
+        
+        for (const item of batch) {
+          const { error } = await supabase
+            .from('equipment')
+            .update({ stock_quantity: item.stock_quantity })
+            .eq('id', item.id);
+          
+          if (!error) {
+            updated++;
+          } else {
+            console.error(`Error updating ${item.name}:`, error);
+          }
+        }
+        
+        toast({ 
+          title: "ACTUALIZANDO STOCK", 
+          description: `${updated} de ${updates.length} equipos actualizados...` 
+        });
+      }
+
+      toast({ 
+        title: "✓ STOCK ACTUALIZADO", 
+        description: `Se actualizó el stock de ${updated} equipos` 
+      });
+
+      await fetchEquipment();
+
+    } catch (error: any) {
+      console.error('Stock update error:', error);
+      toast({ title: "ERROR", description: error.message || "Error al actualizar stock", variant: "destructive" });
+    } finally {
+      setIsUpdatingStock(false);
+      event.target.value = '';
+    }
+  };
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -1131,6 +1241,31 @@ const Admin = () => {
                       </div>
                       <p className="text-xs text-muted-foreground mt-2">
                         Formato esperado: archivo JSON con estructura {`{ data: { equipment: [...] } }`}
+                      </p>
+                    </div>
+
+                    <div className="border-l-4 border-green-500 pl-4 py-2">
+                      <h3 className="font-heading font-bold text-lg mb-2">Actualizar Stock desde CSV</h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Actualiza la cantidad de stock de cada equipo usando el archivo CSV de EquipoEmpresa.
+                        Hace match por nombre normalizado y suma las cantidades de registros duplicados.
+                      </p>
+                      <div className="flex items-center gap-4">
+                        <Input 
+                          type="file" 
+                          accept=".csv"
+                          onChange={handleUpdateStockFromCSV}
+                          className="max-w-xs"
+                          disabled={isUpdatingStock}
+                        />
+                        {isUpdatingStock && (
+                          <span className="text-sm text-muted-foreground animate-pulse">
+                            Actualizando stock...
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Formato esperado: CSV con columnas "Nombre" y "Cantidad" separadas por punto y coma (;)
                       </p>
                     </div>
 
