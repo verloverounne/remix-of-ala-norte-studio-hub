@@ -486,6 +486,8 @@ const Admin = () => {
     }
   };
 
+  const [isImporting, setIsImporting] = useState(false);
+
   const handleImportBackup = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -494,13 +496,110 @@ const Admin = () => {
       const text = await file.text();
       const backup = JSON.parse(text);
       
-      toast({ 
-        title: "INFORMACIÓN", 
-        description: "La restauración de backup requiere acceso directo a la base de datos. Por favor, contacta al administrador del sistema.",
-        variant: "destructive"
+      if (!backup.data?.equipment || !Array.isArray(backup.data.equipment)) {
+        toast({ title: "ERROR", description: "El archivo no contiene datos de equipos válidos", variant: "destructive" });
+        return;
+      }
+
+      const confirmed = window.confirm(
+        `¿Estás seguro de que deseas reemplazar TODOS los equipos existentes?\n\n` +
+        `Se eliminarán ${equipment.length} equipos actuales y se importarán ${backup.data.equipment.length} equipos del archivo.\n\n` +
+        `Esta acción no se puede deshacer.`
+      );
+
+      if (!confirmed) return;
+
+      setIsImporting(true);
+      
+      // Step 1: Delete all existing equipment
+      toast({ title: "PROCESANDO", description: "Eliminando equipos existentes..." });
+      
+      const { error: deleteError } = await supabase
+        .from('equipment')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all rows
+      
+      if (deleteError) {
+        throw new Error(`Error al eliminar equipos: ${deleteError.message}`);
+      }
+      
+      // Step 2: Prepare equipment data for insert (remove nested objects)
+      const equipmentToInsert = backup.data.equipment.map((item: any) => {
+        // Remove nested category and subcategory objects
+        const { categories, subcategories, ...cleanItem } = item;
+        
+        return {
+          id: cleanItem.id,
+          name: cleanItem.name,
+          name_en: cleanItem.name_en || null,
+          category_id: cleanItem.category_id || null,
+          subcategory_id: cleanItem.subcategory_id || null,
+          brand: cleanItem.brand || null,
+          model: cleanItem.model || null,
+          description: cleanItem.description || null,
+          detailed_description: cleanItem.detailed_description || null,
+          specs: cleanItem.specs || [],
+          detailed_specs: cleanItem.detailed_specs || [],
+          price_per_day: cleanItem.price_per_day || 0,
+          price_per_week: cleanItem.price_per_week || null,
+          status: cleanItem.status || 'available',
+          image_url: cleanItem.image_url || null,
+          images: cleanItem.images || [],
+          tags: cleanItem.tags || [],
+          featured: cleanItem.featured || false,
+          featured_copy: cleanItem.featured_copy || null,
+          order_index: cleanItem.order_index || 0,
+          sku_rentalos: cleanItem.sku_rentalos || null,
+          descripcion_corta_es: cleanItem.descripcion_corta_es || null,
+          descripcion_corta_en: cleanItem.descripcion_corta_en || null,
+          tamano: cleanItem.tamano || null,
+          tipo_equipo: cleanItem.tipo_equipo || null,
+          observaciones_internas: cleanItem.observaciones_internas || null,
+          id_original: cleanItem.id_original || null
+        };
       });
-    } catch (error) {
-      toast({ title: "ERROR", description: "Archivo de backup inválido", variant: "destructive" });
+      
+      // Step 3: Insert equipment in batches of 50
+      const batchSize = 50;
+      let inserted = 0;
+      
+      for (let i = 0; i < equipmentToInsert.length; i += batchSize) {
+        const batch = equipmentToInsert.slice(i, i + batchSize);
+        
+        const { error: insertError } = await supabase
+          .from('equipment')
+          .insert(batch);
+        
+        if (insertError) {
+          throw new Error(`Error al insertar lote ${Math.floor(i/batchSize) + 1}: ${insertError.message}`);
+        }
+        
+        inserted += batch.length;
+        toast({ 
+          title: "IMPORTANDO", 
+          description: `${inserted} de ${equipmentToInsert.length} equipos importados...` 
+        });
+      }
+      
+      toast({ 
+        title: "✓ IMPORTACIÓN COMPLETA", 
+        description: `Se importaron ${inserted} equipos exitosamente` 
+      });
+      
+      // Refresh equipment list
+      await fetchEquipment();
+      
+    } catch (error: any) {
+      console.error('Import error:', error);
+      toast({ 
+        title: "ERROR", 
+        description: error.message || "Error al importar datos", 
+        variant: "destructive" 
+      });
+    } finally {
+      setIsImporting(false);
+      // Clear the file input
+      event.target.value = '';
     }
   };
 
@@ -1009,11 +1108,11 @@ const Admin = () => {
                     </div>
 
                     <div className="border-l-4 border-secondary pl-4 py-2">
-                      <h3 className="font-heading font-bold text-lg mb-2">Importar Base de Datos</h3>
+                      <h3 className="font-heading font-bold text-lg mb-2">Importar / Reemplazar Equipos</h3>
                       <p className="text-sm text-muted-foreground mb-4">
-                        Restaura los datos desde un archivo de backup JSON previamente exportado.
-                        <span className="block mt-2 text-yellow-600 font-semibold">
-                          ⚠️ Esta función requiere acceso directo a la base de datos.
+                        Reemplaza TODOS los equipos de la base de datos con los del archivo JSON.
+                        <span className="block mt-2 text-destructive font-semibold">
+                          ⚠️ ATENCIÓN: Esta acción eliminará todos los equipos existentes y los reemplazará con los del archivo.
                         </span>
                       </p>
                       <div className="flex items-center gap-4">
@@ -1022,8 +1121,17 @@ const Admin = () => {
                           accept=".json"
                           onChange={handleImportBackup}
                           className="max-w-xs"
+                          disabled={isImporting}
                         />
+                        {isImporting && (
+                          <span className="text-sm text-muted-foreground animate-pulse">
+                            Importando...
+                          </span>
+                        )}
                       </div>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Formato esperado: archivo JSON con estructura {`{ data: { equipment: [...] } }`}
+                      </p>
                     </div>
 
                     <div className="border-l-4 border-muted pl-4 py-2 bg-muted/20">
