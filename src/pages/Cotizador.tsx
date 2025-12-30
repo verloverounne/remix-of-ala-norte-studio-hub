@@ -150,7 +150,7 @@ Contactar cliente para coordinar entrega/retiro.
     `.trim();
 
     if (sendVia === 'whatsapp') {
-      const whatsappNumber = "5491123456789";
+      const whatsappNumber = "541147180732"; // +54 (11) 4718-0732
       const encodedMessage = encodeURIComponent(message);
       window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, "_blank");
       

@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { SearchBar } from "@/components/SearchBar";
 import logo from "@/assets/logo-brutal.png";
 
-const WHATSAPP_NUMBER = "525551234567"; // Número de WhatsApp
+const WHATSAPP_NUMBER = "541147180732"; // +54 (11) 4718-0732
 
 const navigation = [
   { name: "RENTAL", href: "/equipos" },
