@@ -44,6 +44,8 @@ interface CategorySectionProps {
 
 export interface CategorySectionRef {
   scrollIntoView: () => void;
+  expand: () => void;
+  collapse: () => void;
 }
 
 export const CategorySection = forwardRef<CategorySectionRef, CategorySectionProps>(({ 
@@ -64,6 +66,12 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
   useImperativeHandle(ref, () => ({
     scrollIntoView: () => {
       sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    },
+    expand: () => {
+      setIsExpanded(true);
+    },
+    collapse: () => {
+      setIsExpanded(false);
     }
   }));
 

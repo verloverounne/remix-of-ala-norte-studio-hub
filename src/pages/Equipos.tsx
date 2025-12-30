@@ -221,6 +221,15 @@ const Equipos = () => {
   const handleCategoryClick = (categoryId: string) => {
     setActiveCategory(categoryId);
     
+    // Collapse all categories and expand only the selected one
+    categoryRefs.current.forEach((ref, id) => {
+      if (id === categoryId) {
+        ref.expand();
+      } else {
+        ref.collapse();
+      }
+    });
+    
     // Scroll to category section
     setTimeout(() => {
       categoryRefs.current.get(categoryId)?.scrollIntoView();
