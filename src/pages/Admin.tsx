@@ -12,11 +12,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Edit, Trash2, Percent, Download, Upload, Calendar as CalendarIcon, X, Image as ImageIcon } from "lucide-react";
+import { Plus, Edit, Trash2, Percent, Download, Upload, Calendar as CalendarIcon, X, Image as ImageIcon, GalleryHorizontal } from "lucide-react";
 import { ImageUploader } from "@/components/ImageUploader";
 import { StorageImageSelector } from "@/components/StorageImageSelector";
 import { EquipmentImageUploader } from "@/components/EquipmentImageUploader";
 import { BulkImageAssigner } from "@/components/BulkImageAssigner";
+import { GalleryManager } from "@/components/GalleryManager";
 import { Switch } from "@/components/ui/switch";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -599,6 +600,8 @@ const Admin = () => {
       event.target.value = '';
     }
   };
+
+  const handleImportEquipment = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -732,7 +735,7 @@ const Admin = () => {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <Tabs defaultValue="equipment" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-7 lg:w-auto">
+            <TabsList className="grid w-full grid-cols-8 lg:w-auto">
               <TabsTrigger value="equipment">Equipos</TabsTrigger>
               <TabsTrigger value="prices">Precios</TabsTrigger>
               <TabsTrigger value="assign-images">
@@ -740,6 +743,10 @@ const Admin = () => {
                 Asignar
               </TabsTrigger>
               <TabsTrigger value="images">Subir</TabsTrigger>
+              <TabsTrigger value="galleries">
+                <GalleryHorizontal className="h-4 w-4 mr-1" />
+                Galerías
+              </TabsTrigger>
               <TabsTrigger value="spaces">Espacios</TabsTrigger>
               <TabsTrigger value="config">Config</TabsTrigger>
               <TabsTrigger value="backup">Backup</TabsTrigger>
@@ -946,6 +953,11 @@ const Admin = () => {
             {/* Upload Images Tab */}
             <TabsContent value="images">
               <EquipmentImageUploader />
+            </TabsContent>
+
+            {/* Galleries Tab */}
+            <TabsContent value="galleries">
+              <GalleryManager />
             </TabsContent>
 
             {/* Spaces Tab */}
@@ -1229,7 +1241,7 @@ const Admin = () => {
                         <Input 
                           type="file" 
                           accept=".json"
-                          onChange={handleImportBackup}
+                          onChange={handleImportEquipment}
                           className="max-w-xs"
                           disabled={isImporting}
                         />

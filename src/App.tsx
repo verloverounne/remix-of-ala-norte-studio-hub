@@ -28,6 +28,8 @@ const Admin = lazy(() => import("./pages/Admin"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Cartoni = lazy(() => import("./pages/Cartoni"));
 const MergeEquipment = lazy(() => import("./pages/MergeEquipment"));
+const Galeria = lazy(() => import("./pages/Galeria"));
+const SalaGrabacion = lazy(() => import("./pages/SalaGrabacion"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -57,6 +59,8 @@ const App = () => (
               <Route path="/contacto" element={<Contacto />} />
               <Route path="/cartoni" element={<Cartoni />} />
               <Route path="/merge-equipment" element={<MergeEquipment />} />
+              <Route path="/galeria" element={<Galeria />} />
+              <Route path="/sala-grabacion" element={<SalaGrabacion />} />
               <Route path="/auth" element={<Auth />} />
               <Route 
                 path="/admin" 
