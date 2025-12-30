@@ -35,23 +35,21 @@ interface HeroCarouselRentalProps {
   autoplayEnabled?: boolean;
 }
 
-export const HeroCarouselRental = ({ 
-  onCategoryChange, 
+export const HeroCarouselRental = ({
+  onCategoryChange,
   categories,
   activeCategory,
   equipmentCounts,
   onStopAutoplay,
-  autoplayEnabled = true
+  autoplayEnabled = true,
 }: HeroCarouselRentalProps) => {
   const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
   const heroRef = useRef<HTMLDivElement>(null);
-  
-  const autoplayPlugin = useRef(
-    Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: false })
-  );
+
+  const autoplayPlugin = useRef(Autoplay({ delay: 1000, stopOnInteraction: true, stopOnMouseEnter: false }));
 
   const stopAutoplay = useCallback(() => {
     autoplayPlugin.current.stop();
@@ -70,7 +68,7 @@ export const HeroCarouselRental = ({
         // Map slides to categories based on order
         const mappedSlides = data.map((slide, index) => ({
           ...slide,
-          category_id: categories[index]?.id || null
+          category_id: categories[index]?.id || null,
         }));
         setSlides(mappedSlides);
       }
@@ -88,7 +86,7 @@ export const HeroCarouselRental = ({
     const handleSelect = () => {
       const index = api.selectedScrollSnap();
       setCurrentSlide(index);
-      
+
       // Trigger category scroll when slide changes
       const displayedSlides = slides.length > 0 ? slides : placeholderSlides;
       if (displayedSlides[index]?.category_id) {
@@ -105,9 +103,9 @@ export const HeroCarouselRental = ({
   // Sync carousel with external category changes
   useEffect(() => {
     if (!api || !activeCategory) return;
-    
+
     const displayedSlides = slides.length > 0 ? slides : placeholderSlides;
-    const slideIndex = displayedSlides.findIndex(s => s.category_id === activeCategory);
+    const slideIndex = displayedSlides.findIndex((s) => s.category_id === activeCategory);
     if (slideIndex !== -1 && slideIndex !== currentSlide) {
       api.scrollTo(slideIndex);
     }
@@ -139,7 +137,7 @@ export const HeroCarouselRental = ({
     title: cat.name.toUpperCase(),
     description: `Explora nuestro catálogo de ${cat.name.toLowerCase()}`,
     order_index: index,
-    category_id: cat.id
+    category_id: cat.id,
   }));
 
   const displaySlides = slides.length > 0 ? slides : placeholderSlides;
@@ -153,17 +151,9 @@ export const HeroCarouselRental = ({
   }
 
   return (
-    <div 
-      ref={heroRef}
-      className="border-b-4 border-foreground"
-    >
+    <div ref={heroRef} className="border-b-4 border-foreground">
       <section className="relative overflow-hidden">
-        <Carousel 
-          className="w-full" 
-          setApi={setApi}
-          plugins={[autoplayPlugin.current]}
-          opts={{ loop: true }}
-        >
+        <Carousel className="w-full" setApi={setApi} plugins={[autoplayPlugin.current]} opts={{ loop: true }}>
           <CarouselContent className="-ml-0">
             {displaySlides.map((slide) => (
               <CarouselItem key={slide.id} className="pl-0 basis-full">
@@ -177,10 +167,10 @@ export const HeroCarouselRental = ({
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />
                   )}
-                  
+
                   {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-transparent" />
-                  
+
                   {/* Text overlay */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center z-10 p-4 sm:p-8 max-w-4xl">
@@ -200,7 +190,7 @@ export const HeroCarouselRental = ({
               </CarouselItem>
             ))}
           </CarouselContent>
-          
+
           {/* Navigation arrows */}
           {displaySlides.length > 1 && (
             <>
@@ -215,27 +205,29 @@ export const HeroCarouselRental = ({
           <div className="container mx-auto px-2 sm:px-4">
             <div className="flex overflow-x-auto scrollbar-hide py-2 sm:py-3 gap-1 sm:gap-2 -mx-2 px-2">
               {displaySlides.map((slide, index) => {
-                const category = categories.find(c => c.id === slide.category_id);
+                const category = categories.find((c) => c.id === slide.category_id);
                 const count = category ? equipmentCounts[category.id] || 0 : 0;
                 const isActive = index === currentSlide;
-                
+
                 return (
                   <button
                     key={slide.id}
                     onClick={() => category && handleChipClick(category.id, index)}
                     className={cn(
                       "flex-shrink-0 px-3 py-1.5 sm:px-4 sm:py-2 font-heading text-xs sm:text-sm uppercase border-2 transition-all whitespace-nowrap",
-                      isActive 
-                        ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm" 
-                        : "bg-background text-foreground border-foreground hover:bg-muted"
+                      isActive
+                        ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm"
+                        : "bg-background text-foreground border-foreground hover:bg-muted",
                     )}
                   >
                     <span>{category?.name || slide.title || `Slide ${index + 1}`}</span>
                     {count > 0 && (
-                      <span className={cn(
-                        "ml-1.5 sm:ml-2 text-[10px] sm:text-xs",
-                        isActive ? "text-primary-foreground/80" : "text-muted-foreground"
-                      )}>
+                      <span
+                        className={cn(
+                          "ml-1.5 sm:ml-2 text-[10px] sm:text-xs",
+                          isActive ? "text-primary-foreground/80" : "text-muted-foreground",
+                        )}
+                      >
                         ({count})
                       </span>
                     )}
