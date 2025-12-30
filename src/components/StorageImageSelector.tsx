@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Image as ImageIcon, Search, Check, X } from "lucide-react";
+import { Image as ImageIcon, Search, Check, X, Upload, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 interface StorageImageSelectorProps {
   value: string;
@@ -27,6 +28,8 @@ export const StorageImageSelector = ({
   const [files, setFiles] = useState<StorageFile[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (open) {
@@ -61,6 +64,58 @@ export const StorageImageSelector = ({
     }
   };
 
+  const sanitizeFileName = (name: string): string => {
+    return name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9._-]/g, "_")
+      .replace(/_+/g, "_")
+      .toLowerCase();
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Solo se permiten imágenes", variant: "destructive" });
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast({ title: "El tamaño máximo es 10MB", variant: "destructive" });
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const sanitizedName = sanitizeFileName(file.name);
+      const timestamp = Date.now();
+      const fileName = `${timestamp}_${sanitizedName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("equipment-images")
+        .upload(fileName, file, { cacheControl: "3600", upsert: false });
+
+      if (uploadError) throw uploadError;
+
+      const url = `https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/${fileName}`;
+      
+      toast({ title: "Imagen subida correctamente" });
+      
+      // Add to files list and select it
+      setFiles(prev => [{ name: fileName, url }, ...prev]);
+      onChange(url);
+      setOpen(false);
+    } catch (error: any) {
+      toast({ title: "Error al subir", description: error.message, variant: "destructive" });
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  };
+
   const filteredFiles = files.filter(file => 
     file.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -91,14 +146,35 @@ export const StorageImageSelector = ({
               <DialogTitle>Seleccionar Imagen del Storage</DialogTitle>
             </DialogHeader>
             
-            <div className="relative mb-4">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Buscar imagen..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
+            <div className="flex gap-2 mb-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Buscar imagen..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <label className="cursor-pointer">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                  disabled={uploading}
+                />
+                <Button type="button" variant="hero" disabled={uploading} asChild>
+                  <span>
+                    {uploading ? (
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    ) : (
+                      <Upload className="h-4 w-4 mr-2" />
+                    )}
+                    {uploading ? "Subiendo..." : "Subir nueva"}
+                  </span>
+                </Button>
+              </label>
             </div>
 
             {loading ? (
