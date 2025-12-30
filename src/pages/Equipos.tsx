@@ -1,77 +1,90 @@
-import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { EquipmentWithCategory } from "@/types/supabase";
-import { Search, ShoppingCart } from "lucide-react";
-import equipmentHero from "@/assets/equipment-hero.jpg";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
 import { EquipmentModal } from "@/components/EquipmentModal";
-import { SubcategoryFilter } from "@/components/SubcategoryFilter";
-import { LazyImage } from "@/components/LazyImage";
+import { HeroCarouselRental } from "@/components/rental/HeroCarouselRental";
+import { CategoryTabs } from "@/components/rental/CategoryTabs";
+import { CategoryAccordion, CategoryAccordionRef } from "@/components/rental/CategoryAccordion";
+import { FilterBar } from "@/components/rental/FilterBar";
+import { QuoteSidebar } from "@/components/rental/QuoteSidebar";
 
 interface EquipmentWithStock extends EquipmentWithCategory {
   stock_quantity?: number;
 }
 
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  order_index?: number;
+}
+
 const Equipos = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const [equipment, setEquipment] = useState<EquipmentWithStock[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEquipment, setSelectedEquipment] = useState<EquipmentWithStock | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const { addItem, items, calculateSubtotal } = useCart();
   const { toast } = useToast();
+  
+  const categoryRefs = useRef<Map<string, CategoryAccordionRef>>(new Map());
 
   useEffect(() => {
-    fetchEquipment();
+    fetchData();
   }, []);
 
-  // Removed: checkUpcomingUnavailability and checkAvailability effects
+  // Expand first category by default when categories load
+  useEffect(() => {
+    if (categories.length > 0 && expandedCategories.size === 0) {
+      setExpandedCategories(new Set([categories[0].id]));
+      setActiveCategory(categories[0].id);
+    }
+  }, [categories]);
 
-  const fetchEquipment = async () => {
+  const fetchData = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('equipment')
-      .select(`
-        *,
-        categories (*),
-        subcategories (*)
-      `)
-      .order('order_index');
     
-    if (!error && data) {
-      const transformedData = data.map((item: any) => ({
+    // Fetch categories and equipment in parallel
+    const [categoriesResult, equipmentResult] = await Promise.all([
+      supabase.from('categories').select('*').order('order_index'),
+      supabase.from('equipment').select(`*, categories (*), subcategories (*)`).order('order_index')
+    ]);
+    
+    if (!categoriesResult.error && categoriesResult.data) {
+      setCategories(categoriesResult.data);
+    }
+    
+    if (!equipmentResult.error && equipmentResult.data) {
+      const transformedData = equipmentResult.data.map((item: any) => ({
         ...item,
         images: Array.isArray(item.images) ? item.images : [],
         stock_quantity: item.stock_quantity ?? 1
       }));
       setEquipment(transformedData);
     }
+    
     setLoading(false);
   };
 
   // Get quantity of item already in cart
-  const getCartQuantity = (id: string) => {
+  const getCartQuantity = useCallback((id: string) => {
     const cartItem = items.find(item => item.id === id);
     return cartItem?.quantity || 0;
-  };
+  }, [items]);
 
   // Check if can add more items
-  const canAddMore = (item: EquipmentWithStock) => {
+  const canAddMore = useCallback((item: EquipmentWithStock) => {
     const inCart = getCartQuantity(item.id);
     const stock = item.stock_quantity ?? 1;
     return inCart < stock;
-  };
-
-  // Removed: checkUpcomingUnavailability and checkAvailability functions
+  }, [getCartQuantity]);
 
   // Fuzzy search helper
   const fuzzyMatch = (text: string, search: string): boolean => {
@@ -79,10 +92,8 @@ const Equipos = () => {
     text = text.toLowerCase();
     search = search.toLowerCase();
     
-    // Direct match
     if (text.includes(search)) return true;
     
-    // Character-by-character fuzzy matching
     let searchIdx = 0;
     for (let i = 0; i < text.length && searchIdx < search.length; i++) {
       if (text[i] === search[searchIdx]) {
@@ -91,7 +102,6 @@ const Equipos = () => {
     }
     if (searchIdx === search.length) return true;
     
-    // Levenshtein distance for typos
     const words = text.split(/\s+/);
     for (const word of words) {
       if (levenshteinDistance(word, search) <= Math.max(1, Math.floor(search.length * 0.3))) {
@@ -128,20 +138,36 @@ const Equipos = () => {
     return matrix[len1][len2];
   };
 
-  const filteredEquipment = equipment
-    .filter((item) => {
+  const filteredEquipment = useMemo(() => {
+    return equipment.filter((item) => {
       const matchesSearch = fuzzyMatch(item.name, searchTerm) ||
                            fuzzyMatch(item.brand || '', searchTerm) ||
                            fuzzyMatch(item.model || '', searchTerm);
       
-      const matchesCategory = selectedCategories.length === 0 || 
-                             (item.category_id && selectedCategories.includes(item.category_id));
-      
       const matchesSubcategory = selectedSubcategories.length === 0 || 
                                   (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
       
-      return matchesSearch && matchesCategory && matchesSubcategory;
+      return matchesSearch && matchesSubcategory;
     });
+  }, [equipment, searchTerm, selectedSubcategories]);
+
+  // Group equipment by category
+  const equipmentByCategory = useMemo(() => {
+    const grouped: Record<string, EquipmentWithStock[]> = {};
+    categories.forEach(cat => {
+      grouped[cat.id] = filteredEquipment.filter(e => e.category_id === cat.id);
+    });
+    return grouped;
+  }, [filteredEquipment, categories]);
+
+  // Equipment counts by category
+  const equipmentCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    categories.forEach(cat => {
+      counts[cat.id] = equipmentByCategory[cat.id]?.length || 0;
+    });
+    return counts;
+  }, [equipmentByCategory, categories]);
 
   const handleAddToCart = (item: EquipmentWithStock) => {
     if (!canAddMore(item)) {
@@ -172,233 +198,118 @@ const Equipos = () => {
     setModalOpen(true);
   };
 
+  const handleCategoryClick = (categoryId: string) => {
+    // Expand the category
+    setExpandedCategories(prev => {
+      const next = new Set(prev);
+      next.add(categoryId);
+      return next;
+    });
+    setActiveCategory(categoryId);
+    
+    // Scroll to category section
+    setTimeout(() => {
+      categoryRefs.current.get(categoryId)?.scrollIntoView();
+    }, 100);
+  };
+
+  const handleHeroCategoryChange = (categoryId: string | null) => {
+    if (categoryId) {
+      handleCategoryClick(categoryId);
+    }
+  };
+
+  const toggleCategoryExpanded = (categoryId: string) => {
+    setExpandedCategories(prev => {
+      const next = new Set(prev);
+      if (next.has(categoryId)) {
+        next.delete(categoryId);
+      } else {
+        next.add(categoryId);
+      }
+      return next;
+    });
+  };
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedSubcategories([]);
+  };
+
+  const hasActiveFilters = searchTerm.length > 0 || selectedSubcategories.length > 0;
+
   return (
     <div className="min-h-screen bg-background pt-14 sm:pt-16">
-      {/* Hero Section Brutal */}
-      <div className="relative h-[250px] sm:h-[350px] lg:h-[400px] border-b-4 border-foreground overflow-hidden">
-        <img
-          src={equipmentHero}
-          alt="Equipos"
-          className="w-full h-full object-cover grayscale"
-        />
-        <div className="absolute inset-0 bg-foreground/80" />
-        <div className="absolute inset-0 grid-brutal opacity-20" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <h1 className="text-brutal text-background">EQUIPOS</h1>
+      {/* Hero Carousel */}
+      <HeroCarouselRental 
+        categories={categories}
+        onCategoryChange={handleHeroCategoryChange}
+      />
+
+      {/* Category Tabs - Sticky */}
+      <CategoryTabs 
+        categories={categories}
+        activeCategory={activeCategory}
+        onCategoryClick={handleCategoryClick}
+        equipmentCounts={equipmentCounts}
+      />
+
+      {/* Filter Bar */}
+      <FilterBar
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        selectedSubcategories={selectedSubcategories}
+        onSubcategoriesChange={setSelectedSubcategories}
+        onClearFilters={clearFilters}
+        hasActiveFilters={hasActiveFilters}
+      />
+
+      <div className="container mx-auto px-4 py-6 sm:py-8">
+        {/* Results count */}
+        <div className="mb-4 text-sm text-muted-foreground font-heading">
+          Mostrando {filteredEquipment.length} equipo{filteredEquipment.length !== 1 ? 's' : ''}
+          {hasActiveFilters && ' (filtrados)'}
         </div>
-      </div>
 
-      <div className="container mx-auto px-4 py-8 sm:py-12 lg:py-16">
-        {/* Intro Text */}
-        <div className="text-center mb-8">
-          <p className="text-xl sm:text-2xl font-heading text-muted-foreground">
-            Equipos curados y listos para tu proyecto
-          </p>
-          <p className="text-xs text-muted-foreground/60 mt-2">
-            ⚠️ Contenido simulado para demostración. Prototipo funcional de frontend y backend.
-          </p>
-        </div>
-        {/* Layout con Filtros Laterales */}
-        <div className="grid lg:grid-cols-5 gap-6 lg:gap-8">
-          {/* Sidebar Filtros Izquierda */}
-          <aside className="lg:col-span-1">
-            <div className="lg:sticky lg:top-20 border-2 sm:border-4 border-foreground p-4 sm:p-6 bg-card shadow-brutal max-h-[calc(100vh-6rem)] overflow-y-auto">
-              {/* Búsqueda con botón limpiar */}
-              <div className="mb-6">
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" />
-                    <Input
-                      type="text"
-                      placeholder="BUSCAR..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 border-2 border-foreground font-heading uppercase text-sm"
-                    />
-                  </div>
-                   {(searchTerm || selectedSubcategories.length > 0 || selectedCategories.length > 0) && (
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => {
-                        setSearchTerm("");
-                        setSelectedSubcategories([]);
-                        setSelectedCategories([]);
-                      }}
-                      className="whitespace-nowrap"
-                    >
-                      LIMPIAR
-                    </Button>
-                  )}
-                </div>
-              </div>
-              
-              {/* Filtros por Categoría y Subcategoría */}
-              <SubcategoryFilter
-                selectedSubcategories={selectedSubcategories}
-                onSubcategoriesChange={setSelectedSubcategories}
-                selectedCategories={selectedCategories}
-                onCategoriesChange={setSelectedCategories}
-              />
-
-              {/* Removed: Brand, Budget and Availability filters */}
-            </div>
-          </aside>
-
-          {/* Main Content - Grid de Equipos */}
+        <div className="grid lg:grid-cols-4 gap-6 lg:gap-8">
+          {/* Main Content - Category Accordions */}
           <main className="lg:col-span-3">
             {loading ? (
-              <div className="text-center py-12 sm:py-16 lg:py-20 border-2 sm:border-4 border-foreground p-8 sm:p-12 lg:p-16">
-                <p className="text-2xl sm:text-3xl lg:text-brutal">CARGANDO...</p>
-              </div>
-            ) : filteredEquipment.length === 0 ? (
-              <div className="text-center py-12 sm:py-16 lg:py-20 border-2 sm:border-4 border-foreground p-8 sm:p-12 lg:p-16">
-                <p className="text-2xl sm:text-3xl lg:text-brutal mb-4">NO SE ENCONTRARON EQUIPOS</p>
+              <div className="text-center py-12 sm:py-16 border-2 sm:border-4 border-foreground p-8 sm:p-12">
+                <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>
               </div>
             ) : (
-              <>
-                <div className="mb-4 sm:mb-6 text-xs sm:text-sm text-muted-foreground font-heading">
-                  Mostrando {filteredEquipment.length} equipo{filteredEquipment.length !== 1 ? 's' : ''}
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
-                  {filteredEquipment.map((item) => {
-                    const cartQty = getCartQuantity(item.id);
-                    const canAdd = canAddMore(item);
-                    
-                    return (
-                      <Card 
-                        key={item.id}
-                        className="overflow-hidden group relative"
-                      >
-                        {/* Badge de cantidad en carrito */}
-                        {cartQty > 0 && (
-                          <div className="absolute top-2 right-2 z-10 bg-primary text-primary-foreground rounded-full w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center font-heading text-xs sm:text-sm shadow-brutal-sm">
-                            {cartQty}
-                          </div>
-                        )}
-                        
-                        <div className="relative aspect-square cursor-pointer" onClick={() => handleViewDetails(item)}>
-                          {item.image_url ? (
-                            <LazyImage
-                              src={item.image_url}
-                              alt={item.name}
-                              className="grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-300 object-cover"
-                              placeholderClassName="border-b-2 border-foreground"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-muted border-b-2 border-foreground">
-                              <span className="text-2xl sm:text-3xl opacity-20 font-heading">?</span>
-                            </div>
-                          )}
-                        </div>
-
-                        <CardContent className="p-2 sm:p-3">
-                          {item.subcategories && (
-                            <Badge variant="secondary" className="mb-1 text-[10px] sm:text-xs px-1.5 py-0">
-                              {item.subcategories.name}
-                            </Badge>
-                          )}
-                          
-                          <h3 
-                            className="font-heading text-xs sm:text-sm leading-tight mb-1 uppercase line-clamp-2 cursor-pointer hover:text-primary transition-colors"
-                            onClick={() => handleViewDetails(item)}
-                          >
-                            {item.name}
-                          </h3>
-                          
-                          {item.brand && (
-                            <p className="text-muted-foreground font-mono text-[10px] sm:text-xs truncate">{item.brand}</p>
-                          )}
-                          
-                          <div className="border-t border-foreground/30 pt-2 mt-2">
-                            <div className="flex items-baseline gap-1">
-                              <span className="text-primary font-heading text-lg sm:text-xl">
-                                ${item.price_per_day > 0 ? (item.price_per_day / 1000).toFixed(0) + 'K' : '—'}
-                              </span>
-                              <span className="text-muted-foreground font-mono text-[10px]">/día</span>
-                            </div>
-                          </div>
-                        </CardContent>
-
-                        <CardFooter className="p-2 sm:p-3 pt-0">
-                          {item.status === 'available' ? (
-                            <Button 
-                              size="sm"
-                              className="w-full text-xs sm:text-sm h-8 sm:h-9"
-                              onClick={() => handleAddToCart(item)}
-                              disabled={!canAdd}
-                            >
-                              {canAdd ? (
-                                <>
-                                  <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                                  AGREGAR
-                                </>
-                              ) : (
-                                'MÁXIMO'
-                              )}
-                            </Button>
-                          ) : (
-                            <Button size="sm" className="w-full text-xs h-8" disabled>
-                              NO DISPONIBLE
-                            </Button>
-                          )}
-                        </CardFooter>
-                      </Card>
-                    );
-                  })}
-                </div>
-              </>
+              <div className="space-y-4 sm:space-y-6">
+                {categories.map((category) => (
+                  <CategoryAccordion
+                    key={category.id}
+                    ref={(ref) => {
+                      if (ref) {
+                        categoryRefs.current.set(category.id, ref);
+                      } else {
+                        categoryRefs.current.delete(category.id);
+                      }
+                    }}
+                    category={category}
+                    equipment={equipmentByCategory[category.id] || []}
+                    isExpanded={expandedCategories.has(category.id)}
+                    onToggle={() => toggleCategoryExpanded(category.id)}
+                    onAddToCart={handleAddToCart}
+                    onViewDetails={handleViewDetails}
+                    getCartQuantity={getCartQuantity}
+                    canAddMore={canAddMore}
+                  />
+                ))}
+              </div>
             )}
           </main>
 
-          {/* Sidebar Derecha - Carrito */}
+          {/* Quote Sidebar */}
           <aside className="lg:col-span-1">
-            <div className="lg:sticky lg:top-20 border-2 sm:border-4 border-foreground p-4 sm:p-6 bg-card shadow-brutal max-h-[calc(100vh-6rem)] overflow-y-auto">
-              <h3 className="font-heading text-lg sm:text-xl mb-4 uppercase border-b-2 border-foreground pb-2">
-                Cotización
-              </h3>
-              
-              {items.length === 0 ? (
-                <p className="text-xs sm:text-sm text-muted-foreground text-center py-4">
-                  Carrito vacío
-                </p>
-              ) : (
-                <div className="space-y-4">
-                  {items.map((item) => (
-                    <div key={item.id} className="text-sm border-b border-foreground/20 pb-2">
-                      <p className="font-heading truncate text-xs sm:text-sm">{item.name}</p>
-                      <p className="text-xs text-muted-foreground break-words">
-                        {item.quantity}x ${item.pricePerDay.toLocaleString()}/día
-                      </p>
-                    </div>
-                  ))}
-                  
-                  <div className="border-t-2 border-foreground pt-4 mt-4">
-                    <div className="flex justify-between items-baseline mb-2 gap-2">
-                      <span className="font-heading text-xs sm:text-sm">Subtotal (1 día):</span>
-                      <span className="font-heading text-base sm:text-xl break-words">${calculateSubtotal(1).toLocaleString()}</span>
-                    </div>
-                    <div className="flex justify-between items-baseline text-muted-foreground text-xs gap-2">
-                      <span>Semana:</span>
-                      <span className="break-words">${calculateSubtotal(7).toLocaleString()}</span>
-                    </div>
-                  </div>
-                  
-                  <Button 
-                    className="w-full mt-4" 
-                    onClick={() => window.location.href = '/cotizador'}
-                  >
-                    IR A COTIZAR
-                  </Button>
-                </div>
-              )}
-
-              
-              {/* Nota de advertencia */}
-              <p className="text-xs text-muted-foreground/60 mt-4 text-center">
-                ⚠️ Contenido simulado. Prototipo funcional.
-              </p>
-            </div>
+            <QuoteSidebar 
+              items={items}
+              calculateSubtotal={calculateSubtotal}
+            />
           </aside>
         </div>
       </div>

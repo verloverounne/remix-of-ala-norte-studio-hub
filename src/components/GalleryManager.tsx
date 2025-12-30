@@ -12,7 +12,7 @@ import { StorageImageSelector } from "@/components/StorageImageSelector";
 
 interface GalleryImage {
   id: string;
-  page_type: 'galeria' | 'sala_grabacion' | 'home' | 'servicios';
+  page_type: 'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental';
   image_url: string;
   title: string | null;
   description: string | null;
@@ -26,7 +26,7 @@ interface GalleryManagerProps {
 export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedPageType, setSelectedPageType] = useState<'galeria' | 'sala_grabacion' | 'home' | 'servicios'>('galeria');
+  const [selectedPageType, setSelectedPageType] = useState<'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental'>('galeria');
   const [newImage, setNewImage] = useState({
     image_url: "",
     title: "",
@@ -177,6 +177,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
     sala_grabacion: 'Sala de Grabación',
     home: 'Home - Slider Institucional',
     servicios: 'Servicios - Slider',
+    hero_rental: 'Hero Rental - Equipos',
   };
 
   return (
@@ -194,11 +195,12 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
           <div className="flex flex-wrap gap-4 items-end">
             <div className="space-y-2">
               <Label>Página / Slider</Label>
-              <Select value={selectedPageType} onValueChange={(v) => setSelectedPageType(v as 'galeria' | 'sala_grabacion' | 'home' | 'servicios')}>
+              <Select value={selectedPageType} onValueChange={(v) => setSelectedPageType(v as 'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental')}>
                 <SelectTrigger className="w-[280px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="hero_rental">Hero Rental - Equipos</SelectItem>
                   <SelectItem value="home">Home - Slider Institucional</SelectItem>
                   <SelectItem value="servicios">Servicios - Slider</SelectItem>
                   <SelectItem value="galeria">Galería</SelectItem>

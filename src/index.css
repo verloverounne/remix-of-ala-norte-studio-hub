@@ -263,3 +263,12 @@ All colors MUST be HSL.
 .ql-editor {
   @apply min-h-[300px] text-foreground !important;
 }
+
+/* Hide scrollbar for category tabs */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
