@@ -21,6 +21,8 @@ const navigation = [
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [isVisible, setIsVisible] = useState(true);
+  const [isHovering, setIsHovering] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { totalItems } = useCart();
@@ -34,6 +36,25 @@ export const Header = () => {
     }
   }, []);
 
+  // Auto-hide header after 3 seconds on page load/navigation
+  useEffect(() => {
+    setIsVisible(true);
+    const timer = setTimeout(() => {
+      if (!mobileMenuOpen) {
+        setIsVisible(false);
+      }
+    }, 3000);
+    
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
+
+  // Keep visible when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      setIsVisible(true);
+    }
+  }, [mobileMenuOpen]);
+
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
@@ -41,8 +62,33 @@ export const Header = () => {
     document.documentElement.classList.toggle("dark", newTheme === "dark");
   };
 
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+    setIsVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+    if (!mobileMenuOpen) {
+      setIsVisible(false);
+    }
+  };
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b-2 border-foreground">
+    <>
+      {/* Hover trigger zone - always visible at top */}
+      <div 
+        className="fixed top-0 left-0 right-0 h-4 z-[51]"
+        onMouseEnter={handleMouseEnter}
+      />
+      
+      <header 
+        className={`fixed top-0 left-0 right-0 z-50 bg-background border-b-2 border-foreground transition-transform duration-300 ${
+          isVisible || isHovering ? 'translate-y-0' : '-translate-y-full'
+        }`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
       <nav className="container mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex h-16 sm:h-20 items-center justify-between">
           {/* Logo Brutal */}
@@ -251,5 +297,6 @@ export const Header = () => {
         )}
       </nav>
     </header>
+    </>
   );
 };
