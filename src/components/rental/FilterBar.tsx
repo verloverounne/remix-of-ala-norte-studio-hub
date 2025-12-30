@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Search, X, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,7 @@ interface FilterBarProps {
   onSubcategoriesChange: (subcategories: string[]) => void;
   onClearFilters: () => void;
   hasActiveFilters: boolean;
+  activeCategoryId?: string | null;
 }
 
 export const FilterBar = ({
@@ -31,10 +32,12 @@ export const FilterBar = ({
   selectedSubcategories,
   onSubcategoriesChange,
   onClearFilters,
-  hasActiveFilters
+  hasActiveFilters,
+  activeCategoryId
 }: FilterBarProps) => {
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
+  const filterRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchSubcategories = async () => {
@@ -50,6 +53,28 @@ export const FilterBar = ({
     fetchSubcategories();
   }, []);
 
+  // Close filter when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+        setIsExpanded(false);
+      }
+    };
+
+    if (isExpanded) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isExpanded]);
+
+  // Filter subcategories by active category
+  const filteredSubcategories = activeCategoryId
+    ? subcategories.filter(sub => sub.category_id === activeCategoryId)
+    : subcategories;
+
   const toggleSubcategory = (id: string) => {
     if (selectedSubcategories.includes(id)) {
       onSubcategoriesChange(selectedSubcategories.filter(s => s !== id));
@@ -59,7 +84,7 @@ export const FilterBar = ({
   };
 
   return (
-    <section className="border-b-2 sm:border-b-4 border-foreground bg-muted/30">
+    <section ref={filterRef} className="border-b-2 sm:border-b-4 border-foreground bg-muted/30">
       <div className="container mx-auto px-4 py-4 sm:py-6">
         {/* Search bar */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4">
@@ -109,21 +134,25 @@ export const FilterBar = ({
           <CollapsibleContent>
             <div className="pt-4 border-t-2 border-foreground/20">
               <h4 className="font-heading text-sm mb-3 uppercase text-muted-foreground">Subcategorías</h4>
-              <div className="flex flex-wrap gap-2">
-                {subcategories.map((sub) => (
-                  <button
-                    key={sub.id}
-                    onClick={() => toggleSubcategory(sub.id)}
-                    className={`px-3 py-1.5 text-xs sm:text-sm font-heading uppercase border-2 transition-all ${
-                      selectedSubcategories.includes(sub.id)
-                        ? "bg-primary text-primary-foreground border-primary"
-                        : "bg-background text-foreground border-foreground/50 hover:border-foreground"
-                    }`}
-                  >
-                    {sub.name}
-                  </button>
-                ))}
-              </div>
+              {filteredSubcategories.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No hay subcategorías para esta categoría</p>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {filteredSubcategories.map((sub) => (
+                    <button
+                      key={sub.id}
+                      onClick={() => toggleSubcategory(sub.id)}
+                      className={`px-3 py-1.5 text-xs sm:text-sm font-heading uppercase border-2 transition-all ${
+                        selectedSubcategories.includes(sub.id)
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "bg-background text-foreground border-foreground/50 hover:border-foreground"
+                      }`}
+                    >
+                      {sub.name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </CollapsibleContent>
         </Collapsible>

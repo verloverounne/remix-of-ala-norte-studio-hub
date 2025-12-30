@@ -291,6 +291,7 @@ const Equipos = () => {
           onSubcategoriesChange={setSelectedSubcategories}
           onClearFilters={clearFilters}
           hasActiveFilters={hasActiveFilters}
+          activeCategoryId={activeCategory}
         />
       </div>
 
