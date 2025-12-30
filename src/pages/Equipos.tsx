@@ -234,10 +234,35 @@ const Equipos = () => {
 
   const hasActiveFilters = searchTerm.length > 0 || selectedSubcategories.length > 0;
 
+  // Calculate filter bar height for sticky positioning
+  const filterBarRef = useRef<HTMLDivElement>(null);
+  const [filterBarHeight, setFilterBarHeight] = useState(0);
+
+  useEffect(() => {
+    const updateFilterBarHeight = () => {
+      if (filterBarRef.current) {
+        setFilterBarHeight(filterBarRef.current.getBoundingClientRect().height);
+      }
+    };
+    updateFilterBarHeight();
+    window.addEventListener('resize', updateFilterBarHeight);
+    return () => window.removeEventListener('resize', updateFilterBarHeight);
+  }, [loading]);
+
+  // Calculate sticky top values
+  const navbarHeight = 56; // sm:64px
+  const heroTop = navbarHeight;
+  const filterTop = heroTop + heroHeight;
+  const categoryTitleTop = filterTop + filterBarHeight;
+
   return (
     <div className="min-h-screen bg-background pt-14 sm:pt-16">
-      {/* Hero Carousel - Sticky */}
-      <div data-hero-carousel>
+      {/* Hero Carousel - Sticky z-40 */}
+      <div 
+        data-hero-carousel 
+        className="sticky z-40 bg-background"
+        style={{ top: `${heroTop}px` }}
+      >
         <HeroCarouselRental 
           categories={categories}
           onCategoryChange={handleCategoryClick}
@@ -246,15 +271,21 @@ const Equipos = () => {
         />
       </div>
 
-      {/* Filter Bar */}
-      <FilterBar
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        selectedSubcategories={selectedSubcategories}
-        onSubcategoriesChange={setSelectedSubcategories}
-        onClearFilters={clearFilters}
-        hasActiveFilters={hasActiveFilters}
-      />
+      {/* Filter Bar - Sticky z-35 */}
+      <div 
+        ref={filterBarRef}
+        className="sticky z-[35] bg-background"
+        style={{ top: `${filterTop}px` }}
+      >
+        <FilterBar
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          selectedSubcategories={selectedSubcategories}
+          onSubcategoriesChange={setSelectedSubcategories}
+          onClearFilters={clearFilters}
+          hasActiveFilters={hasActiveFilters}
+        />
+      </div>
 
       <div className="container mx-auto px-4 py-4 sm:py-6">
         {/* Results count */}
@@ -272,7 +303,7 @@ const Equipos = () => {
               </div>
             ) : (
               <div className="space-y-4 sm:space-y-6">
-                {categories.map((category) => (
+                {categories.map((category, index) => (
                   <CategorySection
                     key={category.id}
                     ref={(ref) => {
@@ -288,7 +319,8 @@ const Equipos = () => {
                     onViewDetails={handleViewDetails}
                     getCartQuantity={getCartQuantity}
                     canAddMore={canAddMore}
-                    heroHeight={heroHeight}
+                    stickyTop={categoryTitleTop}
+                    defaultExpanded={index === 0}
                   />
                 ))}
               </div>
