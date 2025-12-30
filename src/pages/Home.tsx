@@ -13,10 +13,9 @@ import {
 } from "@/components/ui/carousel";
 
 const spaces360 = [
-  { id: 1, title: "GALERÍA DE FILMACIÓN", subtitle: "150 m²" },
-  { id: 2, title: "SALA DE SONIDO", subtitle: "ProTools Ultimate" },
-  { id: 3, title: "ESPACIO SOCIAL & COCINA", subtitle: "Cocina Equipada" },
-  { id: 4, title: "BAÑO DE PRODUCCIÓN", subtitle: "Luz Especial para Maquillaje y Peinado" },
+  { id: 1, title: "RECEPCIÓN DEL RENTAL", subtitle: "Ala Norte" },
+  { id: 2, title: "GALERÍA DE FILMACIÓN", subtitle: "150 m²" },
+  { id: 3, title: "SALA DE SONIDO", subtitle: "ProTools Ultimate" },
 ];
 
 const Home = () => {
