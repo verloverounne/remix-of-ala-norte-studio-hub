@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Carousel,
@@ -8,6 +8,7 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
 
 interface HeroSlide {
   id: string;
@@ -27,13 +28,21 @@ interface Category {
 interface HeroCarouselRentalProps {
   onCategoryChange?: (categoryId: string | null) => void;
   categories: Category[];
+  activeCategory: string | null;
+  equipmentCounts: Record<string, number>;
 }
 
-export const HeroCarouselRental = ({ onCategoryChange, categories }: HeroCarouselRentalProps) => {
+export const HeroCarouselRental = ({ 
+  onCategoryChange, 
+  categories,
+  activeCategory,
+  equipmentCounts
+}: HeroCarouselRentalProps) => {
   const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
+  const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchSlides = async () => {
@@ -67,8 +76,9 @@ export const HeroCarouselRental = ({ onCategoryChange, categories }: HeroCarouse
       setCurrentSlide(index);
       
       // Trigger category scroll when slide changes
-      if (slides[index]?.category_id) {
-        onCategoryChange?.(slides[index].category_id);
+      const displayedSlides = slides.length > 0 ? slides : placeholderSlides;
+      if (displayedSlides[index]?.category_id) {
+        onCategoryChange?.(displayedSlides[index].category_id);
       }
     };
 
@@ -78,8 +88,24 @@ export const HeroCarouselRental = ({ onCategoryChange, categories }: HeroCarouse
     };
   }, [api, slides, onCategoryChange]);
 
+  // Sync carousel with external category changes
+  useEffect(() => {
+    if (!api || !activeCategory) return;
+    
+    const displayedSlides = slides.length > 0 ? slides : placeholderSlides;
+    const slideIndex = displayedSlides.findIndex(s => s.category_id === activeCategory);
+    if (slideIndex !== -1 && slideIndex !== currentSlide) {
+      api.scrollTo(slideIndex);
+    }
+  }, [activeCategory, api, slides]);
+
   const scrollToSlide = (index: number) => {
     api?.scrollTo(index);
+  };
+
+  const handleChipClick = (categoryId: string, index: number) => {
+    scrollToSlide(index);
+    onCategoryChange?.(categoryId);
   };
 
   // Placeholder slides when no images are configured
@@ -96,83 +122,104 @@ export const HeroCarouselRental = ({ onCategoryChange, categories }: HeroCarouse
 
   if (loading) {
     return (
-      <div className="h-[40vh] sm:h-[50vh] lg:h-[60vh] bg-muted animate-pulse flex items-center justify-center border-b-4 border-foreground">
-        <span className="text-muted-foreground font-heading">CARGANDO...</span>
+      <div className="sticky top-14 sm:top-16 z-40">
+        <div className="h-[30vh] sm:h-[35vh] lg:h-[40vh] bg-muted animate-pulse flex items-center justify-center border-b-4 border-foreground">
+          <span className="text-muted-foreground font-heading">CARGANDO...</span>
+        </div>
       </div>
     );
   }
 
   return (
-    <section className="relative border-b-4 border-foreground overflow-hidden">
-      <Carousel className="w-full" setApi={setApi}>
-        <CarouselContent className="-ml-0">
-          {displaySlides.map((slide) => (
-            <CarouselItem key={slide.id} className="pl-0 basis-full">
-              <div className="relative h-[40vh] sm:h-[50vh] lg:h-[60vh] overflow-hidden">
-                {slide.image_url ? (
-                  <img
-                    src={slide.image_url}
-                    alt={slide.title || "Equipos rental"}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />
-                )}
-                
-                {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-transparent" />
-                
-                {/* Text overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center z-10 p-4 sm:p-8 max-w-4xl">
-                    {slide.title && (
-                      <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-2 sm:mb-4 uppercase text-background drop-shadow-lg">
-                        {slide.title}
-                      </h1>
-                    )}
-                    {slide.description && (
-                      <p className="text-lg sm:text-xl md:text-2xl text-background/90 font-heading drop-shadow-md max-w-2xl mx-auto">
-                        {slide.description}
-                      </p>
-                    )}
+    <div 
+      ref={heroRef}
+      className="sticky top-14 sm:top-16 z-40 border-b-4 border-foreground"
+    >
+      <section className="relative overflow-hidden">
+        <Carousel className="w-full" setApi={setApi}>
+          <CarouselContent className="-ml-0">
+            {displaySlides.map((slide) => (
+              <CarouselItem key={slide.id} className="pl-0 basis-full">
+                <div className="relative h-[25vh] sm:h-[30vh] lg:h-[35vh] overflow-hidden">
+                  {slide.image_url ? (
+                    <img
+                      src={slide.image_url}
+                      alt={slide.title || "Equipos rental"}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />
+                  )}
+                  
+                  {/* Overlay gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-transparent" />
+                  
+                  {/* Text overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center z-10 p-4 sm:p-8 max-w-4xl">
+                      {slide.title && (
+                        <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2 uppercase text-background drop-shadow-lg">
+                          {slide.title}
+                        </h1>
+                      )}
+                      {slide.description && (
+                        <p className="text-base sm:text-lg md:text-xl text-background/90 font-heading drop-shadow-md max-w-2xl mx-auto">
+                          {slide.description}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        
-        {/* Navigation arrows */}
-        {displaySlides.length > 1 && (
-          <>
-            <CarouselPrevious className="left-2 sm:left-4 lg:left-8 h-10 w-10 sm:h-12 sm:w-12 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
-            <CarouselNext className="right-2 sm:right-4 lg:right-8 h-10 w-10 sm:h-12 sm:w-12 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
-          </>
-        )}
-      </Carousel>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          
+          {/* Navigation arrows */}
+          {displaySlides.length > 1 && (
+            <>
+              <CarouselPrevious className="left-2 sm:left-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
+              <CarouselNext className="right-2 sm:right-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
+            </>
+          )}
+        </Carousel>
 
-      {/* Category dots navigation */}
-      {displaySlides.length > 1 && (
-        <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex flex-wrap justify-center gap-2 sm:gap-3 z-20 px-4">
-          {displaySlides.map((slide, index) => {
-            const category = categories.find(c => c.id === slide.category_id);
-            return (
-              <button
-                key={slide.id}
-                onClick={() => scrollToSlide(index)}
-                className={`px-3 py-1.5 sm:px-4 sm:py-2 font-heading text-xs sm:text-sm uppercase transition-all border-2 ${
-                  index === currentSlide 
-                    ? "bg-primary text-primary-foreground border-primary" 
-                    : "bg-background/20 text-background border-background/50 hover:bg-background/40"
-                }`}
-              >
-                {category?.name || slide.title || `Slide ${index + 1}`}
-              </button>
-            );
-          })}
+        {/* Category chips navigation - integrated in hero */}
+        <div className="bg-background border-t-2 border-foreground">
+          <div className="container mx-auto px-2 sm:px-4">
+            <div className="flex overflow-x-auto scrollbar-hide py-2 sm:py-3 gap-1 sm:gap-2 -mx-2 px-2">
+              {displaySlides.map((slide, index) => {
+                const category = categories.find(c => c.id === slide.category_id);
+                const count = category ? equipmentCounts[category.id] || 0 : 0;
+                const isActive = index === currentSlide;
+                
+                return (
+                  <button
+                    key={slide.id}
+                    onClick={() => category && handleChipClick(category.id, index)}
+                    className={cn(
+                      "flex-shrink-0 px-3 py-1.5 sm:px-4 sm:py-2 font-heading text-xs sm:text-sm uppercase border-2 transition-all whitespace-nowrap",
+                      isActive 
+                        ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm" 
+                        : "bg-background text-foreground border-foreground hover:bg-muted"
+                    )}
+                  >
+                    <span>{category?.name || slide.title || `Slide ${index + 1}`}</span>
+                    {count > 0 && (
+                      <span className={cn(
+                        "ml-1.5 sm:ml-2 text-[10px] sm:text-xs",
+                        isActive ? "text-primary-foreground/80" : "text-muted-foreground"
+                      )}>
+                        ({count})
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
-      )}
-    </section>
+      </section>
+    </div>
   );
 };
 

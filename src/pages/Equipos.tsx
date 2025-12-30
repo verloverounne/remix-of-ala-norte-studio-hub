@@ -5,8 +5,7 @@ import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
 import { EquipmentModal } from "@/components/EquipmentModal";
 import { HeroCarouselRental } from "@/components/rental/HeroCarouselRental";
-import { CategoryTabs } from "@/components/rental/CategoryTabs";
-import { CategoryAccordion, CategoryAccordionRef } from "@/components/rental/CategoryAccordion";
+import { CategorySection, CategorySectionRef } from "@/components/rental/CategorySection";
 import { FilterBar } from "@/components/rental/FilterBar";
 import { QuoteSidebar } from "@/components/rental/QuoteSidebar";
 
@@ -29,24 +28,45 @@ const Equipos = () => {
   const [loading, setLoading] = useState(true);
   const [selectedEquipment, setSelectedEquipment] = useState<EquipmentWithStock | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [heroHeight, setHeroHeight] = useState(0);
   const { addItem, items, calculateSubtotal } = useCart();
   const { toast } = useToast();
   
-  const categoryRefs = useRef<Map<string, CategoryAccordionRef>>(new Map());
+  const categoryRefs = useRef<Map<string, CategorySectionRef>>(new Map());
+  const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  // Expand first category by default when categories load
+  // Set active category when categories load
   useEffect(() => {
-    if (categories.length > 0 && expandedCategories.size === 0) {
-      setExpandedCategories(new Set([categories[0].id]));
+    if (categories.length > 0 && !activeCategory) {
       setActiveCategory(categories[0].id);
     }
-  }, [categories]);
+  }, [categories, activeCategory]);
+
+  // Calculate hero height for sticky positioning
+  useEffect(() => {
+    const updateHeroHeight = () => {
+      const heroElement = document.querySelector('[data-hero-carousel]');
+      if (heroElement) {
+        setHeroHeight(heroElement.getBoundingClientRect().height);
+      }
+    };
+
+    updateHeroHeight();
+    window.addEventListener('resize', updateHeroHeight);
+    
+    // Also update after a small delay to ensure carousel has rendered
+    const timeout = setTimeout(updateHeroHeight, 500);
+    
+    return () => {
+      window.removeEventListener('resize', updateHeroHeight);
+      clearTimeout(timeout);
+    };
+  }, [loading]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -199,36 +219,12 @@ const Equipos = () => {
   };
 
   const handleCategoryClick = (categoryId: string) => {
-    // Expand the category
-    setExpandedCategories(prev => {
-      const next = new Set(prev);
-      next.add(categoryId);
-      return next;
-    });
     setActiveCategory(categoryId);
     
     // Scroll to category section
     setTimeout(() => {
       categoryRefs.current.get(categoryId)?.scrollIntoView();
     }, 100);
-  };
-
-  const handleHeroCategoryChange = (categoryId: string | null) => {
-    if (categoryId) {
-      handleCategoryClick(categoryId);
-    }
-  };
-
-  const toggleCategoryExpanded = (categoryId: string) => {
-    setExpandedCategories(prev => {
-      const next = new Set(prev);
-      if (next.has(categoryId)) {
-        next.delete(categoryId);
-      } else {
-        next.add(categoryId);
-      }
-      return next;
-    });
   };
 
   const clearFilters = () => {
@@ -240,19 +236,15 @@ const Equipos = () => {
 
   return (
     <div className="min-h-screen bg-background pt-14 sm:pt-16">
-      {/* Hero Carousel */}
-      <HeroCarouselRental 
-        categories={categories}
-        onCategoryChange={handleHeroCategoryChange}
-      />
-
-      {/* Category Tabs - Sticky */}
-      <CategoryTabs 
-        categories={categories}
-        activeCategory={activeCategory}
-        onCategoryClick={handleCategoryClick}
-        equipmentCounts={equipmentCounts}
-      />
+      {/* Hero Carousel - Sticky */}
+      <div data-hero-carousel>
+        <HeroCarouselRental 
+          categories={categories}
+          onCategoryChange={handleCategoryClick}
+          activeCategory={activeCategory}
+          equipmentCounts={equipmentCounts}
+        />
+      </div>
 
       {/* Filter Bar */}
       <FilterBar
@@ -264,15 +256,15 @@ const Equipos = () => {
         hasActiveFilters={hasActiveFilters}
       />
 
-      <div className="container mx-auto px-4 py-6 sm:py-8">
+      <div className="container mx-auto px-4 py-4 sm:py-6">
         {/* Results count */}
         <div className="mb-4 text-sm text-muted-foreground font-heading">
           Mostrando {filteredEquipment.length} equipo{filteredEquipment.length !== 1 ? 's' : ''}
           {hasActiveFilters && ' (filtrados)'}
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-6 lg:gap-8">
-          {/* Main Content - Category Accordions */}
+        <div className="grid lg:grid-cols-4 gap-4 lg:gap-6">
+          {/* Main Content - Category Sections */}
           <main className="lg:col-span-3">
             {loading ? (
               <div className="text-center py-12 sm:py-16 border-2 sm:border-4 border-foreground p-8 sm:p-12">
@@ -281,7 +273,7 @@ const Equipos = () => {
             ) : (
               <div className="space-y-4 sm:space-y-6">
                 {categories.map((category) => (
-                  <CategoryAccordion
+                  <CategorySection
                     key={category.id}
                     ref={(ref) => {
                       if (ref) {
@@ -292,12 +284,11 @@ const Equipos = () => {
                     }}
                     category={category}
                     equipment={equipmentByCategory[category.id] || []}
-                    isExpanded={expandedCategories.has(category.id)}
-                    onToggle={() => toggleCategoryExpanded(category.id)}
                     onAddToCart={handleAddToCart}
                     onViewDetails={handleViewDetails}
                     getCartQuantity={getCartQuantity}
                     canAddMore={canAddMore}
+                    heroHeight={heroHeight}
                   />
                 ))}
               </div>
