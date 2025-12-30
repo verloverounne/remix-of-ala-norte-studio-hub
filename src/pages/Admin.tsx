@@ -18,6 +18,7 @@ import { StorageImageSelector } from "@/components/StorageImageSelector";
 import { EquipmentImageUploader } from "@/components/EquipmentImageUploader";
 import { BulkImageAssigner } from "@/components/BulkImageAssigner";
 import { GalleryManager } from "@/components/GalleryManager";
+import { SpaceAdminEditor } from "@/components/SpaceAdminEditor";
 import { Switch } from "@/components/ui/switch";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";

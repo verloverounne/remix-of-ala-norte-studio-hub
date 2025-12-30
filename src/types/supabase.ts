@@ -78,6 +78,23 @@ export interface Space {
   order_index: number;
   created_at: string;
   updated_at: string;
+  // New rental block fields
+  hero_title: string | null;
+  hero_subtitle: string | null;
+  block_price: number | null;
+  block_hours: number | null;
+  schedule_weekday: string | null;
+  schedule_weekend: string | null;
+  discount_text: string | null;
+  surface_area: string | null;
+  features: string[];
+  included_items: string[];
+  optional_services: string[];
+  layout_description: string | null;
+  location: string | null;
+  featured_image: string | null;
+  tour_360_url: string | null;
+  cta_text: string | null;
 }
 
 export interface Quote {

@@ -12,7 +12,6 @@ const WHATSAPP_NUMBER = "541147180732"; // +54 (11) 4718-0732
 
 const navigation = [
   { name: "RENTAL", href: "/equipos" },
-  { name: "ESPACIOS", href: "/espacios" },
   { name: "GALERÍA", href: "/galeria" },
   { name: "SALA", href: "/sala-grabacion" },
   { name: "SERVICIOS", href: "/servicios" },
