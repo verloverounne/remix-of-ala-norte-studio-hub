@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import type { EquipmentWithCategory } from "@/types/supabase";
-import { Search, Plus, Minus, MessageCircle } from "lucide-react";
+import { Search, ShoppingCart } from "lucide-react";
 import equipmentHero from "@/assets/equipment-hero.jpg";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
@@ -14,17 +14,19 @@ import { EquipmentModal } from "@/components/EquipmentModal";
 import { SubcategoryFilter } from "@/components/SubcategoryFilter";
 import { LazyImage } from "@/components/LazyImage";
 
+interface EquipmentWithStock extends EquipmentWithCategory {
+  stock_quantity?: number;
+}
+
 const Equipos = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [equipment, setEquipment] = useState<EquipmentWithCategory[]>([]);
+  const [equipment, setEquipment] = useState<EquipmentWithStock[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const [quantities, setQuantities] = useState<Record<string, number>>({});
-  const [selectedEquipment, setSelectedEquipment] = useState<EquipmentWithCategory | null>(null);
+  const [selectedEquipment, setSelectedEquipment] = useState<EquipmentWithStock | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  // Removed: selectedBrands, budgetRange, startDate, endDate, unavailableEquipmentIds, upcomingUnavailableIds
   const { addItem, items, calculateSubtotal } = useCart();
   const { toast } = useToast();
 
@@ -48,11 +50,25 @@ const Equipos = () => {
     if (!error && data) {
       const transformedData = data.map((item: any) => ({
         ...item,
-        images: Array.isArray(item.images) ? item.images : []
+        images: Array.isArray(item.images) ? item.images : [],
+        stock_quantity: item.stock_quantity ?? 1
       }));
       setEquipment(transformedData);
     }
     setLoading(false);
+  };
+
+  // Get quantity of item already in cart
+  const getCartQuantity = (id: string) => {
+    const cartItem = items.find(item => item.id === id);
+    return cartItem?.quantity || 0;
+  };
+
+  // Check if can add more items
+  const canAddMore = (item: EquipmentWithStock) => {
+    const inCart = getCartQuantity(item.id);
+    const stock = item.stock_quantity ?? 1;
+    return inCart < stock;
   };
 
   // Removed: checkUpcomingUnavailability and checkAvailability functions
@@ -127,35 +143,31 @@ const Equipos = () => {
       return matchesSearch && matchesCategory && matchesSubcategory;
     });
 
-
-  const getQuantity = (id: string) => quantities[id] || 1;
-
-  const updateQuantity = (id: string, delta: number) => {
-    const current = getQuantity(id);
-    const newValue = Math.max(1, current + delta);
-    setQuantities({ ...quantities, [id]: newValue });
-  };
-
-  const handleAddToCart = (item: EquipmentWithCategory) => {
-    const quantity = getQuantity(item.id);
-    addItem(
-      {
-        id: item.id,
-        name: item.name,
-        brand: item.brand || undefined,
-        pricePerDay: item.price_per_day,
-        imageUrl: item.image_url || undefined,
-      },
-      quantity
-    );
+  const handleAddToCart = (item: EquipmentWithStock) => {
+    if (!canAddMore(item)) {
+      toast({
+        title: "Stock máximo alcanzado",
+        description: `Solo hay ${item.stock_quantity} unidades disponibles de ${item.name}`,
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    addItem({
+      id: item.id,
+      name: item.name,
+      brand: item.brand || undefined,
+      pricePerDay: item.price_per_day,
+      imageUrl: item.image_url || undefined,
+    }, 1);
+    
     toast({
-      title: "Agregado a reserva",
-      description: `${quantity}x ${item.name} agregado al carrito`,
+      title: "Agregado a cotización",
+      description: `${item.name} agregado`,
     });
-    setQuantities({ ...quantities, [item.id]: 1 });
   };
 
-  const handleViewDetails = (item: EquipmentWithCategory) => {
+  const handleViewDetails = (item: EquipmentWithStock) => {
     setSelectedEquipment(item);
     setModalOpen(true);
   };
@@ -248,102 +260,89 @@ const Equipos = () => {
                 <div className="mb-4 sm:mb-6 text-xs sm:text-sm text-muted-foreground font-heading">
                   Mostrando {filteredEquipment.length} equipo{filteredEquipment.length !== 1 ? 's' : ''}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-                  {filteredEquipment.map((item, index) => {
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+                  {filteredEquipment.map((item) => {
+                    const cartQty = getCartQuantity(item.id);
+                    const canAdd = canAddMore(item);
+                    
                     return (
                       <Card 
                         key={item.id}
-                        className="overflow-hidden group"
+                        className="overflow-hidden group relative"
                       >
-                  <div className="relative">
-                    {item.image_url ? (
-                      <LazyImage
-                        src={item.image_url}
-                        alt={item.name}
-                        className="grayscale group-hover:scale-110 transition-transform duration-300"
-                        placeholderClassName="border-b-2 border-foreground"
-                      />
-                    ) : (
-                      <div className="aspect-video w-full flex items-center justify-center bg-muted border-b-2 border-foreground">
-                        <span className="text-brutal text-4xl opacity-20">NO IMG</span>
-                      </div>
-                    )}
-                  </div>
-
-                      <CardContent className="p-6">
-                        {/* Subcategoría */}
-                        {item.subcategories && (
-                          <Badge variant="secondary" className="mb-3">
-                            {item.subcategories.name}
-                          </Badge>
+                        {/* Badge de cantidad en carrito */}
+                        {cartQty > 0 && (
+                          <div className="absolute top-2 right-2 z-10 bg-primary text-primary-foreground rounded-full w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center font-heading text-xs sm:text-sm shadow-brutal-sm">
+                            {cartQty}
+                          </div>
                         )}
-                    
-                    <h3 className="font-heading text-2xl mb-2 uppercase">{item.name}</h3>
-                    {item.brand && (
-                      <p className="text-muted-foreground font-mono mb-4">{item.brand}</p>
-                    )}
-                    
-                    <div className="border-t-2 border-foreground pt-4 mt-4">
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-primary font-heading text-4xl">
-                          ${(item.price_per_day / 1000).toFixed(0)}K
-                        </span>
-                        <span className="text-muted-foreground font-mono">/día</span>
-                      </div>
-                      {item.price_per_week && (
-                        <div className="text-sm text-muted-foreground mt-1 font-mono">
-                          Semana: ${(item.price_per_week / 1000).toFixed(0)}K
+                        
+                        <div className="relative aspect-square cursor-pointer" onClick={() => handleViewDetails(item)}>
+                          {item.image_url ? (
+                            <LazyImage
+                              src={item.image_url}
+                              alt={item.name}
+                              className="grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-300 object-cover"
+                              placeholderClassName="border-b-2 border-foreground"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-muted border-b-2 border-foreground">
+                              <span className="text-2xl sm:text-3xl opacity-20 font-heading">?</span>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  </CardContent>
 
-                   <CardFooter className="p-6 pt-0 flex flex-col gap-3">
-                    <div className="flex gap-2 w-full">
-                      <Button 
-                        variant="outline" 
-                        className="flex-1"
-                        onClick={() => handleViewDetails(item)}
-                      >
-                        DETALLES
-                      </Button>
-                    </div>
-                    {item.status === 'available' && (
-                      <div className="flex items-center gap-2 w-full">
-                        <div className="flex items-center gap-1">
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => updateQuantity(item.id, -1)}
-                            className="h-10 w-10"
+                        <CardContent className="p-2 sm:p-3">
+                          {item.subcategories && (
+                            <Badge variant="secondary" className="mb-1 text-[10px] sm:text-xs px-1.5 py-0">
+                              {item.subcategories.name}
+                            </Badge>
+                          )}
+                          
+                          <h3 
+                            className="font-heading text-xs sm:text-sm leading-tight mb-1 uppercase line-clamp-2 cursor-pointer hover:text-primary transition-colors"
+                            onClick={() => handleViewDetails(item)}
                           >
-                            <Minus className="h-4 w-4" />
-                          </Button>
-                          <Input
-                            type="number"
-                            min="1"
-                            value={getQuantity(item.id)}
-                            onChange={(e) => setQuantities({ ...quantities, [item.id]: Math.max(1, parseInt(e.target.value) || 1) })}
-                            className="text-center font-heading text-lg h-10 w-20"
-                          />
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => updateQuantity(item.id, 1)}
-                            className="h-10 w-10"
-                          >
-                            <Plus className="h-4 w-4" />
-                          </Button>
-                        </div>
-                        <Button 
-                          className="flex-1" 
-                          onClick={() => handleAddToCart(item)}
-                        >
-                          AGREGAR
-                        </Button>
-                      </div>
-                    )}
-                  </CardFooter>
+                            {item.name}
+                          </h3>
+                          
+                          {item.brand && (
+                            <p className="text-muted-foreground font-mono text-[10px] sm:text-xs truncate">{item.brand}</p>
+                          )}
+                          
+                          <div className="border-t border-foreground/30 pt-2 mt-2">
+                            <div className="flex items-baseline gap-1">
+                              <span className="text-primary font-heading text-lg sm:text-xl">
+                                ${item.price_per_day > 0 ? (item.price_per_day / 1000).toFixed(0) + 'K' : '—'}
+                              </span>
+                              <span className="text-muted-foreground font-mono text-[10px]">/día</span>
+                            </div>
+                          </div>
+                        </CardContent>
+
+                        <CardFooter className="p-2 sm:p-3 pt-0">
+                          {item.status === 'available' ? (
+                            <Button 
+                              size="sm"
+                              className="w-full text-xs sm:text-sm h-8 sm:h-9"
+                              onClick={() => handleAddToCart(item)}
+                              disabled={!canAdd}
+                            >
+                              {canAdd ? (
+                                <>
+                                  <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                                  AGREGAR
+                                </>
+                              ) : (
+                                'MÁXIMO'
+                              )}
+                            </Button>
+                          ) : (
+                            <Button size="sm" className="w-full text-xs h-8" disabled>
+                              NO DISPONIBLE
+                            </Button>
+                          )}
+                        </CardFooter>
                       </Card>
                     );
                   })}

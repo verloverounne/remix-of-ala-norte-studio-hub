@@ -208,6 +208,7 @@ export type Database = {
           sku_rentalos: string | null
           specs: Json | null
           status: Database["public"]["Enums"]["equipment_status"] | null
+          stock_quantity: number
           subcategory_id: string | null
           tags: string[] | null
           tamano: string | null
@@ -239,6 +240,7 @@ export type Database = {
           sku_rentalos?: string | null
           specs?: Json | null
           status?: Database["public"]["Enums"]["equipment_status"] | null
+          stock_quantity?: number
           subcategory_id?: string | null
           tags?: string[] | null
           tamano?: string | null
@@ -270,6 +272,7 @@ export type Database = {
           sku_rentalos?: string | null
           specs?: Json | null
           status?: Database["public"]["Enums"]["equipment_status"] | null
+          stock_quantity?: number
           subcategory_id?: string | null
           tags?: string[] | null
           tamano?: string | null

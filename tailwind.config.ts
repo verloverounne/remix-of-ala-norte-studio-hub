@@ -74,6 +74,12 @@ export default {
         '3': '3px',
         '4': '4px',
       },
+      boxShadow: {
+        'brutal': 'var(--shadow-brutal)',
+        'brutal-sm': 'var(--shadow-brutal-sm)',
+        'brutal-lg': 'var(--shadow-brutal-lg)',
+        'brutal-red': 'var(--shadow-brutal-red)',
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0", opacity: "0" },
