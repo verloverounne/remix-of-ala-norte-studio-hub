@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Moon, Sun, ShoppingCart, LogOut } from "lucide-react";
+import { Menu, X, Moon, Sun, ShoppingCart, LogOut, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 import { SearchBar } from "@/components/SearchBar";
 import logo from "@/assets/logo-brutal.png";
+
+const WHATSAPP_NUMBER = "525551234567"; // Número de WhatsApp
 
 const navigation = [
   { name: "RENTAL", href: "/equipos" },
@@ -73,7 +75,23 @@ export const Header = () => {
           <div className="flex items-center gap-1 sm:gap-2">
             {/* Search */}
             <SearchBar />
-            
+
+            {/* WhatsApp Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              asChild
+              className="hidden sm:inline-flex border-2 border-foreground h-10 w-10 sm:h-12 sm:w-12 hover:bg-green-500 hover:text-white hover:border-green-500"
+              aria-label="Contactar por WhatsApp"
+            >
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hola, me gustaría obtener información`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" />
+              </a>
+            </Button>
 
             <Button
               variant="ghost"
@@ -171,6 +189,19 @@ export const Header = () => {
                   {item.name}
                 </Link>
               ))}
+              
+              {/* WhatsApp en móvil */}
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hola, me gustaría obtener información`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 font-heading text-sm border-2 border-foreground bg-green-500 text-white hover:bg-green-600"
+              >
+                <MessageCircle className="h-5 w-5" />
+                WHATSAPP
+              </a>
+              
               <div className="flex items-center justify-between px-4 py-3 border-2 border-foreground">
                 <span className="font-heading text-sm">MODO</span>
                 <Button variant="ghost" size="icon" onClick={toggleTheme} className="border-2 border-foreground h-10 w-10" aria-label={theme === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"}>
