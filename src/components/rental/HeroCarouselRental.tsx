@@ -183,9 +183,15 @@ export const HeroCarouselRental = ({
     api?.scrollTo(index);
   };
 
+  const scrollToHero = () => {
+    heroRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   const handleChipClick = (categoryId: string, index: number) => {
     scrollToSlide(index);
     onCategoryChange?.(categoryId);
+    // Scroll back to hero to show the selected category slide
+    scrollToHero();
   };
 
   // Filter subcategories by active category
@@ -223,10 +229,10 @@ export const HeroCarouselRental = ({
 
   return (
     <div ref={heroRef}>
-      {/* Sticky Navigation Bar - at very top */}
+      {/* Fixed Navigation Bar - at very top */}
       <div 
         ref={navBarRef}
-        className="sticky top-0 z-40 bg-background border-b-2 border-foreground"
+        className="fixed top-0 left-0 right-0 z-50 bg-background border-b-2 border-foreground"
       >
         <div className="container mx-auto px-2 sm:px-4">
           <div className="flex items-center gap-1 sm:gap-2 py-1.5 sm:py-2 h-[40px] sm:h-[52px]">
@@ -370,6 +376,9 @@ export const HeroCarouselRental = ({
           </div>
         </div>
       </div>
+
+      {/* Spacer for fixed nav */}
+      <div className="h-[40px] sm:h-[52px]" />
 
       {/* Carousel slides - scrolls with body */}
       <section className="relative overflow-hidden">
