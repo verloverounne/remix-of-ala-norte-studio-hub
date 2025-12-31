@@ -741,7 +741,7 @@ const Admin = () => {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <Tabs defaultValue="equipment" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-8 lg:w-auto">
+            <TabsList className="flex flex-wrap h-auto gap-1 w-full lg:w-auto">
               <TabsTrigger value="equipment">Equipos</TabsTrigger>
               <TabsTrigger value="prices">Precios</TabsTrigger>
               <TabsTrigger value="assign-images">

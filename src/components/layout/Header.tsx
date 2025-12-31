@@ -91,12 +91,12 @@ export const Header = () => {
           </Link>
 
           {/* Desktop Navigation Brutal */}
-          <div className="hidden lg:flex lg:items-center lg:gap-1">
+          <div className="hidden lg:flex lg:flex-wrap lg:items-center lg:gap-1">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
-                className={`px-4 xl:px-6 h-10 xl:h-12 flex items-center justify-center font-heading text-xs xl:text-sm tracking-wider border-2 transition-none ${
+                className={`px-4 xl:px-6 h-10 xl:h-12 flex items-center justify-center font-heading text-xs xl:text-sm tracking-wider border-2 transition-none flex-shrink-0 ${
                   location.pathname === item.href
                     ? "bg-primary text-primary-foreground border-foreground shadow-brutal-sm"
                     : "bg-transparent border-transparent hover:border-foreground hover:shadow-brutal-sm"
@@ -108,7 +108,7 @@ export const Header = () => {
           </div>
 
           {/* Actions Brutales */}
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex flex-wrap items-center gap-1 sm:gap-2">
             {/* Search */}
             <SearchBar />
 
