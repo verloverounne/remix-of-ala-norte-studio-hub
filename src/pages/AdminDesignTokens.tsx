@@ -768,7 +768,7 @@ const AdminDesignTokens = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content - Tokens Tables */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 relative z-10">
             <Card>
               <CardContent className="pt-6">
                 <Tabs value={activeCategory} onValueChange={setActiveCategory}>
@@ -803,7 +803,7 @@ const AdminDesignTokens = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-6 relative z-0">
             {/* Live Preview */}
             <DesignTokensLivePreview />
 
