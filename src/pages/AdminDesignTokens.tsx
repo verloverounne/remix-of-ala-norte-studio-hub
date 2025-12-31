@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Copy, Download, Upload, Palette, Type, Maximize2, Circle, Layers, Grid3X3, MoreHorizontal, ArrowLeft, Pencil, Check, X, Zap } from "lucide-react";
+import { Copy, Download, Upload, Palette, Type, Maximize2, Circle, Layers, Grid3X3, MoreHorizontal, ArrowLeft, Pencil, Check, X, Zap, Search, RotateCcw } from "lucide-react";
 import { Link } from "react-router-dom";
 import { applyTokenToCSS } from "@/hooks/useDesignTokensApply";
 
@@ -39,6 +39,29 @@ const CATEGORY_CONFIG = {
   other: { label: "Otros", icon: MoreHorizontal },
 };
 
+const TYPE_BADGES: Record<string, { label: string; className: string }> = {
+  color: { label: "COLOR", className: "bg-pink-500/20 text-pink-600 border-pink-500/30" },
+  "font-family": { label: "FONT", className: "bg-blue-500/20 text-blue-600 border-blue-500/30" },
+  "font-size": { label: "SIZE", className: "bg-cyan-500/20 text-cyan-600 border-cyan-500/30" },
+  "font-weight": { label: "WEIGHT", className: "bg-indigo-500/20 text-indigo-600 border-indigo-500/30" },
+  "line-height": { label: "LINE-H", className: "bg-violet-500/20 text-violet-600 border-violet-500/30" },
+  "letter-spacing": { label: "LETTER", className: "bg-purple-500/20 text-purple-600 border-purple-500/30" },
+  spacing: { label: "SPACE", className: "bg-green-500/20 text-green-600 border-green-500/30" },
+  size: { label: "SIZE", className: "bg-emerald-500/20 text-emerald-600 border-emerald-500/30" },
+  radius: { label: "RADIUS", className: "bg-orange-500/20 text-orange-600 border-orange-500/30" },
+  border: { label: "BORDER", className: "bg-amber-500/20 text-amber-600 border-amber-500/30" },
+  shadow: { label: "SHADOW", className: "bg-gray-500/20 text-gray-600 border-gray-500/30" },
+  transition: { label: "MOTION", className: "bg-rose-500/20 text-rose-600 border-rose-500/30" },
+  animation: { label: "ANIM", className: "bg-red-500/20 text-red-600 border-red-500/30" },
+  breakpoint: { label: "BREAK", className: "bg-teal-500/20 text-teal-600 border-teal-500/30" },
+  grid: { label: "GRID", className: "bg-lime-500/20 text-lime-600 border-lime-500/30" },
+  container: { label: "CONTAINER", className: "bg-sky-500/20 text-sky-600 border-sky-500/30" },
+  "z-index": { label: "Z-INDEX", className: "bg-fuchsia-500/20 text-fuchsia-600 border-fuchsia-500/30" },
+  "aspect-ratio": { label: "ASPECT", className: "bg-yellow-500/20 text-yellow-700 border-yellow-500/30" },
+  component: { label: "COMP", className: "bg-slate-500/20 text-slate-600 border-slate-500/30" },
+  reference: { label: "REF", className: "bg-zinc-500/20 text-zinc-600 border-zinc-500/30" },
+};
+
 const AdminDesignTokens = () => {
   const [tokens, setTokens] = useState<DesignToken[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,6 +70,7 @@ const AdminDesignTokens = () => {
   const [importError, setImportError] = useState<string | null>(null);
   const [editing, setEditing] = useState<EditingState | null>(null);
   const [saving, setSaving] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -68,80 +92,199 @@ const AdminDesignTokens = () => {
     setLoading(false);
   };
 
+  const filteredTokens = useMemo(() => {
+    if (!searchQuery.trim()) return tokens;
+    const query = searchQuery.toLowerCase();
+    return tokens.filter(
+      (t) =>
+        t.name.toLowerCase().includes(query) ||
+        t.value.toLowerCase().includes(query) ||
+        t.type.toLowerCase().includes(query) ||
+        (t.description && t.description.toLowerCase().includes(query))
+    );
+  }, [tokens, searchQuery]);
+
   const getTokensByCategory = (category: string) => {
-    return tokens.filter((t) => t.category === category);
+    return filteredTokens.filter((t) => t.category === category);
+  };
+
+  const getCategoryCount = (category: string) => {
+    return filteredTokens.filter((t) => t.category === category).length;
   };
 
   const generateExportJson = () => {
     const exportData: Record<string, any> = {
       color: {},
-      typography: {},
+      button: {},
+      typography: {
+        font: { family: {}, size: {}, weight: {} },
+        lineHeight: {},
+        letterSpacing: {},
+      },
       spacing: {},
+      component: {},
       radius: {},
+      border: {},
       shadow: {},
+      transition: {},
+      animation: {},
       layout: {
         breakpoint: {},
-        grid: {
-          desktop: {},
-          tablet: {},
-          mobile: {},
-        },
-        container: {
-          desktop: {},
-          tablet: {},
-          mobile: {},
-        },
+        grid: { desktop: {}, tablet: {}, mobile: {} },
+        container: { desktop: {}, tablet: {}, mobile: {} },
+        column: {},
+        zIndex: {},
+        aspectRatio: {},
       },
+      navbar: {},
+      hero: {},
+      card: {},
+      input: {},
+      modal: {},
+      toast: {},
+      loader: {},
+      badge: {},
     };
 
     tokens.forEach((token) => {
       const parts = token.name.split(".");
 
-      if (token.category === "colors" && parts[0] === "color") {
-        exportData.color[parts.slice(1).join(".")] = token.value;
-      } else if (token.category === "typography") {
+      // Colors
+      if (token.category === "colors") {
+        if (parts[0] === "color") {
+          exportData.color[parts.slice(1).join(".")] = token.value;
+        } else if (parts[0] === "button") {
+          const path = parts.slice(1).join(".");
+          exportData.button[path] = token.value;
+        }
+      }
+
+      // Typography
+      if (token.category === "typography") {
         if (parts[0] === "font") {
-          if (!exportData.typography.font) exportData.typography.font = {};
           if (parts[1] === "family") {
-            if (!exportData.typography.font.family) exportData.typography.font.family = {};
             exportData.typography.font.family[parts[2]] = token.value;
           } else if (parts[1] === "size") {
-            if (!exportData.typography.font.size) exportData.typography.font.size = {};
             exportData.typography.font.size[parts[2]] = token.value;
+          } else if (parts[1] === "weight") {
+            exportData.typography.font.weight[parts[2]] = token.value;
           }
-        } else if (parts[0] === "lineHeight") {
-          if (!exportData.typography.lineHeight) exportData.typography.lineHeight = {};
-          exportData.typography.lineHeight[parts[1]] = token.value;
+        } else if (parts[0] === "lineHeight" || parts[0] === "line") {
+          const key = parts[0] === "line" ? parts.slice(2).join(".") : parts[1];
+          exportData.typography.lineHeight[key] = token.value;
+        } else if (parts[0] === "letterSpacing" || parts[0] === "letter") {
+          const key = parts[0] === "letter" ? parts.slice(2).join(".") : parts[1];
+          exportData.typography.letterSpacing[key] = token.value;
         }
-      } else if (token.category === "spacing" && parts[0] === "space") {
-        exportData.spacing[parts[1]] = token.value;
-      } else if (token.category === "radius" && parts[0] === "radius") {
-        exportData.radius[parts[1]] = token.value;
-      } else if (token.category === "shadows") {
+      }
+
+      // Spacing
+      if (token.category === "spacing") {
+        if (parts[0] === "space" || parts[0] === "spacing") {
+          exportData.spacing[parts[1]] = token.value;
+        } else if (parts[0] === "component") {
+          const path = parts.slice(1).join(".");
+          exportData.component[path] = token.value;
+        } else if (parts[0] === "button") {
+          const path = parts.slice(1).join(".");
+          exportData.component[`button.${path}`] = token.value;
+        }
+      }
+
+      // Radius
+      if (token.category === "radius") {
+        if (parts[0] === "radius") {
+          exportData.radius[parts[1]] = token.value;
+        } else if (parts[0] === "border") {
+          const path = parts.slice(1).join(".");
+          exportData.border[path] = token.value;
+        }
+      }
+
+      // Shadows
+      if (token.category === "shadows") {
         if (parts[0] === "shadow") {
           exportData.shadow[parts[1]] = token.value;
         } else if (parts[0] === "transition") {
-          if (!exportData.shadow.transition) exportData.shadow.transition = {};
-          exportData.shadow.transition[parts[1]] = token.value;
+          exportData.transition[parts[1]] = token.value;
+        } else if (parts[0] === "animation") {
+          exportData.animation[parts[1]] = token.value;
         }
-      } else if (token.category === "layout") {
-        if (parts[0] === "breakpoint") {
-          exportData.layout.breakpoint[parts[1]] = parseInt(token.value) || token.value;
-        } else if (parts[0] === "grid") {
-          const device = parts[1];
-          const prop = parts[2];
-          if (!exportData.layout.grid[device]) exportData.layout.grid[device] = {};
-          exportData.layout.grid[device][prop] = parseInt(token.value) || token.value;
-        } else if (parts[0] === "container") {
-          const device = parts[1];
-          const prop = parts[2];
-          if (!exportData.layout.container[device]) exportData.layout.container[device] = {};
-          exportData.layout.container[device][prop] = parseInt(token.value) || token.value;
+      }
+
+      // Layout
+      if (token.category === "layout") {
+        if (parts[0] === "layout" || parts[0] === "breakpoint") {
+          if (parts[1] === "breakpoint" || parts[0] === "breakpoint") {
+            const key = parts[0] === "breakpoint" ? parts[1] : parts[2];
+            exportData.layout.breakpoint[key] = token.value;
+          } else if (parts[1] === "grid") {
+            const device = parts[2];
+            const prop = parts[3];
+            if (device && prop) {
+              exportData.layout.grid[device][prop] = token.value;
+            }
+          } else if (parts[1] === "container") {
+            const device = parts[2];
+            const prop = parts[3];
+            if (device && prop) {
+              exportData.layout.container[device][prop] = token.value;
+            }
+          } else if (parts[1] === "column") {
+            exportData.layout.column[parts[2]] = token.value;
+          }
+        } else if (parts[0] === "zIndex" || parts[0] === "z") {
+          const key = parts[0] === "z" ? parts.slice(2).join(".") : parts[1];
+          exportData.layout.zIndex[key] = token.value;
+        } else if (parts[0] === "aspectRatio" || parts[0] === "aspect") {
+          const key = parts[0] === "aspect" ? parts.slice(2).join(".") : parts[1];
+          exportData.layout.aspectRatio[key] = token.value;
+        }
+      }
+
+      // Other (Components)
+      if (token.category === "other") {
+        if (parts[0] === "navbar") {
+          const path = parts.slice(1).join(".");
+          exportData.navbar[path] = token.value;
+        } else if (parts[0] === "hero") {
+          const path = parts.slice(1).join(".");
+          exportData.hero[path] = token.value;
+        } else if (parts[0] === "card") {
+          const path = parts.slice(1).join(".");
+          exportData.card[path] = token.value;
+        } else if (parts[0] === "input") {
+          const path = parts.slice(1).join(".");
+          exportData.input[path] = token.value;
+        } else if (parts[0] === "modal") {
+          const path = parts.slice(1).join(".");
+          exportData.modal[path] = token.value;
+        } else if (parts[0] === "toast") {
+          const path = parts.slice(1).join(".");
+          exportData.toast[path] = token.value;
+        } else if (parts[0] === "loader") {
+          const path = parts.slice(1).join(".");
+          exportData.loader[path] = token.value;
+        } else if (parts[0] === "badge") {
+          const path = parts.slice(1).join(".");
+          exportData.badge[path] = token.value;
         }
       }
     });
 
-    return JSON.stringify(exportData, null, 2);
+    // Clean empty objects
+    const cleanEmptyObjects = (obj: any): any => {
+      if (typeof obj !== "object" || obj === null) return obj;
+      const cleaned: any = {};
+      for (const key of Object.keys(obj)) {
+        const val = cleanEmptyObjects(obj[key]);
+        if (typeof val === "object" && val !== null && Object.keys(val).length === 0) continue;
+        cleaned[key] = val;
+      }
+      return cleaned;
+    };
+
+    return JSON.stringify(cleanEmptyObjects(exportData), null, 2);
   };
 
   const handleCopyJson = async () => {
@@ -189,16 +332,22 @@ const AdminDesignTokens = () => {
       const parsed = JSON.parse(importJson);
       const newTokens: Omit<DesignToken, "id" | "created_at" | "updated_at">[] = [];
 
+      // Helper to add token
+      const addToken = (name: string, type: string, value: string, category: string) => {
+        newTokens.push({ name, type, value: String(value), description: null, category });
+      };
+
       // Parse colors
       if (parsed.color) {
         Object.entries(parsed.color).forEach(([key, value]) => {
-          newTokens.push({
-            name: `color.${key}`,
-            type: "color",
-            value: String(value),
-            description: null,
-            category: "colors",
-          });
+          addToken(`color.${key}`, "color", String(value), "colors");
+        });
+      }
+
+      // Parse button colors
+      if (parsed.button) {
+        Object.entries(parsed.button).forEach(([key, value]) => {
+          addToken(`button.${key}`, "color", String(value), "colors");
         });
       }
 
@@ -206,35 +355,27 @@ const AdminDesignTokens = () => {
       if (parsed.typography) {
         if (parsed.typography.font?.family) {
           Object.entries(parsed.typography.font.family).forEach(([key, value]) => {
-            newTokens.push({
-              name: `font.family.${key}`,
-              type: "font-family",
-              value: String(value),
-              description: null,
-              category: "typography",
-            });
+            addToken(`font.family.${key}`, "font-family", String(value), "typography");
           });
         }
         if (parsed.typography.font?.size) {
           Object.entries(parsed.typography.font.size).forEach(([key, value]) => {
-            newTokens.push({
-              name: `font.size.${key}`,
-              type: "font-size",
-              value: String(value),
-              description: null,
-              category: "typography",
-            });
+            addToken(`font.size.${key}`, "font-size", String(value), "typography");
+          });
+        }
+        if (parsed.typography.font?.weight) {
+          Object.entries(parsed.typography.font.weight).forEach(([key, value]) => {
+            addToken(`font.weight.${key}`, "font-weight", String(value), "typography");
           });
         }
         if (parsed.typography.lineHeight) {
           Object.entries(parsed.typography.lineHeight).forEach(([key, value]) => {
-            newTokens.push({
-              name: `lineHeight.${key}`,
-              type: "line-height",
-              value: String(value),
-              description: null,
-              category: "typography",
-            });
+            addToken(`line.height.${key}`, "line-height", String(value), "typography");
+          });
+        }
+        if (parsed.typography.letterSpacing) {
+          Object.entries(parsed.typography.letterSpacing).forEach(([key, value]) => {
+            addToken(`letter.spacing.${key}`, "letter-spacing", String(value), "typography");
           });
         }
       }
@@ -242,51 +383,49 @@ const AdminDesignTokens = () => {
       // Parse spacing
       if (parsed.spacing) {
         Object.entries(parsed.spacing).forEach(([key, value]) => {
-          newTokens.push({
-            name: `space.${key}`,
-            type: "spacing",
-            value: String(value),
-            description: null,
-            category: "spacing",
-          });
+          addToken(`spacing.${key}`, "spacing", String(value), "spacing");
+        });
+      }
+
+      // Parse component sizes
+      if (parsed.component) {
+        Object.entries(parsed.component).forEach(([key, value]) => {
+          addToken(`component.${key}`, "size", String(value), "spacing");
         });
       }
 
       // Parse radius
       if (parsed.radius) {
         Object.entries(parsed.radius).forEach(([key, value]) => {
-          newTokens.push({
-            name: `radius.${key}`,
-            type: "radius",
-            value: String(value),
-            description: null,
-            category: "radius",
-          });
+          addToken(`radius.${key}`, "radius", String(value), "radius");
+        });
+      }
+
+      // Parse border
+      if (parsed.border) {
+        Object.entries(parsed.border).forEach(([key, value]) => {
+          addToken(`border.${key}`, "border", String(value), "radius");
         });
       }
 
       // Parse shadows
       if (parsed.shadow) {
         Object.entries(parsed.shadow).forEach(([key, value]) => {
-          if (key === "transition" && typeof value === "object") {
-            Object.entries(value as Record<string, string>).forEach(([tKey, tValue]) => {
-              newTokens.push({
-                name: `transition.${tKey}`,
-                type: "transition",
-                value: String(tValue),
-                description: null,
-                category: "shadows",
-              });
-            });
-          } else {
-            newTokens.push({
-              name: `shadow.${key}`,
-              type: "shadow",
-              value: String(value),
-              description: null,
-              category: "shadows",
-            });
-          }
+          addToken(`shadow.${key}`, "shadow", String(value), "shadows");
+        });
+      }
+
+      // Parse transitions
+      if (parsed.transition) {
+        Object.entries(parsed.transition).forEach(([key, value]) => {
+          addToken(`transition.${key}`, "transition", String(value), "shadows");
+        });
+      }
+
+      // Parse animations
+      if (parsed.animation) {
+        Object.entries(parsed.animation).forEach(([key, value]) => {
+          addToken(`animation.${key}`, "animation", String(value), "shadows");
         });
       }
 
@@ -294,42 +433,44 @@ const AdminDesignTokens = () => {
       if (parsed.layout) {
         if (parsed.layout.breakpoint) {
           Object.entries(parsed.layout.breakpoint).forEach(([key, value]) => {
-            newTokens.push({
-              name: `breakpoint.${key}`,
-              type: "breakpoint",
-              value: String(value),
-              description: null,
-              category: "layout",
-            });
+            addToken(`breakpoint.${key}`, "breakpoint", String(value), "layout");
           });
         }
         if (parsed.layout.grid) {
           Object.entries(parsed.layout.grid).forEach(([device, props]) => {
             Object.entries(props as Record<string, any>).forEach(([prop, value]) => {
-              newTokens.push({
-                name: `grid.${device}.${prop}`,
-                type: "grid",
-                value: String(value),
-                description: null,
-                category: "layout",
-              });
+              addToken(`grid.${device}.${prop}`, "grid", String(value), "layout");
             });
           });
         }
         if (parsed.layout.container) {
           Object.entries(parsed.layout.container).forEach(([device, props]) => {
             Object.entries(props as Record<string, any>).forEach(([prop, value]) => {
-              newTokens.push({
-                name: `container.${device}.${prop}`,
-                type: "container",
-                value: String(value),
-                description: null,
-                category: "layout",
-              });
+              addToken(`container.${device}.${prop}`, "container", String(value), "layout");
             });
           });
         }
+        if (parsed.layout.zIndex) {
+          Object.entries(parsed.layout.zIndex).forEach(([key, value]) => {
+            addToken(`z.index.${key}`, "z-index", String(value), "layout");
+          });
+        }
+        if (parsed.layout.aspectRatio) {
+          Object.entries(parsed.layout.aspectRatio).forEach(([key, value]) => {
+            addToken(`aspect.ratio.${key}`, "aspect-ratio", String(value), "layout");
+          });
+        }
       }
+
+      // Parse component-specific tokens (other category)
+      const componentCategories = ["navbar", "hero", "card", "input", "modal", "toast", "loader", "badge"];
+      componentCategories.forEach((comp) => {
+        if (parsed[comp]) {
+          Object.entries(parsed[comp]).forEach(([key, value]) => {
+            addToken(`${comp}.${key}`, "component", String(value), "other");
+          });
+        }
+      });
 
       // Upsert tokens
       for (const token of newTokens) {
@@ -352,8 +493,12 @@ const AdminDesignTokens = () => {
     }
   };
 
+  const isColorValue = (value: string) => {
+    return value.startsWith("#") || value.startsWith("rgb") || value.startsWith("hsl");
+  };
+
   const renderColorPreview = (value: string) => {
-    if (value.startsWith("#") || value.startsWith("rgb") || value.startsWith("hsl")) {
+    if (isColorValue(value)) {
       return (
         <span
           className="inline-block w-5 h-5 rounded border border-border mr-2 flex-shrink-0"
@@ -378,9 +523,9 @@ const AdminDesignTokens = () => {
 
   const saveEditing = async () => {
     if (!editing) return;
-    
+
     setSaving(true);
-    const updateData = editing.field === "value" 
+    const updateData = editing.field === "value"
       ? { value: editing.value }
       : { description: editing.value || null };
 
@@ -392,10 +537,8 @@ const AdminDesignTokens = () => {
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
-      // Find the token to get its full data for CSS application
       const token = tokens.find(t => t.id === editing.id);
       if (token && editing.field === "value") {
-        // Apply the change to CSS in real-time
         applyTokenToCSS({
           name: token.name,
           value: editing.value,
@@ -403,11 +546,10 @@ const AdminDesignTokens = () => {
           category: token.category,
         });
       }
-      
+
       toast({ title: "Guardado", description: "Token actualizado y aplicado" });
-      // Update local state
-      setTokens(tokens.map(t => 
-        t.id === editing.id 
+      setTokens(tokens.map(t =>
+        t.id === editing.id
           ? { ...t, [editing.field]: editing.value || (editing.field === "description" ? null : t[editing.field]) }
           : t
       ));
@@ -425,13 +567,22 @@ const AdminDesignTokens = () => {
     }
   };
 
+  const getTypeBadge = (type: string) => {
+    const config = TYPE_BADGES[type] || { label: type.toUpperCase(), className: "bg-gray-500/20 text-gray-600 border-gray-500/30" };
+    return (
+      <Badge variant="outline" className={`text-[10px] font-bold ${config.className}`}>
+        {config.label}
+      </Badge>
+    );
+  };
+
   const renderTokenTable = (category: string) => {
     const categoryTokens = getTokensByCategory(category);
 
     if (categoryTokens.length === 0) {
       return (
         <div className="text-center py-8 text-muted-foreground">
-          No hay tokens en esta categoría
+          {searchQuery ? `No hay tokens que coincidan con "${searchQuery}"` : "No hay tokens en esta categoría"}
         </div>
       );
     }
@@ -440,10 +591,10 @@ const AdminDesignTokens = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Nombre</TableHead>
-            <TableHead>Tipo</TableHead>
+            <TableHead className="w-[280px]">Nombre</TableHead>
+            <TableHead className="w-[80px]">Tipo</TableHead>
             <TableHead>Valor</TableHead>
-            <TableHead>Descripción</TableHead>
+            <TableHead className="w-[200px]">Descripción</TableHead>
             <TableHead className="w-[80px]">Acciones</TableHead>
           </TableRow>
         </TableHeader>
@@ -452,35 +603,40 @@ const AdminDesignTokens = () => {
             const isEditingValue = editing?.id === token.id && editing?.field === "value";
             const isEditingDescription = editing?.id === token.id && editing?.field === "description";
             const isEditingThis = isEditingValue || isEditingDescription;
+            const tokenIsColor = token.type === "color" || isColorValue(token.value);
 
             return (
               <TableRow key={token.id}>
                 <TableCell className="font-mono text-sm">{token.name}</TableCell>
-                <TableCell>
-                  <Badge variant="secondary" className="text-xs">
-                    {token.type}
-                  </Badge>
-                </TableCell>
+                <TableCell>{getTypeBadge(token.type)}</TableCell>
                 <TableCell className="font-mono text-sm">
                   {isEditingValue ? (
                     <div className="flex items-center gap-2">
-                      {renderColorPreview(editing.value)}
+                      {tokenIsColor && (
+                        <input
+                          type="color"
+                          value={editing.value.startsWith("#") ? editing.value : "#DC143C"}
+                          onChange={(e) => setEditing({ ...editing, value: e.target.value })}
+                          className="w-8 h-8 rounded border border-border cursor-pointer flex-shrink-0"
+                          disabled={saving}
+                        />
+                      )}
                       <Input
                         value={editing.value}
                         onChange={(e) => setEditing({ ...editing, value: e.target.value })}
                         onKeyDown={handleKeyDown}
-                        className="h-8 text-sm font-mono"
-                        autoFocus
+                        className="h-8 text-sm font-mono flex-1"
+                        autoFocus={!tokenIsColor}
                         disabled={saving}
                       />
                     </div>
                   ) : (
-                    <div 
+                    <div
                       className="flex items-center cursor-pointer hover:bg-muted/50 rounded px-1 -mx-1 py-0.5 group"
                       onClick={() => startEditing(token, "value")}
                     >
                       {renderColorPreview(token.value)}
-                      <span className="truncate max-w-[200px]">{token.value}</span>
+                      <span className="truncate max-w-[250px]">{token.value}</span>
                       <Pencil className="h-3 w-3 ml-2 opacity-0 group-hover:opacity-50 flex-shrink-0" />
                     </div>
                   )}
@@ -497,7 +653,7 @@ const AdminDesignTokens = () => {
                       placeholder="Descripción..."
                     />
                   ) : (
-                    <div 
+                    <div
                       className="cursor-pointer hover:bg-muted/50 rounded px-1 -mx-1 py-0.5 group flex items-center"
                       onClick={() => startEditing(token, "description")}
                     >
@@ -559,9 +715,9 @@ const AdminDesignTokens = () => {
 
   return (
     <div className="min-h-screen pt-24 pb-12 px-4 bg-background">
-      <div className="max-w-7xl mx-auto space-y-8">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between flex-wrap gap-4">
           <div>
             <Link
               to="/admin"
@@ -574,13 +730,12 @@ const AdminDesignTokens = () => {
               Design Tokens de Ala Norte
             </h1>
             <p className="text-muted-foreground mt-2">
-              Panel interno de tokens del sistema de diseño. Gestiona colores, tipografía,
-              espaciado y más.
+              Sistema de diseño completo. Gestiona colores, tipografía, espaciado, sombras, layout y componentes.
             </p>
           </div>
           <div className="flex flex-col items-end gap-2">
             <Badge variant="outline" className="text-xs">
-              {tokens.length} tokens
+              {tokens.length} tokens totales
             </Badge>
             <Badge className="text-xs bg-green-500/20 text-green-600 border-green-500/30 flex items-center gap-1">
               <Zap className="h-3 w-3" />
@@ -589,7 +744,28 @@ const AdminDesignTokens = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Search Bar */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Buscar tokens por nombre, valor o tipo..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10 h-10"
+          />
+          {searchQuery && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6"
+              onClick={() => setSearchQuery("")}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content - Tokens Tables */}
           <div className="lg:col-span-2">
             <Card>
@@ -598,6 +774,7 @@ const AdminDesignTokens = () => {
                   <TabsList className="flex flex-wrap h-auto gap-1 mb-6">
                     {Object.entries(CATEGORY_CONFIG).map(([key, config]) => {
                       const Icon = config.icon;
+                      const count = getCategoryCount(key);
                       return (
                         <TabsTrigger
                           key={key}
@@ -605,7 +782,10 @@ const AdminDesignTokens = () => {
                           className="flex items-center gap-2 text-sm"
                         >
                           <Icon className="h-4 w-4" />
-                          {config.label}
+                          <span className="hidden sm:inline">{config.label}</span>
+                          <Badge variant="secondary" className="text-[10px] h-5 px-1.5">
+                            {count}
+                          </Badge>
                         </TabsTrigger>
                       );
                     })}
@@ -631,14 +811,14 @@ const AdminDesignTokens = () => {
                   Exportar Tokens
                 </CardTitle>
                 <CardDescription>
-                  Copia o descarga los tokens en formato JSON para usar en Figma o código.
+                  Copia o descarga los tokens en formato JSON.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex gap-2">
                   <Button onClick={handleCopyJson} variant="outline" className="flex-1">
                     <Copy className="h-4 w-4 mr-2" />
-                    Copiar JSON
+                    Copiar
                   </Button>
                   <Button onClick={handleDownloadJson} variant="outline" className="flex-1">
                     <Download className="h-4 w-4 mr-2" />
@@ -648,7 +828,7 @@ const AdminDesignTokens = () => {
                 <Textarea
                   readOnly
                   value={generateExportJson()}
-                  className="font-mono text-xs h-48 resize-none"
+                  className="font-mono text-xs h-40 resize-none"
                 />
               </CardContent>
             </Card>
@@ -661,18 +841,18 @@ const AdminDesignTokens = () => {
                   Importar Tokens
                 </CardTitle>
                 <CardDescription>
-                  Pega un JSON de tokens para actualizar o agregar nuevos valores.
+                  Pega un JSON para actualizar o agregar tokens.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Textarea
-                  placeholder='{"color": {"primary": "#FF6600"}, ...}'
+                  placeholder='{"color": {"primary": "#DC143C"}, ...}'
                   value={importJson}
                   onChange={(e) => {
                     setImportJson(e.target.value);
                     setImportError(null);
                   }}
-                  className="font-mono text-xs h-32 resize-none"
+                  className="font-mono text-xs h-28 resize-none"
                 />
                 {importError && (
                   <p className="text-destructive text-sm">{importError}</p>
@@ -697,25 +877,42 @@ const AdminDesignTokens = () => {
               </CardContent>
             </Card>
 
+            {/* Quick Actions */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <RotateCcw className="h-5 w-5" />
+                  Acciones
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                  onClick={fetchTokens}
+                >
+                  <RotateCcw className="h-4 w-4 mr-2" />
+                  Recargar tokens
+                </Button>
+              </CardContent>
+            </Card>
+
             {/* Help Panel */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Notas</CardTitle>
+                <CardTitle className="text-lg">Guía de Tipos</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-muted-foreground space-y-3">
-                <p>
-                  Esta página es la <strong>fuente de verdad</strong> manual de tokens para
-                  Ala Norte.
-                </p>
-                <p>El JSON exportado puede usarse para:</p>
-                <ul className="list-disc list-inside space-y-1 ml-2">
-                  <li>Configurar variables en Figma</li>
-                  <li>Configurar theme/tokens en frontend (CSS, Tailwind, etc.)</li>
-                </ul>
-                <p>
-                  En el futuro se podría conectar a integraciones (Figma, GitHub), pero por
-                  ahora el flujo es copiar/pegar.
-                </p>
+              <CardContent className="space-y-2">
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  {Object.entries(TYPE_BADGES).slice(0, 10).map(([type, config]) => (
+                    <div key={type} className="flex items-center gap-1">
+                      <Badge variant="outline" className={`text-[9px] ${config.className}`}>
+                        {config.label}
+                      </Badge>
+                      <span className="text-muted-foreground truncate">{type}</span>
+                    </div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </div>
