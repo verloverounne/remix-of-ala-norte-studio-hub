@@ -726,9 +726,14 @@ const Admin = () => {
               <h1 className="text-4xl font-heading font-bold mb-2">Panel de Administración</h1>
               <p className="text-lg">Gestiona equipos, espacios y configuraciones</p>
             </div>
-            <Button asChild variant="secondary" size="lg" className="font-heading">
-              <a href="/admin/blog">Gestionar Blog</a>
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button asChild variant="secondary" size="lg" className="font-heading">
+                <a href="/admin/blog">Gestionar Blog</a>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="font-heading bg-background/10 border-primary-foreground/30 hover:bg-background/20">
+                <a href="/admin/design-tokens">Design Tokens</a>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
