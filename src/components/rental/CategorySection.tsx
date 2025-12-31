@@ -104,26 +104,26 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
       className="relative"
       style={{ scrollMarginTop: `${stickyTop + 8}px` }}
     >
-      {/* Sticky Category Header with Collapse - z-20 */}
+      {/* Sticky Category Header with Collapse - z-20 - same height as filter bar */}
       <div 
         className="sticky z-20 bg-background border-2 sm:border-4 border-foreground mb-0"
         style={{ top: `${stickyTop}px` }}
       >
-        <div className="flex items-center justify-between p-3 sm:p-4">
+        <div className="flex items-center justify-between px-2 sm:px-4 py-2 sm:py-3 h-[40px] sm:h-[52px]">
           <button 
             onClick={toggleExpand}
-            className="flex items-center gap-2 sm:gap-4 cursor-pointer hover:text-primary transition-colors"
+            className="flex items-center gap-1 sm:gap-3 cursor-pointer hover:text-primary transition-colors"
           >
             {isExpanded ? (
-              <ChevronDown className="h-5 w-5 sm:h-6 sm:w-6 transition-transform" />
+              <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5 transition-transform flex-shrink-0" />
             ) : (
-              <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6 transition-transform" />
+              <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform flex-shrink-0" />
             )}
-            <h2 className="font-heading text-lg sm:text-xl md:text-2xl uppercase">
+            <h2 className="font-heading text-sm sm:text-lg md:text-xl uppercase truncate">
               {category.name}
             </h2>
-            <Badge variant="secondary" className="text-xs px-2 py-0.5">
-              {filteredEquipment.length} equipo{filteredEquipment.length !== 1 ? 's' : ''}
+            <Badge variant="secondary" className="text-[10px] sm:text-xs px-1.5 py-0 flex-shrink-0">
+              {filteredEquipment.length}
             </Badge>
           </button>
           
