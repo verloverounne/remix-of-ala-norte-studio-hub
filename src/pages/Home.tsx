@@ -63,12 +63,12 @@ const Home = () => {
   }, [equipmentApi]);
 
   return (
-    <div className="min-h-screen bg-background pt-14 sm:pt-16">
+    <div className="min-h-screen bg-background">
       {/* Institutional Slider - Before 360 Tour */}
       <InstitutionalSlider pageType="home" />
 
       {/* Hero Section - Full Slider with 360 Tours */}
-      <section className="relative h-[60vh] sm:h-[80vh] lg:h-screen overflow-hidden border-b-4 border-foreground">
+      <section className="relative h-screen overflow-hidden border-b-4 border-foreground">
         <div className="absolute inset-0 bg-foreground/95" />
 
         <div

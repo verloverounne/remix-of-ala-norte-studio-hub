@@ -133,7 +133,7 @@ export const HeroCarouselRental = ({
 
   if (loading) {
     return (
-      <div className="h-[30vh] sm:h-[35vh] lg:h-[40vh] bg-muted animate-pulse flex items-center justify-center border-b-4 border-foreground">
+      <div className="h-screen bg-muted animate-pulse flex items-center justify-center border-b-4 border-foreground">
         <span className="text-muted-foreground font-heading">CARGANDO...</span>
       </div>
     );
@@ -149,7 +149,7 @@ export const HeroCarouselRental = ({
           <CarouselContent className="-ml-0">
             {displaySlides.map((slide) => (
               <CarouselItem key={slide.id} className="pl-0 basis-full">
-                <div className="relative h-[25vh] sm:h-[30vh] lg:h-[35vh] overflow-hidden">
+                <div className="relative h-[calc(100vh-60px)] overflow-hidden">
                   {slide.image_url ? (
                     <img
                       src={slide.image_url}
