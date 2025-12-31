@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
+import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
 import { SearchBar } from "@/components/SearchBar";
 import logo from "@/assets/logo-brutal.png";
 
@@ -21,8 +22,7 @@ const navigation = [
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [isVisible, setIsVisible] = useState(true);
-  const [isHovering, setIsHovering] = useState(false);
+  const { isVisible, setIsVisible, isHovering, setIsHovering } = useHeaderVisibility();
   const location = useLocation();
   const navigate = useNavigate();
   const { totalItems } = useCart();
@@ -36,24 +36,12 @@ export const Header = () => {
     }
   }, []);
 
-  // Auto-hide header after 3 seconds on page load/navigation
-  useEffect(() => {
-    setIsVisible(true);
-    const timer = setTimeout(() => {
-      if (!mobileMenuOpen) {
-        setIsVisible(false);
-      }
-    }, 3000);
-    
-    return () => clearTimeout(timer);
-  }, [location.pathname]);
-
   // Keep visible when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       setIsVisible(true);
     }
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, setIsVisible]);
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
