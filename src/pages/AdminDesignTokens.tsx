@@ -8,8 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Copy, Download, Upload, Palette, Type, Maximize2, Circle, Layers, Grid3X3, MoreHorizontal, ArrowLeft, Pencil, Check, X } from "lucide-react";
+import { Copy, Download, Upload, Palette, Type, Maximize2, Circle, Layers, Grid3X3, MoreHorizontal, ArrowLeft, Pencil, Check, X, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
+import { applyTokenToCSS } from "@/hooks/useDesignTokensApply";
 
 interface DesignToken {
   id: string;
@@ -391,7 +392,19 @@ const AdminDesignTokens = () => {
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Guardado", description: "Token actualizado" });
+      // Find the token to get its full data for CSS application
+      const token = tokens.find(t => t.id === editing.id);
+      if (token && editing.field === "value") {
+        // Apply the change to CSS in real-time
+        applyTokenToCSS({
+          name: token.name,
+          value: editing.value,
+          type: token.type,
+          category: token.category,
+        });
+      }
+      
+      toast({ title: "Guardado", description: "Token actualizado y aplicado" });
       // Update local state
       setTokens(tokens.map(t => 
         t.id === editing.id 
@@ -565,9 +578,15 @@ const AdminDesignTokens = () => {
               espaciado y más.
             </p>
           </div>
-          <Badge variant="outline" className="text-xs">
-            {tokens.length} tokens
-          </Badge>
+          <div className="flex flex-col items-end gap-2">
+            <Badge variant="outline" className="text-xs">
+              {tokens.length} tokens
+            </Badge>
+            <Badge className="text-xs bg-green-500/20 text-green-600 border-green-500/30 flex items-center gap-1">
+              <Zap className="h-3 w-3" />
+              Cambios en tiempo real
+            </Badge>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
