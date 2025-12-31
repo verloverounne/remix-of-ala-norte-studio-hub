@@ -243,9 +243,9 @@ export const HeroCarouselRental = ({
         )}
       >
         <div className="container mx-auto px-2 sm:px-4">
-          <div className="flex items-center gap-1 sm:gap-2 py-1.5 sm:py-2 h-[40px] sm:h-[52px]">
-            {/* Category chips */}
-            <div className="flex-1 flex overflow-x-auto scrollbar-hide gap-1 sm:gap-2 -mx-1 px-1">
+          <div className="flex items-center justify-center gap-1 sm:gap-2 py-1.5 sm:py-2 h-[40px] sm:h-[52px]">
+            {/* Category chips + search/filter buttons all centered together */}
+            <div className="flex items-center overflow-x-auto scrollbar-hide gap-1 sm:gap-2">
               {displaySlides.map((slide, index) => {
                 const category = categories.find(c => c.id === slide.category_id);
                 const count = category ? equipmentCounts[category.id] || 0 : 0;
@@ -274,56 +274,56 @@ export const HeroCarouselRental = ({
                   </button>
                 );
               })}
-            </div>
 
-            {/* Search button */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setIsSearchOpen(!isSearchOpen);
-                if (isFilterOpen) setIsFilterOpen(false);
-              }}
-              className={cn(
-                "border-2 border-foreground h-7 w-7 sm:h-9 sm:w-9 p-0 flex-shrink-0",
-                isSearchOpen && "bg-primary text-primary-foreground border-primary"
-              )}
-            >
-              {isSearchOpen ? <X className="h-3 w-3 sm:h-4 sm:w-4" /> : <Search className="h-3 w-3 sm:h-4 sm:w-4" />}
-            </Button>
-            
-            {/* Filter button */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setIsFilterOpen(!isFilterOpen);
-                if (isSearchOpen) setIsSearchOpen(false);
-              }}
-              className={cn(
-                "border-2 border-foreground h-7 sm:h-9 px-2 flex-shrink-0",
-                isFilterOpen && "bg-primary text-primary-foreground border-primary"
-              )}
-            >
-              <Filter className="h-3 w-3 sm:h-4 sm:w-4" />
-              {selectedSubcategories.length > 0 && (
-                <Badge variant="secondary" className="ml-1 text-[9px] h-4 px-1">
-                  {selectedSubcategories.length}
-                </Badge>
-              )}
-            </Button>
-
-            {/* Clear filters */}
-            {hasActiveFilters && (
+              {/* Search button - inline with categories */}
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
-                onClick={onClearFilters}
-                className="h-7 sm:h-9 px-1.5 flex-shrink-0"
+                onClick={() => {
+                  setIsSearchOpen(!isSearchOpen);
+                  if (isFilterOpen) setIsFilterOpen(false);
+                }}
+                className={cn(
+                  "border-2 border-foreground h-7 w-7 sm:h-9 sm:w-9 p-0 flex-shrink-0",
+                  isSearchOpen && "bg-primary text-primary-foreground border-primary"
+                )}
               >
-                <X className="h-3 w-3 sm:h-4 sm:w-4" />
+                {isSearchOpen ? <X className="h-3 w-3 sm:h-4 sm:w-4" /> : <Search className="h-3 w-3 sm:h-4 sm:w-4" />}
               </Button>
-            )}
+              
+              {/* Filter button - inline with categories */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setIsFilterOpen(!isFilterOpen);
+                  if (isSearchOpen) setIsSearchOpen(false);
+                }}
+                className={cn(
+                  "border-2 border-foreground h-7 sm:h-9 px-2 flex-shrink-0",
+                  isFilterOpen && "bg-primary text-primary-foreground border-primary"
+                )}
+              >
+                <Filter className="h-3 w-3 sm:h-4 sm:w-4" />
+                {selectedSubcategories.length > 0 && (
+                  <Badge variant="secondary" className="ml-1 text-[9px] h-4 px-1">
+                    {selectedSubcategories.length}
+                  </Badge>
+                )}
+              </Button>
+
+              {/* Clear filters - inline with categories */}
+              {hasActiveFilters && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onClearFilters}
+                  className="h-7 sm:h-9 px-1.5 flex-shrink-0"
+                >
+                  <X className="h-3 w-3 sm:h-4 sm:w-4" />
+                </Button>
+              )}
+            </div>
           </div>
 
           {/* Expandable search bar */}

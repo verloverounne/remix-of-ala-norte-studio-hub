@@ -197,13 +197,12 @@ export const CartSidebar = ({
     );
   }
 
-  // Desktop: Sticky sidebar
+  // Desktop: Sticky sidebar - responsive, no max height
   return (
     <div
-      className="sticky z-20 border-2 sm:border-4 border-foreground bg-card shadow-brutal flex flex-col"
+      className="sticky z-20 border-2 sm:border-4 border-foreground bg-card shadow-brutal"
       style={{
         top: `${stickyTop}px`,
-        maxHeight: `calc(100vh - ${stickyTop + 24}px)`,
       }}
     >
       <CartContent />
