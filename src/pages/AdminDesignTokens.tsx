@@ -8,10 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Copy, Download, Upload, Palette, Type, Maximize2, Circle, Layers, Grid3X3, MoreHorizontal, ArrowLeft, Pencil, Check, X, Zap, Search, RotateCcw } from "lucide-react";
+import { Copy, Download, Upload, Palette, Type, Maximize2, Circle, Layers, Grid3X3, MoreHorizontal, ArrowLeft, Pencil, Check, X, Zap, Search, RotateCcw, Package, FileCode, FolderDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { applyTokenToCSS } from "@/hooks/useDesignTokensApply";
 import DesignTokensLivePreview from "@/components/admin/DesignTokensLivePreview";
+import ComponentsDownloadPanel from "@/components/admin/ComponentsDownloadPanel";
 
 interface DesignToken {
   id: string;
@@ -880,6 +881,9 @@ const AdminDesignTokens = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Atomic Design Components Download */}
+            <ComponentsDownloadPanel />
 
             {/* Quick Actions */}
             <Card>
