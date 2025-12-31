@@ -103,11 +103,11 @@ const Home = () => {
                         Aquí se integrará el tour virtual interactivo
                       </p>
                     </div>
-                    <div className="mt-4 sm:mt-6 lg:mt-8 flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center">
-                      <Button asChild variant="hero" size="sm" className="sm:text-base">
+                    <div className="mt-4 sm:mt-6 lg:mt-8 flex flex-wrap gap-2 sm:gap-4 justify-center">
+                      <Button asChild variant="hero" size="sm" className="flex-1 sm:flex-none sm:text-base">
                         <Link to="/espacios">VER ESPACIOS</Link>
                       </Button>
-                      <Button asChild variant="secondary" size="sm" className="sm:text-base">
+                      <Button asChild variant="secondary" size="sm" className="flex-1 sm:flex-none sm:text-base">
                         <Link to="/equipos">
                           VER RENTAL <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
@@ -246,11 +246,11 @@ const Home = () => {
                 Ala Norte es representante oficial de Cartoni en Argentina. Venta, reparación y mantenimiento de
                 trípodes y cabezales profesionales con garantía y repuestos originales.
               </p>
-              <div className="flex flex-wrap justify-center lg:justify-start gap-4">
-                <Button asChild variant="default" size="lg">
+              <div className="flex flex-wrap justify-center lg:justify-start gap-2 sm:gap-4">
+                <Button asChild variant="default" size="lg" className="flex-1 sm:flex-none">
                   <Link to="/cartoni">CONOCER MÁS</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg">
+                <Button asChild variant="outline" size="lg" className="flex-1 sm:flex-none">
                   <a href="https://www.cartoni.com/dealers/" target="_blank" rel="noopener noreferrer">
                     VER EN CARTONI.COM
                   </a>
