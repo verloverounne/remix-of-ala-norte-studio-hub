@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
 
 interface LazyImageProps {
   src: string;
@@ -65,9 +64,10 @@ export const LazyImage = ({
         placeholderClassName
       )}
     >
+      {/* Skeleton loading animation */}
       {!isLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-muted">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <div className="absolute inset-0 bg-muted">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-foreground/5 to-transparent animate-[shimmer_1.5s_infinite] -translate-x-full" />
         </div>
       )}
       
@@ -76,7 +76,7 @@ export const LazyImage = ({
           src={src}
           alt={alt}
           className={cn(
-            "absolute inset-0 w-full h-full object-cover transition-opacity duration-300",
+            "absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300",
             isLoaded ? "opacity-100" : "opacity-0",
             className
           )}
