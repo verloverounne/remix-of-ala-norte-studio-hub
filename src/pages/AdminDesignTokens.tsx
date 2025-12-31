@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Copy, Download, Upload, Palette, Type, Maximize2, Circle, Layers, Grid3X3, MoreHorizontal, ArrowLeft } from "lucide-react";
+import { Copy, Download, Upload, Palette, Type, Maximize2, Circle, Layers, Grid3X3, MoreHorizontal, ArrowLeft, Pencil, Check, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface DesignToken {
@@ -19,6 +20,12 @@ interface DesignToken {
   category: string;
   created_at: string;
   updated_at: string;
+}
+
+interface EditingState {
+  id: string;
+  field: "value" | "description";
+  value: string;
 }
 
 const CATEGORY_CONFIG = {
@@ -37,6 +44,8 @@ const AdminDesignTokens = () => {
   const [activeCategory, setActiveCategory] = useState("colors");
   const [importJson, setImportJson] = useState("");
   const [importError, setImportError] = useState<string | null>(null);
+  const [editing, setEditing] = useState<EditingState | null>(null);
+  const [saving, setSaving] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -346,12 +355,61 @@ const AdminDesignTokens = () => {
     if (value.startsWith("#") || value.startsWith("rgb") || value.startsWith("hsl")) {
       return (
         <span
-          className="inline-block w-5 h-5 rounded border border-border mr-2"
+          className="inline-block w-5 h-5 rounded border border-border mr-2 flex-shrink-0"
           style={{ backgroundColor: value }}
         />
       );
     }
     return null;
+  };
+
+  const startEditing = (token: DesignToken, field: "value" | "description") => {
+    setEditing({
+      id: token.id,
+      field,
+      value: field === "value" ? token.value : (token.description || ""),
+    });
+  };
+
+  const cancelEditing = () => {
+    setEditing(null);
+  };
+
+  const saveEditing = async () => {
+    if (!editing) return;
+    
+    setSaving(true);
+    const updateData = editing.field === "value" 
+      ? { value: editing.value }
+      : { description: editing.value || null };
+
+    const { error } = await supabase
+      .from("design_tokens")
+      .update(updateData)
+      .eq("id", editing.id);
+
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Guardado", description: "Token actualizado" });
+      // Update local state
+      setTokens(tokens.map(t => 
+        t.id === editing.id 
+          ? { ...t, [editing.field]: editing.value || (editing.field === "description" ? null : t[editing.field]) }
+          : t
+      ));
+      setEditing(null);
+    }
+    setSaving(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      saveEditing();
+    } else if (e.key === "Escape") {
+      cancelEditing();
+    }
   };
 
   const renderTokenTable = (category: string) => {
@@ -373,28 +431,104 @@ const AdminDesignTokens = () => {
             <TableHead>Tipo</TableHead>
             <TableHead>Valor</TableHead>
             <TableHead>Descripción</TableHead>
+            <TableHead className="w-[80px]">Acciones</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {categoryTokens.map((token) => (
-            <TableRow key={token.id}>
-              <TableCell className="font-mono text-sm">{token.name}</TableCell>
-              <TableCell>
-                <Badge variant="secondary" className="text-xs">
-                  {token.type}
-                </Badge>
-              </TableCell>
-              <TableCell className="font-mono text-sm">
-                <div className="flex items-center">
-                  {renderColorPreview(token.value)}
-                  <span className="truncate max-w-[200px]">{token.value}</span>
-                </div>
-              </TableCell>
-              <TableCell className="text-muted-foreground text-sm">
-                {token.description || "-"}
-              </TableCell>
-            </TableRow>
-          ))}
+          {categoryTokens.map((token) => {
+            const isEditingValue = editing?.id === token.id && editing?.field === "value";
+            const isEditingDescription = editing?.id === token.id && editing?.field === "description";
+            const isEditingThis = isEditingValue || isEditingDescription;
+
+            return (
+              <TableRow key={token.id}>
+                <TableCell className="font-mono text-sm">{token.name}</TableCell>
+                <TableCell>
+                  <Badge variant="secondary" className="text-xs">
+                    {token.type}
+                  </Badge>
+                </TableCell>
+                <TableCell className="font-mono text-sm">
+                  {isEditingValue ? (
+                    <div className="flex items-center gap-2">
+                      {renderColorPreview(editing.value)}
+                      <Input
+                        value={editing.value}
+                        onChange={(e) => setEditing({ ...editing, value: e.target.value })}
+                        onKeyDown={handleKeyDown}
+                        className="h-8 text-sm font-mono"
+                        autoFocus
+                        disabled={saving}
+                      />
+                    </div>
+                  ) : (
+                    <div 
+                      className="flex items-center cursor-pointer hover:bg-muted/50 rounded px-1 -mx-1 py-0.5 group"
+                      onClick={() => startEditing(token, "value")}
+                    >
+                      {renderColorPreview(token.value)}
+                      <span className="truncate max-w-[200px]">{token.value}</span>
+                      <Pencil className="h-3 w-3 ml-2 opacity-0 group-hover:opacity-50 flex-shrink-0" />
+                    </div>
+                  )}
+                </TableCell>
+                <TableCell className="text-muted-foreground text-sm">
+                  {isEditingDescription ? (
+                    <Input
+                      value={editing.value}
+                      onChange={(e) => setEditing({ ...editing, value: e.target.value })}
+                      onKeyDown={handleKeyDown}
+                      className="h-8 text-sm"
+                      autoFocus
+                      disabled={saving}
+                      placeholder="Descripción..."
+                    />
+                  ) : (
+                    <div 
+                      className="cursor-pointer hover:bg-muted/50 rounded px-1 -mx-1 py-0.5 group flex items-center"
+                      onClick={() => startEditing(token, "description")}
+                    >
+                      <span className="truncate">{token.description || "-"}</span>
+                      <Pencil className="h-3 w-3 ml-2 opacity-0 group-hover:opacity-50 flex-shrink-0" />
+                    </div>
+                  )}
+                </TableCell>
+                <TableCell>
+                  {isEditingThis ? (
+                    <div className="flex items-center gap-1">
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-7 w-7 text-green-500 hover:text-green-600 hover:bg-green-500/10"
+                        onClick={saveEditing}
+                        disabled={saving}
+                      >
+                        <Check className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-7 w-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                        onClick={cancelEditing}
+                        disabled={saving}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="h-7 w-7 opacity-50 hover:opacity-100"
+                      onClick={() => startEditing(token, "value")}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                  )}
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     );
