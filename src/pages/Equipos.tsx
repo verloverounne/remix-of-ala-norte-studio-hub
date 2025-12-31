@@ -176,6 +176,14 @@ const Equipos = () => {
     return grouped;
   }, [filteredEquipment, categories]);
 
+  // Reorder categories so the active one is first
+  const orderedCategories = useMemo(() => {
+    if (!activeCategory) return categories;
+    const active = categories.find(c => c.id === activeCategory);
+    const rest = categories.filter(c => c.id !== activeCategory);
+    return active ? [active, ...rest] : categories;
+  }, [categories, activeCategory]);
+
   // Equipment counts by category
   const equipmentCounts = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -218,7 +226,7 @@ const Equipos = () => {
   const handleCategoryClick = (categoryId: string) => {
     setActiveCategory(categoryId);
     
-    // Collapse all categories and expand only the selected one
+    // Expand selected category and collapse others
     categoryRefs.current.forEach((ref, id) => {
       if (id === categoryId) {
         ref.expand();
@@ -226,11 +234,6 @@ const Equipos = () => {
         ref.collapse();
       }
     });
-    
-    // Scroll to category section
-    setTimeout(() => {
-      categoryRefs.current.get(categoryId)?.scrollIntoView();
-    }, 100);
   };
 
   const clearFilters = () => {
@@ -277,7 +280,7 @@ const Equipos = () => {
               </div>
             ) : (
               <div className="space-y-4 sm:space-y-6">
-                {categories.map((category, index) => (
+                {orderedCategories.map((category, index) => (
                   <CategorySection
                     key={category.id}
                     ref={(ref) => {
