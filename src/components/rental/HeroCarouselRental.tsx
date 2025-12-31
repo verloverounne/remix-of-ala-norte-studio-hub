@@ -81,6 +81,11 @@ export const HeroCarouselRental = ({
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const filterRef = useRef<HTMLDivElement>(null);
 
+  // Scroll to top on mount to ensure hero is visible
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
+
   useEffect(() => {
     const fetchSlides = async () => {
       const { data, error } = await supabase
@@ -184,7 +189,8 @@ export const HeroCarouselRental = ({
   };
 
   const scrollToHero = () => {
-    heroRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Scroll to top of the page to show hero
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleChipClick = (categoryId: string, index: number) => {
