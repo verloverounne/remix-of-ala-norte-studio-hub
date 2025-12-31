@@ -9,6 +9,7 @@ import {
   CarouselNext,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
+import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
 
 interface HeroSlide {
   id: string;
@@ -149,7 +150,7 @@ export const HeroCarouselRental = ({
           <CarouselContent className="-ml-0">
             {displaySlides.map((slide) => (
               <CarouselItem key={slide.id} className="pl-0 basis-full">
-                <div className="relative h-[calc(100vh-60px)] overflow-hidden">
+                <div className="relative h-[50vh] overflow-hidden">
                   {slide.image_url ? (
                     <img
                       src={slide.image_url}
@@ -190,6 +191,9 @@ export const HeroCarouselRental = ({
               <CarouselNext className="right-2 sm:right-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
             </>
           )}
+          
+          {/* Scroll indicator */}
+          <ScrollIndicator className="text-background/80 hover:text-background" />
         </Carousel>
 
         {/* Category chips navigation - integrated in hero */}

@@ -27,14 +27,16 @@ export const QuoteSidebar = ({ items, calculateSubtotal }: QuoteSidebarProps) =>
         </p>
       ) : (
         <div className="space-y-4">
-          {items.map((item) => (
-            <div key={item.id} className="text-sm border-b border-foreground/20 pb-2">
-              <p className="font-heading truncate text-xs sm:text-sm">{item.name}</p>
-              <p className="text-xs text-muted-foreground break-words">
-                {item.quantity}x ${item.pricePerDay.toLocaleString()}/día
-              </p>
-            </div>
-          ))}
+          <div className="flex flex-wrap gap-2">
+            {items.map((item) => (
+              <div key={item.id} className="text-sm border-b border-foreground/20 pb-2 w-full">
+                <p className="font-heading truncate text-xs sm:text-sm">{item.name}</p>
+                <p className="text-xs text-muted-foreground break-words">
+                  {item.quantity}x ${item.pricePerDay.toLocaleString()}/día
+                </p>
+              </div>
+            ))}
+          </div>
           
           <div className="border-t-2 border-foreground pt-4 mt-4">
             <div className="flex justify-between items-baseline mb-2 gap-2">
