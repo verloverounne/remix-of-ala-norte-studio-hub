@@ -188,16 +188,12 @@ export const HeroCarouselRental = ({
     api?.scrollTo(index);
   };
 
-  const scrollToHero = () => {
-    // Scroll to top of the page to show hero
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   const handleChipClick = (categoryId: string, index: number) => {
+    // First scroll to top to show hero
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Then change the slide
     scrollToSlide(index);
     onCategoryChange?.(categoryId);
-    // Scroll back to hero to show the selected category slide
-    scrollToHero();
   };
 
   // Filter subcategories by active category
