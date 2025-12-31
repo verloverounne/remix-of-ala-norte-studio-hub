@@ -61,7 +61,7 @@ const Galeria = () => {
 
   if (loading || !space) {
     return (
-      <div className="min-h-screen pt-14 sm:pt-16 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
@@ -72,16 +72,16 @@ const Galeria = () => {
     : space.images;
 
   return (
-    <div className="min-h-screen pt-14 sm:pt-16">
+    <div className="min-h-screen">
       {/* Hero Section with Carousel */}
-      <section className="relative">
+      <section className="relative h-screen">
         {heroImages.length > 0 ? (
-          <div className="relative">
-            <Carousel className="w-full" opts={{ loop: true }}>
-              <CarouselContent>
+          <div className="relative h-full">
+            <Carousel className="w-full h-full" opts={{ loop: true }}>
+              <CarouselContent className="h-full">
                 {heroImages.map((img, index) => (
-                  <CarouselItem key={index}>
-                    <div className="relative h-[50vh] sm:h-[60vh] lg:h-[70vh] overflow-hidden">
+                  <CarouselItem key={index} className="h-full">
+                    <div className="relative h-screen overflow-hidden">
                       <img
                         src={img}
                         alt={`${space.name} - ${index + 1}`}
