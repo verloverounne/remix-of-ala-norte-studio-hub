@@ -143,7 +143,7 @@ export const HeroCarouselRental = ({
   return (
     <div 
       ref={heroRef}
-      className="border-b-4 border-foreground"
+      className="border-b-0"
     >
       <section className="relative overflow-hidden">
         <Carousel className="w-full" setApi={setApi}>

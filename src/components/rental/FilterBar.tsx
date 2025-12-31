@@ -84,8 +84,8 @@ export const FilterBar = ({
   };
 
   return (
-    <section ref={filterRef} className="border-b-2 sm:border-b-4 border-foreground bg-muted/30">
-      <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-3">
+    <section ref={filterRef} className="border-y-2 sm:border-y-4 border-foreground bg-muted/30">
+      <div className="container mx-auto px-2 sm:px-4 py-1.5 sm:py-2">
         {/* Search bar - always single line */}
         <div className="flex flex-row gap-2 sm:gap-3 mb-2 sm:mb-3">
           <div className="relative flex-1 min-w-0">
