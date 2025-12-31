@@ -85,31 +85,30 @@ export const FilterBar = ({
 
   return (
     <section ref={filterRef} className="border-b-2 sm:border-b-4 border-foreground bg-muted/30">
-      <div className="container mx-auto px-4 py-4 sm:py-6">
-        {/* Search bar */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-3">
+        {/* Search bar - always single line */}
+        <div className="flex flex-row gap-2 sm:gap-3 mb-2 sm:mb-3">
+          <div className="relative flex-1 min-w-0">
+            <Search className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Buscar equipos..."
+              placeholder="Buscar..."
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-10 border-2 border-foreground font-heading uppercase text-sm h-10 sm:h-11"
+              className="pl-7 sm:pl-10 border-2 border-foreground font-heading uppercase text-xs sm:text-sm h-8 sm:h-10"
             />
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex gap-1 sm:gap-2 flex-shrink-0">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="border-2 border-foreground h-10 sm:h-11 px-3 sm:px-4"
+              className="border-2 border-foreground h-8 sm:h-10 px-2 sm:px-3"
             >
-              <Filter className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">Filtros</span>
+              <Filter className="h-3 w-3 sm:h-4 sm:w-4" />
               {selectedSubcategories.length > 0 && (
-                <Badge variant="secondary" className="ml-2">
+                <Badge variant="secondary" className="ml-1 sm:ml-2 text-[10px] h-4 px-1">
                   {selectedSubcategories.length}
                 </Badge>
               )}
@@ -120,10 +119,9 @@ export const FilterBar = ({
                 variant="ghost"
                 size="sm"
                 onClick={onClearFilters}
-                className="h-10 sm:h-11"
+                className="h-8 sm:h-10 px-2"
               >
-                <X className="h-4 w-4 mr-1" />
-                Limpiar
+                <X className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             )}
           </div>
@@ -132,8 +130,8 @@ export const FilterBar = ({
         {/* Expandable subcategory filters */}
         <Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
           <CollapsibleContent>
-            <div className="pt-4 border-t-2 border-foreground/20">
-              <h4 className="font-heading text-sm mb-3 uppercase text-muted-foreground">Subcategorías</h4>
+            <div className="pt-2 sm:pt-3 border-t-2 border-foreground/20">
+              <h4 className="font-heading text-xs sm:text-sm mb-2 uppercase text-muted-foreground">Subcategorías</h4>
               {filteredSubcategories.length === 0 ? (
                 <p className="text-sm text-muted-foreground">No hay subcategorías para esta categoría</p>
               ) : (
