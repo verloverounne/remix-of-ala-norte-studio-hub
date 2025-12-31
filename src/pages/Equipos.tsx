@@ -6,7 +6,6 @@ import { useToast } from "@/hooks/use-toast";
 import { EquipmentModal } from "@/components/EquipmentModal";
 import { HeroCarouselRental } from "@/components/rental/HeroCarouselRental";
 import { CategorySection, CategorySectionRef } from "@/components/rental/CategorySection";
-import { FilterBar } from "@/components/rental/FilterBar";
 import { CartSidebar } from "@/components/rental/CartSidebar";
 
 type EquipmentWithStock = EquipmentWithCategory;
@@ -27,12 +26,12 @@ const Equipos = () => {
   const [selectedEquipment, setSelectedEquipment] = useState<EquipmentWithStock | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [heroHeight, setHeroHeight] = useState(0);
+  const [navBarHeight, setNavBarHeight] = useState(0);
   const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
   const { toast } = useToast();
   
   const categoryRefs = useRef<Map<string, CategorySectionRef>>(new Map());
-  const heroRef = useRef<HTMLDivElement>(null);
+  const navBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchData();
@@ -45,23 +44,22 @@ const Equipos = () => {
     }
   }, [categories, activeCategory]);
 
-  // Calculate hero height for sticky positioning
+  // Calculate nav bar height for sticky positioning
   useEffect(() => {
-    const updateHeroHeight = () => {
-      const heroElement = document.querySelector('[data-hero-carousel]');
-      if (heroElement) {
-        setHeroHeight(heroElement.getBoundingClientRect().height);
+    const updateNavBarHeight = () => {
+      if (navBarRef.current) {
+        setNavBarHeight(navBarRef.current.getBoundingClientRect().height);
       }
     };
 
-    updateHeroHeight();
-    window.addEventListener('resize', updateHeroHeight);
+    updateNavBarHeight();
+    window.addEventListener('resize', updateNavBarHeight);
     
-    // Also update after a small delay to ensure carousel has rendered
-    const timeout = setTimeout(updateHeroHeight, 500);
+    // Also update after a small delay to ensure content has rendered
+    const timeout = setTimeout(updateNavBarHeight, 500);
     
     return () => {
-      window.removeEventListener('resize', updateHeroHeight);
+      window.removeEventListener('resize', updateNavBarHeight);
       clearTimeout(timeout);
     };
   }, [loading]);
@@ -242,58 +240,26 @@ const Equipos = () => {
 
   const hasActiveFilters = searchTerm.length > 0 || selectedSubcategories.length > 0;
 
-  // Calculate filter bar height for sticky positioning
-  const filterBarRef = useRef<HTMLDivElement>(null);
-  const [filterBarHeight, setFilterBarHeight] = useState(0);
-
-  useEffect(() => {
-    const updateFilterBarHeight = () => {
-      if (filterBarRef.current) {
-        setFilterBarHeight(filterBarRef.current.getBoundingClientRect().height);
-      }
-    };
-    updateFilterBarHeight();
-    window.addEventListener('resize', updateFilterBarHeight);
-    return () => window.removeEventListener('resize', updateFilterBarHeight);
-  }, [loading]);
-
-  // Calculate sticky top values - hero starts at top, navbar overlays when visible
-  const heroTop = 0; // Hero starts at very top
-  const filterTop = heroHeight; // Filters below hero
-  const categoryTitleTop = heroHeight + filterBarHeight; // Category titles below filters
-  const cartStickyTop = heroHeight + filterBarHeight + 16; // Cart sticky position
+  // Calculate sticky top for category headers (below nav bar)
+  const categoryTitleTop = navBarHeight;
+  const cartStickyTop = navBarHeight + 16;
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Carousel - Sticky at top, z-30 (below navbar z-50) */}
-      <div 
-        data-hero-carousel 
-        className="sticky top-0 z-30 bg-background"
-      >
-        <HeroCarouselRental 
-          categories={categories}
-          onCategoryChange={handleCategoryClick}
-          activeCategory={activeCategory}
-          equipmentCounts={equipmentCounts}
-        />
-      </div>
-
-      {/* Filter Bar - Sticky z-25, below hero */}
-      <div 
-        ref={filterBarRef}
-        className="sticky z-[25] bg-background"
-        style={{ top: `${heroHeight}px` }}
-      >
-        <FilterBar
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          selectedSubcategories={selectedSubcategories}
-          onSubcategoriesChange={setSelectedSubcategories}
-          onClearFilters={clearFilters}
-          hasActiveFilters={hasActiveFilters}
-          activeCategoryId={activeCategory}
-        />
-      </div>
+      {/* Hero Carousel with integrated sticky nav bar */}
+      <HeroCarouselRental 
+        categories={categories}
+        onCategoryChange={handleCategoryClick}
+        activeCategory={activeCategory}
+        equipmentCounts={equipmentCounts}
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        selectedSubcategories={selectedSubcategories}
+        onSubcategoriesChange={setSelectedSubcategories}
+        onClearFilters={clearFilters}
+        hasActiveFilters={hasActiveFilters}
+        navBarRef={navBarRef}
+      />
 
       <div className="container mx-auto px-4 py-4 sm:py-6">
         {/* Results count */}
