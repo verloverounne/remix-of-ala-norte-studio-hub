@@ -30,6 +30,7 @@ const Cartoni = lazy(() => import("./pages/Cartoni"));
 const MergeEquipment = lazy(() => import("./pages/MergeEquipment"));
 const Galeria = lazy(() => import("./pages/Galeria"));
 const SalaGrabacion = lazy(() => import("./pages/SalaGrabacion"));
+const AdminDesignTokens = lazy(() => import("./pages/AdminDesignTokens"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -75,6 +76,14 @@ const App = () => (
                 element={
                   <ProtectedRoute requireAdmin>
                     <AdminBlog />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/design-tokens" 
+                element={
+                  <ProtectedRoute requireAdmin>
+                    <AdminDesignTokens />
                   </ProtectedRoute>
                 } 
               />
