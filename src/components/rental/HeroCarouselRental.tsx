@@ -18,6 +18,7 @@ import {
   Collapsible,
   CollapsibleContent,
 } from "@/components/ui/collapsible";
+import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
 
 interface HeroSlide {
   id: string;
@@ -74,6 +75,8 @@ export const HeroCarouselRental = ({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
   const heroRef = useRef<HTMLDivElement>(null);
+  // Header visibility sync
+  const { isVisible: isHeaderVisible, isHovering: isHeaderHovering } = useHeaderVisibility();
   
   // Search and filter state
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -231,10 +234,13 @@ export const HeroCarouselRental = ({
 
   return (
     <div ref={heroRef}>
-      {/* Fixed Navigation Bar - at very top */}
+      {/* Fixed Navigation Bar - below header, synced with header visibility */}
       <div 
         ref={navBarRef}
-        className="fixed top-0 left-0 right-0 z-50 bg-background border-b-2 border-foreground"
+        className={cn(
+          "fixed left-0 right-0 z-40 bg-background border-b-2 border-foreground transition-all duration-300",
+          (isHeaderVisible || isHeaderHovering) ? "top-16 sm:top-20" : "top-0"
+        )}
       >
         <div className="container mx-auto px-2 sm:px-4">
           <div className="flex items-center gap-1 sm:gap-2 py-1.5 sm:py-2 h-[40px] sm:h-[52px]">
@@ -379,8 +385,11 @@ export const HeroCarouselRental = ({
         </div>
       </div>
 
-      {/* Spacer for fixed nav */}
-      <div className="h-[40px] sm:h-[52px]" />
+      {/* Spacer for fixed nav - accounts for header + category bar */}
+      <div className={cn(
+        "transition-all duration-300",
+        (isHeaderVisible || isHeaderHovering) ? "h-[96px] sm:h-[132px]" : "h-[40px] sm:h-[52px]"
+      )} />
 
       {/* Carousel slides - scrolls with body */}
       <section className="relative overflow-hidden">
