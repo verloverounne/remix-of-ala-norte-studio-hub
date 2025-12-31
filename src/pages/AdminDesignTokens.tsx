@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Copy, Download, Upload, Palette, Type, Maximize2, Circle, Layers, Grid3X3, MoreHorizontal, ArrowLeft, Pencil, Check, X, Zap, Search, RotateCcw } from "lucide-react";
 import { Link } from "react-router-dom";
 import { applyTokenToCSS } from "@/hooks/useDesignTokensApply";
+import DesignTokensLivePreview from "@/components/admin/DesignTokensLivePreview";
 
 interface DesignToken {
   id: string;
@@ -801,8 +802,11 @@ const AdminDesignTokens = () => {
             </Card>
           </div>
 
-          {/* Sidebar - Import/Export */}
+          {/* Sidebar */}
           <div className="space-y-6">
+            {/* Live Preview */}
+            <DesignTokensLivePreview />
+
             {/* Export Panel */}
             <Card>
               <CardHeader>
