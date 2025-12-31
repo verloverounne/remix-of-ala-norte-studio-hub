@@ -92,10 +92,21 @@ export const HeroCarouselRental = ({
   useEffect(() => {
     if (!api || !activeCategory) return;
     
-    const displayedSlides = slides.length > 0 ? slides : placeholderSlides;
-    const slideIndex = displayedSlides.findIndex(s => s.category_id === activeCategory);
-    if (slideIndex !== -1 && slideIndex !== currentSlide) {
-      api.scrollTo(slideIndex);
+    // Ensure API is fully initialized before using it
+    try {
+      // Check if the carousel engine is ready
+      if (!api.scrollSnapList || api.scrollSnapList().length === 0) {
+        return;
+      }
+      
+      const displayedSlides = slides.length > 0 ? slides : placeholderSlides;
+      const slideIndex = displayedSlides.findIndex(s => s.category_id === activeCategory);
+      if (slideIndex !== -1 && slideIndex !== currentSlide) {
+        api.scrollTo(slideIndex);
+      }
+    } catch (error) {
+      // API not ready yet, will sync on next update
+      console.debug('Carousel API not ready yet');
     }
   }, [activeCategory, api, slides]);
 
