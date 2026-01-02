@@ -805,12 +805,10 @@ const AdminDesignTokens = () => {
           </div>
 
           {/* Sidebar */}
-          <aside className="order-1 lg:order-2 lg:sticky lg:top-6 lg:h-fit lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto space-y-4 lg:space-y-6">
-            {/* Live Preview */}
-            <DesignTokensLivePreview />
+          <aside className="order-1 lg:order-2 lg:sticky lg:top-6 lg:h-fit lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto space-y-4 lg:space-y-6 w-80">
 
             {/* Export Panel */}
-            <Card>
+            <Card className="w-full">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Download className="h-5 w-5" />
@@ -840,7 +838,7 @@ const AdminDesignTokens = () => {
             </Card>
 
             {/* Import Panel */}
-            <Card>
+            <Card className="w-full">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Upload className="h-5 w-5" />
@@ -889,7 +887,7 @@ const AdminDesignTokens = () => {
             <ComponentsDownloadPanel />
 
             {/* Quick Actions */}
-            <Card>
+            <Card className="w-full">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <RotateCcw className="h-5 w-5" />
@@ -909,7 +907,7 @@ const AdminDesignTokens = () => {
             </Card>
 
             {/* Help Panel */}
-            <Card>
+            <Card className="w-full">
               <CardHeader>
                 <CardTitle className="text-lg">Guía de Tipos</CardTitle>
               </CardHeader>
@@ -926,6 +924,9 @@ const AdminDesignTokens = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Live Preview */}
+            <DesignTokensLivePreview />
           </aside>
         </div>
       </div>
