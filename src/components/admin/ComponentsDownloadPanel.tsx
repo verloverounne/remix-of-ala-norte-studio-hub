@@ -516,22 +516,22 @@ ${Array.from(selectedComponents)
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Selection Summary */}
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <Badge variant="outline" className="text-[10px]">
+        <div className="flex items-center gap-1 flex-wrap">
+          <Badge variant="outline" className="text-[10px] whitespace-nowrap">
             {totalSelected} total
           </Badge>
           {totalAtoms > 0 && (
-            <Badge className="text-[10px] bg-green-500/20 text-green-600 border-green-500/30">
+            <Badge className="text-[10px] bg-green-500/20 text-green-600 border-green-500/30 whitespace-nowrap">
               {totalAtoms} átomos
             </Badge>
           )}
           {totalMolecules > 0 && (
-            <Badge className="text-[10px] bg-blue-500/20 text-blue-600 border-blue-500/30">
+            <Badge className="text-[10px] bg-blue-500/20 text-blue-600 border-blue-500/30 whitespace-nowrap">
               {totalMolecules} moléculas
             </Badge>
           )}
           {totalOrganisms > 0 && (
-            <Badge className="text-[10px] bg-purple-500/20 text-purple-600 border-purple-500/30">
+            <Badge className="text-[10px] bg-purple-500/20 text-purple-600 border-purple-500/30 whitespace-nowrap">
               {totalOrganisms} organismos
             </Badge>
           )}
@@ -660,36 +660,37 @@ ${Array.from(selectedComponents)
         </Tabs>
 
         {/* Action Buttons */}
-        <div className="space-y-2">
-          <div className="flex gap-2">
+        <div className="space-y-2 pt-2">
+          <div className="grid grid-cols-2 gap-2">
             <Button
               variant="outline"
               size="sm"
-              className="flex-1 text-xs h-8"
+              className="text-xs h-8 min-w-0"
               onClick={handleCopyPaths}
               disabled={totalSelected === 0}
             >
-              <Copy className="h-3 w-3 mr-1" />
-              Rutas
+              <Copy className="h-3 w-3 mr-1 flex-shrink-0" />
+              <span className="truncate">Rutas</span>
             </Button>
             <Button
               variant="outline"
               size="sm"
-              className="flex-1 text-xs h-8"
+              className="text-xs h-8 min-w-0"
               onClick={handleDownloadManifest}
               disabled={totalSelected === 0}
             >
-              <Download className="h-3 w-3 mr-1" />
-              JSON
+              <Download className="h-3 w-3 mr-1 flex-shrink-0" />
+              <span className="truncate">JSON</span>
             </Button>
           </div>
           <Button
             className="w-full h-8 text-xs"
             onClick={handleDownloadZip}
             disabled={totalSelected === 0 || isDownloading}
+            size="sm"
           >
-            <FolderDown className="h-3 w-3 mr-1" />
-            {isDownloading ? "Generando..." : "Descargar ZIP"}
+            <FolderDown className="h-3 w-3 mr-1 flex-shrink-0" />
+            <span className="truncate">{isDownloading ? "Generando..." : "Descargar ZIP"}</span>
           </Button>
         </div>
       </CardContent>

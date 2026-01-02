@@ -716,32 +716,32 @@ const AdminDesignTokens = () => {
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4 bg-background">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen pt-20 sm:pt-24 pb-8 sm:pb-12 px-3 sm:px-4 bg-background">
+      <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
         {/* Header */}
-        <div className="flex items-start justify-between flex-wrap gap-4">
-          <div>
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+          <div className="min-w-0 flex-1">
             <Link
               to="/admin"
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-4 transition-colors"
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-3 sm:mb-4 transition-colors text-sm"
             >
-              <ArrowLeft className="h-4 w-4" />
-              Volver al Admin
+              <ArrowLeft className="h-4 w-4 flex-shrink-0" />
+              <span>Volver al Admin</span>
             </Link>
-            <h1 className="text-3xl font-heading font-bold text-foreground">
-              Design Tokens de Ala Norte
+            <h1 className="text-2xl sm:text-3xl font-heading font-bold text-foreground break-words">
+              Design Tokens
             </h1>
-            <p className="text-muted-foreground mt-2">
-              Sistema de diseño completo. Gestiona colores, tipografía, espaciado, sombras, layout y componentes.
+            <p className="text-muted-foreground mt-1 sm:mt-2 text-sm sm:text-base">
+              Sistema de diseño completo.
             </p>
           </div>
-          <div className="flex flex-col items-end gap-2">
-            <Badge variant="outline" className="text-xs">
-              {tokens.length} tokens totales
+          <div className="flex flex-wrap items-center gap-2 sm:flex-col sm:items-end">
+            <Badge variant="outline" className="text-xs whitespace-nowrap">
+              {tokens.length} tokens
             </Badge>
-            <Badge className="text-xs bg-green-500/20 text-green-600 border-green-500/30 flex items-center gap-1">
-              <Zap className="h-3 w-3" />
-              Cambios en tiempo real
+            <Badge className="text-xs bg-green-500/20 text-green-600 border-green-500/30 flex items-center gap-1 whitespace-nowrap">
+              <Zap className="h-3 w-3 flex-shrink-0" />
+              Tiempo real
             </Badge>
           </div>
         </div>
@@ -767,13 +767,14 @@ const AdminDesignTokens = () => {
           )}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Responsive Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
           {/* Main Content - Tokens Tables */}
-          <div className="lg:col-span-2 relative z-10">
-            <Card>
-              <CardContent className="pt-6">
+          <div className="lg:col-span-8 order-2 lg:order-1">
+            <Card className="overflow-hidden">
+              <CardContent className="pt-6 overflow-x-auto">
                 <Tabs value={activeCategory} onValueChange={setActiveCategory}>
-                  <TabsList className="flex flex-wrap h-auto gap-1 mb-6">
+                  <TabsList className="flex flex-wrap h-auto gap-1 mb-6 w-full justify-start">
                     {Object.entries(CATEGORY_CONFIG).map(([key, config]) => {
                       const Icon = config.icon;
                       const count = getCategoryCount(key);
@@ -781,11 +782,11 @@ const AdminDesignTokens = () => {
                         <TabsTrigger
                           key={key}
                           value={key}
-                          className="flex items-center gap-2 text-sm"
+                          className="flex items-center gap-1.5 text-xs sm:text-sm px-2 sm:px-3"
                         >
-                          <Icon className="h-4 w-4" />
+                          <Icon className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                           <span className="hidden sm:inline">{config.label}</span>
-                          <Badge variant="secondary" className="text-[10px] h-5 px-1.5">
+                          <Badge variant="secondary" className="text-[9px] sm:text-[10px] h-4 sm:h-5 px-1 sm:px-1.5">
                             {count}
                           </Badge>
                         </TabsTrigger>
@@ -794,7 +795,7 @@ const AdminDesignTokens = () => {
                   </TabsList>
 
                   {Object.keys(CATEGORY_CONFIG).map((category) => (
-                    <TabsContent key={category} value={category}>
+                    <TabsContent key={category} value={category} className="overflow-x-auto">
                       {renderTokenTable(category)}
                     </TabsContent>
                   ))}
@@ -804,7 +805,7 @@ const AdminDesignTokens = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6 relative z-0">
+          <div className="lg:col-span-4 order-1 lg:order-2 space-y-4 lg:space-y-6">
             {/* Live Preview */}
             <DesignTokensLivePreview />
 
@@ -819,15 +820,15 @@ const AdminDesignTokens = () => {
                   Copia o descarga los tokens en formato JSON.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex gap-2">
-                  <Button onClick={handleCopyJson} variant="outline" className="flex-1">
-                    <Copy className="h-4 w-4 mr-2" />
-                    Copiar
+              <CardContent className="space-y-3">
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Button onClick={handleCopyJson} variant="outline" className="flex-1 min-w-0" size="sm">
+                    <Copy className="h-4 w-4 mr-2 flex-shrink-0" />
+                    <span className="truncate">Copiar</span>
                   </Button>
-                  <Button onClick={handleDownloadJson} variant="outline" className="flex-1">
-                    <Download className="h-4 w-4 mr-2" />
-                    Descargar
+                  <Button onClick={handleDownloadJson} variant="outline" className="flex-1 min-w-0" size="sm">
+                    <Download className="h-4 w-4 mr-2 flex-shrink-0" />
+                    <span className="truncate">Descargar</span>
                   </Button>
                 </div>
                 <Textarea
@@ -860,21 +861,23 @@ const AdminDesignTokens = () => {
                   className="font-mono text-xs h-28 resize-none"
                 />
                 {importError && (
-                  <p className="text-destructive text-sm">{importError}</p>
+                  <p className="text-destructive text-sm break-words">{importError}</p>
                 )}
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <Button
                     onClick={handleValidateImport}
                     variant="outline"
-                    className="flex-1"
+                    className="flex-1 min-w-0"
                     disabled={!importJson.trim()}
+                    size="sm"
                   >
                     Validar
                   </Button>
                   <Button
                     onClick={handleImportTokens}
-                    className="flex-1"
+                    className="flex-1 min-w-0"
                     disabled={!importJson.trim()}
+                    size="sm"
                   >
                     Importar
                   </Button>

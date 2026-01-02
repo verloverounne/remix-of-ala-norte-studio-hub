@@ -215,7 +215,33 @@ All colors MUST be HSL.
     100% { transform: translate(0); }
   }
 
-  /* Grid removed per user request */
+  /* Responsive Grid System 12/8/4 */
+  .grid-responsive {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    .grid-responsive {
+      grid-template-columns: repeat(8, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid-responsive {
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  /* Z-Index Layers */
+  .z-base { z-index: 1; }
+  .z-content { z-index: 10; }
+  .z-sticky { z-index: 20; }
+  .z-dropdown { z-index: 50; }
+  .z-modal { z-index: 100; }
+  .z-toast { z-index: 200; }
 
   /* Rich text editor styles */
   .prose {
