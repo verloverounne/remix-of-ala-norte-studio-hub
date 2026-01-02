@@ -768,9 +768,9 @@ const AdminDesignTokens = () => {
         </div>
 
         {/* Responsive Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-4 lg:gap-6">
           {/* Main Content - Tokens Tables */}
-          <div className="lg:col-span-8 order-2 lg:order-1">
+          <div className="order-2 lg:order-1">
             <Card className="overflow-hidden">
               <CardContent className="pt-6 overflow-x-auto">
                 <Tabs value={activeCategory} onValueChange={setActiveCategory}>
@@ -805,7 +805,7 @@ const AdminDesignTokens = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="lg:col-span-4 order-1 lg:order-2 space-y-4 lg:space-y-6">
+          <aside className="order-1 lg:order-2 lg:sticky lg:top-6 lg:h-fit lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto space-y-4 lg:space-y-6">
             {/* Live Preview */}
             <DesignTokensLivePreview />
 
@@ -926,7 +926,7 @@ const AdminDesignTokens = () => {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </aside>
         </div>
       </div>
     </div>
