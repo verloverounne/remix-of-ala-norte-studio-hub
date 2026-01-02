@@ -767,10 +767,10 @@ const AdminDesignTokens = () => {
           )}
         </div>
 
-        {/* Responsive Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:grid-cols-[minmax(0,8fr)_minmax(0,4fr)] gap-4 lg:gap-6">
-          {/* Main Content - Tokens Tables */}
-          <div className="order-2 lg:order-1">
+        {/* Responsive Grid Layout - Two columns with independent scroll */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[calc(100vh-200px)]">
+          {/* Left Column - Tokens Tables */}
+          <div className="overflow-y-auto">
             <Card className="overflow-hidden">
               <CardContent className="pt-6 overflow-x-auto">
                 <Tabs value={activeCategory} onValueChange={setActiveCategory}>
@@ -804,130 +804,10 @@ const AdminDesignTokens = () => {
             </Card>
           </div>
 
-          {/* Sidebar */}
-          <aside className="order-1 lg:order-2 lg:sticky lg:top-6 lg:h-fit lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto space-y-4 lg:space-y-6 w-80">
-
-            {/* Live Preview */}
+          {/* Right Column - Live Preview */}
+          <div className="overflow-y-auto">
             <DesignTokensLivePreview />
-
-            {/* Export Panel */}
-            <Card className="w-full">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Download className="h-5 w-5" />
-                  Exportar Tokens
-                </CardTitle>
-                <CardDescription>
-                  Copia o descarga los tokens en formato JSON.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <Button onClick={handleCopyJson} variant="outline" className="flex-1 min-w-0" size="sm">
-                    <Copy className="h-4 w-4 mr-2 flex-shrink-0" />
-                    <span className="truncate">Copiar</span>
-                  </Button>
-                  <Button onClick={handleDownloadJson} variant="outline" className="flex-1 min-w-0" size="sm">
-                    <Download className="h-4 w-4 mr-2 flex-shrink-0" />
-                    <span className="truncate">Descargar</span>
-                  </Button>
-                </div>
-                <Textarea
-                  readOnly
-                  value={generateExportJson()}
-                  className="font-mono text-xs h-40 resize-none"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Import Panel */}
-            <Card className="w-full">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Upload className="h-5 w-5" />
-                  Importar Tokens
-                </CardTitle>
-                <CardDescription>
-                  Pega un JSON para actualizar o agregar tokens.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Textarea
-                  placeholder='{"color": {"primary": "#DC143C"}, ...}'
-                  value={importJson}
-                  onChange={(e) => {
-                    setImportJson(e.target.value);
-                    setImportError(null);
-                  }}
-                  className="font-mono text-xs h-28 resize-none"
-                />
-                {importError && (
-                  <p className="text-destructive text-sm break-words">{importError}</p>
-                )}
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <Button
-                    onClick={handleValidateImport}
-                    variant="outline"
-                    className="flex-1 min-w-0"
-                    disabled={!importJson.trim()}
-                    size="sm"
-                  >
-                    Validar
-                  </Button>
-                  <Button
-                    onClick={handleImportTokens}
-                    className="flex-1 min-w-0"
-                    disabled={!importJson.trim()}
-                    size="sm"
-                  >
-                    Importar
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Atomic Design Components Download */}
-            <ComponentsDownloadPanel />
-
-            {/* Quick Actions */}
-            <Card className="w-full">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <RotateCcw className="h-5 w-5" />
-                  Acciones
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={fetchTokens}
-                >
-                  <RotateCcw className="h-4 w-4 mr-2" />
-                  Recargar tokens
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Help Panel */}
-            <Card className="w-full">
-              <CardHeader>
-                <CardTitle className="text-lg">Guía de Tipos</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  {Object.entries(TYPE_BADGES).slice(0, 10).map(([type, config]) => (
-                    <div key={type} className="flex items-center gap-1">
-                      <Badge variant="outline" className={`text-[9px] ${config.className}`}>
-                        {config.label}
-                      </Badge>
-                      <span className="text-muted-foreground truncate">{type}</span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </aside>
+          </div>
         </div>
       </div>
     </div>
