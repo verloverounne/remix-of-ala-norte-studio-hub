@@ -768,7 +768,7 @@ const AdminDesignTokens = () => {
         </div>
 
         {/* Responsive Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:grid-cols-[minmax(0,8fr)_minmax(0,4fr)] gap-4 lg:gap-6">
           {/* Main Content - Tokens Tables */}
           <div className="order-2 lg:order-1">
             <Card className="overflow-hidden">
