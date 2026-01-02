@@ -767,7 +767,7 @@ const AdminDesignTokens = () => {
           )}
         </div>
 
-        {/* Responsive Grid Layout - Two columns with independent scroll */}
+        {/* Tokens side-by-side: grid-cols-2 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[calc(100vh-200px)]">
           {/* Left Column - Tokens Tables */}
           <div className="overflow-y-auto">
@@ -809,6 +809,70 @@ const AdminDesignTokens = () => {
             <DesignTokensLivePreview />
           </div>
         </div>
+
+        {/* Export/Import: grid-cols-2 */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Export Panel */}
+          <Card className="w-full">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Download className="h-4 w-4" />
+                Export Tokens
+              </CardTitle>
+              <CardDescription className="text-xs">
+                Descarga o copia los tokens en JSON
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="flex flex-wrap gap-2">
+                <Button size="sm" variant="outline" onClick={handleCopyJson} className="flex-1 min-w-[100px]">
+                  <Copy className="h-3 w-3 mr-1" />
+                  Copiar JSON
+                </Button>
+                <Button size="sm" onClick={handleDownloadJson} className="flex-1 min-w-[100px]">
+                  <Download className="h-3 w-3 mr-1" />
+                  Descargar
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Import Panel */}
+          <Card className="w-full">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Upload className="h-4 w-4" />
+                Import Tokens
+              </CardTitle>
+              <CardDescription className="text-xs">
+                Importa tokens desde JSON
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <Textarea
+                placeholder='{"color": {"primary": "..."}, ...}'
+                value={importJson}
+                onChange={(e) => setImportJson(e.target.value)}
+                className="h-20 text-xs font-mono"
+              />
+              {importError && (
+                <p className="text-xs text-destructive">{importError}</p>
+              )}
+              <div className="flex flex-wrap gap-2">
+                <Button size="sm" variant="outline" onClick={handleValidateImport} className="flex-1 min-w-[80px]">
+                  Validar
+                </Button>
+                <Button size="sm" onClick={handleImportTokens} className="flex-1 min-w-[80px]">
+                  <Upload className="h-3 w-3 mr-1" />
+                  Importar
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Componentes: grid-cols-2 - Left: checkboxes, Right: preview */}
+        <ComponentsDownloadPanel />
       </div>
     </div>
   );

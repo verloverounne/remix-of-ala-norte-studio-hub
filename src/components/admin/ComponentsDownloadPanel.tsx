@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Package, FileCode, FolderDown, Download, Copy, ChevronDown, ChevronUp, 
@@ -303,8 +303,6 @@ const ComponentsDownloadPanel = () => {
   const [selectedComponents, setSelectedComponents] = useState<Set<string>>(new Set());
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(["atoms", "molecules", "organisms"]));
   const [isDownloading, setIsDownloading] = useState(false);
-  const [activeTab, setActiveTab] = useState<"select" | "preview">("select");
-  const [previewComponent, setPreviewComponent] = useState<string | null>(null);
   const { toast } = useToast();
 
   const toggleSection = (section: string) => {
@@ -347,48 +345,33 @@ const ComponentsDownloadPanel = () => {
 
     const paths = Array.from(selectedComponents).join("\n");
     await navigator.clipboard.writeText(paths);
-    toast({ title: "Copiado", description: `${selectedComponents.size} rutas copiadas al portapapeles` });
+    toast({ title: "Copiado", description: `${selectedComponents.size} rutas copiadas` });
   };
 
-  const handleDownloadManifest = () => {
+  const handleDownloadManifest = async () => {
     if (selectedComponents.size === 0) {
       toast({ title: "Sin selección", description: "Selecciona al menos un componente", variant: "destructive" });
       return;
     }
 
+    const allComponents = [
+      ...ATOMIC_COMPONENTS.atoms.components.map((c) => ({ ...c, category: "atoms" })),
+      ...ATOMIC_COMPONENTS.molecules.components.map((c) => ({ ...c, category: "molecules" })),
+      ...ATOMIC_COMPONENTS.organisms.components.map((c) => ({ ...c, category: "organisms" })),
+    ];
+
     const manifest = {
-      name: "ala-norte-atomic-components",
+      name: "ala-norte-components",
       version: "1.0.0",
-      exportDate: new Date().toISOString(),
-      atomicDesign: {
-        atoms: ATOMIC_COMPONENTS.atoms.components
-          .filter((c) => selectedComponents.has(c.path))
-          .map((c) => ({ name: c.name, path: c.path, description: c.description })),
-        molecules: ATOMIC_COMPONENTS.molecules.components
-          .filter((c) => selectedComponents.has(c.path))
-          .map((c) => ({ name: c.name, path: c.path, description: c.description })),
-        organisms: ATOMIC_COMPONENTS.organisms.components
-          .filter((c) => selectedComponents.has(c.path))
-          .map((c) => ({ name: c.name, path: c.path, description: c.description })),
-      },
-      dependencies: [
-        "@radix-ui/react-*",
-        "lucide-react",
-        "class-variance-authority",
-        "clsx",
-        "tailwind-merge",
-        "react-router-dom",
-        "@supabase/supabase-js",
-        "embla-carousel-react",
-        "react-day-picker",
-        "date-fns",
-      ],
-      instructions: {
-        step1: "Instala las dependencias listadas",
-        step2: "Copia los archivos a tu proyecto en las rutas indicadas",
-        step3: "Ajusta los imports según la estructura de tu proyecto",
-        step4: "Importa los design tokens del sistema de diseño",
-      },
+      generatedAt: new Date().toISOString(),
+      components: allComponents
+        .filter((c) => selectedComponents.has(c.path))
+        .map((c) => ({
+          name: c.name,
+          path: c.path,
+          description: c.description,
+          category: c.category,
+        })),
     };
 
     const blob = new Blob([JSON.stringify(manifest, null, 2)], { type: "application/json" });
@@ -401,7 +384,7 @@ const ComponentsDownloadPanel = () => {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
-    toast({ title: "Descargado", description: "Manifest de componentes descargado" });
+    toast({ title: "Descargado", description: "Manifest JSON descargado" });
   };
 
   const handleDownloadZip = async () => {
@@ -415,37 +398,36 @@ const ComponentsDownloadPanel = () => {
     try {
       const zip = new JSZip();
       const componentsFolder = zip.folder("components");
-      
+
       const allComponents = [
-        ...ATOMIC_COMPONENTS.atoms.components,
-        ...ATOMIC_COMPONENTS.molecules.components, 
-        ...ATOMIC_COMPONENTS.organisms.components
+        ...ATOMIC_COMPONENTS.atoms.components.map((c) => ({ ...c, category: "atoms" })),
+        ...ATOMIC_COMPONENTS.molecules.components.map((c) => ({ ...c, category: "molecules" })),
+        ...ATOMIC_COMPONENTS.organisms.components.map((c) => ({ ...c, category: "organisms" })),
       ];
 
       const manifest = {
-        name: "ala-norte-atomic-components",
+        name: "ala-norte-components",
         version: "1.0.0",
-        exportDate: new Date().toISOString(),
-        components: Array.from(selectedComponents).map((path) => {
-          const component = allComponents.find((c) => c.path === path);
-          return { path, name: component?.name, description: component?.description };
-        }),
+        generatedAt: new Date().toISOString(),
+        components: allComponents
+          .filter((c) => selectedComponents.has(c.path))
+          .map((c) => ({
+            name: c.name,
+            path: c.path,
+            description: c.description,
+            category: c.category,
+          })),
       };
+
       zip.file("manifest.json", JSON.stringify(manifest, null, 2));
 
-      const readme = `# Ala Norte - Atomic Design Components
+      const readme = `# Ala Norte Components
 
-## Exported: ${new Date().toLocaleDateString()}
+## Exported Components (${selectedComponents.size})
 
-### Components Included:
-${Array.from(selectedComponents)
-  .map((path) => {
-    const component = allComponents.find((c) => c.path === path);
-    return `- **${component?.name}**: ${component?.description}`;
-  })
-  .join("\n")}
+${manifest.components.map((c) => `- **${c.name}** (${c.category}): ${c.description}`).join("\n")}
 
-### Installation:
+## Installation
 
 1. Copy the components to your project
 2. Install required dependencies:
@@ -537,127 +519,112 @@ ${Array.from(selectedComponents)
           )}
         </div>
 
-        {/* Tabs for Select / Preview */}
-        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "select" | "preview")}>
-          <TabsList className="grid w-full grid-cols-2 h-8">
-            <TabsTrigger value="select" className="text-xs gap-1">
-              <FileCode className="h-3 w-3" />
-              Seleccionar
-            </TabsTrigger>
-            <TabsTrigger value="preview" className="text-xs gap-1">
-              <Eye className="h-3 w-3" />
-              Preview
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Select Tab */}
-          <TabsContent value="select" className="mt-3">
-            <ScrollArea className="h-72 border rounded-md">
-              <div className="p-2 space-y-3">
-                {(Object.entries(ATOMIC_COMPONENTS) as [ComponentKey, typeof ATOMIC_COMPONENTS.atoms][]).map(
-                  ([key, section]) => {
-                    const Icon = section.icon;
-                    return (
-                      <div key={key} className="space-y-1.5">
-                        {/* Section Header */}
-                        <div className="flex items-center justify-between">
-                          <button
-                            onClick={() => toggleSection(key)}
-                            className="flex items-center gap-1.5 text-xs font-medium hover:text-primary transition-colors"
+        {/* Two columns: Checkboxes left, Preview right */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {/* Left: Component Checkboxes */}
+          <ScrollArea className="h-80 border rounded-md">
+            <div className="p-2 space-y-3">
+              {(Object.entries(ATOMIC_COMPONENTS) as [ComponentKey, typeof ATOMIC_COMPONENTS.atoms][]).map(
+                ([key, section]) => {
+                  const Icon = section.icon;
+                  return (
+                    <div key={key} className="space-y-1.5">
+                      {/* Section Header */}
+                      <div className="flex items-center justify-between">
+                        <button
+                          onClick={() => toggleSection(key)}
+                          className="flex items-center gap-1.5 text-xs font-medium hover:text-primary transition-colors"
+                        >
+                          {expandedSections.has(key) ? (
+                            <ChevronUp className="h-3 w-3" />
+                          ) : (
+                            <ChevronDown className="h-3 w-3" />
+                          )}
+                          <Icon className="h-3 w-3" />
+                          {section.label}
+                          <Badge variant="secondary" className="text-[9px] h-4 px-1">
+                            {section.components.length}
+                          </Badge>
+                        </button>
+                        <div className="flex gap-0.5">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-5 text-[10px] px-1.5"
+                            onClick={() => selectAll(key)}
                           >
-                            {expandedSections.has(key) ? (
-                              <ChevronUp className="h-3 w-3" />
-                            ) : (
-                              <ChevronDown className="h-3 w-3" />
-                            )}
-                            <Icon className="h-3 w-3" />
-                            {section.label}
-                            <Badge variant="secondary" className="text-[9px] h-4 px-1">
-                              {section.components.length}
-                            </Badge>
-                          </button>
-                          <div className="flex gap-0.5">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-5 text-[10px] px-1.5"
-                              onClick={() => selectAll(key)}
-                            >
-                              <Plus className="h-3 w-3" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-5 text-[10px] px-1.5"
-                              onClick={() => deselectAll(key)}
-                            >
-                              <Minus className="h-3 w-3" />
-                            </Button>
-                          </div>
+                            <Plus className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-5 text-[10px] px-1.5"
+                            onClick={() => deselectAll(key)}
+                          >
+                            <Minus className="h-3 w-3" />
+                          </Button>
                         </div>
+                      </div>
 
-                        {/* Components List */}
-                        {expandedSections.has(key) && (
-                          <div className="pl-4 space-y-0.5">
-                            {section.components.map((component) => (
-                              <label
-                                key={component.path}
-                                className="flex items-center gap-1.5 p-1 rounded hover:bg-muted/50 cursor-pointer transition-colors group"
-                              >
-                                <Checkbox
-                                  checked={selectedComponents.has(component.path)}
-                                  onCheckedChange={() => toggleComponent(component.path)}
-                                  className="h-3 w-3"
-                                />
-                                <span className="text-xs font-medium flex-1 truncate">
-                                  {component.name}
-                                </span>
-                                {component.hasPreview && (
-                                  <Eye className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                                )}
-                              </label>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  }
-                )}
-              </div>
-            </ScrollArea>
-          </TabsContent>
-
-          {/* Preview Tab */}
-          <TabsContent value="preview" className="mt-3">
-            <ScrollArea className="h-72 border rounded-md">
-              <div className="p-3 space-y-4">
-                {getSelectedComponentsForPreview().length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Eye className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                    <p className="text-xs">Selecciona componentes con preview disponible</p>
-                  </div>
-                ) : (
-                  getSelectedComponentsForPreview().map((component) => (
-                    <div key={component.path} className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <Badge className={`text-[9px] ${ATOMIC_COMPONENTS[component.category as ComponentKey].color}`}>
-                          {component.category === "atoms" ? "Átomo" : component.category === "molecules" ? "Molécula" : "Organismo"}
-                        </Badge>
-                        <span className="text-xs font-medium">{component.name}</span>
-                      </div>
-                      <div className="p-3 bg-muted/30 rounded-md border">
-                        {ComponentPreviews[component.name] || (
-                          <p className="text-xs text-muted-foreground italic">Preview no disponible</p>
-                        )}
-                      </div>
-                      <Separator className="mt-3" />
+                      {/* Components List */}
+                      {expandedSections.has(key) && (
+                        <div className="pl-4 space-y-0.5">
+                          {section.components.map((component) => (
+                            <label
+                              key={component.path}
+                              className="flex items-center gap-1.5 p-1 rounded hover:bg-muted/50 cursor-pointer transition-colors group"
+                            >
+                              <Checkbox
+                                checked={selectedComponents.has(component.path)}
+                                onCheckedChange={() => toggleComponent(component.path)}
+                                className="h-3 w-3"
+                              />
+                              <span className="text-xs font-medium flex-1 truncate">
+                                {component.name}
+                              </span>
+                              {component.hasPreview && (
+                                <Eye className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                              )}
+                            </label>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  ))
-                )}
-              </div>
-            </ScrollArea>
-          </TabsContent>
-        </Tabs>
+                  );
+                }
+              )}
+            </div>
+          </ScrollArea>
+
+          {/* Right: Live Preview */}
+          <ScrollArea className="h-80 border rounded-md">
+            <div className="p-3 space-y-4">
+              {getSelectedComponentsForPreview().length === 0 ? (
+                <div className="text-center py-8 text-muted-foreground">
+                  <Eye className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                  <p className="text-xs">Selecciona componentes con preview disponible</p>
+                </div>
+              ) : (
+                getSelectedComponentsForPreview().map((component) => (
+                  <div key={component.path} className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Badge className={`text-[9px] ${ATOMIC_COMPONENTS[component.category as ComponentKey].color}`}>
+                        {component.category === "atoms" ? "Átomo" : component.category === "molecules" ? "Molécula" : "Organismo"}
+                      </Badge>
+                      <span className="text-xs font-medium">{component.name}</span>
+                    </div>
+                    <div className="p-3 bg-muted/30 rounded-md border">
+                      {ComponentPreviews[component.name] || (
+                        <p className="text-xs text-muted-foreground italic">Preview no disponible</p>
+                      )}
+                    </div>
+                    <Separator className="mt-3" />
+                  </div>
+                ))
+              )}
+            </div>
+          </ScrollArea>
+        </div>
 
         {/* Action Buttons */}
         <div className="space-y-2 pt-2">
