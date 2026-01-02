@@ -8,7 +8,7 @@ import { Eye, ShoppingCart, Search, Star, Heart, Bell, Check, AlertCircle, Info 
 
 const DesignTokensLivePreview = () => {
   return (
-    <Card className="sticky top-24">
+    <Card>
       <CardHeader className="pb-4">
         <CardTitle className="text-lg flex items-center gap-2">
           <Eye className="h-5 w-5" />
