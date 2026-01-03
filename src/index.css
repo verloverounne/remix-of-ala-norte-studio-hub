@@ -9,10 +9,10 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* BRUTALISMO 2026 - Modo Claro */
-    --background: 0 0% 98%; /* #FAFAFA Blanco brutal */
-    --foreground: 0 0% 8%; /* #141414 Negro */
+    --background: 0 0% 9.0196%; /* #FAFAFA Blanco brutal */
+    --foreground: 210 40% 96.0784%; /* #141414 Negro */
 
-    --card: 217 19.1176% 26.6667%;
+    --card: 0 0% 100%;
     --card-foreground: 0 0% 8%;
 
     --popover: 0 0% 100%;
@@ -40,7 +40,7 @@ All colors MUST be HSL.
     --destructive: 348 83% 47%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 215 27.907% 16.8627%; /* Bordes negros duros */
+    --border: 0 0% 8%; /* Bordes negros duros */
     --input: 0 0% 8%;
     --ring: 348 83% 47%;
 
@@ -76,6 +76,10 @@ All colors MUST be HSL.
     /* Transiciones Brutales - Instantáneas o mecánicas */
     --transition-brutal: all 0.1s linear;
     --transition-none: none;
+    --shadow-sm: 0px 1px 13.5px -1px hsla(240, 4%, 46%, 0.11);
+    --shadow: 0px 1px 27px -1px hsla(240, 4%, 46%, 0.11);
+    --shadow-md: 0px 1px 40.5px -1px hsla(240, 4%, 46%, 0.11);
+    --shadow-lg: 0px 1px 67.5px -1px hsla(240, 4%, 46%, 0.11);
   }
 
   .dark {
@@ -126,6 +130,10 @@ All colors MUST be HSL.
     --border-gradient-silver: linear-gradient(135deg, #4b5563, #6b7280);
     --border-gradient-silver-vertical: linear-gradient(180deg, #4b5563, #6b7280);
     --radius: 0rem;
+    --shadow-sm: 0px 1px 13.5px -1px hsla(240, 4%, 46%, 0.11);
+    --shadow: 0px 1px 27px -1px hsla(240, 4%, 46%, 0.11);
+    --shadow-md: 0px 1px 40.5px -1px hsla(240, 4%, 46%, 0.11);
+    --shadow-lg: 0px 1px 67.5px -1px hsla(240, 4%, 46%, 0.11);
   }
 }
 
