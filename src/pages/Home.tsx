@@ -15,9 +15,12 @@ import { InstitutionalSlider } from "@/components/InstitutionalSlider";
 const spaces360 = [
   {
     id: 1,
-    title: "RECEPCIÓN DEL RENTAL",
-    subtitle: "En Ala norte cada rodaje tiene su propia historia",
-    cta: null,
+    title: "SOMOS MAS QUE UN RENTAL",
+    subtitle: "En Ala Norte cada rodaje tiene su propia historia.",
+    cta: {
+      label: "VER EQUIPOS",
+      link: "/equipos",
+    },
   },
   {
     id: 2,
