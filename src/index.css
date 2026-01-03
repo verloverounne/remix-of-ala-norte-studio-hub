@@ -44,7 +44,7 @@ All colors MUST be HSL.
     --input: 0 0% 8%;
     --ring: 348 83% 47%;
 
-    --radius: 0rem; /* Sin border-radius: BRUTAL */
+    --radius: 0.875rem; /* Sin border-radius: BRUTAL */
     
     /* Border widths - editables desde tokens */
     --border-width-none: 0px;
@@ -125,6 +125,7 @@ All colors MUST be HSL.
     /* Degradado Plateado Sutil para Bordes - Modo Oscuro */
     --border-gradient-silver: linear-gradient(135deg, #4b5563, #6b7280);
     --border-gradient-silver-vertical: linear-gradient(180deg, #4b5563, #6b7280);
+    --radius: 0.875rem;
   }
 }
 
