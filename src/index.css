@@ -164,7 +164,7 @@ All colors MUST be HSL.
   }
 
   .border-brutal {
-    @apply border-2 border-foreground;
+    @apply border border-foreground;
   }
 
   .transition-brutal {
