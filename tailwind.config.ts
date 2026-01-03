@@ -165,7 +165,7 @@ export default {
   					opacity: '0.8'
   				}
   			},
-  			'shimmer': {
+  			shimmer: {
   				'100%': {
   					transform: 'translateX(100%)'
   				}
@@ -178,7 +178,7 @@ export default {
   			'fade-in-up': 'fade-in-up 0.6s ease-out',
   			'slide-in': 'slide-in 0.4s ease-out',
   			'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
-  			'shimmer': 'shimmer 1.5s infinite'
+  			shimmer: 'shimmer 1.5s infinite'
   		}
   	}
   },
