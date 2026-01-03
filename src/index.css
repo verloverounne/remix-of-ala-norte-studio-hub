@@ -69,6 +69,10 @@ All colors MUST be HSL.
     --gradient-primary: linear-gradient(135deg, hsl(348 83% 47%), hsl(343 100% 33%));
     --gradient-hero: linear-gradient(135deg, hsl(0 0% 8% / 0.95), hsl(348 83% 47% / 0.85));
     
+    /* Degradado Plateado Sutil para Bordes */
+    --border-gradient-silver: linear-gradient(135deg, #e5e7eb, #9ca3af);
+    --border-gradient-silver-vertical: linear-gradient(180deg, #e5e7eb, #9ca3af);
+    
     /* Transiciones Brutales - Instantáneas o mecánicas */
     --transition-brutal: all 0.1s linear;
     --transition-none: none;
@@ -117,6 +121,10 @@ All colors MUST be HSL.
     --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 98%);
     --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 98%);
     --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
+    
+    /* Degradado Plateado Sutil para Bordes - Modo Oscuro */
+    --border-gradient-silver: linear-gradient(135deg, #4b5563, #6b7280);
+    --border-gradient-silver-vertical: linear-gradient(180deg, #4b5563, #6b7280);
   }
 }
 
@@ -173,6 +181,19 @@ All colors MUST be HSL.
   .border-brutal {
     border-width: var(--border-width-brutal, 1px);
     @apply border-foreground;
+  }
+
+  /* Borde Degradado Plateado Sutil */
+  .border-silver-gradient {
+    border: 1px solid transparent;
+    background: 
+      linear-gradient(hsl(var(--background)), hsl(var(--background))) padding-box,
+      var(--border-gradient-silver) border-box;
+  }
+
+  /* Separador con Degradado Plateado */
+  .separator-silver-gradient {
+    background-image: var(--border-gradient-silver);
   }
 
   .transition-brutal {
