@@ -14,9 +14,9 @@ import {
 import { InstitutionalSlider } from "@/components/InstitutionalSlider";
 
 const spaces360 = [
-  { id: 1, title: "RECEPCIÓN DEL RENTAL", subtitle: "Ala Norte" },
-  { id: 2, title: "GALERÍA DE FILMACIÓN", subtitle: "150 m²" },
-  { id: 3, title: "SALA DE SONIDO", subtitle: "ProTools Ultimate" },
+  { id: 1, title: "RECEPCIÓN DEL RENTAL", subtitle: "Ala Norte", cta: null },
+  { id: 2, title: "GALERÍA DE FILMACIÓN", subtitle: "150 m²", cta: { label: "VER GALERÍA", link: "/galeria" } },
+  { id: 3, title: "SALA DE SONIDO", subtitle: "ProTools Ultimate", cta: { label: "VER SALA", link: "/sala-grabacion" } },
 ];
 
 const Home = () => {
@@ -104,9 +104,11 @@ const Home = () => {
                       </p>
                     </div>
                     <div className="mt-4 sm:mt-6 lg:mt-8 flex flex-wrap gap-2 sm:gap-4 justify-center">
-                      <Button asChild variant="hero" size="sm" className="flex-1 sm:flex-none sm:text-base">
-                        <Link to="/espacios">VER ESPACIOS</Link>
-                      </Button>
+                      {space.cta && (
+                        <Button asChild variant="hero" size="sm" className="flex-1 sm:flex-none sm:text-base">
+                          <Link to={space.cta.link}>{space.cta.label}</Link>
+                        </Button>
+                      )}
                       <Button asChild variant="secondary" size="sm" className="flex-1 sm:flex-none sm:text-base">
                         <Link to="/equipos">
                           VER RENTAL <ArrowRight className="ml-2 h-4 w-4" />
