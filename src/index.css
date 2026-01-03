@@ -12,33 +12,33 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* BRUTALISMO 2026 - Modo Claro */
-    --background: 0 0% 96.0784%; /* #FAFAFA Blanco brutal */
+    --background: 0 0% 98%; /* #FAFAFA Blanco brutal */
     --foreground: 0 0% 8%; /* #141414 Negro */
 
-    --card: 0 0% 89.8039%;
-    --card-foreground: 0 0% 14.902%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
 
-    --popover: 0 0% 63.9216%;
-    --popover-foreground: 0 0% 14.902%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
 
     /* Primario - Rojo Brutal */
-    --primary: 0 70% 35.2941%; /* #DC143C Rojo Ala Norte */
-    --primary-foreground: 240 5.8824% 90%;
+    --primary: 348 83% 47%; /* #DC143C Rojo Ala Norte */
+    --primary-foreground: 0 0% 98%;
     --primary-hover: 343 100% 33%; /* #A7002F */
     --primary-light: 355 82% 60%; /* #EF4350 */
     --primary-dark: 343 100% 22%; /* #6E0022 */
 
     /* Secundario - Gris Brutal */
     --secondary: 0 0% 20%; /* #333333 Gris oscuro */
-    --secondary-foreground: 0 0% 96.0784%;
+    --secondary-foreground: 0 0% 98%;
     --secondary-hover: 0 0% 15%;
 
     /* Neutrales Brutales */
     --muted: 0 0% 90%; /* #E5E5E5 */
     --muted-foreground: 0 0% 30%; /* #4D4D4D */
 
-    --accent: 0 72.2222% 50.5882%; /* Rojo para acentos */
-    --accent-foreground: 0 0% 98.0392%;
+    --accent: 356 91% 59%; /* Rojo para acentos */
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 348 83% 47%;
     --destructive-foreground: 0 0% 98%;
