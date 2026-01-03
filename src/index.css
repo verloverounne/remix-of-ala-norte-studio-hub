@@ -9,10 +9,10 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* BRUTALISMO 2026 - Modo Claro */
-    --background: 0 0% 9.0196%; /* #FAFAFA Blanco brutal */
-    --foreground: 210 40% 96.0784%; /* #141414 Negro */
+    --background: 0 0% 98%; /* #FAFAFA Blanco brutal */
+    --foreground: 0 0% 8%; /* #141414 Negro */
 
-    --card: 0 0% 100%;
+    --card: 0 0% 25.098%;
     --card-foreground: 0 0% 8%;
 
     --popover: 0 0% 100%;
