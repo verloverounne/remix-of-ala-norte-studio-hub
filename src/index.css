@@ -76,10 +76,10 @@ All colors MUST be HSL.
     /* Transiciones Brutales - Instantáneas o mecánicas */
     --transition-brutal: all 0.1s linear;
     --transition-none: none;
-    --shadow-sm: 0px 1px 1.5px 4px hsla(0, 0%, 0%, 0.1);
-    --shadow: 0px 1px 3px 4px hsla(0, 0%, 0%, 0.1);
-    --shadow-md: 0px 1px 4.5px 4px hsla(0, 0%, 0%, 0.1);
-    --shadow-lg: 0px 1px 7.5px 4px hsla(0, 0%, 0%, 0.1);
+    --shadow-sm: 0px 6px 1.5px 0px hsla(0, 0%, 0%, 0.1);
+    --shadow: 0px 6px 3px 0px hsla(0, 0%, 0%, 0.1);
+    --shadow-md: 0px 6px 4.5px 0px hsla(0, 0%, 0%, 0.1);
+    --shadow-lg: 0px 6px 7.5px 0px hsla(0, 0%, 0%, 0.1);
   }
 
   .dark {
@@ -130,10 +130,10 @@ All colors MUST be HSL.
     --border-gradient-silver: linear-gradient(135deg, #4b5563, #6b7280);
     --border-gradient-silver-vertical: linear-gradient(180deg, #4b5563, #6b7280);
     --radius: 0rem;
-    --shadow-sm: 0px 1px 1.5px 4px hsla(0, 0%, 0%, 0.1);
-    --shadow: 0px 1px 3px 4px hsla(0, 0%, 0%, 0.1);
-    --shadow-md: 0px 1px 4.5px 4px hsla(0, 0%, 0%, 0.1);
-    --shadow-lg: 0px 1px 7.5px 4px hsla(0, 0%, 0%, 0.1);
+    --shadow-sm: 0px 6px 1.5px 0px hsla(0, 0%, 0%, 0.1);
+    --shadow: 0px 6px 3px 0px hsla(0, 0%, 0%, 0.1);
+    --shadow-md: 0px 6px 4.5px 0px hsla(0, 0%, 0%, 0.1);
+    --shadow-lg: 0px 6px 7.5px 0px hsla(0, 0%, 0%, 0.1);
   }
 }
 
