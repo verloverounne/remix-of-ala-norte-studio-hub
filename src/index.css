@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,7 +15,7 @@ All colors MUST be HSL.
     --background: 0 0% 98%; /* #FAFAFA Blanco brutal */
     --foreground: 0 0% 8%; /* #141414 Negro */
 
-    --card: 240 5.0279% 64.902%;
+    --card: 0 0% 100%;
     --card-foreground: 0 0% 8%;
 
     --popover: 0 0% 100%;
@@ -44,8 +47,8 @@ All colors MUST be HSL.
     --input: 0 0% 8%;
     --ring: 348 83% 47%;
 
-    --radius: 0rem; /* Sin border-radius: BRUTAL */
-    
+    --radius: 0.125rem; /* Sin border-radius: BRUTAL */
+
     /* Border widths - editables desde tokens */
     --border-width-none: 0px;
     --border-width-default: 1px;
@@ -64,22 +67,25 @@ All colors MUST be HSL.
     --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 8%);
     --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 8%);
     --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
-    
+
     /* Gradientes Brutales */
     --gradient-primary: linear-gradient(135deg, hsl(348 83% 47%), hsl(343 100% 33%));
     --gradient-hero: linear-gradient(135deg, hsl(0 0% 8% / 0.95), hsl(348 83% 47% / 0.85));
-    
+
     /* Degradado Plateado Sutil para Bordes */
     --border-gradient-silver: linear-gradient(135deg, #e5e7eb, #9ca3af);
     --border-gradient-silver-vertical: linear-gradient(180deg, #e5e7eb, #9ca3af);
-    
+
     /* Transiciones Brutales - Instantáneas o mecánicas */
     --transition-brutal: all 0.1s linear;
     --transition-none: none;
-    --shadow-sm: 0px 6px 1.5px 0px hsla(0, 0%, 0%, 0.1);
-    --shadow: 0px 6px 3px 0px hsla(0, 0%, 0%, 0.1);
-    --shadow-md: 0px 6px 4.5px 0px hsla(0, 0%, 0%, 0.1);
-    --shadow-lg: 0px 6px 7.5px 0px hsla(0, 0%, 0%, 0.1);
+    --shadow-sm: 3px 5px 7.5px -1px hsl(240, 4%, 46%);
+    --shadow: 3px 5px 15px -1px hsl(240, 4%, 46%);
+    --shadow-md: 3px 5px 22.5px -1px hsl(240, 4%, 46%);
+    --shadow-lg: 3px 5px 37.5px -1px hsl(240, 4%, 46%);
+    --font-sans: Roboto, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    --font-serif: Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
+    --font-mono: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
   }
 
   .dark {
@@ -125,7 +131,7 @@ All colors MUST be HSL.
     --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 98%);
     --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 98%);
     --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
-    
+
     /* Degradado Plateado Sutil para Bordes - Modo Oscuro */
     --border-gradient-silver: linear-gradient(135deg, #4b5563, #6b7280);
     --border-gradient-silver-vertical: linear-gradient(180deg, #4b5563, #6b7280);
@@ -151,7 +157,7 @@ All colors MUST be HSL.
     @apply font-heading uppercase tracking-wider;
     font-weight: 700;
   }
-  
+
   strong, b, .font-bold {
     font-weight: 700;
   }
