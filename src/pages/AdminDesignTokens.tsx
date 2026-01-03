@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Copy, Download, Upload, Palette, Type, Maximize2, Circle, Layers, Grid3X3, MoreHorizontal, ArrowLeft, Pencil, Check, X, Zap, Search, RotateCcw, Package, FileCode, FolderDown } from "lucide-react";
+import { Copy, Download, Upload, Palette, Type, Maximize2, Circle, Layers, Grid3X3, MoreHorizontal, ArrowLeft, Pencil, Check, X, Zap, Search, RotateCcw, Package, FileCode, FolderDown, FileJson } from "lucide-react";
 import { Link } from "react-router-dom";
 import { applyTokenToCSS } from "@/hooks/useDesignTokensApply";
 import DesignTokensLivePreview from "@/components/admin/DesignTokensLivePreview";
@@ -309,6 +309,59 @@ const AdminDesignTokens = () => {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
     toast({ title: "Descargado", description: "Archivo JSON descargado" });
+  };
+
+  const exportForFigma = () => {
+    // Build Figma Tokens Studio format
+    const figmaTokens: Record<string, Record<string, { value: string; type: string }>> = {};
+
+    tokens.forEach((token) => {
+      const parts = token.name.split(".");
+      const category = parts[0]; // e.g., "color", "radius", "shadow"
+      const name = parts.slice(1).join("."); // e.g., "primary", "default"
+
+      if (!figmaTokens[category]) {
+        figmaTokens[category] = {};
+      }
+
+      // Determine Figma type based on category
+      let figmaType = "other";
+      if (category === "color" || token.type === "color") {
+        figmaType = "color";
+      } else if (category === "radius" || token.type === "radius") {
+        figmaType = "borderRadius";
+      } else if (category === "shadow" || token.type === "shadow") {
+        figmaType = "boxShadow";
+      } else if (category === "spacing" || token.type === "spacing") {
+        figmaType = "spacing";
+      } else if (category.startsWith("font") || token.type.startsWith("font")) {
+        figmaType = "typography";
+      }
+
+      // Normalize color values - add # if hex without #
+      let value = token.value;
+      if (figmaType === "color" && /^[0-9A-Fa-f]{6}$/.test(value)) {
+        value = `#${value}`;
+      }
+
+      figmaTokens[category][name || "default"] = {
+        value,
+        type: figmaType,
+      };
+    });
+
+    // Download
+    const blob = new Blob([JSON.stringify(figmaTokens, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `figma-tokens-${new Date().toISOString().split("T")[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    toast({ title: "Exportado para Figma", description: "Archivo compatible con Tokens Studio descargado" });
   };
 
   const handleValidateImport = () => {
@@ -832,6 +885,10 @@ const AdminDesignTokens = () => {
                 <Button size="sm" onClick={handleDownloadJson} className="flex-1 min-w-[100px]">
                   <Download className="h-3 w-3 mr-1" />
                   Descargar
+                </Button>
+                <Button size="sm" variant="outline" onClick={exportForFigma} className="flex-1 min-w-[100px]">
+                  <FileJson className="h-3 w-3 mr-1" />
+                  Exportar para Figma
                 </Button>
               </div>
             </CardContent>
