@@ -8,9 +8,9 @@ interface DesignToken {
   category: string;
 }
 
-// Map token names to CSS variable names
-const TOKEN_TO_CSS_MAP: Record<string, string> = {
-  // Colors - Light mode
+// Static map for core CSS variables that have specific names
+const STATIC_TOKEN_TO_CSS_MAP: Record<string, string> = {
+  // Core Colors
   "color.background": "--background",
   "color.foreground": "--foreground",
   "color.primary": "--primary",
@@ -20,21 +20,68 @@ const TOKEN_TO_CSS_MAP: Record<string, string> = {
   "color.primary-dark": "--primary-dark",
   "color.secondary": "--secondary",
   "color.secondary-foreground": "--secondary-foreground",
+  "color.secondary-hover": "--secondary-hover",
   "color.muted": "--muted",
   "color.muted-foreground": "--muted-foreground",
   "color.accent": "--accent",
   "color.accent-foreground": "--accent-foreground",
   "color.card": "--card",
   "color.card-foreground": "--card-foreground",
+  "color.popover": "--popover",
+  "color.popover-foreground": "--popover-foreground",
   "color.border": "--border",
+  "color.input": "--input",
   "color.ring": "--ring",
+  "color.destructive": "--destructive",
+  "color.destructive-foreground": "--destructive-foreground",
+  // Gray colors
+  "color.gray-dark": "--gray-dark",
+  "color.gray-medium": "--gray-medium",
+  "color.gray-light": "--gray-light",
+  "color.gray-lighter": "--gray-lighter",
   // Radius
   "radius.default": "--radius",
+  "radius.none": "--radius-none",
+  "radius.sm": "--radius-sm",
+  "radius.md": "--radius-md",
+  "radius.lg": "--radius-lg",
+  "radius.xl": "--radius-xl",
+  "radius.2xl": "--radius-2xl",
+  "radius.3xl": "--radius-3xl",
+  "radius.full": "--radius-full",
+  // Border widths
+  "border.width.none": "--border-width-none",
+  "border.width.default": "--border-width-default",
+  "border.width.thin": "--border-width-thin",
+  "border.width.thick": "--border-width-thick",
+  "border.width.brutal": "--border-width-brutal",
+  "border.width.2": "--border-width-2",
+  "border.width.4": "--border-width-4",
+  "border.width.8": "--border-width-8",
+  // Border styles
+  "border.style.solid": "--border-style-solid",
+  "border.style.dashed": "--border-style-dashed",
+  "border.style.dotted": "--border-style-dotted",
+  "border.style.double": "--border-style-double",
   // Shadows
   "shadow.brutal": "--shadow-brutal",
   "shadow.brutal-sm": "--shadow-brutal-sm",
   "shadow.brutal-lg": "--shadow-brutal-lg",
   "shadow.brutal-red": "--shadow-brutal-red",
+  "shadow.sm": "--shadow-sm",
+  "shadow.md": "--shadow-md",
+  "shadow.lg": "--shadow-lg",
+  "shadow.xl": "--shadow-xl",
+  "shadow.2xl": "--shadow-2xl",
+  // Transitions
+  "transition.brutal": "--transition-brutal",
+  "transition.none": "--transition-none",
+  "transition.fast": "--transition-fast",
+  "transition.normal": "--transition-normal",
+  "transition.slow": "--transition-slow",
+  // Gradients
+  "gradient.primary": "--gradient-primary",
+  "gradient.hero": "--gradient-hero",
 };
 
 // Convert hex to HSL string (without hsl() wrapper, just "H S% L%")
@@ -73,14 +120,23 @@ const hexToHSL = (hex: string): string | null => {
   return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
 };
 
+// Generate CSS variable name from token name dynamically
+const generateCSSVarName = (tokenName: string): string => {
+  // Check static map first
+  if (STATIC_TOKEN_TO_CSS_MAP[tokenName]) {
+    return STATIC_TOKEN_TO_CSS_MAP[tokenName];
+  }
+  
+  // Dynamic generation: convert token.name.format to --token-name-format
+  return `--${tokenName.replace(/\./g, "-")}`;
+};
+
 // Apply a single token to the document
 export const applyTokenToCSS = (token: DesignToken) => {
-  const cssVar = TOKEN_TO_CSS_MAP[token.name];
-  if (!cssVar) return;
-
+  const cssVar = generateCSSVarName(token.name);
   let value = token.value;
 
-  // Convert hex colors to HSL for CSS variables
+  // Convert hex colors to HSL for CSS variables (only for color tokens)
   if (token.type === "color" && token.value.startsWith("#")) {
     const hsl = hexToHSL(token.value);
     if (hsl) {
