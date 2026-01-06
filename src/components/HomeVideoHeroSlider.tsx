@@ -84,15 +84,12 @@ export const HomeVideoHeroSlider = () => {
       const newSlide = api.selectedScrollSnap();
       setCurrentSlide(newSlide);
       
-      // Pausar todos los videos y reproducir el actual
-      videoRefs.current.forEach((video, index) => {
+      // Reset all videos to paused + blur state when changing slides
+      videoRefs.current.forEach((video) => {
         if (video) {
-          if (index === newSlide) {
-            video.play();
-          } else {
-            video.pause();
-            video.currentTime = 0;
-          }
+          video.pause();
+          video.currentTime = 0;
+          video.style.filter = 'blur(5px)';
         }
       });
     });
@@ -115,11 +112,21 @@ export const HomeVideoHeroSlider = () => {
                   <video
                     ref={el => videoRefs.current[index] = el}
                     src={slide.video_url}
-                    className="w-full h-full object-cover"
-                    autoPlay={index === 0}
+                    className="w-full h-full object-cover transition-[filter] duration-300 ease-out"
+                    style={{ filter: 'blur(5px)' }}
                     loop
                     muted={muted}
                     playsInline
+                    onMouseEnter={(e) => {
+                      const video = e.currentTarget;
+                      video.style.filter = 'blur(0px)';
+                      video.play();
+                    }}
+                    onMouseLeave={(e) => {
+                      const video = e.currentTarget;
+                      video.style.filter = 'blur(5px)';
+                      video.pause();
+                    }}
                   />
                 ) : (
                   <div className="w-full h-full bg-foreground/95 flex items-center justify-center">
