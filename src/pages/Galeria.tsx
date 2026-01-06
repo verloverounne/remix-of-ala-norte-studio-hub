@@ -1,24 +1,16 @@
 import { useState, useEffect } from "react";
-import { Eye, MapPin, Clock, Check, Ruler, Calendar, ArrowRight, Sparkles } from "lucide-react";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Eye, MapPin, Clock, Check, Ruler, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { Space } from "@/types/supabase";
 import Viewer360 from "@/components/Viewer360";
-
-interface GalleryImage {
-  id: string;
-  image_url: string;
-  title: string | null;
-  description: string | null;
-  order_index: number;
-}
+import { VideoHeroSlider } from "@/components/VideoHeroSlider";
+import { ProductionsSlider } from "@/components/ProductionsSlider";
 
 const Galeria = () => {
   const [space, setSpace] = useState<Space | null>(null);
-  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -46,15 +38,6 @@ const Galeria = () => {
         specs: spaceData.specs || {}
       } as Space);
     }
-
-    // Fetch gallery images
-    const { data: images } = await supabase
-      .from('gallery_images')
-      .select('*')
-      .eq('page_type', 'galeria')
-      .order('order_index');
-    
-    if (images) setGalleryImages(images);
     
     setLoading(false);
   };
@@ -67,104 +50,10 @@ const Galeria = () => {
     );
   }
 
-  const heroImages = galleryImages.length > 0 
-    ? galleryImages.map(img => img.image_url) 
-    : space.images;
-
   return (
     <div className="min-h-screen">
-      {/* Hero Section with Carousel */}
-      <section className="relative h-screen">
-        {heroImages.length > 0 ? (
-          <div className="relative h-full">
-            <Carousel className="w-full h-full" opts={{ loop: true }}>
-              <CarouselContent className="h-full">
-                {heroImages.map((img, index) => (
-                  <CarouselItem key={index} className="h-full">
-                    <div className="relative h-screen overflow-hidden">
-                      <img
-                        src={img}
-                        alt={`${space.name} - ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              {heroImages.length > 1 && (
-                <>
-                  <CarouselPrevious className="left-4" />
-                  <CarouselNext className="right-4" />
-                </>
-              )}
-            </Carousel>
-            
-            {/* Hero Content Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 lg:p-12">
-              <div className="container mx-auto">
-                <Badge variant="secondary" className="mb-4 text-lg px-4 py-2">
-                  <Clock className="mr-2 h-4 w-4" />
-                  BLOQUES DE {space.block_hours || 4}HS
-                </Badge>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4">
-                  {space.hero_title || space.name}
-                </h1>
-                <p className="text-lg sm:text-xl md:text-2xl max-w-2xl mb-6 font-heading text-muted-foreground">
-                  {space.hero_subtitle || space.description}
-                </p>
-                
-                <div className="flex flex-wrap gap-4 items-center mb-6">
-                  <div className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg">
-                    <span className="text-2xl sm:text-3xl font-bold font-heading">
-                      ${(space.block_price || space.price)?.toLocaleString()}
-                    </span>
-                    <span className="text-sm opacity-80">/ bloque {space.block_hours || 4}hs</span>
-                  </div>
-                  {space.surface_area && (
-                    <div className="flex items-center gap-2 bg-secondary px-4 py-2 rounded-lg">
-                      <Ruler className="h-5 w-5" />
-                      <span className="font-heading font-bold">{space.surface_area}</span>
-                    </div>
-                  )}
-                  {space.location && (
-                    <div className="flex items-center gap-2 bg-secondary px-4 py-2 rounded-lg">
-                      <MapPin className="h-5 w-5" />
-                      <span className="font-heading">{space.location}</span>
-                    </div>
-                  )}
-                </div>
-
-                {space.discount_text && (
-                  <div className="inline-flex items-center gap-2 bg-primary/20 border-2 border-primary px-4 py-2 rounded-lg mb-6">
-                    <Sparkles className="h-5 w-5 text-primary" />
-                    <span className="font-heading font-bold text-primary">{space.discount_text}</span>
-                  </div>
-                )}
-
-                <Button variant="hero" size="lg" asChild className="text-lg">
-                  <Link to="/contacto">
-                    <Calendar className="mr-2 h-5 w-5" />
-                    {space.cta_text || "RESERVAR BLOQUE"}
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="gradient-primary text-primary-foreground py-16 sm:py-20 lg:py-24">
-            <div className="container mx-auto px-4 text-center">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4">
-                {space.hero_title || space.name}
-              </h1>
-              <p className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto font-heading">
-                {space.hero_subtitle || space.description}
-              </p>
-            </div>
-          </div>
-        )}
-      </section>
+      {/* Hero Section with Video Slider */}
+      <VideoHeroSlider pageType="galeria_hero" space={space} />
 
       {/* Features Section */}
       {space.features && space.features.length > 0 && (
@@ -272,6 +161,9 @@ const Galeria = () => {
           </div>
         </div>
       </section>
+
+      {/* Productions Slider */}
+      <ProductionsSlider />
 
       {/* 360° Virtual Tour Section */}
       {space.tour_360_url && (

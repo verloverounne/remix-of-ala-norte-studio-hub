@@ -12,6 +12,7 @@ import {
   CarouselNext,
 } from "@/components/ui/carousel";
 import { InstitutionalSlider } from "@/components/InstitutionalSlider";
+import { ProductionsSlider } from "@/components/ProductionsSlider";
 const spaces360 = [
   {
     id: 1,
@@ -222,6 +223,9 @@ const Home = () => {
           </div>
         </section>
       )}
+
+      {/* Productions Slider Section */}
+      <ProductionsSlider />
 
       {/* CTA Section */}
       <section className="py-12 sm:py-20 lg:py-32 bg-primary text-primary-foreground relative border-y-4 border-foreground">
