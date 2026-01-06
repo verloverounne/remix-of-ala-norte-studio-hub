@@ -12,7 +12,7 @@ import { StorageImageSelector } from "@/components/StorageImageSelector";
 
 interface GalleryImage {
   id: string;
-  page_type: 'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental';
+  page_type: 'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental' | 'producciones' | 'galeria_hero' | 'sala_grabacion_hero';
   image_url: string;
   title: string | null;
   description: string | null;
@@ -26,7 +26,7 @@ interface GalleryManagerProps {
 export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedPageType, setSelectedPageType] = useState<'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental'>('galeria');
+  const [selectedPageType, setSelectedPageType] = useState<'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental' | 'producciones' | 'galeria_hero' | 'sala_grabacion_hero'>('galeria');
   const [newImage, setNewImage] = useState({
     image_url: "",
     title: "",
@@ -178,6 +178,9 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
     home: 'Home - Slider Institucional',
     servicios: 'Servicios - Slider',
     hero_rental: 'Hero Rental - Equipos',
+    producciones: 'Producciones en Ala Norte',
+    galeria_hero: 'Galería - Hero Videos',
+    sala_grabacion_hero: 'Sala Grabación - Hero Videos',
   };
 
   return (
@@ -195,16 +198,19 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
           <div className="flex flex-wrap gap-4 items-end">
             <div className="space-y-2">
               <Label>Página / Slider</Label>
-              <Select value={selectedPageType} onValueChange={(v) => setSelectedPageType(v as 'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental')}>
+              <Select value={selectedPageType} onValueChange={(v) => setSelectedPageType(v as typeof selectedPageType)}>
                 <SelectTrigger className="w-[280px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="galeria_hero">Galería - Hero Videos</SelectItem>
+                  <SelectItem value="sala_grabacion_hero">Sala Grabación - Hero Videos</SelectItem>
+                  <SelectItem value="producciones">Producciones en Ala Norte</SelectItem>
                   <SelectItem value="hero_rental">Hero Rental - Equipos</SelectItem>
                   <SelectItem value="home">Home - Slider Institucional</SelectItem>
                   <SelectItem value="servicios">Servicios - Slider</SelectItem>
-                  <SelectItem value="galeria">Galería</SelectItem>
-                  <SelectItem value="sala_grabacion">Sala de Grabación / Postproducción</SelectItem>
+                  <SelectItem value="galeria">Galería (imágenes)</SelectItem>
+                  <SelectItem value="sala_grabacion">Sala de Grabación (imágenes)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
