@@ -12,7 +12,7 @@ import { StorageImageSelector } from "@/components/StorageImageSelector";
 
 interface GalleryImage {
   id: string;
-  page_type: 'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental' | 'producciones' | 'galeria_hero' | 'sala_grabacion_hero' | 'home_hero';
+  page_type: 'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental' | 'producciones' | 'galeria_hero' | 'sala_grabacion_hero';
   image_url: string;
   title: string | null;
   description: string | null;
@@ -26,7 +26,7 @@ interface GalleryManagerProps {
 export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedPageType, setSelectedPageType] = useState<'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental' | 'producciones' | 'galeria_hero' | 'sala_grabacion_hero' | 'home_hero'>('galeria');
+  const [selectedPageType, setSelectedPageType] = useState<'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental' | 'producciones' | 'galeria_hero' | 'sala_grabacion_hero'>('galeria');
   const [newImage, setNewImage] = useState({
     image_url: "",
     title: "",
@@ -181,7 +181,6 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
     producciones: 'Producciones en Ala Norte',
     galeria_hero: 'Galería - Hero Videos',
     sala_grabacion_hero: 'Sala Grabación - Hero Videos',
-    home_hero: 'Home - Hero Videos',
   };
 
   return (
@@ -204,7 +203,6 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="home_hero">Home - Hero Videos</SelectItem>
                   <SelectItem value="galeria_hero">Galería - Hero Videos</SelectItem>
                   <SelectItem value="sala_grabacion_hero">Sala Grabación - Hero Videos</SelectItem>
                   <SelectItem value="producciones">Producciones en Ala Norte</SelectItem>
