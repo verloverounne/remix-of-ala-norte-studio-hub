@@ -1,160 +1,42 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselApi,
-  CarouselPrevious,
-  CarouselNext,
 } from "@/components/ui/carousel";
 import { InstitutionalSlider } from "@/components/InstitutionalSlider";
 import { ProductionsSlider } from "@/components/ProductionsSlider";
-const spaces360 = [
-  {
-    id: 1,
-    title: "SOMOS MAS QUE UN RENTAL",
-    subtitle: "En Ala Norte cada rodaje tiene su propia historia.",
-    cta: {
-      label: "VER EQUIPOS",
-      link: "/equipos",
-    },
-  },
-  {
-    id: 2,
-    title: "GALERÍA DE FILMACIÓN",
-    subtitle: "150 m²",
-    cta: {
-      label: "VER GALERÍA",
-      link: "/galeria",
-    },
-  },
-  {
-    id: 3,
-    title: "SALA DE SONIDO",
-    subtitle: "ProTools Ultimate",
-    cta: {
-      label: "VER SALA",
-      link: "/sala-grabacion",
-    },
-  },
-];
+import { HomeVideoHero } from "@/components/HomeVideoHero";
+
 const Home = () => {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [featuredEquipment, setFeaturedEquipment] = useState<any[]>([]);
   const [equipmentApi, setEquipmentApi] = useState<CarouselApi>();
   const [currentEquipmentSlide, setCurrentEquipmentSlide] = useState(0);
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (scrollContainerRef.current) {
-        const scrollLeft = scrollContainerRef.current.scrollLeft;
-        const cards = scrollContainerRef.current.querySelectorAll(".space-card");
-        cards.forEach((card, index) => {
-          const htmlCard = card as HTMLElement;
-          const offset = scrollLeft * (0.5 + index * 0.1);
-          htmlCard.style.transform = `translateX(-${offset * 0.3}px)`;
-        });
-      }
-    };
-    const container = scrollContainerRef.current;
-    if (container) {
-      container.addEventListener("scroll", handleScroll);
-      return () => container.removeEventListener("scroll", handleScroll);
-    }
-  }, []);
-  useEffect(() => {
-    // Fetch featured equipment
     const fetchFeaturedEquipment = async () => {
       const { data } = await supabase.from("equipment").select("*").eq("featured", true).limit(6);
       if (data) setFeaturedEquipment(data);
     };
     fetchFeaturedEquipment();
   }, []);
+
   useEffect(() => {
     if (!equipmentApi) return;
     equipmentApi.on("select", () => {
       setCurrentEquipmentSlide(equipmentApi.selectedScrollSnap());
     });
   }, [equipmentApi]);
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Institutional Slider - Before 360 Tour */}
+      {/* Institutional Slider */}
       <InstitutionalSlider pageType="home" />
-
-      {/* Hero Section - Full Slider with 360 Tours */}
-      <section className="relative h-screen overflow-hidden border-b-4 border-foreground">
-        <div className="absolute inset-0 bg-foreground/95" />
-
-        <div
-          ref={scrollContainerRef}
-          className="relative z-10 h-full overflow-x-auto overflow-y-hidden scroll-smooth hide-scrollbar"
-          style={{
-            scrollSnapType: "x mandatory",
-          }}
-        >
-          <div className="flex h-full">
-            {spaces360.map((space, index) => (
-              <div
-                key={space.id}
-                className="space-card flex-shrink-0 w-screen h-full relative overflow-hidden"
-                style={{
-                  scrollSnapAlign: "start",
-                  transition: "transform 0.1s ease-out",
-                }}
-              >
-                {/* Iframe placeholder for 360 tour */}
-                <div className="w-full h-full bg-gray-dark/50 flex items-center justify-center relative">
-                  <div className="text-center z-10 relative p-4 sm:p-6 lg:p-8">
-                    <p className="font-heading text-background text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-2 sm:mb-4 font-bold">
-                      {space.title}
-                    </p>
-                    <p className="font-heading text-background/80 text-lg sm:text-xl md:text-2xl lg:text-4xl mb-4 sm:mb-6">
-                      {space.subtitle}
-                    </p>
-                    <div className="border-2 sm:border-4 border-background/30 rounded-lg p-3 sm:p-4 lg:p-6 bg-foreground/30 backdrop-blur-sm">
-                      <p className="text-background/60 text-sm sm:text-base lg:text-lg mb-1 sm:mb-2">
-                        Iframe Placeholder para Recorrido 360°
-                      </p>
-                      <p className="text-background/40 text-xs sm:text-sm">
-                        Aquí se integrará el tour virtual interactivo
-                      </p>
-                    </div>
-                    <div className="mt-4 sm:mt-6 lg:mt-8 flex flex-wrap gap-2 sm:gap-4 justify-center">
-                      {space.cta && (
-                        <Button asChild variant="hero" size="sm" className="flex-1 sm:flex-none sm:text-base">
-                          <Link to={space.cta.link}>{space.cta.label}</Link>
-                        </Button>
-                      )}
-                      <Button
-                        asChild
-                        variant="secondary"
-                        size="sm"
-                        className="flex-1 sm:flex-none sm:text-base"
-                      ></Button>
-                    </div>
-                  </div>
-                  {/* Future iframe will go here */}
-                  {/* <iframe src="360-tour-url" className="w-full h-full" /> */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-foreground/20 via-transparent to-foreground/40" />
-                </div>
-
-                {/* Navigation indicator */}
-                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-                  {spaces360.map((_, i) => (
-                    <div
-                      key={i}
-                      className={`h-2 rounded-full transition-all ${i === index ? "w-12 bg-primary" : "w-2 bg-background/40"}`}
-                    />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Featured Equipment Section - Full Width Slider */}
       {featuredEquipment.length > 0 && (
@@ -248,6 +130,9 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Video Hero Section - Before Cartoni */}
+      <HomeVideoHero />
+
       {/* Cartoni Official Dealer Section */}
       <section className="py-16 lg:py-24 bg-muted/30 border-y-4 border-foreground">
         <div className="container mx-auto px-4">
@@ -281,17 +166,8 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      <style>{`
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </div>
   );
 };
+
 export default Home;
