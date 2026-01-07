@@ -19,7 +19,7 @@ import { EquipmentImageUploader } from "@/components/EquipmentImageUploader";
 import { BulkImageAssigner } from "@/components/BulkImageAssigner";
 import { GalleryManager } from "@/components/GalleryManager";
 import { SpaceAdminEditor } from "@/components/SpaceAdminEditor";
-import { HomeServicesPanel } from "@/components/admin/HomeServicesPanel";
+import { ServicesAdminPanel } from "@/components/admin/ServicesAdminPanel";
 import { Switch } from "@/components/ui/switch";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -973,9 +973,9 @@ const Admin = () => {
               <SpaceAdminEditor />
             </TabsContent>
 
-            {/* Home Services Tab */}
+            {/* Services Tab */}
             <TabsContent value="services">
-              <HomeServicesPanel />
+              <ServicesAdminPanel />
             </TabsContent>
 
             {/* Config Tab */}

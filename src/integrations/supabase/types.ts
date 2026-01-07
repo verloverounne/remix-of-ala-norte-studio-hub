@@ -476,38 +476,53 @@ export type Database = {
       }
       home_services: {
         Row: {
+          bullets: Json | null
           button_link: string | null
           button_text: string | null
           created_at: string
+          cta_label: string | null
+          cta_url: string | null
           description: string | null
+          hero_image_url: string | null
           id: string
           image_url: string | null
           is_active: boolean | null
           order_index: number | null
+          slug: string | null
           title: string
           updated_at: string
         }
         Insert: {
+          bullets?: Json | null
           button_link?: string | null
           button_text?: string | null
           created_at?: string
+          cta_label?: string | null
+          cta_url?: string | null
           description?: string | null
+          hero_image_url?: string | null
           id?: string
           image_url?: string | null
           is_active?: boolean | null
           order_index?: number | null
+          slug?: string | null
           title: string
           updated_at?: string
         }
         Update: {
+          bullets?: Json | null
           button_link?: string | null
           button_text?: string | null
           created_at?: string
+          cta_label?: string | null
+          cta_url?: string | null
           description?: string | null
+          hero_image_url?: string | null
           id?: string
           image_url?: string | null
           is_active?: boolean | null
           order_index?: number | null
+          slug?: string | null
           title?: string
           updated_at?: string
         }
@@ -691,6 +706,81 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      service_sections: {
+        Row: {
+          bullets: Json | null
+          created_at: string
+          cta_label: string | null
+          cta_url: string | null
+          id: string
+          is_active: boolean | null
+          order_index: number | null
+          short_description: string | null
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          bullets?: Json | null
+          created_at?: string
+          cta_label?: string | null
+          cta_url?: string | null
+          id?: string
+          is_active?: boolean | null
+          order_index?: number | null
+          short_description?: string | null
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          bullets?: Json | null
+          created_at?: string
+          cta_label?: string | null
+          cta_url?: string | null
+          id?: string
+          is_active?: boolean | null
+          order_index?: number | null
+          short_description?: string | null
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      services_hero: {
+        Row: {
+          created_at: string
+          hero_bullets: Json | null
+          hero_media_type: string | null
+          hero_media_url: string | null
+          hero_subtitle: string | null
+          hero_title: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          hero_bullets?: Json | null
+          hero_media_type?: string | null
+          hero_media_url?: string | null
+          hero_subtitle?: string | null
+          hero_title?: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          hero_bullets?: Json | null
+          hero_media_type?: string | null
+          hero_media_url?: string | null
+          hero_subtitle?: string | null
+          hero_title?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       space_unavailability: {
         Row: {
