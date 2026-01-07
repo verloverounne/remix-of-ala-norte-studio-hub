@@ -19,6 +19,7 @@ import { EquipmentImageUploader } from "@/components/EquipmentImageUploader";
 import { BulkImageAssigner } from "@/components/BulkImageAssigner";
 import { GalleryManager } from "@/components/GalleryManager";
 import { SpaceAdminEditor } from "@/components/SpaceAdminEditor";
+import { HomeServicesPanel } from "@/components/admin/HomeServicesPanel";
 import { Switch } from "@/components/ui/switch";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -754,6 +755,7 @@ const Admin = () => {
                 Galerías
               </TabsTrigger>
               <TabsTrigger value="spaces">Espacios</TabsTrigger>
+              <TabsTrigger value="services">Servicios</TabsTrigger>
               <TabsTrigger value="config">Config</TabsTrigger>
               <TabsTrigger value="backup">Backup</TabsTrigger>
             </TabsList>
@@ -969,6 +971,11 @@ const Admin = () => {
             {/* Spaces Tab */}
             <TabsContent value="spaces">
               <SpaceAdminEditor />
+            </TabsContent>
+
+            {/* Home Services Tab */}
+            <TabsContent value="services">
+              <HomeServicesPanel />
             </TabsContent>
 
             {/* Config Tab */}

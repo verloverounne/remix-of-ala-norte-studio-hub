@@ -7,6 +7,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselApi } from "@/componen
 import { InstitutionalSlider } from "@/components/InstitutionalSlider";
 import { ProductionsSlider } from "@/components/ProductionsSlider";
 import { HomeVideoHeroSlider } from "@/components/HomeVideoHeroSlider";
+import { ServicesSection } from "@/components/ServicesSection";
 const Home = () => {
   const [featuredEquipment, setFeaturedEquipment] = useState<any[]>([]);
   const [equipmentApi, setEquipmentApi] = useState<CarouselApi>();
@@ -32,6 +33,9 @@ const Home = () => {
 
       {/* Hero Section - Video Slider with CTAs */}
       <HomeVideoHeroSlider />
+
+      {/* Services Section */}
+      <ServicesSection />
 
       {/* Featured Equipment Section - Full Width Slider */}
       {featuredEquipment.length > 0 && <section className="relative border-y-4 border-foreground bg-muted/30 overflow-hidden">
