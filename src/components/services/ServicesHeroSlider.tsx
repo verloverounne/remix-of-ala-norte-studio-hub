@@ -81,9 +81,9 @@ export const ServicesHeroSlider = ({
   }, [activeServiceId, api, services, currentSlide]);
 
   const handleChipClick = (serviceId: string, index: number) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    api?.scrollTo(index);
+    // Scroll to corresponding section (like Equipos behavior)
     onServiceChange(serviceId);
+    api?.scrollTo(index);
   };
 
   return (

@@ -65,50 +65,17 @@ const Servicios = () => {
     fetchServices();
   }, []);
 
-  // Intersection observer to update active tab based on scroll
-  useEffect(() => {
-    if (services.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
-            const serviceId = entry.target.getAttribute("data-service-id");
-            if (serviceId) {
-              setActiveServiceId(serviceId);
-            }
-          }
-        });
-      },
-      {
-        rootMargin: "-20% 0px -60% 0px",
-        threshold: [0.3, 0.5]
-      }
-    );
-
-    sectionRefs.current.forEach((element) => {
-      observer.observe(element);
-    });
-
-    return () => observer.disconnect();
-  }, [services]);
+  // No IntersectionObserver - tab updates only on click (like Equipos)
 
   const handleServiceChange = useCallback((serviceId: string | null) => {
     if (!serviceId) return;
     
     setActiveServiceId(serviceId);
     
-    // Scroll to the corresponding section
+    // Scroll to the corresponding section using scrollIntoView (like Equipos)
     const element = sectionRefs.current.get(serviceId);
     if (element) {
-      const headerOffset = 160; // Account for fixed header + nav
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.scrollY - headerOffset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, []);
 
