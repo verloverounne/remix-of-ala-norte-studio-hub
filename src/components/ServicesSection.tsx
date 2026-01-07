@@ -141,7 +141,7 @@ export const ServicesSection = () => {
                 key={service.id}
                 className="flex-[0_0_100%] min-w-0"
               >
-                <div className="container mx-auto px-4 py-12 lg:py-20">
+                <div className="container mx-auto px-8 py-24 lg:py-40">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[400px] lg:min-h-[500px]">
                     {/* Text Column */}
                     <div className={cn(
