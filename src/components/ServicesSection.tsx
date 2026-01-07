@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { LazyImage } from "@/components/LazyImage";
+import useEmblaCarousel from "embla-carousel-react";
 
 interface HomeService {
   id: string;
@@ -21,8 +22,12 @@ export const ServicesSection = () => {
   const [services, setServices] = useState<HomeService[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(true);
-  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const sectionRef = useRef<HTMLDivElement>(null);
+  
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    loop: false,
+    align: "start",
+    skipSnaps: false,
+  });
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -41,46 +46,46 @@ export const ServicesSection = () => {
     fetchServices();
   }, []);
 
+  const scrollTo = useCallback((index: number) => {
+    if (emblaApi) {
+      emblaApi.scrollTo(index);
+    }
+  }, [emblaApi]);
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setActiveIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi, onSelect]);
+
   const handleTabClick = (index: number) => {
     setActiveIndex(index);
-    slideRefs.current[index]?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    scrollTo(index);
   };
-
-  // Observe which slide is in view for tab sync
-  useEffect(() => {
-    if (services.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = slideRefs.current.findIndex((ref) => ref === entry.target);
-            if (index !== -1) {
-              setActiveIndex(index);
-            }
-          }
-        });
-      },
-      {
-        root: sectionRef.current,
-        rootMargin: "-40% 0px -40% 0px",
-        threshold: 0.1,
-      }
-    );
-
-    slideRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
-    return () => observer.disconnect();
-  }, [services]);
 
   if (loading) {
     return (
-      <section className="h-[600px] lg:h-[800px] bg-muted/30 flex items-center justify-center border-y-4 border-foreground">
+      <section className="min-h-[500px] lg:min-h-[700px] bg-muted/30 flex items-center justify-center border-y-4 border-foreground">
         <div className="animate-pulse font-heading text-xl">Cargando servicios...</div>
       </section>
     );
@@ -92,10 +97,22 @@ export const ServicesSection = () => {
 
   return (
     <section className="relative border-y-4 border-foreground bg-background">
-      {/* Tab Navigation - Sticky */}
-      <div className="sticky top-0 z-30 bg-background border-b-4 border-foreground">
+      {/* Section Header */}
+      <div className="container mx-auto px-4 pt-12 pb-6 lg:pt-16 lg:pb-8">
+        <div className="max-w-3xl">
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl uppercase mb-4">
+            Nuestros Servicios
+          </h2>
+          <p className="text-muted-foreground text-base sm:text-lg lg:text-xl leading-relaxed">
+            Soluciones integrales para producción audiovisual. Desde equipamiento profesional hasta espacios creativos y formación especializada.
+          </p>
+        </div>
+      </div>
+
+      {/* Tab Navigation */}
+      <div className="sticky top-0 z-30 bg-background border-y-4 border-foreground">
         <div className="container mx-auto px-4">
-          <div className="flex overflow-x-auto scrollbar-hide py-0">
+          <div className="flex overflow-x-auto scrollbar-hide py-0 gap-0">
             {services.map((service, index) => (
               <button
                 key={service.id}
@@ -114,75 +131,113 @@ export const ServicesSection = () => {
         </div>
       </div>
 
-      {/* Slides Container */}
-      <div
-        ref={sectionRef}
-        className="max-h-[1080px] overflow-y-auto scroll-smooth scrollbar-hide snap-y snap-mandatory"
-      >
-        {services.map((service, index) => (
-          <div
-            key={service.id}
-            ref={(el) => (slideRefs.current[index] = el)}
-            className="min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] max-h-[1000px] snap-start flex items-center"
-            style={{ scrollMarginTop: "60px" }}
-          >
-            <div className="container mx-auto px-4 py-8 sm:py-12 lg:py-16">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-                {/* Text Column */}
-                <div className={cn(
-                  "order-2 lg:order-1",
-                  index % 2 === 1 && "lg:order-2"
-                )}>
-                  <div className="border-l-4 sm:border-l-8 border-primary pl-4 sm:pl-8 mb-6 sm:mb-8">
-                    <span className="text-xs sm:text-sm font-heading text-muted-foreground uppercase tracking-wider">
-                      Servicio {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl xl:text-5xl mt-2 uppercase leading-tight">
-                      {service.title}
-                    </h3>
-                  </div>
-
-                  {service.description && (
-                    <p className="text-base sm:text-lg lg:text-xl text-muted-foreground mb-6 sm:mb-8 leading-relaxed max-w-xl">
-                      {service.description}
-                    </p>
-                  )}
-
-                  {service.button_text && service.button_link && (
-                    <Button asChild variant="default" size="lg">
-                      <Link to={service.button_link}>
-                        {service.button_text}
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                      </Link>
-                    </Button>
-                  )}
-                </div>
-
-                {/* Image Column */}
-                <div className={cn(
-                  "order-1 lg:order-2",
-                  index % 2 === 1 && "lg:order-1"
-                )}>
-                  <div className="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden border-4 border-foreground shadow-brutal">
-                    {service.image_url ? (
-                      <LazyImage
-                        src={service.image_url}
-                        alt={service.title}
-                        className="object-cover hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-muted flex items-center justify-center">
-                        <span className="font-heading text-4xl text-muted-foreground/30">
-                          {String(index + 1).padStart(2, "0")}
+      {/* Carousel Container */}
+      <div className="relative">
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex">
+            {services.map((service, index) => (
+              <div
+                key={service.id}
+                className="flex-[0_0_100%] min-w-0"
+              >
+                <div className="container mx-auto px-4 py-12 lg:py-20">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[400px] lg:min-h-[500px]">
+                    {/* Text Column */}
+                    <div className={cn(
+                      "order-2 lg:order-1",
+                      index % 2 === 1 && "lg:order-2"
+                    )}>
+                      <div className="border-l-4 sm:border-l-8 border-primary pl-4 sm:pl-8 mb-6 sm:mb-8">
+                        <span className="text-xs sm:text-sm font-heading text-muted-foreground uppercase tracking-wider">
+                          Servicio {String(index + 1).padStart(2, "0")}
                         </span>
+                        <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl xl:text-5xl mt-2 uppercase leading-tight">
+                          {service.title}
+                        </h3>
                       </div>
-                    )}
+
+                      {service.description && (
+                        <p className="text-base sm:text-lg lg:text-xl text-muted-foreground mb-6 sm:mb-8 leading-relaxed max-w-xl">
+                          {service.description}
+                        </p>
+                      )}
+
+                      {service.button_text && service.button_link && (
+                        <Button asChild variant="default" size="lg">
+                          <Link to={service.button_link}>
+                            {service.button_text}
+                            <ArrowRight className="ml-2 h-5 w-5" />
+                          </Link>
+                        </Button>
+                      )}
+                    </div>
+
+                    {/* Image Column */}
+                    <div className={cn(
+                      "order-1 lg:order-2",
+                      index % 2 === 1 && "lg:order-1"
+                    )}>
+                      <div className="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden border-4 border-foreground shadow-brutal">
+                        {service.image_url ? (
+                          <LazyImage
+                            src={service.image_url}
+                            alt={service.title}
+                            className="object-cover hover:scale-105 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-muted flex items-center justify-center">
+                            <span className="font-heading text-4xl text-muted-foreground/30">
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={scrollPrev}
+          className={cn(
+            "absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-background border-4 border-foreground shadow-brutal transition-all hover:bg-muted",
+            activeIndex === 0 && "opacity-50 cursor-not-allowed"
+          )}
+          disabled={activeIndex === 0}
+          aria-label="Anterior"
+        >
+          <ChevronLeft className="h-6 w-6" />
+        </button>
+        <button
+          onClick={scrollNext}
+          className={cn(
+            "absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-background border-4 border-foreground shadow-brutal transition-all hover:bg-muted",
+            activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed"
+          )}
+          disabled={activeIndex === services.length - 1}
+          aria-label="Siguiente"
+        >
+          <ChevronRight className="h-6 w-6" />
+        </button>
+
+        {/* Dots indicator */}
+        <div className="flex justify-center gap-2 py-6">
+          {services.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handleTabClick(index)}
+              className={cn(
+                "w-3 h-3 border-2 border-foreground transition-all",
+                activeIndex === index ? "bg-primary" : "bg-transparent hover:bg-muted"
+              )}
+              aria-label={`Ir al slide ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
