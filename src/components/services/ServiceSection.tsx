@@ -2,7 +2,6 @@ import { forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Check } from "lucide-react";
-
 interface ServiceSectionProps {
   id: string;
   slug: string | null;
@@ -14,7 +13,6 @@ interface ServiceSectionProps {
   imageUrl?: string | null;
   index: number;
 }
-
 export const ServiceSection = forwardRef<HTMLElement, ServiceSectionProps>(({
   id,
   slug,
@@ -27,15 +25,10 @@ export const ServiceSection = forwardRef<HTMLElement, ServiceSectionProps>(({
   index
 }, ref) => {
   const isEven = index % 2 === 0;
-
-  return (
-    <section 
-      ref={ref}
-      id={slug || id}
-      className="min-h-[80vh] md:min-h-[90vh] flex items-center border-b-2 border-foreground/20 relative z-10 bg-background"
-      style={{ scrollMarginTop: "calc(40vh + 100px)" }}
-    >
-      <div className="container mx-auto px-4 py-12 md:py-16">
+  return <section ref={ref} id={slug || id} className="min-h-[80vh] md:min-h-[90vh] flex items-center border-b-2 border-foreground/20 relative z-10 bg-background" style={{
+    scrollMarginTop: "calc(40vh + 100px)"
+  }}>
+      <div className="container mx-auto px-4 md:py-16 py-[16px]">
         <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center ${isEven ? '' : 'md:grid-flow-dense'}`}>
           {/* Text content */}
           <div className={`space-y-6 ${isEven ? '' : 'md:col-start-2'}`}>
@@ -48,56 +41,37 @@ export const ServiceSection = forwardRef<HTMLElement, ServiceSectionProps>(({
               </h2>
             </div>
             
-            {description && (
-              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+            {description && <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
                 {description}
-              </p>
-            )}
+              </p>}
 
-            {bullets && bullets.length > 0 && (
-              <ul className="space-y-3">
-                {bullets.map((bullet, i) => (
-                  <li key={i} className="flex items-start gap-3">
+            {bullets && bullets.length > 0 && <ul className="space-y-3">
+                {bullets.map((bullet, i) => <li key={i} className="flex items-start gap-3">
                     <Check className="h-5 w-5 mt-0.5 text-primary flex-shrink-0" />
                     <span className="text-sm sm:text-base">{bullet}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
+                  </li>)}
+              </ul>}
 
-            {ctaLabel && ctaUrl && (
-              <div className="pt-4">
+            {ctaLabel && ctaUrl && <div className="pt-4">
                 <Button asChild size="lg" className="font-heading uppercase">
                   <Link to={ctaUrl}>{ctaLabel}</Link>
                 </Button>
-              </div>
-            )}
+              </div>}
           </div>
 
           {/* Image */}
           <div className={`${isEven ? '' : 'md:col-start-1 md:row-start-1'}`}>
             <div className="relative aspect-[4/3] overflow-hidden border-2 border-foreground shadow-brutal">
-              {imageUrl ? (
-                <img 
-                  src={imageUrl} 
-                  alt={title}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
+              {imageUrl ? <img src={imageUrl} alt={title} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
                   <span className="font-heading text-muted-foreground uppercase">
                     {title}
                   </span>
-                </div>
-              )}
+                </div>}
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 });
-
 ServiceSection.displayName = "ServiceSection";
-
 export default ServiceSection;
