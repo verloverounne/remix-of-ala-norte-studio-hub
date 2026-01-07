@@ -5,147 +5,150 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* 
+  DESIGN SYSTEM SIMPLIFICADO - 6 COLORES BASE
+  ============================================
+  - 2 neutros oscuros (dark-1, dark-2)
+  - 2 neutros claros (light-1, light-2)
+  - 2 rojos (red-1 principal, red-2 secundario)
+  
+  MODO OSCURO = DEFAULT
+  Líneas: 1px botones/etiquetas, 0.5px otras
+  Todos los colores en HSL
 */
 
 @layer base {
+  /* MODO OSCURO - DEFAULT */
   :root {
-    /* BRUTALISMO 2026 - Modo Claro */
-    --background: 0 0% 98%; /* #FAFAFA Blanco brutal */
-    --foreground: 0 0% 8%; /* #141414 Negro */
+    /* === 6 COLORES BASE === */
+    /* Neutros Oscuros */
+    --dark-1: 0 0% 7%;        /* #121212 - Fondo principal */
+    --dark-2: 0 0% 13%;       /* #212121 - Superficies elevadas */
+    
+    /* Neutros Claros */
+    --light-1: 0 0% 95%;      /* #F2F2F2 - Texto principal */
+    --light-2: 0 0% 60%;      /* #999999 - Texto secundario */
+    
+    /* Rojos */
+    --red-1: 348 83% 47%;     /* #DC143C - Rojo principal */
+    --red-2: 348 70% 35%;     /* #962233 - Rojo secundario/hover */
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 8%;
+    /* === TOKENS SEMÁNTICOS (mapean a los 6 colores) === */
+    --background: var(--dark-1);
+    --foreground: var(--light-1);
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 8%;
+    --card: var(--dark-2);
+    --card-foreground: var(--light-1);
 
-    /* Primario - Rojo Brutal */
-    --primary: 348 83% 47%; /* #DC143C Rojo Ala Norte */
-    --primary-foreground: 0 0% 98%;
-    --primary-hover: 343 100% 33%; /* #A7002F */
-    --primary-light: 355 82% 60%; /* #EF4350 */
-    --primary-dark: 343 100% 22%; /* #6E0022 */
+    --popover: var(--dark-2);
+    --popover-foreground: var(--light-1);
 
-    /* Secundario - Gris Brutal */
-    --secondary: 0 0% 20%; /* #333333 Gris oscuro */
-    --secondary-foreground: 0 0% 98%;
-    --secondary-hover: 0 0% 15%;
+    --primary: var(--red-1);
+    --primary-foreground: var(--light-1);
+    --primary-hover: var(--red-2);
 
-    /* Neutrales Brutales */
-    --muted: 0 0% 90%; /* #E5E5E5 */
-    --muted-foreground: 0 0% 30%; /* #4D4D4D */
+    --secondary: var(--dark-2);
+    --secondary-foreground: var(--light-1);
+    --secondary-hover: var(--dark-1);
 
-    --accent: 356 91% 59%; /* Rojo para acentos */
-    --accent-foreground: 0 0% 98%;
+    --muted: var(--dark-2);
+    --muted-foreground: var(--light-2);
 
-    --destructive: 348 83% 47%;
-    --destructive-foreground: 0 0% 98%;
+    --accent: var(--red-1);
+    --accent-foreground: var(--light-1);
 
-    --border: 0 0% 8%; /* Bordes negros duros */
-    --input: 0 0% 8%;
-    --ring: 348 83% 47%;
+    --destructive: var(--red-1);
+    --destructive-foreground: var(--light-1);
 
-    --radius: 0.125rem; /* Sin border-radius: BRUTAL */
+    /* Bordes sutiles - bajo contraste con fondo */
+    --border: 0 0% 20%;       /* Gris oscuro sutil */
+    --input: 0 0% 20%;
+    --ring: var(--red-1);
 
-    /* Border widths - editables desde tokens */
-    --border-width-none: 0px;
-    --border-width-default: 1px;
-    --border-width-thin: 1px;
-    --border-width-thick: 2px;
-    --border-width-brutal: 1px;
+    /* Sin border-radius: BRUTAL */
+    --radius: 0rem;
 
-    /* Grises Brutales */
-    --gray-dark: 0 0% 15%; /* #262626 */
-    --gray-medium: 0 0% 40%; /* #666666 */
-    --gray-light: 0 0% 70%; /* #B3B3B3 */
-    --gray-lighter: 0 0% 90%; /* #E5E5E5 */
+    /* Espesores de línea */
+    --border-width-button: 1px;    /* Botones y etiquetas */
+    --border-width-subtle: 0.5px;  /* Otras líneas */
 
-    /* Sombras Brutales - Duras y sin blur pero sutiles */
-    --shadow-brutal: 4px 4px 0 hsl(0 0% 8%);
-    --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 8%);
-    --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 8%);
-    --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
+    /* Grises (simplificados) */
+    --gray-dark: var(--dark-2);
+    --gray-medium: var(--light-2);
+    --gray-light: var(--light-2);
+    --gray-lighter: var(--light-1);
 
-    /* Gradientes Brutales */
-    --gradient-primary: linear-gradient(135deg, hsl(348 83% 47%), hsl(343 100% 33%));
-    --gradient-hero: linear-gradient(135deg, hsl(0 0% 8% / 0.95), hsl(348 83% 47% / 0.85));
+    /* Sombras sutiles */
+    --shadow-brutal: 3px 3px 0 hsl(0 0% 20%);
+    --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 20%);
+    --shadow-brutal-lg: 5px 5px 0 hsl(0 0% 20%);
+    --shadow-brutal-red: 3px 3px 0 hsl(var(--red-1));
 
-    /* Degradado Plateado Sutil para Bordes */
-    --border-gradient-silver: linear-gradient(135deg, #e5e7eb, #9ca3af);
-    --border-gradient-silver-vertical: linear-gradient(180deg, #e5e7eb, #9ca3af);
+    /* Gradientes */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--red-1)), hsl(var(--red-2)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--dark-1) / 0.95), hsl(var(--red-1) / 0.7));
 
-    /* Transiciones Brutales - Instantáneas o mecánicas */
-    --transition-brutal: all 0.1s linear;
-    --transition-none: none;
-    --shadow-sm: 3px 5px 7.5px -1px hsl(240, 4%, 46%);
-    --shadow: 3px 5px 15px -1px hsl(240, 4%, 46%);
-    --shadow-md: 3px 5px 22.5px -1px hsl(240, 4%, 46%);
-    --shadow-lg: 3px 5px 37.5px -1px hsl(240, 4%, 46%);
-    --font-sans: Roboto, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-    --font-serif: Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
-    --font-mono: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+    /* Transiciones */
+    --transition-brutal: all 0.15s ease-out;
+
+    /* Tipografía */
+    --font-sans: Roboto, ui-sans-serif, system-ui, sans-serif;
+    --font-serif: Lora, ui-serif, Georgia, serif;
+    --font-mono: "Roboto Mono", ui-monospace, monospace;
   }
 
-  .dark {
-    /* BRUTALISMO 2026 - Modo Oscuro */
-    --background: 0 0% 8%; /* #141414 Negro brutal */
-    --foreground: 0 0% 98%; /* #FAFAFA */
+  /* MODO CLARO */
+  .light {
+    /* Neutros invertidos */
+    --background: 0 0% 97%;   /* #F7F7F7 */
+    --foreground: 0 0% 10%;   /* #1A1A1A */
 
-    --card: 0 0% 12%; /* #1F1F1F */
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 100%;        /* #FFFFFF */
+    --card-foreground: 0 0% 10%;
 
-    --popover: 0 0% 12%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 348 83% 47%; /* #DC143C */
-    --primary-foreground: 0 0% 98%;
-    --primary-hover: 343 100% 33%;
-    --primary-light: 355 82% 60%;
-    --primary-dark: 343 100% 22%;
+    --primary: var(--red-1);
+    --primary-foreground: 0 0% 97%;
+    --primary-hover: var(--red-2);
 
-    --secondary: 0 0% 20%; /* Gris oscuro */
-    --secondary-foreground: 0 0% 98%;
-    --secondary-hover: 0 0% 15%;
+    --secondary: 0 0% 92%;    /* #EBEBEB */
+    --secondary-foreground: 0 0% 10%;
+    --secondary-hover: 0 0% 85%;
 
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 70%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 348 83% 47%; /* Rojo para acentos */
-    --accent-foreground: 0 0% 98%;
+    --accent: var(--red-1);
+    --accent-foreground: 0 0% 97%;
 
-    --destructive: 348 83% 47%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: var(--red-1);
+    --destructive-foreground: 0 0% 97%;
 
-    --border: 0 0% 98%; /* Bordes blancos en oscuro */
-    --input: 0 0% 98%;
-    --ring: 348 83% 47%;
+    /* Bordes sutiles - bajo contraste */
+    --border: 0 0% 85%;
+    --input: 0 0% 85%;
+    --ring: var(--red-1);
 
-    --gray-dark: 0 0% 15%;
-    --gray-medium: 0 0% 40%;
-    --gray-light: 0 0% 70%;
-    --gray-lighter: 0 0% 90%;
+    /* Grises para modo claro */
+    --gray-dark: 0 0% 20%;
+    --gray-medium: 0 0% 50%;
+    --gray-light: 0 0% 75%;
+    --gray-lighter: 0 0% 92%;
 
-    --shadow-brutal: 4px 4px 0 hsl(0 0% 98%);
-    --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 98%);
-    --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 98%);
-    --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
-
-    /* Degradado Plateado Sutil para Bordes - Modo Oscuro */
-    --border-gradient-silver: linear-gradient(135deg, #4b5563, #6b7280);
-    --border-gradient-silver-vertical: linear-gradient(180deg, #4b5563, #6b7280);
-    --radius: 0rem;
-    --shadow-sm: 0px 6px 1.5px 0px hsla(0, 0%, 0%, 0.1);
-    --shadow: 0px 6px 3px 0px hsla(0, 0%, 0%, 0.1);
-    --shadow-md: 0px 6px 4.5px 0px hsla(0, 0%, 0%, 0.1);
-    --shadow-lg: 0px 6px 7.5px 0px hsla(0, 0%, 0%, 0.1);
+    /* Sombras para modo claro */
+    --shadow-brutal: 3px 3px 0 hsl(0 0% 75%);
+    --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 75%);
+    --shadow-brutal-lg: 5px 5px 0 hsl(0 0% 75%);
+    --shadow-brutal-red: 3px 3px 0 hsl(var(--red-1));
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+    border-width: var(--border-width-subtle);
   }
 
   body {
@@ -173,10 +176,21 @@ All colors MUST be HSL.
   h3 {
     @apply text-3xl md:text-5xl;
   }
+
+  /* Botones y etiquetas: borde 1px */
+  button, 
+  [role="button"],
+  .badge,
+  .tag,
+  input,
+  textarea,
+  select {
+    border-width: var(--border-width-button);
+  }
 }
 
 @layer utilities {
-  /* Efectos Brutales */
+  /* Sombras */
   .shadow-brutal {
     box-shadow: var(--shadow-brutal);
   }
@@ -193,39 +207,29 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-brutal-red);
   }
 
+  /* Bordes */
   .border-brutal {
-    border-width: var(--border-width-brutal, 1px);
-    @apply border-foreground;
+    border-width: var(--border-width-button);
+    @apply border-border;
   }
 
-  /* Borde Degradado Plateado Sutil */
-  .border-silver-gradient {
-    border: 1px solid transparent;
-    background: 
-      linear-gradient(hsl(var(--background)), hsl(var(--background))) padding-box,
-      var(--border-gradient-silver) border-box;
+  .border-subtle {
+    border-width: var(--border-width-subtle);
+    @apply border-border;
   }
 
-  /* Separador con Degradado Plateado */
-  .separator-silver-gradient {
-    background-image: var(--border-gradient-silver);
-  }
-
+  /* Transiciones */
   .transition-brutal {
     transition: var(--transition-brutal);
   }
 
-  .transition-none {
-    transition: var(--transition-none);
-  }
-
-  /* Hover Brutales - Instantáneos */
+  /* Hover */
   .hover-brutal {
-    @apply transition-none hover:shadow-brutal;
+    @apply transition-brutal hover:shadow-brutal;
   }
 
   .hover-brutal-red {
-    @apply transition-none hover:shadow-brutal-red hover:-translate-x-1 hover:-translate-y-1;
+    @apply transition-brutal hover:shadow-brutal-red hover:-translate-x-1 hover:-translate-y-1;
   }
 
   /* Gradientes */
@@ -237,29 +241,12 @@ All colors MUST be HSL.
     background: var(--gradient-hero);
   }
 
-  .gradient-green {
-    background: var(--gradient-green);
-  }
-
-  /* Tipografía Brutal */
+  /* Tipografía */
   .text-brutal {
     @apply font-heading uppercase tracking-wider;
   }
 
-  .text-glitch {
-    animation: glitch 0.3s steps(5) infinite;
-  }
-
-  @keyframes glitch {
-    0% { transform: translate(0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(2px, -2px); }
-    60% { transform: translate(-2px, -2px); }
-    80% { transform: translate(2px, 2px); }
-    100% { transform: translate(0); }
-  }
-
-  /* Responsive Grid System 12/8/4 */
+  /* Grid Responsivo */
   .grid-responsive {
     display: grid;
     gap: 1rem;
@@ -279,7 +266,7 @@ All colors MUST be HSL.
     }
   }
 
-  /* Z-Index Layers */
+  /* Z-Index */
   .z-base { z-index: 1; }
   .z-content { z-index: 10; }
   .z-sticky { z-index: 20; }
@@ -287,7 +274,7 @@ All colors MUST be HSL.
   .z-modal { z-index: 100; }
   .z-toast { z-index: 200; }
 
-  /* Rich text editor styles */
+  /* Prose */
   .prose {
     @apply text-foreground;
   }
@@ -313,7 +300,8 @@ All colors MUST be HSL.
   }
 
   .prose img {
-    @apply rounded-none my-6 border-2 border-foreground;
+    @apply my-6;
+    border-width: var(--border-width-button);
   }
 
   .prose blockquote {
@@ -321,9 +309,9 @@ All colors MUST be HSL.
   }
 }
 
-/* React Quill editor styles */
+/* React Quill */
 .ql-toolbar {
-  @apply border-b-2 border-foreground bg-background rounded-t-none !important;
+  @apply border-b border-border bg-background rounded-t-none !important;
 }
 
 .ql-container {
@@ -334,7 +322,7 @@ All colors MUST be HSL.
   @apply min-h-[300px] text-foreground !important;
 }
 
-/* Hide scrollbar for category tabs */
+/* Scrollbar */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
