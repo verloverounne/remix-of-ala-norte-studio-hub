@@ -25,10 +25,10 @@ export const ServiceSection = forwardRef<HTMLElement, ServiceSectionProps>(({
   index
 }, ref) => {
   const isEven = index % 2 === 0;
-  return <section ref={ref} id={slug || id} className="min-h-[80vh] md:min-h-[90vh] flex items-center border-b-2 border-foreground/20 relative z-10 bg-background" style={{
+  return <section ref={ref} id={slug || id} className="min-h-[60vh] md:min-h-[70vh] flex items-center border-b-2 border-foreground/20 relative z-10 bg-background" style={{
     scrollMarginTop: "calc(40vh + 100px)"
   }}>
-      <div className="container mx-auto px-4 md:py-16 py-[16px]">
+      <div className="container mx-auto px-4 py-8 md:py-12">
         <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center ${isEven ? '' : 'md:grid-flow-dense'}`}>
           {/* Text content */}
           <div className={`space-y-6 ${isEven ? '' : 'md:col-start-2'}`}>
