@@ -87,11 +87,11 @@ export const ServicesHeroSlider = ({
   };
 
   return (
-    <div ref={heroRef}>
+    <div ref={heroRef} className="sticky top-0 z-30">
       {/* Fixed Navigation Bar - synced with header visibility */}
       <div 
         className={cn(
-          "fixed left-0 right-0 z-40 bg-background border-b-2 border-foreground transition-all duration-300",
+          "absolute left-0 right-0 z-40 bg-background border-b-2 border-foreground transition-all duration-300",
           (isHeaderVisible || isHeaderHovering) ? "top-16 sm:top-20" : "top-0"
         )}
       >
@@ -121,61 +121,61 @@ export const ServicesHeroSlider = ({
         </div>
       </div>
 
-      {/* Spacer for fixed nav */}
+      {/* Hero content with padding for nav bar */}
       <div className={cn(
         "transition-all duration-300",
-        (isHeaderVisible || isHeaderHovering) ? "h-[96px] sm:h-[132px]" : "h-[40px] sm:h-[52px]"
-      )} />
-
-      {/* Carousel slides */}
-      <section className="relative overflow-hidden">
-        <Carousel className="w-full" setApi={setApi}>
-          <CarouselContent className="-ml-0">
-            {services.map((service) => (
-              <CarouselItem key={service.id} className="pl-0 basis-full">
-                <div className="relative h-[40vh] sm:h-[45vh] overflow-hidden">
-                  {(service.hero_image_url || service.image_url) ? (
-                    <img
-                      src={service.hero_image_url || service.image_url || ""}
-                      alt={service.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />
-                  )}
-                  
-                  {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-transparent" />
-                  
-                  {/* Text overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center z-10 p-4 sm:p-8 max-w-4xl">
-                      <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-2 uppercase text-background drop-shadow-lg">
-                        {service.title}
-                      </h1>
-                      {service.description && (
-                        <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading drop-shadow-md max-w-2xl mx-auto">
-                          {service.description}
-                        </p>
-                      )}
+        (isHeaderVisible || isHeaderHovering) ? "pt-[96px] sm:pt-[132px]" : "pt-[40px] sm:pt-[52px]"
+      )}>
+        {/* Carousel slides */}
+        <section className="relative overflow-hidden">
+          <Carousel className="w-full" setApi={setApi}>
+            <CarouselContent className="-ml-0">
+              {services.map((service) => (
+                <CarouselItem key={service.id} className="pl-0 basis-full">
+                  <div className="relative h-[40vh] sm:h-[45vh] overflow-hidden">
+                    {(service.hero_image_url || service.image_url) ? (
+                      <img
+                        src={service.hero_image_url || service.image_url || ""}
+                        alt={service.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />
+                    )}
+                    
+                    {/* Overlay gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-transparent" />
+                    
+                    {/* Text overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center z-10 p-4 sm:p-8 max-w-4xl">
+                        <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-2 uppercase text-background drop-shadow-lg">
+                          {service.title}
+                        </h1>
+                        {service.description && (
+                          <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading drop-shadow-md max-w-2xl mx-auto">
+                            {service.description}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          
-          {/* Navigation arrows */}
-          {services.length > 1 && (
-            <>
-              <CarouselPrevious className="left-2 sm:left-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
-              <CarouselNext className="right-2 sm:right-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
-            </>
-          )}
-          
-          <ScrollIndicator className="text-background/80 hover:text-background" />
-        </Carousel>
-      </section>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            
+            {/* Navigation arrows */}
+            {services.length > 1 && (
+              <>
+                <CarouselPrevious className="left-2 sm:left-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
+                <CarouselNext className="right-2 sm:right-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
+              </>
+            )}
+            
+            <ScrollIndicator className="text-background/80 hover:text-background" />
+          </Carousel>
+        </section>
+      </div>
     </div>
   );
 };
