@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { LazyImage } from "@/components/LazyImage";
 import useEmblaCarousel from "embla-carousel-react";
+import type { EmblaCarouselType } from "embla-carousel";
 
 interface HomeService {
   id: string;
