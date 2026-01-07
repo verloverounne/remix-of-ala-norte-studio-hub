@@ -23,8 +23,8 @@ export const ServicesSection = () => {
   const [services, setServices] = useState<HomeService[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(true);
-  
-  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     align: "start",
     skipSnaps: false,
@@ -47,11 +47,14 @@ export const ServicesSection = () => {
     fetchServices();
   }, []);
 
-  const scrollTo = useCallback((index: number) => {
-    if (emblaApi) {
-      emblaApi.scrollTo(index);
-    }
-  }, [emblaApi]);
+  const scrollTo = useCallback(
+    (index: number) => {
+      if (emblaApi) {
+        emblaApi.scrollTo(index);
+      }
+    },
+    [emblaApi],
+  );
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -68,11 +71,11 @@ export const ServicesSection = () => {
 
   useEffect(() => {
     if (!emblaApi) return;
-    
+
     onSelect();
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
-    
+
     return () => {
       emblaApi.off("select", onSelect);
       emblaApi.off("reInit", onSelect);
@@ -101,11 +104,10 @@ export const ServicesSection = () => {
       {/* Section Header */}
       <div className="container mx-auto px-4 pt-12 pb-6 lg:pt-16 lg:pb-8">
         <div className="max-w-3xl">
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl uppercase mb-4">
-            Nuestros Servicios
-          </h2>
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl uppercase mb-4">Nuestros Servicios</h2>
           <p className="text-muted-foreground text-base sm:text-lg lg:text-xl leading-relaxed">
-            Soluciones integrales para producción audiovisual. Desde equipamiento profesional hasta espacios creativos y formación especializada.
+            Soluciones integrales para producción audiovisual. Desde equipamiento profesional hasta espacios creativos y
+            formación especializada.
           </p>
         </div>
       </div>
@@ -122,7 +124,7 @@ export const ServicesSection = () => {
                   "flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 font-heading text-xs sm:text-sm uppercase tracking-wider transition-all border-b-4 -mb-[4px] whitespace-nowrap",
                   activeIndex === index
                     ? "border-primary text-primary bg-primary/5"
-                    : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50",
                 )}
               >
                 {service.title}
@@ -137,17 +139,11 @@ export const ServicesSection = () => {
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex">
             {services.map((service, index) => (
-              <div
-                key={service.id}
-                className="flex-[0_0_100%] min-w-0"
-              >
-                <div className="container mx-auto px-8 py-24 lg:py-40">
+              <div key={service.id} className="flex-[0_0_100%] min-w-0">
+                <div className="container mx-auto px-8 py-8 lg:py-40">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[400px] lg:min-h-[500px]">
                     {/* Text Column */}
-                    <div className={cn(
-                      "order-2 lg:order-1",
-                      index % 2 === 1 && "lg:order-2"
-                    )}>
+                    <div className={cn("order-2 lg:order-1", index % 2 === 1 && "lg:order-2")}>
                       <div className="border-l-4 sm:border-l-8 border-primary pl-4 sm:pl-8 mb-6 sm:mb-8">
                         <span className="text-xs sm:text-sm font-heading text-muted-foreground uppercase tracking-wider">
                           Servicio {String(index + 1).padStart(2, "0")}
@@ -174,10 +170,7 @@ export const ServicesSection = () => {
                     </div>
 
                     {/* Image Column */}
-                    <div className={cn(
-                      "order-1 lg:order-2",
-                      index % 2 === 1 && "lg:order-1"
-                    )}>
+                    <div className={cn("order-1 lg:order-2", index % 2 === 1 && "lg:order-1")}>
                       <div className="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden border-4 border-foreground shadow-brutal">
                         {service.image_url ? (
                           <LazyImage
@@ -206,7 +199,7 @@ export const ServicesSection = () => {
           onClick={scrollPrev}
           className={cn(
             "absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-background border-4 border-foreground shadow-brutal transition-all hover:bg-muted",
-            activeIndex === 0 && "opacity-50 cursor-not-allowed"
+            activeIndex === 0 && "opacity-50 cursor-not-allowed",
           )}
           disabled={activeIndex === 0}
           aria-label="Anterior"
@@ -217,7 +210,7 @@ export const ServicesSection = () => {
           onClick={scrollNext}
           className={cn(
             "absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-background border-4 border-foreground shadow-brutal transition-all hover:bg-muted",
-            activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed"
+            activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed",
           )}
           disabled={activeIndex === services.length - 1}
           aria-label="Siguiente"
@@ -233,7 +226,7 @@ export const ServicesSection = () => {
               onClick={() => handleTabClick(index)}
               className={cn(
                 "w-3 h-3 border-2 border-foreground transition-all",
-                activeIndex === index ? "bg-primary" : "bg-transparent hover:bg-muted"
+                activeIndex === index ? "bg-primary" : "bg-transparent hover:bg-muted",
               )}
               aria-label={`Ir al slide ${index + 1}`}
             />
