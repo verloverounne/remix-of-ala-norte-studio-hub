@@ -2,6 +2,9 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ServicesHeroSlider } from "@/components/services/ServicesHeroSlider";
 import { ServiceSection } from "@/components/services/ServiceSection";
+import { WorkshopsSection } from "@/components/services/WorkshopsSection";
+import { TestimonialsSection } from "@/components/services/TestimonialsSection";
+import { ServicesCTASection } from "@/components/services/ServicesCTASection";
 import type { Json } from "@/integrations/supabase/types";
 
 interface HomeService {
@@ -171,6 +174,11 @@ const Servicios = () => {
           />
         ))}
       </div>
+
+      {/* Final sections */}
+      <WorkshopsSection />
+      <TestimonialsSection />
+      <ServicesCTASection />
     </div>
   );
 };
