@@ -32,8 +32,8 @@ export const ServiceSection = forwardRef<HTMLElement, ServiceSectionProps>(({
     <section 
       ref={ref}
       id={slug || id}
-      className="min-h-[80vh] md:min-h-[90vh] flex items-center border-b-2 border-foreground/20"
-      style={{ scrollMarginTop: "160px" }}
+      className="min-h-[80vh] md:min-h-[90vh] flex items-center border-b-2 border-foreground/20 relative z-10 bg-background"
+      style={{ scrollMarginTop: "calc(40vh + 100px)" }}
     >
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center ${isEven ? '' : 'md:grid-flow-dense'}`}>

@@ -65,18 +65,58 @@ const Servicios = () => {
     fetchServices();
   }, []);
 
-  // No IntersectionObserver - tab updates only on click (like Equipos)
+  // Track if scroll is triggered by click (to avoid fighting with IntersectionObserver)
+  const isScrollingFromClick = useRef(false);
+
+  // IntersectionObserver to update active tab on scroll
+  useEffect(() => {
+    if (services.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Don't update if user just clicked a tab
+        if (isScrollingFromClick.current) return;
+
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const serviceId = entry.target.getAttribute("data-service-id");
+            if (serviceId) {
+              setActiveServiceId(serviceId);
+            }
+          }
+        });
+      },
+      {
+        // Trigger when section reaches the top (below sticky hero)
+        rootMargin: "-200px 0px -60% 0px",
+        threshold: 0
+      }
+    );
+
+    sectionRefs.current.forEach((element) => {
+      observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, [services]);
 
   const handleServiceChange = useCallback((serviceId: string | null) => {
     if (!serviceId) return;
     
+    // Mark that we're scrolling from a click
+    isScrollingFromClick.current = true;
     setActiveServiceId(serviceId);
     
-    // Scroll to the corresponding section using scrollIntoView (like Equipos)
+    // Scroll to the corresponding section
     const element = sectionRefs.current.get(serviceId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
+
+    // Reset the flag after scroll animation completes
+    setTimeout(() => {
+      isScrollingFromClick.current = false;
+    }, 1000);
   }, []);
 
   const setSectionRef = (id: string) => (el: HTMLElement | null) => {
