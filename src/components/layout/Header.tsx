@@ -21,20 +21,27 @@ const navigation = [
 
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    // Detectar tema inicial: localStorage > clase HTML > preferencia del sistema > default dark
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
+      if (savedTheme) return savedTheme;
+      if (document.documentElement.classList.contains("dark")) return "dark";
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) return "dark";
+    }
+    return "dark"; // Default: dark mode
+  });
   const { isVisible, setIsVisible, isHovering, setIsHovering } = useHeaderVisibility();
   const location = useLocation();
   const navigate = useNavigate();
   const { totalItems } = useCart();
   const { user, isAdmin, signOut } = useAuth();
 
+  // Sincronizar tema con DOM al montar
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.classList.toggle("dark", savedTheme === "dark");
-    }
-  }, []);
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   // Keep visible when mobile menu is open
   useEffect(() => {
