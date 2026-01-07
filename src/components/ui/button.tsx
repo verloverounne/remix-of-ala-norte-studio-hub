@@ -5,17 +5,17 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-heading uppercase tracking-wider transition-all duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-border hover:scale-105",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-heading uppercase tracking-wider transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-2 border-foreground hover:scale-105 hover:backdrop-blur-sm",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary-hover hover:-translate-x-0.5 hover:-translate-y-0.5",
-        hero: "bg-primary text-primary-foreground hover:bg-primary-hover hover:-translate-x-1 hover:-translate-y-1 text-lg",
-        outline: "bg-transparent text-foreground hover:bg-muted",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-hover",
-        ghost: "border-0 hover:bg-muted",
+        default: "bg-primary text-primary-foreground hover:shadow-brutal hover:-translate-x-1 hover:-translate-y-1",
+        hero: "bg-primary text-primary-foreground shadow-brutal-lg hover:shadow-brutal-red hover:-translate-x-2 hover:-translate-y-2 text-lg",
+        outline: "bg-transparent text-foreground hover:bg-foreground hover:text-background",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-hover hover:shadow-brutal hover:-translate-x-1 hover:-translate-y-1",
+        ghost: "border-0 hover:bg-accent hover:text-accent-foreground",
         link: "border-0 text-primary underline-offset-4 hover:underline hover:text-primary-hover",
-        destructive: "bg-destructive text-destructive-foreground hover:opacity-90",
+        destructive: "bg-destructive text-destructive-foreground hover:shadow-brutal-red",
       },
       size: {
         default: "h-12 px-8 py-3",
