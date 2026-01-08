@@ -199,36 +199,38 @@ Contactar cliente para coordinar entrega/retiro.
           {/* Instrucciones */}
           <Card className="mb-6 sm:mb-8 border-2 sm:border-4 border-primary">
             <CardHeader className="bg-primary/10">
-              <CardTitle className="font-heading text-lg sm:text-xl lg:text-2xl">CÓMO RESERVAR</CardTitle>
+              <CardTitle className="font-heading text-lg sm:text-xl lg:text-2xl">Cómo funciona el alquiler en ALA NORTE</CardTitle>
+              <CardDescription>Buscamos que el proceso sea claro y sencillo, desde la consulta inicial hasta la devolución del equipo.</CardDescription>
             </CardHeader>
             <CardContent className="pt-4 sm:pt-6">
               <ol className="space-y-3 font-heading">
                 <li className="flex items-start gap-3">
                   <span className="font-bold text-primary text-xl">1.</span>
-                  <span>SELECCIONA TU EQUIPAMIENTO desde el catálogo y agrega las cantidades necesarias</span>
+                  <div>
+                    <span className="font-bold">Contanos tu proyecto</span>
+                    <p className="font-sans text-sm text-muted-foreground">Compartinos qué querés filmar, fechas, locaciones y equipo que tenés o necesitás.</p>
+                  </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="font-bold text-primary text-xl">2.</span>
-                  <span>INDICA LAS FECHAS DE RESERVA en el calendario (fecha inicio y fin)</span>
+                  <div>
+                    <span className="font-bold">Armamos una propuesta</span>
+                    <p className="font-sans text-sm text-muted-foreground">Te sugerimos un set de equipamiento en función de tu visión, tu presupuesto y la escala del rodaje.</p>
+                  </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="font-bold text-primary text-xl">3.</span>
-                  <span>SI NO ERES CLIENTE, <a 
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSf1JuBZQnlUe_-lGfKMzmaNI9386GKhpg32y54IpqBjpQk0hA/viewform"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary underline hover:no-underline font-bold"
-                  >
-                    REGÍSTRATE AQUÍ
-                  </a></span>
+                  <div>
+                    <span className="font-bold">Coordinamos retiro y devolución</span>
+                    <p className="font-sans text-sm text-muted-foreground">Definimos horarios, punto de entrega y condiciones de uso para que llegues al rodaje sin sorpresas.</p>
+                  </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="font-bold text-primary text-xl">4.</span>
-                  <span>COMPLETA EL FORMULARIO con tus datos de contacto</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="font-bold text-primary text-xl">5.</span>
-                  <span>ENVÍA TU COTIZACIÓN por WhatsApp o Email</span>
+                  <div>
+                    <span className="font-bold">Acompañamiento durante el rodaje</span>
+                    <p className="font-sans text-sm text-muted-foreground">Si surge alguna duda con el equipo, estamos disponibles para ayudarte a resolverla.</p>
+                  </div>
                 </li>
               </ol>
             </CardContent>
@@ -259,10 +261,10 @@ Contactar cliente para coordinar entrega/retiro.
                 {items.length === 0 ? (
                   <div className="text-center py-12 border-3 border-dashed border-foreground/20">
                     <ShoppingCart className="h-16 w-16 mx-auto mb-4 opacity-20" />
-                    <p className="font-heading text-xl mb-2">NO HAY EQUIPOS EN EL CARRITO</p>
-                    <p className="text-muted-foreground mb-4">Agrega equipos desde el catálogo</p>
+                    <p className="font-heading text-xl mb-2">Todavía no hay equipos en tu lista</p>
+                    <p className="text-muted-foreground mb-4">Explorá el catálogo y sumá lo que necesitás.</p>
                     <Button asChild>
-                      <a href="/equipos">VER EQUIPOS</a>
+                      <a href="/equipos">VER CATÁLOGO</a>
                     </Button>
                   </div>
                 ) : (

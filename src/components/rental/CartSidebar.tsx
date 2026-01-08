@@ -41,7 +41,7 @@ export const CartSidebar = ({
         {items.length === 0 ? (
           <div className="text-center py-8">
             <ShoppingCart className="w-12 h-12 mx-auto text-muted-foreground/40 mb-3" />
-            <p className="text-sm text-muted-foreground">Agregá equipos para cotizar</p>
+            <p className="text-sm text-muted-foreground">Todavía no hay equipos en tu lista. Explorá el catálogo y sumá lo que necesitás.</p>
           </div>
         ) : (
           <div className="space-y-3">

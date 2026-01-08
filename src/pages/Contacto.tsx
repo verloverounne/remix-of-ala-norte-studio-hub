@@ -28,8 +28,8 @@ const Contacto = () => {
 
     if (!formData.name || !formData.email || !formData.message) {
       toast({
-        title: "Error",
-        description: "Por favor completa todos los campos obligatorios.",
+        title: "Ups",
+        description: "Algo no funcionó. Verificá los datos e intentá de nuevo.",
         variant: "destructive",
       });
       return;
@@ -37,8 +37,8 @@ const Contacto = () => {
 
     // Here you would typically send the form data to a backend
     toast({
-      title: "Mensaje enviado",
-      description: "Nos pondremos en contacto contigo pronto.",
+      title: "¡Listo!",
+      description: "Tu consulta fue enviada. Te vamos a responder lo antes posible.",
     });
 
     // Reset form
@@ -65,10 +65,10 @@ const Contacto = () => {
       <section className="gradient-primary text-primary-foreground py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
-            Contacto
+            Hablemos de tu próximo rodaje
           </h1>
           <p className="text-xl md:text-2xl max-w-3xl mx-auto">
-            Estamos aquí para responder tus consultas y ayudarte con tu proyecto
+            Completá el formulario con algunos datos de tu proyecto y te respondemos con una propuesta de equipamiento y presupuesto.
           </p>
         </div>
       </section>
@@ -82,14 +82,14 @@ const Contacto = () => {
               <CardHeader>
                 <CardTitle className="text-2xl">Envíanos un mensaje</CardTitle>
                 <CardDescription>
-                  Completa el formulario y te responderemos a la brevedad
+                  Completá el formulario y te respondemos a la brevedad
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="name">
-                      Nombre completo <span className="text-destructive">*</span>
+                      Tu nombre <span className="text-destructive">*</span>
                     </Label>
                     <Input
                       id="name"
@@ -103,7 +103,7 @@ const Contacto = () => {
 
                   <div className="space-y-2">
                     <Label htmlFor="email">
-                      Email <span className="text-destructive">*</span>
+                      Tu mail de contacto <span className="text-destructive">*</span>
                     </Label>
                     <Input
                       id="email"
@@ -130,14 +130,14 @@ const Contacto = () => {
 
                   <div className="space-y-2">
                     <Label htmlFor="message">
-                      Mensaje <span className="text-destructive">*</span>
+                      ¿Qué equipo tenés en mente o qué necesitás? <span className="text-destructive">*</span>
                     </Label>
                     <Textarea
                       id="message"
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Cuéntanos en qué podemos ayudarte..."
+                      placeholder="Contanos brevemente de qué se trata tu proyecto..."
                       rows={6}
                       required
                     />

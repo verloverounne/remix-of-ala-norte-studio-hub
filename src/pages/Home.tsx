@@ -94,17 +94,13 @@ const Home = () => {
         <div className="container mx-auto px-4 relative">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-4 sm:mb-6 lg:mb-8">
-              ¿LISTO PARA TU
-              <br />
-              PRÓXIMO PROYECTO?
+              ¿Estás por encarar un rodaje?
             </h2>
             <p className="text-base sm:text-lg lg:text-2xl mb-6 sm:mb-8 lg:mb-12 font-heading">
-              OBTÉN UNA COTIZACIÓN PERSONALIZADA EN MINUTOS.
-              <br className="hidden sm:block" />
-              NUESTRO EQUIPO ESTÁ LISTO PARA AYUDARTE.
+              Contanos qué querés filmar y armamos una propuesta de equipamiento a medida.
             </p>
             <Button asChild variant="outline" size="lg" className="bg-background text-foreground">
-              <Link to="/cotizador">COTIZAR PROYECTO</Link>
+              <Link to="/cotizador">Hablemos de tu proyecto</Link>
             </Button>
           </div>
         </div>

@@ -12,7 +12,7 @@ export const Footer = () => {
               ALA NORTE
             </h3>
             <p className="text-sm opacity-80">
-              Rental audiovisual y productora profesional. Espacios, equipos y servicios de primer nivel.
+              ALA NORTE es un estudio de rental audiovisual en Buenos Aires. Te acompañamos con equipamiento y asesoramiento técnico para que tus proyectos lleguen a rodaje como los imaginaste.
             </p>
           </div>
 

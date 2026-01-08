@@ -104,10 +104,9 @@ export const ServicesSection = () => {
       {/* Section Header */}
       <div className="container mx-auto px-4 pt-12 pb-6 lg:pt-16 lg:pb-8">
         <div className="max-w-3xl">
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl uppercase mb-4">Nuestros Servicios</h2>
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl uppercase mb-4">Alquiler de equipamiento audiovisual profesional</h2>
           <p className="text-muted-foreground text-base sm:text-lg lg:text-xl leading-relaxed">
-            Soluciones integrales para producción audiovisual. Desde equipamiento profesional hasta espacios creativos y
-            formación especializada.
+            Ya seas estudiante, realizador independiente, productor o creativo audiovisual, tenés a disposición cámaras, luces, sonido y accesorios pensados para rodajes chicos, medianos y grandes.
           </p>
         </div>
       </div>
