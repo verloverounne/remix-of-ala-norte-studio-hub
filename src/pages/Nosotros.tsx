@@ -71,11 +71,10 @@ const Nosotros = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-4 sm:mb-6 tracking-tight">
-              SOMOS ALA NORTE CINE DIGITAL
+              Un estudio pensado para realizadores
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
-              Una casa de alquiler de equipos audiovisuales comprometida con la calidad, 
-              el servicio y el crecimiento de la industria cinematográfica argentina.
+              ALA NORTE nace del trabajo en rodajes reales. Sabemos lo que pasa en set y qué se necesita para llegar con tranquilidad al día de filmación.
             </p>
           </div>
         </div>
@@ -86,23 +85,17 @@ const Nosotros = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="font-heading text-3xl md:text-4xl mb-8 text-center">
-              NUESTRA HISTORIA
+              Más que equipo, acompañamiento
             </h2>
             <div className="prose prose-lg max-w-none">
               <p className="text-lg text-muted-foreground mb-4">
-                Ala Norte nació en 2015 con una misión clara: democratizar el acceso a equipamiento 
-                audiovisual profesional en Argentina. Lo que comenzó como un pequeño inventario de 
-                cámaras y luces, hoy es uno de los parques de equipos más completos del país.
+                No solo alquilamos equipamiento audiovisual. Nos interesa entender tu proyecto, sugerir alternativas y ayudarte a tomar decisiones técnicas con criterio.
               </p>
               <p className="text-lg text-muted-foreground mb-4">
-                Durante estos años, hemos trabajado con producciones de todos los tamaños: desde 
-                estudiantes filmando su primer cortometraje hasta grandes producciones nacionales 
-                e internacionales. Cada proyecto nos enseña algo nuevo y nos motiva a seguir creciendo.
+                Trabajamos con personas que están empezando y con equipos con experiencia. Lo importante es que tengas una historia que quieras contar.
               </p>
               <p className="text-lg text-muted-foreground">
-                Hoy, Ala Norte no es solo una casa de rental. Es un punto de encuentro para 
-                cineastas, un espacio de formación técnica y una red federal que conecta proyectos 
-                de todo el país.
+                Te ayudamos a elegir el equipo que mejor se adapta a tu proyecto, a tu presupuesto y a tu forma de trabajar. Podés consultarnos antes, durante y después del rodaje.
               </p>
             </div>
           </div>

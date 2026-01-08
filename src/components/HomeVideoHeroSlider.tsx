@@ -18,10 +18,10 @@ interface VideoSlide {
 // Configuración estática de los slides del hero
 const heroSlides = [{
   id: 1,
-  title: "SOMOS MAS QUE UN RENTAL",
-  subtitle: "En Ala Norte cada rodaje tiene su propia historia.",
+  title: "ALA NORTE · Equipamiento audiovisual para tus rodajes",
+  subtitle: "Si estás buscando alquilar equipamiento audiovisual profesional, podemos ayudarte a materializar tu visión. Trabajamos codo a codo con vos en cada proyecto.",
   cta: {
-    label: "VER EQUIPOS",
+    label: "Explorá el catálogo",
     link: "/equipos"
   }
 }, {
