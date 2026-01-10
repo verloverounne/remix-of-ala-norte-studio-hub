@@ -14,10 +14,7 @@ import { Search, Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import {
-  Collapsible,
-  CollapsibleContent,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
 
 interface HeroSlide {
@@ -56,8 +53,8 @@ interface HeroCarouselRentalProps {
   navBarRef?: React.RefObject<HTMLDivElement>;
 }
 
-export const HeroCarouselRental = ({ 
-  onCategoryChange, 
+export const HeroCarouselRental = ({
+  onCategoryChange,
   categories,
   activeCategory,
   equipmentCounts,
@@ -67,7 +64,7 @@ export const HeroCarouselRental = ({
   onSubcategoriesChange,
   onClearFilters,
   hasActiveFilters,
-  navBarRef
+  navBarRef,
 }: HeroCarouselRentalProps) => {
   // Map of category_id -> slide with background media from admin
   const [categoryBackgrounds, setCategoryBackgrounds] = useState<Record<string, HeroSlide>>({});
@@ -76,14 +73,14 @@ export const HeroCarouselRental = ({
   const [loading, setLoading] = useState(true);
   const heroRef = useRef<HTMLDivElement>(null);
   const { isVisible: isHeaderVisible, isHovering: isHeaderHovering } = useHeaderVisibility();
-  
+
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const filterRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
 
   // Fetch background media for each category from admin
@@ -97,7 +94,7 @@ export const HeroCarouselRental = ({
 
       if (!error && data) {
         const bgMap: Record<string, HeroSlide> = {};
-        data.forEach(slide => {
+        data.forEach((slide) => {
           if (slide.category_id) {
             bgMap[slide.category_id] = slide;
           }
@@ -113,11 +110,8 @@ export const HeroCarouselRental = ({
   // Fetch subcategories
   useEffect(() => {
     const fetchSubcategories = async () => {
-      const { data } = await supabase
-        .from("subcategories")
-        .select("*")
-        .order("order_index");
-      
+      const { data } = await supabase.from("subcategories").select("*").order("order_index");
+
       if (data) {
         setSubcategories(data);
       }
@@ -148,7 +142,7 @@ export const HeroCarouselRental = ({
     const handleSelect = () => {
       const index = api.selectedScrollSnap();
       setCurrentSlide(index);
-      
+
       if (categories[index]) {
         onCategoryChange?.(categories[index].id);
       }
@@ -163,18 +157,18 @@ export const HeroCarouselRental = ({
   // Sync carousel with external category changes
   useEffect(() => {
     if (!api || !activeCategory || categories.length === 0) return;
-    
+
     try {
       if (!api.scrollSnapList || api.scrollSnapList().length === 0) {
         return;
       }
-      
-      const slideIndex = categories.findIndex(c => c.id === activeCategory);
+
+      const slideIndex = categories.findIndex((c) => c.id === activeCategory);
       if (slideIndex !== -1 && slideIndex !== currentSlide) {
         api.scrollTo(slideIndex);
       }
     } catch (error) {
-      console.debug('Carousel API not ready yet');
+      console.debug("Carousel API not ready yet");
     }
   }, [activeCategory, api, categories, currentSlide]);
 
@@ -183,18 +177,18 @@ export const HeroCarouselRental = ({
   };
 
   const handleChipClick = (categoryId: string, index: number) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
     scrollToSlide(index);
     onCategoryChange?.(categoryId);
   };
 
   const filteredSubcategories = activeCategory
-    ? subcategories.filter(sub => sub.category_id === activeCategory)
+    ? subcategories.filter((sub) => sub.category_id === activeCategory)
     : subcategories;
 
   const toggleSubcategory = (id: string) => {
     if (selectedSubcategories.includes(id)) {
-      onSubcategoriesChange(selectedSubcategories.filter(s => s !== id));
+      onSubcategoriesChange(selectedSubcategories.filter((s) => s !== id));
     } else {
       onSubcategoriesChange([...selectedSubcategories, id]);
     }
@@ -215,11 +209,11 @@ export const HeroCarouselRental = ({
   return (
     <div ref={heroRef}>
       {/* Fixed Navigation Bar */}
-      <div 
+      <div
         ref={navBarRef}
         className={cn(
           "fixed left-0 right-0 z-40 bg-background border-b border-foreground transition-all duration-300",
-          (isHeaderVisible || isHeaderHovering) ? "top-16 sm:top-20" : "top-0"
+          isHeaderVisible || isHeaderHovering ? "top-16 sm:top-20" : "top-0",
         )}
       >
         <div className="container mx-auto px-2 sm:px-4">
@@ -229,24 +223,26 @@ export const HeroCarouselRental = ({
               {categories.map((category, index) => {
                 const count = equipmentCounts[category.id] || 0;
                 const isActive = index === currentSlide;
-                
+
                 return (
                   <button
                     key={category.id}
                     onClick={() => handleChipClick(category.id, index)}
                     className={cn(
                       "flex-shrink-0 px-2 py-1 sm:px-3 sm:py-1.5 font-heading text-[10px] sm:text-xs uppercase border transition-all whitespace-nowrap",
-                      isActive 
-                        ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm" 
-                        : "bg-background text-foreground border-foreground hover:bg-muted"
+                      isActive
+                        ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm"
+                        : "bg-background text-foreground border-foreground hover:bg-muted",
                     )}
                   >
                     <span>{category.name}</span>
                     {count > 0 && (
-                      <span className={cn(
-                        "ml-1 sm:ml-1.5 text-[9px] sm:text-[10px]",
-                        isActive ? "text-primary-foreground/80" : "text-muted-foreground"
-                      )}>
+                      <span
+                        className={cn(
+                          "ml-1 sm:ml-1.5 text-[9px] sm:text-[10px]",
+                          isActive ? "text-primary-foreground/80" : "text-muted-foreground",
+                        )}
+                      >
                         ({count})
                       </span>
                     )}
@@ -264,12 +260,12 @@ export const HeroCarouselRental = ({
                 }}
                 className={cn(
                   "border-2 border-foreground h-7 w-7 sm:h-9 sm:w-9 p-0 flex-shrink-0",
-                  isSearchOpen && "bg-primary text-primary-foreground border-primary"
+                  isSearchOpen && "bg-primary text-primary-foreground border-primary",
                 )}
               >
                 {isSearchOpen ? <X className="h-3 w-3 sm:h-4 sm:w-4" /> : <Search className="h-3 w-3 sm:h-4 sm:w-4" />}
               </Button>
-              
+
               {/* Filter button */}
               <Button
                 variant="outline"
@@ -280,7 +276,7 @@ export const HeroCarouselRental = ({
                 }}
                 className={cn(
                   "border-2 border-foreground h-7 sm:h-9 px-2 flex-shrink-0",
-                  isFilterOpen && "bg-primary text-primary-foreground border-primary"
+                  isFilterOpen && "bg-primary text-primary-foreground border-primary",
                 )}
               >
                 <Filter className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -293,12 +289,7 @@ export const HeroCarouselRental = ({
 
               {/* Clear filters */}
               {hasActiveFilters && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={onClearFilters}
-                  className="h-7 sm:h-9 px-1.5 flex-shrink-0"
-                >
+                <Button variant="ghost" size="sm" onClick={onClearFilters} className="h-7 sm:h-9 px-1.5 flex-shrink-0">
                   <X className="h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
               )}
@@ -320,10 +311,7 @@ export const HeroCarouselRental = ({
                     autoFocus
                   />
                   {searchTerm && (
-                    <button 
-                      onClick={() => onSearchChange("")}
-                      className="absolute right-2 top-1/2 -translate-y-1/2"
-                    >
+                    <button onClick={() => onSearchChange("")} className="absolute right-2 top-1/2 -translate-y-1/2">
                       <X className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground hover:text-foreground" />
                     </button>
                   )}
@@ -365,10 +353,12 @@ export const HeroCarouselRental = ({
       </div>
 
       {/* Spacer for fixed nav */}
-      <div className={cn(
-        "transition-all duration-300",
-        (isHeaderVisible || isHeaderHovering) ? "h-[96px] sm:h-[132px]" : "h-[40px] sm:h-[52px]"
-      )} />
+      <div
+        className={cn(
+          "transition-all duration-300",
+          isHeaderVisible || isHeaderHovering ? "h-[96px] sm:h-[132px]" : "h-[40px] sm:h-[52px]",
+        )}
+      />
 
       {/* Carousel slides - one per category, using backgrounds from admin */}
       <section className="relative overflow-hidden">
@@ -376,11 +366,11 @@ export const HeroCarouselRental = ({
           <CarouselContent className="-ml-0">
             {categories.map((category) => {
               const bg = getBackgroundForCategory(category.id);
-              
+
               return (
                 <CarouselItem key={category.id} className="pl-0 basis-full">
                   <div className="relative h-[40vh] sm:h-[45vh] overflow-hidden">
-                    {bg?.media_type === 'video' && bg.image_url ? (
+                    {bg?.media_type === "video" && bg.image_url ? (
                       <video
                         src={bg.image_url}
                         className="w-full h-full object-cover"
@@ -390,17 +380,13 @@ export const HeroCarouselRental = ({
                         playsInline
                       />
                     ) : bg?.image_url ? (
-                      <img
-                        src={bg.image_url}
-                        alt={category.name}
-                        className="w-full h-full object-cover"
-                      />
+                      <img src={bg.image_url} alt={category.name} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />
                     )}
-                    
+
                     {/* Overlay gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-transparent" />
+                    {/*<div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-transparent" />
                     
                     {/* Text overlay */}
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -420,7 +406,7 @@ export const HeroCarouselRental = ({
               );
             })}
           </CarouselContent>
-          
+
           {/* Navigation arrows */}
           {categories.length > 1 && (
             <>
@@ -428,7 +414,7 @@ export const HeroCarouselRental = ({
               <CarouselNext className="right-2 sm:right-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
             </>
           )}
-          
+
           {/* Scroll indicator */}
           <ScrollIndicator className="text-background/80 hover:text-background" />
         </Carousel>
