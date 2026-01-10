@@ -94,7 +94,7 @@ export const VideoHeroSlider = ({ pageType, space }: VideoHeroSliderProps) => {
                   ref={el => videoRefs.current[index] = el}
                   src={video.video_url}
                   className="w-full h-full object-cover"
-                  autoPlay={index === 0}
+                  autoPlay
                   loop
                   muted={muted}
                   playsInline
