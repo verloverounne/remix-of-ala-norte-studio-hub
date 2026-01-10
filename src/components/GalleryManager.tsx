@@ -7,13 +7,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Trash2, GripVertical, Image as ImageIcon, Upload, Loader2 } from "lucide-react";
+import { Plus, Trash2, GripVertical, Image as ImageIcon, Upload, Loader2, Video } from "lucide-react";
 import { StorageImageSelector } from "@/components/StorageImageSelector";
 
 interface GalleryImage {
   id: string;
   page_type: 'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental' | 'producciones' | 'galeria_hero' | 'sala_grabacion_hero' | 'home_hero';
   image_url: string;
+  media_type: 'image' | 'video';
   title: string | null;
   description: string | null;
   order_index: number;
@@ -29,6 +30,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
   const [selectedPageType, setSelectedPageType] = useState<'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental' | 'producciones' | 'galeria_hero' | 'sala_grabacion_hero' | 'home_hero'>('galeria');
   const [newImage, setNewImage] = useState({
     image_url: "",
+    media_type: "image" as 'image' | 'video',
     title: "",
     description: "",
   });
@@ -49,13 +51,17 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!file.type.startsWith("image/")) {
-      toast({ title: "Solo se permiten imágenes", variant: "destructive" });
+    const isImage = file.type.startsWith("image/");
+    const isVideo = file.type.startsWith("video/");
+    
+    if (!isImage && !isVideo) {
+      toast({ title: "Solo se permiten imágenes o videos", variant: "destructive" });
       return;
     }
 
-    if (file.size > 10 * 1024 * 1024) {
-      toast({ title: "El tamaño máximo es 10MB", variant: "destructive" });
+    const maxSize = isVideo ? 100 * 1024 * 1024 : 10 * 1024 * 1024; // 100MB for video, 10MB for images
+    if (file.size > maxSize) {
+      toast({ title: `El tamaño máximo es ${isVideo ? '100MB' : '10MB'}`, variant: "destructive" });
       return;
     }
 
@@ -74,8 +80,12 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
 
       const url = `https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/${fileName}`;
       
-      toast({ title: "Imagen subida correctamente" });
-      setNewImage(prev => ({ ...prev, image_url: url }));
+      toast({ title: file.type.startsWith("video/") ? "Video subido correctamente" : "Imagen subida correctamente" });
+      setNewImage(prev => ({ 
+        ...prev, 
+        image_url: url,
+        media_type: file.type.startsWith("video/") ? 'video' : 'image'
+      }));
     } catch (error: any) {
       toast({ title: "Error al subir", description: error.message, variant: "destructive" });
     } finally {
@@ -115,6 +125,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
       .insert({
         page_type: selectedPageType,
         image_url: newImage.image_url,
+        media_type: newImage.media_type,
         title: newImage.title || null,
         description: newImage.description || null,
         order_index: maxOrder,
@@ -123,8 +134,8 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
     if (error) {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "✓ IMAGEN AGREGADA" });
-      setNewImage({ image_url: "", title: "", description: "" });
+      toast({ title: "✓ MEDIA AGREGADO" });
+      setNewImage({ image_url: "", media_type: "image", title: "", description: "" });
       fetchImages();
       onRefresh?.();
     }
@@ -223,28 +234,53 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
         </CardContent>
       </Card>
 
-      {/* Add New Image */}
+      {/* Add New Media */}
       <Card>
         <CardHeader>
-          <CardTitle>Agregar Nueva Imagen</CardTitle>
-          <CardDescription>Agrega imágenes al carrusel de {pageTypeLabels[selectedPageType]}</CardDescription>
+          <CardTitle>Agregar Nuevo Media</CardTitle>
+          <CardDescription>Agrega imágenes o videos al carrusel de {pageTypeLabels[selectedPageType]}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Media Type Selector */}
             <div className="space-y-2 md:col-span-2">
-              <Label>Imagen *</Label>
+              <Label>Tipo de Media *</Label>
+              <Select 
+                value={newImage.media_type} 
+                onValueChange={(v) => setNewImage({ ...newImage, media_type: v as 'image' | 'video' })}
+              >
+                <SelectTrigger className="w-[200px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="image">🖼️ Imagen</SelectItem>
+                  <SelectItem value="video">🎬 Video MP4</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2 md:col-span-2">
+              <Label>{newImage.media_type === 'video' ? 'Video URL *' : 'Imagen *'}</Label>
               <div className="flex gap-2">
                 <div className="flex-1">
-                  <StorageImageSelector 
-                    value={newImage.image_url} 
-                    onChange={(url) => setNewImage({ ...newImage, image_url: url })}
-                    placeholder="Seleccionar imagen del storage..."
-                  />
+                  {newImage.media_type === 'image' ? (
+                    <StorageImageSelector 
+                      value={newImage.image_url} 
+                      onChange={(url) => setNewImage({ ...newImage, image_url: url })}
+                      placeholder="Seleccionar imagen del storage..."
+                    />
+                  ) : (
+                    <Input
+                      value={newImage.image_url}
+                      onChange={(e) => setNewImage({ ...newImage, image_url: e.target.value })}
+                      placeholder="URL del video MP4 o sube uno nuevo..."
+                    />
+                  )}
                 </div>
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept="image/*"
+                  accept={newImage.media_type === 'video' ? "video/mp4,video/webm,video/mov" : "image/*"}
                   onChange={handleFileUpload}
                   className="hidden"
                 />
@@ -268,7 +304,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
               <Input 
                 value={newImage.title}
                 onChange={(e) => setNewImage({ ...newImage, title: e.target.value })}
-                placeholder="Título de la imagen"
+                placeholder="Título"
               />
             </div>
             <div className="space-y-2">
@@ -311,15 +347,42 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
                     <span className="text-sm font-mono">{index + 1}</span>
                   </div>
                   
-                  <div className="w-24 h-24 flex-shrink-0 overflow-hidden rounded border">
-                    <img 
-                      src={img.image_url} 
-                      alt={img.title || "Imagen"} 
-                      className="w-full h-full object-cover"
-                    />
+                  {/* Media Preview */}
+                  <div className="w-24 h-24 flex-shrink-0 overflow-hidden rounded border relative">
+                    {img.media_type === 'video' ? (
+                      <>
+                        <video 
+                          src={img.image_url} 
+                          className="w-full h-full object-cover"
+                          muted
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-foreground/40">
+                          <Video className="h-6 w-6 text-background" />
+                        </div>
+                      </>
+                    ) : (
+                      <img 
+                        src={img.image_url} 
+                        alt={img.title || "Imagen"} 
+                        className="w-full h-full object-cover"
+                      />
+                    )}
                   </div>
                   
-                  <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
+                  <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-2">
+                    {/* Media Type Selector */}
+                    <Select 
+                      value={img.media_type || 'image'} 
+                      onValueChange={(v) => handleUpdateImage(img.id, { media_type: v as 'image' | 'video' })}
+                    >
+                      <SelectTrigger className="h-9">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="image">🖼️ Imagen</SelectItem>
+                        <SelectItem value="video">🎬 Video</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <Input 
                       placeholder="Título"
                       value={img.title || ""}
@@ -330,6 +393,14 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
                       value={img.description || ""}
                       onChange={(e) => handleUpdateImage(img.id, { description: e.target.value || null })}
                     />
+                    <div className="flex items-center gap-2 md:col-span-2">
+                      <Label className="text-xs text-muted-foreground whitespace-nowrap">URL:</Label>
+                      <Input 
+                        className="flex-1 text-xs"
+                        value={img.image_url}
+                        onChange={(e) => handleUpdateImage(img.id, { image_url: e.target.value })}
+                      />
+                    </div>
                     <div className="flex items-center gap-2">
                       <Label className="text-xs text-muted-foreground whitespace-nowrap">Orden:</Label>
                       <Input 
