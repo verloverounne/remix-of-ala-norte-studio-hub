@@ -118,7 +118,7 @@ export const HomeVideoHeroSlider = () => {
                     src={slide.video_url}
                     className="w-full h-full object-cover transition-[filter] duration-300 ease-out"
                     style={{
-                      filter: "blur(5px)",
+                      filter: "blur(0px)",
                     }}
                     autoPlay
                     loop
@@ -130,7 +130,7 @@ export const HomeVideoHeroSlider = () => {
                     }}
                     onMouseLeave={(e) => {
                       const video = e.currentTarget;
-                      video.style.filter = "blur(5px)";
+                      video.style.filter = "blur(0px)";
                     }}
                   />
                 ) : (
