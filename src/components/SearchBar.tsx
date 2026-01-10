@@ -182,8 +182,8 @@ export const SearchBar = () => {
           <Search className="h-4 w-4 sm:h-5 sm:w-5" />
         </Button>
       ) : (
-        <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 top-20 sm:top-0 w-auto sm:w-80 md:w-96 bg-background border-2 border-foreground shadow-brutal-lg z-50">
-          <div className="flex items-center gap-2 p-3 border-b-2 border-foreground">
+        <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 top-20 sm:top-0 w-auto sm:w-80 md:w-96 bg-background border border-foreground shadow-brutal-lg z-50">
+          <div className="flex items-center gap-2 p-3 border-b border-foreground">
             <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
             <Input
               ref={inputRef}

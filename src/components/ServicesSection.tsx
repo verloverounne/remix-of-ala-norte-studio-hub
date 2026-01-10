@@ -89,7 +89,7 @@ export const ServicesSection = () => {
 
   if (loading) {
     return (
-      <section className="min-h-[500px] lg:min-h-[700px] bg-muted/30 flex items-center justify-center border-y-4 border-foreground">
+      <section className="min-h-[500px] lg:min-h-[700px] bg-muted/30 flex items-center justify-center border-y border-foreground">
         <div className="animate-pulse font-heading text-xl">Cargando servicios...</div>
       </section>
     );
@@ -100,7 +100,7 @@ export const ServicesSection = () => {
   }
 
   return (
-    <section className="relative border-y-4 border-foreground bg-background">
+    <section className="relative border-y border-foreground bg-background">
       {/* Section Header */}
       <div className="container mx-auto px-4 pt-12 pb-6 lg:pt-16 lg:pb-8">
         <div className="max-w-3xl">
@@ -112,7 +112,7 @@ export const ServicesSection = () => {
       </div>
 
       {/* Tab Navigation */}
-      <div className="sticky top-0 z-30 bg-background border-y-4 border-foreground">
+      <div className="sticky top-0 z-30 bg-background border-y border-foreground">
         <div className="container mx-auto px-4">
           <div className="flex overflow-x-auto scrollbar-hide py-0 gap-0">
             {services.map((service, index) => (
@@ -120,7 +120,7 @@ export const ServicesSection = () => {
                 key={service.id}
                 onClick={() => handleTabClick(index)}
                 className={cn(
-                  "flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 font-heading text-xs sm:text-sm uppercase tracking-wider transition-all border-b-4 -mb-[4px] whitespace-nowrap",
+                  "flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 font-heading text-xs sm:text-sm uppercase tracking-wider transition-all border-b -mb-[1px] whitespace-nowrap",
                   activeIndex === index
                     ? "border-primary text-primary bg-primary/5"
                     : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50",
@@ -143,7 +143,7 @@ export const ServicesSection = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[400px] lg:min-h-[500px]">
                     {/* Text Column */}
                     <div className={cn("order-2 lg:order-1", index % 2 === 1 && "lg:order-2")}>
-                      <div className="border-l-4 sm:border-l-8 border-primary pl-4 sm:pl-8 mb-6 sm:mb-8">
+                      <div className="border-l border-primary pl-4 sm:pl-8 mb-6 sm:mb-8">
                         <span className="text-xs sm:text-sm font-heading text-muted-foreground uppercase tracking-wider">
                           Servicio {String(index + 1).padStart(2, "0")}
                         </span>
@@ -170,7 +170,7 @@ export const ServicesSection = () => {
 
                     {/* Image Column */}
                     <div className={cn("order-1 lg:order-2", index % 2 === 1 && "lg:order-1")}>
-                      <div className="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden border-4 border-foreground shadow-brutal">
+                      <div className="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden border border-foreground shadow-brutal">
                         {service.image_url ? (
                           <LazyImage
                             src={service.image_url}
@@ -197,7 +197,7 @@ export const ServicesSection = () => {
         <button
           onClick={scrollPrev}
           className={cn(
-            "absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-background border-4 border-foreground shadow-brutal transition-all hover:bg-muted",
+            "absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-background border border-foreground shadow-brutal transition-all hover:bg-muted",
             activeIndex === 0 && "opacity-50 cursor-not-allowed",
           )}
           disabled={activeIndex === 0}
@@ -208,7 +208,7 @@ export const ServicesSection = () => {
         <button
           onClick={scrollNext}
           className={cn(
-            "absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-background border-4 border-foreground shadow-brutal transition-all hover:bg-muted",
+            "absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-background border border-foreground shadow-brutal transition-all hover:bg-muted",
             activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed",
           )}
           disabled={activeIndex === services.length - 1}
@@ -224,7 +224,7 @@ export const ServicesSection = () => {
               key={index}
               onClick={() => handleTabClick(index)}
               className={cn(
-                "w-3 h-3 border-2 border-foreground transition-all",
+                "w-3 h-3 border border-foreground transition-all",
                 activeIndex === index ? "bg-primary" : "bg-transparent hover:bg-muted",
               )}
               aria-label={`Ir al slide ${index + 1}`}

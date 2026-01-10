@@ -103,7 +103,7 @@ export const CartSidebar = ({
 
       {/* Footer */}
       {items.length > 0 && (
-        <div className="p-4 border-t-2 border-foreground bg-muted/30">
+        <div className="p-4 border-t border-foreground bg-muted/30">
           <div className="space-y-2 mb-4">
             <div className="flex justify-between items-baseline">
               <span className="font-heading text-sm">Subtotal (1 día):</span>
@@ -131,11 +131,11 @@ export const CartSidebar = ({
         <div className="fixed bottom-4 center z-40">
           <button
             onClick={() => setDrawerOpen(true)}
-            className="relative bg-primary text-primary-foreground p-4 rounded-full shadow-brutal-sm border-2 border-foreground hover:scale-105 transition-transform"
+            className="relative bg-primary text-primary-foreground p-4 rounded-full shadow-brutal-sm border border-foreground hover:scale-105 transition-transform"
           >
             <ShoppingCart className="w-6 h-6" />
             {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center border-2 border-foreground">
+              <span className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center border border-foreground">
                 {totalItems}
               </span>
             )}
@@ -145,7 +145,7 @@ export const CartSidebar = ({
         {/* Drawer */}
         <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
           <DrawerContent className="max-h-[85vh] flex flex-col">
-            <DrawerHeader className="border-b-2 border-foreground">
+            <DrawerHeader className="border-b border-foreground">
               <div className="flex items-center justify-between">
                 <DrawerTitle className="font-heading text-xl uppercase">Tu Cotización</DrawerTitle>
                 <DrawerClose asChild>
@@ -167,7 +167,7 @@ export const CartSidebar = ({
   // Desktop: Sticky sidebar - responsive, no max height
   return (
     <div
-      className="sticky z-20 border-2 sm:border-4 border-foreground bg-card shadow-brutal"
+      className="sticky z-20 border border-foreground bg-card shadow-brutal"
       style={{
         top: `${stickyTop}px`,
       }}

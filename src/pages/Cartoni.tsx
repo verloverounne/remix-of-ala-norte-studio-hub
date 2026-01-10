@@ -17,7 +17,7 @@ const Cartoni = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32 bg-foreground text-background border-b-4 border-foreground overflow-hidden">
+      <section className="relative py-20 lg:py-32 bg-foreground text-background border-b border-foreground overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <div className="mb-8">
@@ -56,7 +56,7 @@ const Cartoni = () => {
       {/* Services Section */}
       <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4">
-          <div className="border-l-8 border-primary pl-8 mb-12">
+          <div className="border-l border-primary pl-8 mb-12">
             <h2 className="font-heading text-3xl md:text-5xl mb-4">NUESTROS SERVICIOS</h2>
             <p className="text-lg text-muted-foreground font-heading">
               COMO DEALER OFICIAL OFRECEMOS SERVICIOS COMPLETOS
@@ -64,8 +64,8 @@ const Cartoni = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="border-4 border-foreground p-8 bg-card hover:shadow-brutal transition-shadow">
-              <div className="h-16 w-16 bg-primary text-primary-foreground flex items-center justify-center mb-6 border-4 border-foreground">
+            <div className="border border-foreground p-8 bg-card hover:shadow-brutal transition-shadow">
+              <div className="h-16 w-16 bg-primary text-primary-foreground flex items-center justify-center mb-6 border border-foreground">
                 <ShoppingBag className="h-8 w-8" />
               </div>
               <h3 className="font-heading text-2xl mb-4">VENTA</h3>
@@ -75,8 +75,8 @@ const Cartoni = () => {
               </p>
             </div>
 
-            <div className="border-4 border-foreground p-8 bg-card hover:shadow-brutal transition-shadow">
-              <div className="h-16 w-16 bg-primary text-primary-foreground flex items-center justify-center mb-6 border-4 border-foreground">
+            <div className="border border-foreground p-8 bg-card hover:shadow-brutal transition-shadow">
+              <div className="h-16 w-16 bg-primary text-primary-foreground flex items-center justify-center mb-6 border border-foreground">
                 <Wrench className="h-8 w-8" />
               </div>
               <h3 className="font-heading text-2xl mb-4">SERVICE TÉCNICO</h3>
@@ -86,8 +86,8 @@ const Cartoni = () => {
               </p>
             </div>
 
-            <div className="border-4 border-foreground p-8 bg-card hover:shadow-brutal transition-shadow">
-              <div className="h-16 w-16 bg-primary text-primary-foreground flex items-center justify-center mb-6 border-4 border-foreground">
+            <div className="border border-foreground p-8 bg-card hover:shadow-brutal transition-shadow">
+              <div className="h-16 w-16 bg-primary text-primary-foreground flex items-center justify-center mb-6 border border-foreground">
                 <Award className="h-8 w-8" />
               </div>
               <h3 className="font-heading text-2xl mb-4">GARANTÍA OFICIAL</h3>
@@ -101,10 +101,10 @@ const Cartoni = () => {
       </section>
 
       {/* About Cartoni */}
-      <section className="py-16 lg:py-24 bg-muted/30 border-y-4 border-foreground">
+      <section className="py-16 lg:py-24 bg-muted/30 border-y border-foreground">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="border-l-8 border-primary pl-8 mb-12">
+            <div className="border-l border-primary pl-8 mb-12">
               <h2 className="font-heading text-3xl md:text-5xl mb-4">SOBRE CARTONI</h2>
               <p className="text-lg text-muted-foreground font-heading">
                 EXCELENCIA ITALIANA DESDE 1935

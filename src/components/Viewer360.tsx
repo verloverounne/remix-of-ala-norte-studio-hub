@@ -107,7 +107,7 @@ const Viewer360 = ({ imageSrc, height = "500px" }: Viewer360Props) => {
     >
       <div 
         ref={containerRef} 
-        className={`w-full overflow-hidden cursor-pointer ${isFullscreen ? 'h-screen' : 'rounded-lg border-4 border-foreground'}`}
+        className={`w-full overflow-hidden cursor-pointer ${isFullscreen ? 'h-screen' : 'rounded-lg border border-foreground'}`}
         style={{ height: isFullscreen ? '100vh' : height }}
         onClick={toggleFullscreen}
       />

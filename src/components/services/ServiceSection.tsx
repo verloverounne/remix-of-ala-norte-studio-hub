@@ -25,7 +25,7 @@ export const ServiceSection = forwardRef<HTMLElement, ServiceSectionProps>(({
   index
 }, ref) => {
   const isEven = index % 2 === 0;
-  return <section ref={ref} id={slug || id} className="min-h-[60vh] md:min-h-[70vh] flex items-center border-b-2 border-foreground/20 relative z-10 bg-background" style={{
+  return <section ref={ref} id={slug || id} className="min-h-[60vh] md:min-h-[70vh] flex items-center border-b border-foreground/20 relative z-10 bg-background" style={{
     scrollMarginTop: "calc(40vh + 100px)"
   }}>
       <div className="container mx-auto px-4 py-8 md:py-12">
@@ -61,7 +61,7 @@ export const ServiceSection = forwardRef<HTMLElement, ServiceSectionProps>(({
 
           {/* Image */}
           <div className={`${isEven ? '' : 'md:col-start-1 md:row-start-1'}`}>
-            <div className="relative aspect-[4/3] overflow-hidden border-2 border-foreground shadow-brutal">
+            <div className="relative aspect-[4/3] overflow-hidden border border-foreground shadow-brutal">
               {imageUrl ? <img src={imageUrl} alt={title} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
                   <span className="font-heading text-muted-foreground uppercase">
                     {title}

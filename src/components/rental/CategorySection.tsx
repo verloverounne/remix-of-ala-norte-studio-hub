@@ -106,7 +106,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
     >
       {/* Sticky Category Header with Collapse - z-20 - same height as filter bar */}
       <div 
-        className="sticky z-20 bg-background border-2 sm:border-4 border-foreground mb-0"
+        className="sticky z-20 bg-background border border-foreground mb-0"
         style={{ top: `${stickyTop}px` }}
       >
         <div className="flex items-center justify-between px-2 sm:px-4 py-2 sm:py-3 h-[40px] sm:h-[52px]">
@@ -130,10 +130,10 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
           {/* Subcategory Dropdown */}
           {subcategories.length > 0 && isExpanded && (
             <Select value={selectedSubcategory} onValueChange={setSelectedSubcategory}>
-              <SelectTrigger className="w-[140px] sm:w-[180px] h-8 sm:h-9 text-xs sm:text-sm font-heading border-2 border-foreground">
+              <SelectTrigger className="w-[140px] sm:w-[180px] h-8 sm:h-9 text-xs sm:text-sm font-heading border border-foreground">
                 <SelectValue placeholder="Subcategoría" />
               </SelectTrigger>
-              <SelectContent className="bg-background border-2 border-foreground z-50">
+              <SelectContent className="bg-background border border-foreground z-50">
                 <SelectItem value="all" className="font-heading text-xs sm:text-sm">
                   Todas
                 </SelectItem>
@@ -154,7 +154,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
 
       {/* Equipment Grid - Collapsible */}
       {isExpanded && (
-        <div className="border-x-2 sm:border-x-4 border-b-2 sm:border-b-4 border-foreground p-3 sm:p-4 bg-background">
+        <div className="border-x border-b border-foreground p-3 sm:p-4 bg-background">
           {filteredEquipment.length === 0 ? (
             <div className="text-center py-8 sm:py-12 text-muted-foreground">
               <p className="font-heading text-lg">No hay equipos en esta categoría</p>

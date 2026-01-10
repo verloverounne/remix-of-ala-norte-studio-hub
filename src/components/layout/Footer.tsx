@@ -3,7 +3,7 @@ import { Instagram, Mail, Phone, MapPin } from "lucide-react";
 
 export const Footer = () => {
   return (
-    <footer className="bg-foreground text-background border-t-4 border-foreground">
+    <footer className="bg-foreground text-background border-t border-foreground">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
@@ -103,7 +103,7 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t-2 border-background/20 text-center text-sm opacity-70">
+        <div className="mt-8 pt-8 border-t border-background/20 text-center text-sm opacity-70">
           <p>&copy; {new Date().getFullYear()} Ala Norte. Todos los derechos reservados.</p>
         </div>
       </div>

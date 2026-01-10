@@ -53,7 +53,7 @@ All colors MUST be HSL.
     --border-width-none: 0px;
     --border-width-default: 1px;
     --border-width-thin: 1px;
-    --border-width-thick: 2px;
+    --border-width-thick: 1px;
     --border-width-brutal: 1px;
 
     /* Grises Brutales */
@@ -313,11 +313,11 @@ All colors MUST be HSL.
   }
 
   .prose img {
-    @apply rounded-none my-6 border-2 border-foreground;
+    @apply rounded-none my-6 border border-foreground;
   }
 
   .prose blockquote {
-    @apply border-l-4 border-primary pl-4 italic my-6;
+    @apply border-l border-primary pl-4 italic my-6;
   }
 }
 

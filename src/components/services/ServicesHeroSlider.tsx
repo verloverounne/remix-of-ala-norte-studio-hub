@@ -91,7 +91,7 @@ export const ServicesHeroSlider = ({
       {/* Fixed Navigation Bar - synced with header visibility */}
       <div 
         className={cn(
-          "absolute left-0 right-0 z-40 bg-background border-b-2 border-foreground transition-all duration-300",
+          "absolute left-0 right-0 z-40 bg-background border-b border-foreground transition-all duration-300",
           (isHeaderVisible || isHeaderHovering) ? "top-16 sm:top-20" : "top-0"
         )}
       >
@@ -106,7 +106,7 @@ export const ServicesHeroSlider = ({
                     key={service.id}
                     onClick={() => handleChipClick(service.id, index)}
                     className={cn(
-                      "flex-shrink-0 px-2 py-1 sm:px-3 sm:py-1.5 font-heading text-[10px] sm:text-xs uppercase border-2 transition-all whitespace-nowrap",
+                      "flex-shrink-0 px-2 py-1 sm:px-3 sm:py-1.5 font-heading text-[10px] sm:text-xs uppercase border transition-all whitespace-nowrap",
                       isActive 
                         ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm" 
                         : "bg-background text-foreground border-foreground hover:bg-muted"
@@ -167,8 +167,8 @@ export const ServicesHeroSlider = ({
             {/* Navigation arrows */}
             {services.length > 1 && (
               <>
-                <CarouselPrevious className="left-2 sm:left-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
-                <CarouselNext className="right-2 sm:right-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
+                <CarouselPrevious className="left-2 sm:left-4 h-8 w-8 sm:h-10 sm:w-10 border border-background bg-background/20 hover:bg-background/40 text-background" />
+                <CarouselNext className="right-2 sm:right-4 h-8 w-8 sm:h-10 sm:w-10 border border-background bg-background/20 hover:bg-background/40 text-background" />
               </>
             )}
             

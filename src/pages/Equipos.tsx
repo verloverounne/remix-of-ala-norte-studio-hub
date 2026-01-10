@@ -275,7 +275,7 @@ const Equipos = () => {
           {/* Main Content - Category Sections */}
           <main className="lg:col-span-3">
             {loading ? (
-              <div className="text-center py-12 sm:py-16 border-2 sm:border-4 border-foreground p-8 sm:p-12">
+              <div className="text-center py-12 sm:py-16 border border-foreground p-8 sm:p-12">
                 <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>
               </div>
             ) : (
