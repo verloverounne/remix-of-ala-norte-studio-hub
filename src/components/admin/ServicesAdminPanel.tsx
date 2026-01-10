@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,9 +7,16 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Trash2, Plus, GripVertical, Save, ImageIcon, X } from "lucide-react";
+import { Trash2, Plus, GripVertical, Save, ImageIcon, X, Video, Upload } from "lucide-react";
 import { ImageUploadButton } from "@/components/ImageUploadButton";
 import type { Json } from "@/integrations/supabase/types";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface HomeService {
   id: string;
@@ -17,6 +24,8 @@ interface HomeService {
   description: string | null;
   image_url: string | null;
   hero_image_url: string | null;
+  hero_media_type: string | null;
+  hero_video_url: string | null;
   bullets: string[];
   cta_label: string | null;
   cta_url: string | null;
@@ -52,6 +61,8 @@ export const ServicesAdminPanel = () => {
         description: s.description,
         image_url: s.image_url,
         hero_image_url: s.hero_image_url,
+        hero_media_type: s.hero_media_type,
+        hero_video_url: s.hero_video_url,
         bullets: parseBullets(s.bullets),
         cta_label: s.cta_label,
         cta_url: s.cta_url,
@@ -102,6 +113,8 @@ export const ServicesAdminPanel = () => {
         description: data.description,
         image_url: data.image_url,
         hero_image_url: data.hero_image_url,
+        hero_media_type: data.hero_media_type,
+        hero_video_url: data.hero_video_url,
         bullets: parseBullets(data.bullets),
         cta_label: data.cta_label,
         cta_url: data.cta_url,
@@ -162,6 +175,8 @@ export const ServicesAdminPanel = () => {
           description: service.description,
           image_url: service.image_url,
           hero_image_url: service.hero_image_url,
+          hero_media_type: service.hero_media_type,
+          hero_video_url: service.hero_video_url,
           bullets: service.bullets,
           cta_label: service.cta_label,
           cta_url: service.cta_url,
@@ -208,6 +223,65 @@ export const ServicesAdminPanel = () => {
       const newBullets = service.bullets.filter((_, i) => i !== index);
       updateService(serviceId, { bullets: newBullets });
     }
+  };
+
+  const handleMediaUpload = async (serviceId: string, file: File, field: 'hero' | 'section') => {
+    const isVideo = file.type.startsWith('video/');
+    const maxSize = isVideo ? 100 * 1024 * 1024 : 10 * 1024 * 1024;
+    
+    if (file.size > maxSize) {
+      toast.error(`Archivo muy grande. Máximo: ${isVideo ? '100MB' : '10MB'}`);
+      return;
+    }
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'video/mp4'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Tipo de archivo no soportado. Use JPG, PNG, WebP o MP4.');
+      return;
+    }
+
+    const timestamp = Date.now();
+    const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+    const fileName = `${timestamp}_${sanitizedName}`;
+
+    toast.info('Subiendo archivo...');
+
+    const { data, error } = await supabase.storage
+      .from('equipment-images')
+      .upload(fileName, file, { 
+        cacheControl: '3600',
+        contentType: file.type 
+      });
+
+    if (error) {
+      console.error('Upload error:', error);
+      toast.error('Error al subir archivo');
+      return;
+    }
+
+    const { data: urlData } = supabase.storage
+      .from('equipment-images')
+      .getPublicUrl(data.path);
+
+    if (field === 'hero') {
+      if (isVideo) {
+        updateService(serviceId, { 
+          hero_media_type: 'video', 
+          hero_video_url: urlData.publicUrl,
+          hero_image_url: null 
+        });
+      } else {
+        updateService(serviceId, { 
+          hero_media_type: 'image', 
+          hero_image_url: urlData.publicUrl,
+          hero_video_url: null 
+        });
+      }
+    } else {
+      updateService(serviceId, { image_url: urlData.publicUrl });
+    }
+
+    toast.success('Archivo subido correctamente');
   };
 
   if (loading) {
@@ -384,13 +458,34 @@ export const ServicesAdminPanel = () => {
                   </div>
                 </div>
 
-                {/* Right column: Images */}
+                {/* Right column: Media */}
                 <div className="space-y-4">
-                  {/* Hero Image */}
+                  {/* Hero Media */}
                   <div>
-                    <Label className="text-xs font-heading">Imagen Hero (Slider)</Label>
+                    <div className="flex items-center justify-between mb-2">
+                      <Label className="text-xs font-heading">Media Hero (Slider)</Label>
+                      <Select
+                        value={service.hero_media_type || "image"}
+                        onValueChange={(value) => updateService(service.id, { hero_media_type: value })}
+                      >
+                        <SelectTrigger className="w-28 h-7 text-xs">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="image">Imagen</SelectItem>
+                          <SelectItem value="video">Video</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                     <div className="border-2 border-dashed border-foreground/50 rounded-lg p-2 aspect-video flex items-center justify-center bg-muted/30 overflow-hidden">
-                      {service.hero_image_url ? (
+                      {service.hero_media_type === 'video' && service.hero_video_url ? (
+                        <video
+                          src={service.hero_video_url}
+                          className="w-full h-full object-cover rounded"
+                          controls
+                          muted
+                        />
+                      ) : service.hero_image_url ? (
                         <img
                           src={service.hero_image_url}
                           alt={`Hero - ${service.title}`}
@@ -398,24 +493,46 @@ export const ServicesAdminPanel = () => {
                         />
                       ) : (
                         <div className="text-center text-muted-foreground">
-                          <ImageIcon className="h-6 w-6 mx-auto mb-1 opacity-50" />
-                          <p className="text-xs">Imagen del slider</p>
+                          {service.hero_media_type === 'video' ? (
+                            <Video className="h-6 w-6 mx-auto mb-1 opacity-50" />
+                          ) : (
+                            <ImageIcon className="h-6 w-6 mx-auto mb-1 opacity-50" />
+                          )}
+                          <p className="text-xs">
+                            {service.hero_media_type === 'video' ? 'Video del slider' : 'Imagen del slider'}
+                          </p>
                         </div>
                       )}
                     </div>
                     <div className="flex gap-2 mt-2">
                       <Input
-                        value={service.hero_image_url || ""}
-                        onChange={(e) =>
-                          updateService(service.id, { hero_image_url: e.target.value })
-                        }
-                        placeholder="URL imagen hero"
+                        value={(service.hero_media_type === 'video' ? service.hero_video_url : service.hero_image_url) || ""}
+                        onChange={(e) => {
+                          if (service.hero_media_type === 'video') {
+                            updateService(service.id, { hero_video_url: e.target.value });
+                          } else {
+                            updateService(service.id, { hero_image_url: e.target.value });
+                          }
+                        }}
+                        placeholder={service.hero_media_type === 'video' ? "URL video MP4" : "URL imagen hero"}
                         className="border-2 border-foreground text-xs"
                       />
-                      <ImageUploadButton
-                        onUploadComplete={(url) => updateService(service.id, { hero_image_url: url })}
-                        size="sm"
-                      />
+                      <label className="cursor-pointer">
+                        <input
+                          type="file"
+                          accept={service.hero_media_type === 'video' ? "video/mp4" : "image/*"}
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleMediaUpload(service.id, file, 'hero');
+                          }}
+                        />
+                        <Button variant="outline" size="sm" asChild>
+                          <span>
+                            <Upload className="h-4 w-4" />
+                          </span>
+                        </Button>
+                      </label>
                     </div>
                   </div>
 
