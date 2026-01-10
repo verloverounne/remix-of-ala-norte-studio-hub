@@ -47,14 +47,12 @@ interface HeroCarouselRentalProps {
   categories: Category[];
   activeCategory: string | null;
   equipmentCounts: Record<string, number>;
-  // Search and filter props
   searchTerm: string;
   onSearchChange: (value: string) => void;
   selectedSubcategories: string[];
   onSubcategoriesChange: (subcategories: string[]) => void;
   onClearFilters: () => void;
   hasActiveFilters: boolean;
-  // Ref for measuring nav height
   navBarRef?: React.RefObject<HTMLDivElement>;
 }
 
@@ -71,50 +69,46 @@ export const HeroCarouselRental = ({
   hasActiveFilters,
   navBarRef
 }: HeroCarouselRentalProps) => {
-  const [slides, setSlides] = useState<HeroSlide[]>([]);
+  // Map of category_id -> slide with background media from admin
+  const [categoryBackgrounds, setCategoryBackgrounds] = useState<Record<string, HeroSlide>>({});
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
   const heroRef = useRef<HTMLDivElement>(null);
-  // Header visibility sync
   const { isVisible: isHeaderVisible, isHovering: isHeaderHovering } = useHeaderVisibility();
   
-  // Search and filter state
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const filterRef = useRef<HTMLDivElement>(null);
 
-  // Scroll to top on mount to ensure hero is visible
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
+  // Fetch background media for each category from admin
   useEffect(() => {
-    const fetchSlides = async () => {
+    const fetchBackgrounds = async () => {
       const { data, error } = await supabase
         .from("gallery_images")
         .select("*")
         .eq("page_type", "hero_rental")
-        .order("order_index");
+        .not("category_id", "is", null);
 
-      if (!error && data && data.length > 0) {
-        // Use category_id directly from database
-        setSlides(data.map(slide => ({
-          ...slide,
-          category_id: slide.category_id || null
-        })));
-      } else if (categories.length > 0) {
-        // Fallback: no slides configured, will use placeholders
-        setSlides([]);
+      if (!error && data) {
+        const bgMap: Record<string, HeroSlide> = {};
+        data.forEach(slide => {
+          if (slide.category_id) {
+            bgMap[slide.category_id] = slide;
+          }
+        });
+        setCategoryBackgrounds(bgMap);
       }
       setLoading(false);
     };
 
-    if (categories.length > 0) {
-      fetchSlides();
-    }
-  }, [categories]);
+    fetchBackgrounds();
+  }, []);
 
   // Fetch subcategories
   useEffect(() => {
@@ -155,10 +149,8 @@ export const HeroCarouselRental = ({
       const index = api.selectedScrollSnap();
       setCurrentSlide(index);
       
-      // Trigger category scroll when slide changes
-      const displayedSlides = slides.length > 0 ? slides : placeholderSlides;
-      if (displayedSlides[index]?.category_id) {
-        onCategoryChange?.(displayedSlides[index].category_id);
+      if (categories[index]) {
+        onCategoryChange?.(categories[index].id);
       }
     };
 
@@ -166,43 +158,36 @@ export const HeroCarouselRental = ({
     return () => {
       api.off("select", handleSelect);
     };
-  }, [api, slides, onCategoryChange]);
+  }, [api, categories, onCategoryChange]);
 
   // Sync carousel with external category changes
   useEffect(() => {
-    if (!api || !activeCategory) return;
+    if (!api || !activeCategory || categories.length === 0) return;
     
-    // Ensure API is fully initialized before using it
     try {
-      // Check if the carousel engine is ready
       if (!api.scrollSnapList || api.scrollSnapList().length === 0) {
         return;
       }
       
-      const displayedSlides = slides.length > 0 ? slides : placeholderSlides;
-      const slideIndex = displayedSlides.findIndex(s => s.category_id === activeCategory);
+      const slideIndex = categories.findIndex(c => c.id === activeCategory);
       if (slideIndex !== -1 && slideIndex !== currentSlide) {
         api.scrollTo(slideIndex);
       }
     } catch (error) {
-      // API not ready yet, will sync on next update
       console.debug('Carousel API not ready yet');
     }
-  }, [activeCategory, api, slides]);
+  }, [activeCategory, api, categories, currentSlide]);
 
   const scrollToSlide = (index: number) => {
     api?.scrollTo(index);
   };
 
   const handleChipClick = (categoryId: string, index: number) => {
-    // First scroll to top to show hero
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    // Then change the slide
     scrollToSlide(index);
     onCategoryChange?.(categoryId);
   };
 
-  // Filter subcategories by active category
   const filteredSubcategories = activeCategory
     ? subcategories.filter(sub => sub.category_id === activeCategory)
     : subcategories;
@@ -215,19 +200,11 @@ export const HeroCarouselRental = ({
     }
   };
 
-  // Placeholder slides when no images are configured
-  const placeholderSlides: HeroSlide[] = categories.map((cat, index) => ({
-    id: `placeholder-${cat.id}`,
-    image_url: "",
-    title: cat.name.toUpperCase(),
-    description: `Explora nuestro catálogo de ${cat.name.toLowerCase()}`,
-    order_index: index,
-    category_id: cat.id
-  }));
+  const getBackgroundForCategory = (categoryId: string): HeroSlide | null => {
+    return categoryBackgrounds[categoryId] || null;
+  };
 
-  const displaySlides = slides.length > 0 ? slides : placeholderSlides;
-
-  if (loading) {
+  if (loading || categories.length === 0) {
     return (
       <div className="h-[50vh] bg-muted animate-pulse flex items-center justify-center border-b border-foreground">
         <span className="text-muted-foreground font-heading">CARGANDO...</span>
@@ -237,7 +214,7 @@ export const HeroCarouselRental = ({
 
   return (
     <div ref={heroRef}>
-      {/* Fixed Navigation Bar - below header, synced with header visibility */}
+      {/* Fixed Navigation Bar */}
       <div 
         ref={navBarRef}
         className={cn(
@@ -247,17 +224,16 @@ export const HeroCarouselRental = ({
       >
         <div className="container mx-auto px-2 sm:px-4">
           <div className="flex items-center justify-center gap-1 sm:gap-2 py-1.5 sm:py-2 h-[40px] sm:h-[52px]">
-            {/* Category chips + search/filter buttons all centered together */}
+            {/* Category chips - always show all 5 categories */}
             <div className="flex items-center overflow-x-auto scrollbar-hide gap-1 sm:gap-2">
-              {displaySlides.map((slide, index) => {
-                const category = categories.find(c => c.id === slide.category_id);
-                const count = category ? equipmentCounts[category.id] || 0 : 0;
+              {categories.map((category, index) => {
+                const count = equipmentCounts[category.id] || 0;
                 const isActive = index === currentSlide;
                 
                 return (
                   <button
-                    key={slide.id}
-                    onClick={() => category && handleChipClick(category.id, index)}
+                    key={category.id}
+                    onClick={() => handleChipClick(category.id, index)}
                     className={cn(
                       "flex-shrink-0 px-2 py-1 sm:px-3 sm:py-1.5 font-heading text-[10px] sm:text-xs uppercase border transition-all whitespace-nowrap",
                       isActive 
@@ -265,7 +241,7 @@ export const HeroCarouselRental = ({
                         : "bg-background text-foreground border-foreground hover:bg-muted"
                     )}
                   >
-                    <span>{category?.name || slide.title || `Slide ${index + 1}`}</span>
+                    <span>{category.name}</span>
                     {count > 0 && (
                       <span className={cn(
                         "ml-1 sm:ml-1.5 text-[9px] sm:text-[10px]",
@@ -278,7 +254,7 @@ export const HeroCarouselRental = ({
                 );
               })}
 
-              {/* Search button - inline with categories */}
+              {/* Search button */}
               <Button
                 variant="outline"
                 size="sm"
@@ -294,7 +270,7 @@ export const HeroCarouselRental = ({
                 {isSearchOpen ? <X className="h-3 w-3 sm:h-4 sm:w-4" /> : <Search className="h-3 w-3 sm:h-4 sm:w-4" />}
               </Button>
               
-              {/* Filter button - inline with categories */}
+              {/* Filter button */}
               <Button
                 variant="outline"
                 size="sm"
@@ -315,7 +291,7 @@ export const HeroCarouselRental = ({
                 )}
               </Button>
 
-              {/* Clear filters - inline with categories */}
+              {/* Clear filters */}
               {hasActiveFilters && (
                 <Button
                   variant="ghost"
@@ -388,63 +364,65 @@ export const HeroCarouselRental = ({
         </div>
       </div>
 
-      {/* Spacer for fixed nav - accounts for header + category bar */}
+      {/* Spacer for fixed nav */}
       <div className={cn(
         "transition-all duration-300",
         (isHeaderVisible || isHeaderHovering) ? "h-[96px] sm:h-[132px]" : "h-[40px] sm:h-[52px]"
       )} />
 
-      {/* Carousel slides - scrolls with body */}
+      {/* Carousel slides - one per category, using backgrounds from admin */}
       <section className="relative overflow-hidden">
         <Carousel className="w-full" setApi={setApi}>
           <CarouselContent className="-ml-0">
-            {displaySlides.map((slide) => (
-              <CarouselItem key={slide.id} className="pl-0 basis-full">
-                <div className="relative h-[40vh] sm:h-[45vh] overflow-hidden">
-                  {slide.media_type === 'video' && slide.image_url ? (
-                    <video
-                      src={slide.image_url}
-                      className="w-full h-full object-cover"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                    />
-                  ) : slide.image_url ? (
-                    <img
-                      src={slide.image_url}
-                      alt={slide.title || "Equipos rental"}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />
-                  )}
-                  
-                  {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-transparent" />
-                  
-                  {/* Text overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center z-10 p-4 sm:p-8 max-w-4xl">
-                      {slide.title && (
+            {categories.map((category) => {
+              const bg = getBackgroundForCategory(category.id);
+              
+              return (
+                <CarouselItem key={category.id} className="pl-0 basis-full">
+                  <div className="relative h-[40vh] sm:h-[45vh] overflow-hidden">
+                    {bg?.media_type === 'video' && bg.image_url ? (
+                      <video
+                        src={bg.image_url}
+                        className="w-full h-full object-cover"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                      />
+                    ) : bg?.image_url ? (
+                      <img
+                        src={bg.image_url}
+                        alt={category.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />
+                    )}
+                    
+                    {/* Overlay gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-transparent" />
+                    
+                    {/* Text overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center z-10 p-4 sm:p-8 max-w-4xl">
                         <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-2 uppercase text-background drop-shadow-lg">
-                          {slide.title}
+                          {bg?.title || category.name.toUpperCase()}
                         </h1>
-                      )}
-                      {slide.description && (
-                        <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading drop-shadow-md max-w-2xl mx-auto">
-                          {slide.description}
-                        </p>
-                      )}
+                        {bg?.description && (
+                          <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading drop-shadow-md max-w-2xl mx-auto">
+                            {bg.description}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CarouselItem>
-            ))}
+                </CarouselItem>
+              );
+            })}
           </CarouselContent>
           
           {/* Navigation arrows */}
-          {displaySlides.length > 1 && (
+          {categories.length > 1 && (
             <>
               <CarouselPrevious className="left-2 sm:left-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
               <CarouselNext className="right-2 sm:right-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
