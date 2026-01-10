@@ -21,7 +21,6 @@ interface EquiposHeroItem {
   id: string;
   media_type: string;
   media_url: string | null;
-  title: string | null;
   description: string | null;
   order_index: number;
   is_active: boolean;
@@ -63,7 +62,6 @@ const AdminEquiposHero = () => {
     const newItem = {
       media_type: "image",
       media_url: null,
-      title: "Nuevo Slide",
       description: null,
       order_index: items.length,
       is_active: true,
@@ -80,7 +78,6 @@ const AdminEquiposHero = () => {
         id: data.id,
         media_type: data.media_type || 'image',
         media_url: data.media_url,
-        title: data.title,
         description: data.description,
         order_index: data.order_index ?? 0,
         is_active: data.is_active ?? true,
@@ -135,7 +132,6 @@ const AdminEquiposHero = () => {
         .update({
           media_type: item.media_type,
           media_url: item.media_url,
-          title: item.title,
           description: item.description,
           is_active: item.is_active,
           order_index: item.order_index,
@@ -304,18 +300,11 @@ const AdminEquiposHero = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Left column: Text fields */}
+                    {/* Left column: Description */}
                     <div className="space-y-4">
-                      <div>
-                        <Label className="text-xs font-heading">Título</Label>
-                        <Input
-                          value={item.title || ""}
-                          onChange={(e) =>
-                            updateItem(item.id, { title: e.target.value })
-                          }
-                          placeholder="Título del slide"
-                          className="border-2 border-foreground"
-                        />
+                      <div className="p-3 bg-muted/50 rounded-lg">
+                        <p className="text-xs text-muted-foreground font-heading uppercase mb-1">Nota</p>
+                        <p className="text-sm">El título del slide se toma automáticamente de la categoría correspondiente según el orden.</p>
                       </div>
                       <div>
                         <Label className="text-xs font-heading">Descripción (opcional)</Label>
@@ -324,7 +313,7 @@ const AdminEquiposHero = () => {
                           onChange={(e) =>
                             updateItem(item.id, { description: e.target.value })
                           }
-                          placeholder="Descripción breve"
+                          placeholder="Descripción breve del slide"
                           className="border-2 border-foreground min-h-[100px]"
                         />
                       </div>
@@ -360,7 +349,7 @@ const AdminEquiposHero = () => {
                         ) : item.media_url ? (
                           <img
                             src={item.media_url}
-                            alt={item.title || 'Slide'}
+                            alt={`Slide ${index + 1}`}
                             className="w-full h-full object-cover rounded"
                           />
                         ) : (
