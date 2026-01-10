@@ -441,6 +441,42 @@ export type Database = {
           },
         ]
       }
+      equipos_hero_config: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          media_type: string
+          media_url: string | null
+          order_index: number | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          media_type?: string
+          media_url?: string | null
+          order_index?: number | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          media_type?: string
+          media_url?: string | null
+          order_index?: number | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       gallery_images: {
         Row: {
           created_at: string
