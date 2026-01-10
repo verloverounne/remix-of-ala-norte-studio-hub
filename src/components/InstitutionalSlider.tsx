@@ -12,6 +12,7 @@ import {
 interface GalleryImage {
   id: string;
   image_url: string;
+  media_type: string | null;
   title: string | null;
   description: string | null;
   order_index: number;
@@ -65,11 +66,22 @@ export const InstitutionalSlider = ({ pageType, className = "" }: InstitutionalS
           {images.map((image) => (
             <CarouselItem key={image.id} className="pl-0 basis-full">
               <div className="relative h-[50vh] sm:h-[60vh] lg:h-[70vh] overflow-hidden">
-                <img
-                  src={image.image_url}
-                  alt={image.title || "Imagen institucional"}
-                  className="w-full h-full object-cover"
-                />
+                {image.media_type === 'video' ? (
+                  <video
+                    src={image.image_url}
+                    className="w-full h-full object-cover"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                  />
+                ) : (
+                  <img
+                    src={image.image_url}
+                    alt={image.title || "Imagen institucional"}
+                    className="w-full h-full object-cover"
+                  />
+                )}
                 {/* Overlay gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
                 

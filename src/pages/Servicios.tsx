@@ -13,6 +13,8 @@ interface HomeService {
   description: string | null;
   image_url: string | null;
   hero_image_url: string | null;
+  hero_media_type?: string | null;
+  hero_video_url?: string | null;
   bullets: string[];
   cta_label: string | null;
   cta_url: string | null;
@@ -50,6 +52,8 @@ const Servicios = () => {
           description: service.description,
           image_url: service.image_url,
           hero_image_url: service.hero_image_url,
+          hero_media_type: service.hero_media_type,
+          hero_video_url: service.hero_video_url,
           bullets: parseBullets(service.bullets),
           cta_label: service.cta_label,
           cta_url: service.cta_url,

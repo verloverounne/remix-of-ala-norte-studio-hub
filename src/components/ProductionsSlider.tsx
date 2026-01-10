@@ -12,6 +12,7 @@ import {
 interface ProductionImage {
   id: string;
   image_url: string;
+  media_type: string | null;
   title: string | null;
   description: string | null;
   order_index: number;
@@ -64,11 +65,22 @@ export const ProductionsSlider = () => {
           {images.map((image) => (
             <CarouselItem key={image.id} className="pl-0 basis-full md:basis-1/2 lg:basis-1/3">
               <div className="relative aspect-[4/3] overflow-hidden mx-2 group">
-                <img
-                  src={image.image_url}
-                  alt={image.title || "Producción en Ala Norte"}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+                {image.media_type === 'video' ? (
+                  <video
+                    src={image.image_url}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                  />
+                ) : (
+                  <img
+                    src={image.image_url}
+                    alt={image.title || "Producción en Ala Norte"}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 {(image.title || image.description) && (
                   <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">

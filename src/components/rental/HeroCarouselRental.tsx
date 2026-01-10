@@ -23,6 +23,7 @@ import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
 interface HeroSlide {
   id: string;
   image_url: string;
+  media_type?: string | null;
   title: string | null;
   description: string | null;
   order_index: number;
@@ -398,7 +399,16 @@ export const HeroCarouselRental = ({
             {displaySlides.map((slide) => (
               <CarouselItem key={slide.id} className="pl-0 basis-full">
                 <div className="relative h-[40vh] sm:h-[45vh] overflow-hidden">
-                  {slide.image_url ? (
+                  {slide.media_type === 'video' && slide.image_url ? (
+                    <video
+                      src={slide.image_url}
+                      className="w-full h-full object-cover"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                  ) : slide.image_url ? (
                     <img
                       src={slide.image_url}
                       alt={slide.title || "Equipos rental"}

@@ -18,6 +18,8 @@ interface HomeService {
   description: string | null;
   image_url: string | null;
   hero_image_url: string | null;
+  hero_media_type?: string | null;
+  hero_video_url?: string | null;
   slug: string | null;
   order_index: number;
   is_active: boolean;
@@ -133,7 +135,16 @@ export const ServicesHeroSlider = ({
               {services.map((service) => (
                 <CarouselItem key={service.id} className="pl-0 basis-full">
                   <div className="relative h-[40vh] sm:h-[45vh] overflow-hidden">
-                    {(service.hero_image_url || service.image_url) ? (
+                    {service.hero_media_type === 'video' && service.hero_video_url ? (
+                      <video
+                        src={service.hero_video_url}
+                        className="w-full h-full object-cover"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                      />
+                    ) : (service.hero_image_url || service.image_url) ? (
                       <img
                         src={service.hero_image_url || service.image_url || ""}
                         alt={service.title}
