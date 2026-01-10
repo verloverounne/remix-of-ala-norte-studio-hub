@@ -463,14 +463,14 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
                       <div className="flex items-center gap-2 md:col-span-3">
                         <Label className="text-xs text-muted-foreground whitespace-nowrap">Categoría:</Label>
                         <Select 
-                          value={img.category_id || ""} 
-                          onValueChange={(v) => handleUpdateImage(img.id, { category_id: v || null })}
+                          value={img.category_id || "none"} 
+                          onValueChange={(v) => handleUpdateImage(img.id, { category_id: v === "none" ? null : v })}
                         >
                           <SelectTrigger className="flex-1">
                             <SelectValue placeholder="Sin categoría" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="">Sin categoría</SelectItem>
+                            <SelectItem value="none">Sin categoría</SelectItem>
                             {categories.map(cat => (
                               <SelectItem key={cat.id} value={cat.id}>
                                 {cat.name}
