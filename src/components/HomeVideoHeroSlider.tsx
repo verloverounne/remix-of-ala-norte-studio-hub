@@ -120,18 +120,17 @@ export const HomeVideoHeroSlider = () => {
                     style={{
                       filter: "blur(5px)",
                     }}
+                    autoPlay
                     loop
                     muted={muted}
                     playsInline
                     onMouseEnter={(e) => {
                       const video = e.currentTarget;
                       video.style.filter = "blur(0px)";
-                      video.play();
                     }}
                     onMouseLeave={(e) => {
                       const video = e.currentTarget;
                       video.style.filter = "blur(5px)";
-                      video.pause();
                     }}
                   />
                 ) : (
