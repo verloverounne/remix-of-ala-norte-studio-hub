@@ -88,7 +88,7 @@ export const HomeVideoHeroSlider = () => {
         if (video) {
           video.pause();
           video.currentTime = 0;
-          video.style.filter = "blur(0px)";
+         
         }
       });
     });
@@ -118,7 +118,7 @@ export const HomeVideoHeroSlider = () => {
                     src={slide.video_url}
                     className="w-full h-full object-cover transition-[filter] duration-300 ease-out"
                     style={{
-                      filter: "blur(0px)",
+                  
                     }}
                     autoPlay
                     loop
@@ -126,11 +126,11 @@ export const HomeVideoHeroSlider = () => {
                     playsInline
                     onMouseEnter={(e) => {
                       const video = e.currentTarget;
-                      video.style.filter = "blur(0px)";
+                     
                     }}
                     onMouseLeave={(e) => {
                       const video = e.currentTarget;
-                      video.style.filter = "blur(0px)";
+                    
                     }}
                   />
                 ) : (
