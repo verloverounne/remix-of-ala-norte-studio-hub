@@ -33,7 +33,6 @@ const MergeEquipment = lazy(() => import("./pages/MergeEquipment"));
 const Galeria = lazy(() => import("./pages/Galeria"));
 const SalaGrabacion = lazy(() => import("./pages/SalaGrabacion"));
 const AdminDesignTokens = lazy(() => import("./pages/AdminDesignTokens"));
-const AdminEquiposHero = lazy(() => import("./pages/AdminEquiposHero"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -88,14 +87,6 @@ const App = () => (
                   element={
                     <ProtectedRoute requireAdmin>
                       <AdminDesignTokens />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/admin/equipos-hero" 
-                  element={
-                    <ProtectedRoute requireAdmin>
-                      <AdminEquiposHero />
                     </ProtectedRoute>
                   } 
                 />
