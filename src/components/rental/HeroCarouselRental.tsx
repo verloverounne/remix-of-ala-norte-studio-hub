@@ -99,12 +99,14 @@ export const HeroCarouselRental = ({
         .order("order_index");
 
       if (!error && data && data.length > 0) {
-        // Map slides to categories based on order
-        const mappedSlides = data.map((slide, index) => ({
+        // Use category_id directly from database
+        setSlides(data.map(slide => ({
           ...slide,
-          category_id: categories[index]?.id || null
-        }));
-        setSlides(mappedSlides);
+          category_id: slide.category_id || null
+        })));
+      } else if (categories.length > 0) {
+        // Fallback: no slides configured, will use placeholders
+        setSlides([]);
       }
       setLoading(false);
     };
