@@ -88,7 +88,7 @@ export const HomeVideoHeroSlider = () => {
         if (video) {
           video.pause();
           video.currentTime = 0;
-          video.style.filter = "blur(5px)";
+          video.style.filter = "blur(0px)";
         }
       });
     });
@@ -141,7 +141,7 @@ export const HomeVideoHeroSlider = () => {
                     </div>
                   </div>
                 )}
-                {/*   <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
 
                 {/* Content overlay */}
                 <div className="absolute inset-0 flex items-center justify-center z-10">
