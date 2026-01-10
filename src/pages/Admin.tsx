@@ -731,9 +731,6 @@ const Admin = () => {
               <Button asChild variant="secondary" size="lg" className="font-heading">
                 <a href="/admin/blog">Gestionar Blog</a>
               </Button>
-              <Button asChild variant="secondary" size="lg" className="font-heading">
-                <a href="/admin/equipos-hero">Hero Equipos</a>
-              </Button>
               <Button asChild variant="outline" size="lg" className="font-heading bg-background/10 border-primary-foreground/30 hover:bg-background/20">
                 <a href="/admin/design-tokens">Design Tokens</a>
               </Button>

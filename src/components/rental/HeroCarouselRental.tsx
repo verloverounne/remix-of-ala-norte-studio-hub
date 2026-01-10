@@ -92,22 +92,16 @@ export const HeroCarouselRental = ({
 
   useEffect(() => {
     const fetchSlides = async () => {
-      // Fetch hero config from equipos_hero_config (admin-managed)
       const { data, error } = await supabase
-        .from("equipos_hero_config")
+        .from("gallery_images")
         .select("*")
-        .eq("is_active", true)
+        .eq("page_type", "hero_rental")
         .order("order_index");
 
       if (!error && data && data.length > 0) {
-        // Map slides to categories based on order, using category name as title
+        // Map slides to categories based on order
         const mappedSlides = data.map((slide, index) => ({
-          id: slide.id,
-          image_url: slide.media_url || "",
-          media_type: slide.media_type || "image",
-          title: categories[index]?.name?.toUpperCase() || null,
-          description: slide.description,
-          order_index: slide.order_index ?? index,
+          ...slide,
           category_id: categories[index]?.id || null
         }));
         setSlides(mappedSlides);
