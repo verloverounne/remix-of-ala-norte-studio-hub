@@ -88,7 +88,7 @@ export const HomeVideoHeroSlider = () => {
         if (video) {
           video.pause();
           video.currentTime = 0;
-          video.style.filter = "blur(0px)";
+         {/*   video.style.filter = "blur(5px)";
         }
       });
     });
