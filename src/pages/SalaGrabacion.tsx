@@ -51,7 +51,7 @@ const SalaGrabacion = () => {
   if (loading || !space) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b border-primary"></div>
       </div>
     );
   }
@@ -66,7 +66,7 @@ const SalaGrabacion = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {defaultFeatures.map((feature, index) => (
-              <div key={index} className="bg-background border-2 border-foreground p-6 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform">
+              <div key={index} className="bg-background border border-foreground p-6 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform">
                 <feature.icon className="h-12 w-12 text-primary mb-4" />
                 <h3 className="text-xl font-heading font-bold mb-2">{feature.title}</h3>
                 <p className="text-muted-foreground font-heading">{feature.description}</p>
@@ -87,7 +87,7 @@ const SalaGrabacion = () => {
               {space.features.map((feature, index) => (
                 <div 
                   key={index} 
-                  className="flex items-start gap-3 bg-secondary border-2 border-foreground p-4 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform"
+                  className="flex items-start gap-3 bg-secondary border border-foreground p-4 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform"
                 >
                   <Check className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
                   <span className="font-heading">{feature}</span>
@@ -103,7 +103,7 @@ const SalaGrabacion = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
             {/* Featured Image */}
-            <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border-4 border-foreground shadow-brutal">
+            <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border border-foreground shadow-brutal">
               <img
                 src={space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
                 alt={space.name}
@@ -138,7 +138,7 @@ const SalaGrabacion = () => {
               )}
 
               {/* Schedule Info */}
-              <div className="bg-secondary border-2 border-foreground p-4 rounded-lg">
+              <div className="bg-secondary border border-foreground p-4 rounded-lg">
                 <h3 className="font-heading font-bold mb-2 flex items-center gap-2">
                   <Clock className="h-5 w-5 text-primary" /> HORARIOS
                 </h3>
@@ -166,7 +166,7 @@ const SalaGrabacion = () => {
 
               {/* Layout Description */}
               {space.layout_description && (
-                <div className="bg-muted p-4 rounded-lg border-l-4 border-primary">
+                <div className="bg-muted p-4 rounded-lg border-l border-primary">
                   <h3 className="font-heading font-bold mb-2">LAYOUT DEL ESTUDIO</h3>
                   <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
                 </div>

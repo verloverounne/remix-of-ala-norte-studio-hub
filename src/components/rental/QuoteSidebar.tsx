@@ -16,8 +16,8 @@ interface QuoteSidebarProps {
 
 export const QuoteSidebar = ({ items, calculateSubtotal }: QuoteSidebarProps) => {
   return (
-    <div className="lg:sticky lg:top-40 border-2 sm:border-4 border-foreground p-4 sm:p-6 bg-card shadow-brutal max-h-[calc(100vh-12rem)] overflow-y-auto">
-      <h3 className="font-heading text-lg sm:text-xl mb-4 uppercase border-b-2 border-foreground pb-2">
+    <div className="lg:sticky lg:top-40 border border-foreground p-4 sm:p-6 bg-card shadow-brutal max-h-[calc(100vh-12rem)] overflow-y-auto">
+      <h3 className="font-heading text-lg sm:text-xl mb-4 uppercase border-b border-foreground pb-2">
         Cotización
       </h3>
       
@@ -38,7 +38,7 @@ export const QuoteSidebar = ({ items, calculateSubtotal }: QuoteSidebarProps) =>
             ))}
           </div>
           
-          <div className="border-t-2 border-foreground pt-4 mt-4">
+          <div className="border-t border-foreground pt-4 mt-4">
             <div className="flex justify-between items-baseline mb-2 gap-2">
               <span className="font-heading text-xs sm:text-sm">Subtotal (1 día):</span>
               <span className="font-heading text-base sm:text-xl break-words">${calculateSubtotal(1).toLocaleString()}</span>

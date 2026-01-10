@@ -38,10 +38,10 @@ const Home = () => {
       <ServicesSection />
 
       {/* Featured Equipment Section - Full Width Slider */}
-      {featuredEquipment.length > 0 && <section className="relative border-y-4 border-foreground bg-muted/30 overflow-hidden">
+      {featuredEquipment.length > 0 && <section className="relative border-y border-foreground bg-muted/30 overflow-hidden">
           <div className="py-12 sm:py-16 lg:py-20">
             <div className="container mx-auto px-4 mb-8 sm:mb-12">
-              <div className="border-l-4 sm:border-l-8 border-primary pl-4 sm:pl-8">
+              <div className="border-l border-primary pl-4 sm:pl-8">
                 <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">RENTAL DESTACADO</h2>
                 <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-heading">
                   TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
@@ -64,7 +64,7 @@ const Home = () => {
                                 {equipment.featured_copy}
                               </p>}
                             <div className="flex items-center justify-center gap-6 mb-6">
-                              <span className="font-heading text-4xl text-primary bg-background/90 px-8 py-4 border-3 border-background shadow-brutal">
+                              <span className="font-heading text-4xl text-primary bg-background/90 px-8 py-4 border border-background shadow-brutal">
                                 ${equipment.price_per_day}/día
                               </span>
                             </div>
@@ -90,7 +90,7 @@ const Home = () => {
       <ProductionsSlider />
 
       {/* CTA Section */}
-      <section className="py-12 sm:py-20 lg:py-32 text-primary-foreground relative border-y-4 border-foreground bg-[#8a0027] border">
+      <section className="py-12 sm:py-20 lg:py-32 text-primary-foreground relative border-y border-foreground bg-[#8a0027] border">
         <div className="container mx-auto px-4 relative">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-4 sm:mb-6 lg:mb-8">
@@ -107,7 +107,7 @@ const Home = () => {
       </section>
 
       {/* Cartoni Official Dealer Section */}
-      <section className="py-16 lg:py-24 bg-muted/30 border-y-4 border-foreground border">
+      <section className="py-16 lg:py-24 bg-muted/30 border-y border-foreground border">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
             <div className="flex-shrink-0">

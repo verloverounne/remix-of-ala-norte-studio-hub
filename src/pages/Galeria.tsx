@@ -82,7 +82,7 @@ const Galeria = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
             {/* Featured Image */}
-            <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border-4 border-foreground shadow-brutal">
+            <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border border-foreground shadow-brutal">
               <img
                 src={space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
                 alt={space.name}
@@ -117,7 +117,7 @@ const Galeria = () => {
               )}
 
               {/* Schedule Info */}
-              <div className="bg-secondary border-2 border-foreground p-4 rounded-lg">
+              <div className="bg-secondary border border-foreground p-4 rounded-lg">
                 <h3 className="font-heading font-bold mb-2 flex items-center gap-2">
                   <Clock className="h-5 w-5 text-primary" /> HORARIOS
                 </h3>
@@ -145,7 +145,7 @@ const Galeria = () => {
 
               {/* Layout Description */}
               {space.layout_description && (
-                <div className="bg-muted p-4 rounded-lg border-l-4 border-primary">
+                <div className="bg-muted p-4 rounded-lg border-l border-primary">
                   <h3 className="font-heading font-bold mb-2">LAYOUT DEL ESTUDIO</h3>
                   <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
                 </div>

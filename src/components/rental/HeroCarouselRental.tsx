@@ -226,7 +226,7 @@ export const HeroCarouselRental = ({
 
   if (loading) {
     return (
-      <div className="h-[50vh] bg-muted animate-pulse flex items-center justify-center border-b-4 border-foreground">
+      <div className="h-[50vh] bg-muted animate-pulse flex items-center justify-center border-b border-foreground">
         <span className="text-muted-foreground font-heading">CARGANDO...</span>
       </div>
     );
@@ -238,7 +238,7 @@ export const HeroCarouselRental = ({
       <div 
         ref={navBarRef}
         className={cn(
-          "fixed left-0 right-0 z-40 bg-background border-b-2 border-foreground transition-all duration-300",
+          "fixed left-0 right-0 z-40 bg-background border-b border-foreground transition-all duration-300",
           (isHeaderVisible || isHeaderHovering) ? "top-16 sm:top-20" : "top-0"
         )}
       >
@@ -256,7 +256,7 @@ export const HeroCarouselRental = ({
                     key={slide.id}
                     onClick={() => category && handleChipClick(category.id, index)}
                     className={cn(
-                      "flex-shrink-0 px-2 py-1 sm:px-3 sm:py-1.5 font-heading text-[10px] sm:text-xs uppercase border-2 transition-all whitespace-nowrap",
+                      "flex-shrink-0 px-2 py-1 sm:px-3 sm:py-1.5 font-heading text-[10px] sm:text-xs uppercase border transition-all whitespace-nowrap",
                       isActive 
                         ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm" 
                         : "bg-background text-foreground border-foreground hover:bg-muted"

@@ -179,7 +179,7 @@ Contactar cliente para coordinar entrega/retiro.
   return (
     <div className="min-h-screen pt-14 sm:pt-16 bg-muted/30">
       {/* Hero Section */}
-      <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20 border-b-4 border-foreground">
+      <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20 border-b border-foreground">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4 sm:mb-6">
             CARRITO DE RESERVA
@@ -197,7 +197,7 @@ Contactar cliente para coordinar entrega/retiro.
       <section className="py-8 sm:py-12 lg:py-16">
         <div className="container mx-auto px-4 max-w-7xl">
           {/* Instrucciones */}
-          <Card className="mb-6 sm:mb-8 border-2 sm:border-4 border-primary">
+          <Card className="mb-6 sm:mb-8 border border-primary">
             <CardHeader className="bg-primary/10">
               <CardTitle className="font-heading text-lg sm:text-xl lg:text-2xl">Cómo funciona el alquiler en ALA NORTE</CardTitle>
               <CardDescription>Buscamos que el proceso sea claro y sencillo, desde la consulta inicial hasta la devolución del equipo.</CardDescription>
@@ -259,7 +259,7 @@ Contactar cliente para coordinar entrega/retiro.
               </CardHeader>
               <CardContent className="space-y-4">
                 {items.length === 0 ? (
-                  <div className="text-center py-12 border-3 border-dashed border-foreground/20">
+                  <div className="text-center py-12 border border-dashed border-foreground/20">
                     <ShoppingCart className="h-16 w-16 mx-auto mb-4 opacity-20" />
                     <p className="font-heading text-xl mb-2">Todavía no hay equipos en tu lista</p>
                     <p className="text-muted-foreground mb-4">Explorá el catálogo y sumá lo que necesitás.</p>

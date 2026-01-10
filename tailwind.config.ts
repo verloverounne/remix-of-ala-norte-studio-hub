@@ -101,10 +101,12 @@ export default {
   			sm: 'var(--radius)',
   			none: '0'
   		},
-  		borderWidth: {
-  			'3': '3px',
-  			'4': '4px'
-  		},
+		borderWidth: {
+			'2': '1px',
+			'3': '1px',
+			'4': '1px',
+			'8': '1px'
+		},
   		boxShadow: {
   			brutal: 'var(--shadow-brutal)',
   			'brutal-sm': 'var(--shadow-brutal-sm)',
