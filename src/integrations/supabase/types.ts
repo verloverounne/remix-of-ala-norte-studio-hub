@@ -441,8 +441,45 @@ export type Database = {
           },
         ]
       }
+      equipos_hero_config: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          media_type: string
+          media_url: string | null
+          order_index: number | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          media_type?: string
+          media_url?: string | null
+          order_index?: number | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          media_type?: string
+          media_url?: string | null
+          order_index?: number | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       gallery_images: {
         Row: {
+          category_id: string | null
           created_at: string
           description: string | null
           id: string
@@ -454,6 +491,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          category_id?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -465,6 +503,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          category_id?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -475,7 +514,15 @@ export type Database = {
           title?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "gallery_images_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       home_services: {
         Row: {

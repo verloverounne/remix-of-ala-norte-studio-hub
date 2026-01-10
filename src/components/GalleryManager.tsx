@@ -18,6 +18,13 @@ interface GalleryImage {
   title: string | null;
   description: string | null;
   order_index: number;
+  category_id: string | null;
+}
+
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
 }
 
 interface GalleryManagerProps {
@@ -33,10 +40,24 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
     media_type: "image" as 'image' | 'video',
     title: "",
     description: "",
+    category_id: null as string | null,
   });
   const [uploading, setUploading] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  // Fetch categories for hero_rental linking
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const { data } = await supabase
+        .from('categories')
+        .select('id, name, slug')
+        .order('order_index');
+      if (data) setCategories(data);
+    };
+    fetchCategories();
+  }, []);
 
   const sanitizeFileName = (name: string): string => {
     return name
@@ -129,13 +150,14 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
         title: newImage.title || null,
         description: newImage.description || null,
         order_index: maxOrder,
+        category_id: selectedPageType === 'hero_rental' ? newImage.category_id : null,
       });
 
     if (error) {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "✓ MEDIA AGREGADO" });
-      setNewImage({ image_url: "", media_type: "image", title: "", description: "" });
+      setNewImage({ image_url: "", media_type: "image", title: "", description: "", category_id: null });
       fetchImages();
       onRefresh?.();
     }
@@ -315,10 +337,35 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
                 placeholder="Descripción breve"
               />
             </div>
+            
+            {/* Category selector - only for hero_rental */}
+            {selectedPageType === 'hero_rental' && (
+              <div className="space-y-2 md:col-span-2">
+                <Label>Categoría de Equipos *</Label>
+                <Select 
+                  value={newImage.category_id || ""} 
+                  onValueChange={(v) => setNewImage({ ...newImage, category_id: v || null })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecciona la categoría para este fondo..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map(cat => (
+                      <SelectItem key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Este fondo se mostrará cuando el usuario seleccione esta categoría en el hero de Rental
+                </p>
+              </div>
+            )}
           </div>
           <Button onClick={handleAddImage} className="mt-4" variant="hero">
             <Plus className="mr-2 h-4 w-4" />
-            Agregar Imagen
+            Agregar Media
           </Button>
         </CardContent>
       </Card>
@@ -410,6 +457,29 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
                         onChange={(e) => handleUpdateOrder(img.id, parseInt(e.target.value) || 0)}
                       />
                     </div>
+                    
+                    {/* Category selector for hero_rental items */}
+                    {selectedPageType === 'hero_rental' && (
+                      <div className="flex items-center gap-2 md:col-span-3">
+                        <Label className="text-xs text-muted-foreground whitespace-nowrap">Categoría:</Label>
+                        <Select 
+                          value={img.category_id || ""} 
+                          onValueChange={(v) => handleUpdateImage(img.id, { category_id: v || null })}
+                        >
+                          <SelectTrigger className="flex-1">
+                            <SelectValue placeholder="Sin categoría" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="">Sin categoría</SelectItem>
+                            {categories.map(cat => (
+                              <SelectItem key={cat.id} value={cat.id}>
+                                {cat.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
                   </div>
                   
                   <Button variant="ghost" size="icon" onClick={() => handleDeleteImage(img.id)}>
