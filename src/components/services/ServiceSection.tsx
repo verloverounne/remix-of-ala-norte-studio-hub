@@ -61,8 +61,8 @@ export const ServiceSection = forwardRef<HTMLElement, ServiceSectionProps>(({
 
           {/* Image */}
           <div className={`${isEven ? '' : 'md:col-start-1 md:row-start-1'}`}>
-            <div className="relative aspect-[4/3] overflow-hidden border border-foreground shadow-brutal">
-              {imageUrl ? <img src={imageUrl} alt={title} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
+            <div className="relative aspect-[4/3] overflow-hidden border border-foreground shadow-brutal duotone-hover-group">
+              {imageUrl ? <img src={imageUrl} alt={title} className="w-full h-full object-cover image-duotone" /> : <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
                   <span className="font-heading text-muted-foreground uppercase">
                     {title}
                   </span>

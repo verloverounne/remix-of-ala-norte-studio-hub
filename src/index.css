@@ -343,20 +343,26 @@ All colors MUST be HSL.
   display: none;
 }
 
-/* Video duotone effect (CSS-only; nunca controla playback) */
-.video-duotone {
+/* Duotone effect for videos and images (CSS-only; nunca controla playback) */
+.video-duotone,
+.image-duotone {
   filter: grayscale(1) contrast(1.2) sepia(1) saturate(1.8);
   transition: filter 0.3s ease;
 }
 
-.dark .video-duotone {
+.dark .video-duotone,
+.dark .image-duotone {
   filter: grayscale(1) contrast(1.4) sepia(1) saturate(2);
 }
 
-/* Hover = colores originales (también cuando hay overlays arriba del video) */
+/* Hover = colores originales (también cuando hay overlays arriba del elemento) */
 .video-duotone:hover,
+.image-duotone:hover,
 .duotone-hover-group:hover .video-duotone,
+.duotone-hover-group:hover .image-duotone,
 .dark .video-duotone:hover,
-.dark .duotone-hover-group:hover .video-duotone {
+.dark .image-duotone:hover,
+.dark .duotone-hover-group:hover .video-duotone,
+.dark .duotone-hover-group:hover .image-duotone {
   filter: none !important;
 }

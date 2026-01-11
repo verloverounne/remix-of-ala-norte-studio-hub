@@ -130,12 +130,12 @@ export const RelatedEquipment = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {relatedItems.map((item) => (
           <Card key={item.id} className="overflow-hidden group">
-            <div className="aspect-video bg-muted relative overflow-hidden border-b-2 border-foreground">
+            <div className="aspect-video bg-muted relative overflow-hidden border-b-2 border-foreground duotone-hover-group">
               {item.image_url ? (
                 <img
                   src={item.image_url}
                   alt={item.name}
-                  className="w-full h-full object-cover grayscale group-hover:scale-110 transition-transform duration-300"
+                  className="w-full h-full object-cover image-duotone group-hover:scale-110 transition-transform duration-300"
                   loading="lazy"
                 />
               ) : (

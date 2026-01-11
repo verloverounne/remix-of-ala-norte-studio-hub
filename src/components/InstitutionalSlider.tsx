@@ -65,11 +65,11 @@ export const InstitutionalSlider = ({ pageType, className = "" }: InstitutionalS
         <CarouselContent className="-ml-0">
           {images.map((image) => (
             <CarouselItem key={image.id} className="pl-0 basis-full">
-              <div className="relative h-[50vh] sm:h-[60vh] lg:h-[70vh] overflow-hidden">
+              <div className="relative h-[50vh] sm:h-[60vh] lg:h-[70vh] overflow-hidden duotone-hover-group">
                 {image.media_type === 'video' ? (
                   <video
                     src={image.image_url}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover video-duotone"
                     autoPlay
                     loop
                     muted
@@ -79,7 +79,7 @@ export const InstitutionalSlider = ({ pageType, className = "" }: InstitutionalS
                   <img
                     src={image.image_url}
                     alt={image.title || "Imagen institucional"}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover image-duotone"
                   />
                 )}
                 {/* Overlay gradient */}

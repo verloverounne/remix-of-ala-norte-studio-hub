@@ -170,7 +170,7 @@ export const ServicesSection = () => {
 
                     {/* Image Column */}
                     <div className={cn("order-1 lg:order-2", index % 2 === 1 && "lg:order-1")}>
-                      <div className="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden border border-foreground shadow-brutal">
+                      <div className="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden border border-foreground shadow-brutal duotone-hover-group">
                         {service.image_url ? (
                           <LazyImage
                             src={service.image_url}
