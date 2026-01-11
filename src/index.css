@@ -343,21 +343,20 @@ All colors MUST be HSL.
   display: none;
 }
 
-/* Video duotone effect */
+/* Video duotone effect (CSS-only; nunca controla playback) */
 .video-duotone {
   filter: grayscale(1) contrast(1.2) sepia(1) saturate(1.8);
   transition: filter 0.3s ease;
-}
-
-/* Hover = colores originales, sin tocar playback */
-.video-duotone:hover {
-  filter: none;
 }
 
 .dark .video-duotone {
   filter: grayscale(1) contrast(1.4) sepia(1) saturate(2);
 }
 
-.dark .video-duotone:hover {
-  filter: none;
+/* Hover = colores originales (también cuando hay overlays arriba del video) */
+.video-duotone:hover,
+.duotone-hover-group:hover .video-duotone,
+.dark .video-duotone:hover,
+.dark .duotone-hover-group:hover .video-duotone {
+  filter: none !important;
 }

@@ -82,15 +82,6 @@ export const HomeVideoHeroSlider = () => {
     api.on("select", () => {
       const newSlide = api.selectedScrollSnap();
       setCurrentSlide(newSlide);
-
-      // Reset all videos to paused + blur state when changing slides
-      videoRefs.current.forEach((video) => {
-        if (video) {
-          video.pause();
-          video.currentTime = 0;
-         
-        }
-      });
     });
   }, [api]);
 
@@ -111,27 +102,16 @@ export const HomeVideoHeroSlider = () => {
         <CarouselContent className="h-full -ml-0">
           {slidesWithVideos.map((slide, index) => (
             <CarouselItem key={slide.id} className="h-full pl-0">
-              <div className="relative h-screen w-full overflow-hidden">
+              <div className="relative h-screen w-full overflow-hidden duotone-hover-group">
                 {slide.video_url ? (
                   <video
                     ref={(el) => (videoRefs.current[index] = el)}
                     src={slide.video_url}
-                    className="w-full h-full object-cover transition-[filter] duration-300 ease-out"
-                    style={{
-                  
-                    }}
+                    className="w-full h-full object-cover"
                     autoPlay
                     loop
                     muted={muted}
                     playsInline
-                    onMouseEnter={(e) => {
-                      const video = e.currentTarget;
-                     
-                    }}
-                    onMouseLeave={(e) => {
-                      const video = e.currentTarget;
-                    
-                    }}
                   />
                 ) : (
                   <div className="w-full h-full bg-foreground/95 flex items-center justify-center">
