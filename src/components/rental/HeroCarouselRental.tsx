@@ -369,18 +369,23 @@ export const HeroCarouselRental = ({
 
               return (
                 <CarouselItem key={category.id} className="pl-0 basis-full">
-                  <div className="relative h-[40vh] sm:h-[45vh] overflow-hidden">
+                  <div className="relative h-[40vh] sm:h-[45vh] overflow-hidden duotone-hover-group">
                     {bg?.media_type === "video" && bg.image_url ? (
                       <video
                         src={bg.image_url}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover video-duotone"
                         autoPlay
                         loop
                         muted
                         playsInline
                       />
                     ) : bg?.image_url ? (
-                      <img src={bg.image_url} alt={category.name} className="w-full h-full object-cover" />
+                      <img
+                        src={bg.image_url}
+                        alt={category.name}
+                        className="w-full h-full object-cover image-duotone"
+                        loading="lazy"
+                      />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />
                     )}
