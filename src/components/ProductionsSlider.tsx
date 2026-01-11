@@ -64,11 +64,11 @@ export const ProductionsSlider = () => {
         <CarouselContent className="-ml-0">
           {images.map((image) => (
             <CarouselItem key={image.id} className="pl-0 basis-full md:basis-1/2 lg:basis-1/3">
-              <div className="relative aspect-[4/3] overflow-hidden mx-2 group">
+              <div className="relative aspect-[4/3] overflow-hidden mx-2 group duotone-hover-group">
                 {image.media_type === 'video' ? (
                   <video
                     src={image.image_url}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 video-duotone"
                     autoPlay
                     loop
                     muted
@@ -78,7 +78,7 @@ export const ProductionsSlider = () => {
                   <img
                     src={image.image_url}
                     alt={image.title || "Producción en Ala Norte"}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 image-duotone"
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

@@ -76,7 +76,7 @@ export const LazyImage = ({
           src={src}
           alt={alt}
           className={cn(
-            "absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300",
+            "absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 image-duotone",
             isLoaded ? "opacity-100" : "opacity-0",
             className
           )}

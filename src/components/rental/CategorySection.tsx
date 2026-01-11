@@ -180,12 +180,12 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                       {cartQty}/{item.stock_quantity}
                     </div>
                     
-                    <div className="relative aspect-square cursor-pointer" onClick={() => onViewDetails(item)}>
+                    <div className="relative aspect-square cursor-pointer duotone-hover-group" onClick={() => onViewDetails(item)}>
                       {item.image_url ? (
                         <LazyImage
                           src={item.image_url}
                           alt={item.name}
-                          className="grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-300 object-cover"
+                          className="group-hover:scale-105 transition-all duration-300 object-cover"
                           placeholderClassName="border-b-2 border-foreground"
                         />
                       ) : (
