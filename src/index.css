@@ -342,3 +342,13 @@ All colors MUST be HSL.
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* Video duotone effect */
+.video-duotone {
+  filter: grayscale(1) contrast(1.2) sepia(1) saturate(1.8);
+  transition: filter 0.3s ease;
+}
+
+.dark .video-duotone {
+  filter: grayscale(1) contrast(1.4) sepia(1) saturate(2);
+}

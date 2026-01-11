@@ -12,6 +12,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import { CartProvider } from "./hooks/useCart";
 import { HeaderVisibilityProvider } from "./hooks/useHeaderVisibility";
 import { MainContent } from "./components/layout/MainContent";
+import { useVideoDuotone } from "./hooks/useVideoDuotone";
 
 // Lazy load pages for code splitting
 const Home = lazy(() => import("./pages/Home"));
@@ -37,6 +38,11 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
+const VideoDuotoneProvider = ({ children }: { children: React.ReactNode }) => {
+  useVideoDuotone();
+  return <>{children}</>;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -45,6 +51,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <HeaderVisibilityProvider>
+            <VideoDuotoneProvider>
             <ScrollToTop />
             <Header />
             <MainContent>
@@ -97,6 +104,7 @@ const App = () => (
             </MainContent>
             <Footer />
             <WhatsAppButton />
+            </VideoDuotoneProvider>
           </HeaderVisibilityProvider>
         </BrowserRouter>
       </CartProvider>
