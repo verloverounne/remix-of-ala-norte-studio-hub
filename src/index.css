@@ -349,6 +349,15 @@ All colors MUST be HSL.
   transition: filter 0.3s ease;
 }
 
+/* Hover = colores originales, sin tocar playback */
+.video-duotone:hover {
+  filter: none;
+}
+
 .dark .video-duotone {
   filter: grayscale(1) contrast(1.4) sepia(1) saturate(2);
+}
+
+.dark .video-duotone:hover {
+  filter: none;
 }
