@@ -1,46 +1,43 @@
 import { useEffect } from "react";
 
 /**
- * Global hook that applies duotone effect to all videos
- * - mouseenter: play video + remove duotone filter
- * - mouseleave: pause video + apply duotone filter
- * Works with dynamically loaded videos using MutationObserver
+ * Global hook that applies a duotone effect to all videos.
+ *
+ * Comportamiento:
+ * - Por defecto: duotono aplicado
+ * - Hover (mouse encima): sin filtro (colores originales)
+ *
+ * Importante:
+ * - NO controla play/pause
+ * - Fuerza atributos para autoplay loop muted playsInline
+ * - Soporta videos cargados dinámicamente (MutationObserver)
  */
 export const useVideoDuotone = () => {
   useEffect(() => {
-    const applyDuotoneToVideo = (video: HTMLVideoElement) => {
+    const applyToVideo = (video: HTMLVideoElement) => {
       // Skip if already processed
       if (video.dataset.duotoneApplied === "true") return;
       video.dataset.duotoneApplied = "true";
 
-      // Apply initial duotone class
+      // Ensure continuous playback attributes
+      video.autoplay = true;
+      video.loop = true;
+      video.muted = true;
+      video.playsInline = true;
+
+      // iOS/Safari attribute fallbacks
+      video.setAttribute("autoplay", "");
+      video.setAttribute("loop", "");
+      video.setAttribute("muted", "");
+      video.setAttribute("playsinline", "");
+
+      // Apply initial duotone class (hover is handled purely via CSS)
       video.classList.add("video-duotone");
-
-      const handleMouseEnter = () => {
-        video.classList.remove("video-duotone");
-        video.play().catch(() => {
-          // Ignore autoplay errors
-        });
-      };
-
-      const handleMouseLeave = () => {
-        video.classList.add("video-duotone");
-        video.pause();
-      };
-
-      video.addEventListener("mouseenter", handleMouseEnter);
-      video.addEventListener("mouseleave", handleMouseLeave);
-
-      // Store cleanup functions on the element
-      (video as any)._duotoneCleanup = () => {
-        video.removeEventListener("mouseenter", handleMouseEnter);
-        video.removeEventListener("mouseleave", handleMouseLeave);
-      };
     };
 
     const processAllVideos = () => {
       const videos = document.querySelectorAll("video");
-      videos.forEach((video) => applyDuotoneToVideo(video as HTMLVideoElement));
+      videos.forEach((v) => applyToVideo(v as HTMLVideoElement));
     };
 
     // Process existing videos
@@ -48,34 +45,24 @@ export const useVideoDuotone = () => {
 
     // Observe for dynamically added videos
     const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        mutation.addedNodes.forEach((node) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
           if (node instanceof HTMLVideoElement) {
-            applyDuotoneToVideo(node);
+            applyToVideo(node);
+          } else if (node instanceof HTMLElement) {
+            node.querySelectorAll("video").forEach((v) => applyToVideo(v as HTMLVideoElement));
           }
-          if (node instanceof HTMLElement) {
-            const videos = node.querySelectorAll("video");
-            videos.forEach((video) => applyDuotoneToVideo(video as HTMLVideoElement));
-          }
-        });
-      });
+        }
+      }
     });
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-    });
+    observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
       observer.disconnect();
-      // Cleanup all video listeners
-      const videos = document.querySelectorAll("video");
-      videos.forEach((video) => {
-        const cleanup = (video as any)._duotoneCleanup;
-        if (cleanup) cleanup();
-      });
     };
   }, []);
 };
 
 export default useVideoDuotone;
+
