@@ -1,12 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselApi,
-  CarouselPrevious,
-  CarouselNext,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
@@ -29,15 +26,18 @@ interface ServicesHeroSliderProps {
   services: HomeService[];
   activeServiceId: string | null;
   onServiceChange: (serviceId: string | null) => void;
+  lastSectionRef?: React.RefObject<HTMLElement>;
 }
 
 export const ServicesHeroSlider = ({ 
   services,
   activeServiceId,
-  onServiceChange
+  onServiceChange,
+  lastSectionRef
 }: ServicesHeroSliderProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isSticky, setIsSticky] = useState(true);
   const heroRef = useRef<HTMLDivElement>(null);
   const { isVisible: isHeaderVisible, isHovering: isHeaderHovering } = useHeaderVisibility();
 
@@ -45,6 +45,31 @@ export const ServicesHeroSlider = ({
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
+
+  // Calculate when to unstick based on last section position
+  useEffect(() => {
+    if (!lastSectionRef?.current || !heroRef.current) return;
+
+    const handleScroll = () => {
+      const lastSection = lastSectionRef.current;
+      const hero = heroRef.current;
+      
+      if (!lastSection || !hero) return;
+
+      const lastSectionRect = lastSection.getBoundingClientRect();
+      const heroHeight = hero.offsetHeight;
+      
+      // When the bottom of the last section reaches the bottom of the hero, unstick
+      const shouldBeSticky = lastSectionRect.bottom > heroHeight;
+      
+      setIsSticky(shouldBeSticky);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastSectionRef]);
 
   useEffect(() => {
     if (!api) return;
@@ -83,13 +108,18 @@ export const ServicesHeroSlider = ({
   }, [activeServiceId, api, services, currentSlide]);
 
   const handleChipClick = (serviceId: string, index: number) => {
-    // Scroll to corresponding section (like Equipos behavior)
     onServiceChange(serviceId);
     api?.scrollTo(index);
   };
 
   return (
-    <div ref={heroRef} className="sticky top-0 z-30">
+    <div 
+      ref={heroRef} 
+      className={cn(
+        "z-30 transition-all duration-300",
+        isSticky ? "sticky top-0" : "relative"
+      )}
+    >
       {/* Fixed Navigation Bar - synced with header visibility */}
       <div 
         className={cn(
@@ -138,7 +168,7 @@ export const ServicesHeroSlider = ({
                      {service.hero_media_type === 'video' && service.hero_video_url ? (
                       <video
                         src={service.hero_video_url}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover video-duotone"
                         autoPlay
                         loop
                         muted
@@ -148,7 +178,7 @@ export const ServicesHeroSlider = ({
                       <img
                         src={service.hero_image_url || service.image_url || ""}
                         alt={service.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover image-duotone"
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />
@@ -174,14 +204,6 @@ export const ServicesHeroSlider = ({
                 </CarouselItem>
               ))}
             </CarouselContent>
-            
-            {/* Navigation arrows */}
-            {services.length > 1 && (
-              <>
-                <CarouselPrevious className="left-2 sm:left-4 h-8 w-8 sm:h-10 sm:w-10 border border-background bg-background/20 hover:bg-background/40 text-background" />
-                <CarouselNext className="right-2 sm:right-4 h-8 w-8 sm:h-10 sm:w-10 border border-background bg-background/20 hover:bg-background/40 text-background" />
-              </>
-            )}
             
             <ScrollIndicator className="text-background/80 hover:text-background" />
           </Carousel>
