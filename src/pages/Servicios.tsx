@@ -36,6 +36,7 @@ const Servicios = () => {
   const [loading, setLoading] = useState(true);
   const [activeServiceId, setActiveServiceId] = useState<string | null>(null);
   const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
+  const lastSectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -158,25 +159,34 @@ const Servicios = () => {
         services={services}
         activeServiceId={activeServiceId}
         onServiceChange={handleServiceChange}
+        lastSectionRef={lastSectionRef}
       />
 
       {/* Vertical stacked service sections */}
       <div className="bg-background">
-        {services.map((service, index) => (
-          <ServiceSection
-            key={service.id}
-            ref={setSectionRef(service.id)}
-            id={service.id}
-            slug={service.slug}
-            title={service.title}
-            description={service.description}
-            bullets={service.bullets || []}
-            ctaLabel={service.cta_label}
-            ctaUrl={service.cta_url}
-            imageUrl={service.image_url}
-            index={index}
-          />
-        ))}
+        {services.map((service, index) => {
+          const isLast = index === services.length - 1;
+          return (
+            <ServiceSection
+              key={service.id}
+              ref={(el) => {
+                setSectionRef(service.id)(el);
+                if (isLast && el) {
+                  (lastSectionRef as React.MutableRefObject<HTMLElement | null>).current = el;
+                }
+              }}
+              id={service.id}
+              slug={service.slug}
+              title={service.title}
+              description={service.description}
+              bullets={service.bullets || []}
+              ctaLabel={service.cta_label}
+              ctaUrl={service.cta_url}
+              imageUrl={service.image_url}
+              index={index}
+            />
+          );
+        })}
       </div>
 
       {/* Final sections */}
