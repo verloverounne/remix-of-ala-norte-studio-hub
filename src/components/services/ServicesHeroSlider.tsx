@@ -133,9 +133,9 @@ export const ServicesHeroSlider = ({
           <Carousel className="w-full" setApi={setApi}>
             <CarouselContent className="-ml-0">
               {services.map((service) => (
-                <CarouselItem key={service.id} className="pl-0 basis-full">
-                  <div className="relative h-[40vh] sm:h-[45vh] overflow-hidden">
-                    {service.hero_media_type === 'video' && service.hero_video_url ? (
+                 <CarouselItem key={service.id} className="pl-0 basis-full">
+                   <div className="relative h-[40vh] sm:h-[45vh] overflow-hidden duotone-hover-group">
+                     {service.hero_media_type === 'video' && service.hero_video_url ? (
                       <video
                         src={service.hero_video_url}
                         className="w-full h-full object-cover"

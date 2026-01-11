@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Carousel,
@@ -32,7 +32,7 @@ export const VideoHeroSlider = ({ pageType, space }: VideoHeroSliderProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [muted, setMuted] = useState(true);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  // refs no necesarias: el duotono es CSS-only y el playback queda en autoplay/loop
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -57,18 +57,6 @@ export const VideoHeroSlider = ({ pageType, space }: VideoHeroSliderProps) => {
     api.on("select", () => {
       const newSlide = api.selectedScrollSnap();
       setCurrentSlide(newSlide);
-      
-      // Pausar todos los videos y reproducir el actual
-      videoRefs.current.forEach((video, index) => {
-        if (video) {
-          if (index === newSlide) {
-            video.play();
-          } else {
-            video.pause();
-            video.currentTime = 0;
-          }
-        }
-      });
     });
   }, [api]);
 
@@ -89,9 +77,8 @@ export const VideoHeroSlider = ({ pageType, space }: VideoHeroSliderProps) => {
         <CarouselContent className="h-full -ml-0">
           {videos.map((video, index) => (
             <CarouselItem key={video.id} className="h-full pl-0">
-              <div className="relative h-screen w-full overflow-hidden">
+              <div className="relative h-screen w-full overflow-hidden duotone-hover-group">
                 <video
-                  ref={el => videoRefs.current[index] = el}
                   src={video.video_url}
                   className="w-full h-full object-cover"
                   autoPlay
