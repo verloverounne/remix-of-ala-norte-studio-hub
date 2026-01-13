@@ -176,10 +176,10 @@ export const SearchBar = () => {
             setIsOpen(true);
             setTimeout(() => inputRef.current?.focus(), 100);
           }}
-          className="border-2 border-foreground h-10 w-10 sm:h-12 sm:w-12"
+          className="h-10 w-10 xl:h-12 xl:w-12"
           aria-label="Abrir búsqueda"
         >
-          <Search className="h-4 w-4 sm:h-5 sm:w-5" />
+          <Search className="h-4 w-4 xl:h-5 xl:w-5" />
         </Button>
       ) : (
         <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 top-20 sm:top-0 w-auto sm:w-80 md:w-96 bg-background border border-foreground shadow-brutal-lg z-50">

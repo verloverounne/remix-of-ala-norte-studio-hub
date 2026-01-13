@@ -19,6 +19,7 @@ interface GalleryImage {
   description: string | null;
   order_index: number;
   category_id: string | null;
+  vertical_video_url: string | null;
 }
 
 interface Category {
@@ -41,7 +42,10 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
     title: "",
     description: "",
     category_id: null as string | null,
+    vertical_video_url: "",
   });
+  const [uploadingVertical, setUploadingVertical] = useState(false);
+  const verticalFileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -68,7 +72,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
       .toLowerCase();
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, isVertical: boolean = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -86,12 +90,17 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
       return;
     }
 
-    setUploading(true);
+    if (isVertical) {
+      setUploadingVertical(true);
+    } else {
+      setUploading(true);
+    }
 
     try {
       const sanitizedName = sanitizeFileName(file.name);
       const timestamp = Date.now();
-      const fileName = `${timestamp}_${sanitizedName}`;
+      const prefix = isVertical ? "vertical_" : "";
+      const fileName = `${prefix}${timestamp}_${sanitizedName}`;
 
       const { error: uploadError } = await supabase.storage
         .from("equipment-images")
@@ -102,16 +111,26 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
       const url = `https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/${fileName}`;
       
       toast({ title: file.type.startsWith("video/") ? "Video subido correctamente" : "Imagen subida correctamente" });
-      setNewImage(prev => ({ 
-        ...prev, 
-        image_url: url,
-        media_type: file.type.startsWith("video/") ? 'video' : 'image'
-      }));
+      
+      if (isVertical) {
+        setNewImage(prev => ({ ...prev, vertical_video_url: url }));
+      } else {
+        setNewImage(prev => ({ 
+          ...prev, 
+          image_url: url,
+          media_type: file.type.startsWith("video/") ? 'video' : 'image'
+        }));
+      }
     } catch (error: any) {
       toast({ title: "Error al subir", description: error.message, variant: "destructive" });
     } finally {
-      setUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      if (isVertical) {
+        setUploadingVertical(false);
+        if (verticalFileInputRef.current) verticalFileInputRef.current.value = "";
+      } else {
+        setUploading(false);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+      }
     }
   };
 
@@ -151,13 +170,14 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
         description: newImage.description || null,
         order_index: maxOrder,
         category_id: selectedPageType === 'hero_rental' ? newImage.category_id : null,
+        vertical_video_url: newImage.vertical_video_url || null,
       });
 
     if (error) {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "✓ MEDIA AGREGADO" });
-      setNewImage({ image_url: "", media_type: "image", title: "", description: "", category_id: null });
+      setNewImage({ image_url: "", media_type: "image", title: "", description: "", category_id: null, vertical_video_url: "" });
       fetchImages();
       onRefresh?.();
     }
@@ -282,7 +302,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
             </div>
             
             <div className="space-y-2 md:col-span-2">
-              <Label>{newImage.media_type === 'video' ? 'Video URL *' : 'Imagen *'}</Label>
+              <Label>{newImage.media_type === 'video' ? 'Video URL (Desktop) *' : 'Imagen *'}</Label>
               <div className="flex gap-2">
                 <div className="flex-1">
                   {newImage.media_type === 'image' ? (
@@ -295,7 +315,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
                     <Input
                       value={newImage.image_url}
                       onChange={(e) => setNewImage({ ...newImage, image_url: e.target.value })}
-                      placeholder="URL del video MP4 o sube uno nuevo..."
+                      placeholder="URL del video MP4 horizontal (desktop) o sube uno nuevo..."
                     />
                   )}
                 </div>
@@ -303,7 +323,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
                   ref={fileInputRef}
                   type="file"
                   accept={newImage.media_type === 'video' ? "video/mp4,video/webm,video/mov" : "image/*"}
-                  onChange={handleFileUpload}
+                  onChange={(e) => handleFileUpload(e, false)}
                   className="hidden"
                 />
                 <Button
@@ -321,6 +341,45 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
                 </Button>
               </div>
             </div>
+            
+            {/* Video Vertical - Solo para videos en sliders hero */}
+            {newImage.media_type === 'video' && (selectedPageType === 'home_hero' || selectedPageType === 'galeria_hero' || selectedPageType === 'sala_grabacion_hero') && (
+              <div className="space-y-2 md:col-span-2">
+                <Label>Video Vertical (Mobile/Tablet) - Opcional</Label>
+                <p className="text-xs text-muted-foreground mb-2">
+                  Sube una versión vertical del video para dispositivos móviles y tablets. Si no se sube, se usará el video horizontal.
+                </p>
+                <div className="flex gap-2">
+                  <div className="flex-1">
+                    <Input
+                      value={newImage.vertical_video_url}
+                      onChange={(e) => setNewImage({ ...newImage, vertical_video_url: e.target.value })}
+                      placeholder="URL del video MP4 vertical (mobile/tablet) o sube uno nuevo..."
+                    />
+                  </div>
+                  <input
+                    ref={verticalFileInputRef}
+                    type="file"
+                    accept="video/mp4,video/webm,video/mov"
+                    onChange={(e) => handleFileUpload(e, true)}
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => verticalFileInputRef.current?.click()}
+                    disabled={uploadingVertical}
+                  >
+                    {uploadingVertical ? (
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    ) : (
+                      <Upload className="h-4 w-4 mr-2" />
+                    )}
+                    {uploadingVertical ? "Subiendo..." : "Subir Vertical"}
+                  </Button>
+                </div>
+              </div>
+            )}
             <div className="space-y-2">
               <Label>Título (opcional)</Label>
               <Input 
@@ -448,6 +507,18 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
                         onChange={(e) => handleUpdateImage(img.id, { image_url: e.target.value })}
                       />
                     </div>
+                    {/* Video Vertical - Solo para videos en sliders hero */}
+                    {img.media_type === 'video' && (selectedPageType === 'home_hero' || selectedPageType === 'galeria_hero' || selectedPageType === 'sala_grabacion_hero') && (
+                      <div className="flex items-center gap-2 md:col-span-3">
+                        <Label className="text-xs text-muted-foreground whitespace-nowrap">Video Vertical (Mobile/Tablet):</Label>
+                        <Input 
+                          className="flex-1 text-xs"
+                          value={img.vertical_video_url || ""}
+                          onChange={(e) => handleUpdateImage(img.id, { vertical_video_url: e.target.value || null })}
+                          placeholder="URL del video vertical (opcional)"
+                        />
+                      </div>
+                    )}
                     <div className="flex items-center gap-2">
                       <Label className="text-xs text-muted-foreground whitespace-nowrap">Orden:</Label>
                       <Input 

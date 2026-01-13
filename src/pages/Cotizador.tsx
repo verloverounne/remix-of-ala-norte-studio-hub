@@ -179,7 +179,7 @@ Contactar cliente para coordinar entrega/retiro.
   return (
     <div className="min-h-screen pt-14 sm:pt-16 bg-muted/30">
       {/* Hero Section */}
-      <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20 border-b border-foreground">
+      <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20 border-b border-border">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4 sm:mb-6">
             CARRITO DE RESERVA

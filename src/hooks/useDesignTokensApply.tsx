@@ -39,6 +39,11 @@ const STATIC_TOKEN_TO_CSS_MAP: Record<string, string> = {
   "color.gray-medium": "--gray-medium",
   "color.gray-light": "--gray-light",
   "color.gray-lighter": "--gray-lighter",
+  // Typography
+  "font.family.sans": "--font-sans",
+  "font.family.serif": "--font-serif",
+  "font.family.mono": "--font-mono",
+  "font.family.heading": "--font-heading",
   // Radius
   "radius.default": "--radius",
   "radius.none": "--radius-none",
@@ -58,11 +63,6 @@ const STATIC_TOKEN_TO_CSS_MAP: Record<string, string> = {
   "border.width.2": "--border-width-2",
   "border.width.4": "--border-width-4",
   "border.width.8": "--border-width-8",
-  // Border styles
-  "border.style.solid": "--border-style-solid",
-  "border.style.dashed": "--border-style-dashed",
-  "border.style.dotted": "--border-style-dotted",
-  "border.style.double": "--border-style-double",
   // Shadows
   "shadow.brutal": "--shadow-brutal",
   "shadow.brutal-sm": "--shadow-brutal-sm",
@@ -82,6 +82,8 @@ const STATIC_TOKEN_TO_CSS_MAP: Record<string, string> = {
   // Gradients
   "gradient.primary": "--gradient-primary",
   "gradient.hero": "--gradient-hero",
+  "gradient.border-silver": "--border-gradient-silver",
+  "gradient.border-silver-vertical": "--border-gradient-silver-vertical",
 };
 
 // Convert hex to HSL string (without hsl() wrapper, just "H S% L%")
@@ -127,6 +129,19 @@ const generateCSSVarName = (tokenName: string): string => {
     return STATIC_TOKEN_TO_CSS_MAP[tokenName];
   }
   
+  // Special handling for font tokens
+  if (tokenName.startsWith("font.")) {
+    if (tokenName.includes("family")) {
+      const familyType = tokenName.includes("heading") ? "heading" : 
+                        tokenName.includes("serif") ? "serif" :
+                        tokenName.includes("mono") ? "mono" : "sans";
+      return `--font-${familyType}`;
+    }
+    // For font sizes, weights, etc., we'll use CSS custom properties
+    // These might need to be applied differently
+    return `--${tokenName.replace(/\./g, "-")}`;
+  }
+  
   // Dynamic generation: convert token.name.format to --token-name-format
   return `--${tokenName.replace(/\./g, "-")}`;
 };
@@ -144,8 +159,25 @@ export const applyTokenToCSS = (token: DesignToken) => {
     }
   }
 
+  // Special handling for font-family tokens - apply to CSS variable
+  if (token.type === "font-family") {
+    // Font families are stored as strings, apply directly
+    value = token.value;
+  }
+
+  // Special handling for gradients - they're already complete CSS values
+  if (token.name.startsWith("gradient.")) {
+    value = token.value;
+  }
+
   // Apply to root element
   document.documentElement.style.setProperty(cssVar, value);
+  
+  // Also update Tailwind config if needed (for font families)
+  if (token.type === "font-family" && token.name.includes("family")) {
+    // Font families are handled via CSS variables, which Tailwind can use
+    // This is already covered by the CSS variable above
+  }
 };
 
 // Apply all tokens

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lora&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
 @tailwind base;
@@ -43,7 +43,7 @@ All colors MUST be HSL.
     --destructive: 348 83% 47%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 24 5.4348% 63.9216%; /* Bordes negros duros */
+    --border: 0 0% 0% / 0%; /* Bordes eliminados - transparente */
     --input: 0 0% 8%;
     --ring: 348 83% 47%;
 
@@ -83,7 +83,7 @@ All colors MUST be HSL.
     --shadow: 3px 5px 15px -1px hsl(240, 4%, 46%);
     --shadow-md: 3px 5px 22.5px -1px hsl(240, 4%, 46%);
     --shadow-lg: 3px 5px 37.5px -1px hsl(240, 4%, 46%);
-    --font-sans: Roboto, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    --font-sans: Poppins, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     --font-serif: Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
     --font-mono: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
   }

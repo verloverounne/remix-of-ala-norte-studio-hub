@@ -110,7 +110,7 @@ const Nosotros = () => {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto">
             {values.map((value, index) => (
-              <Card key={index} className="border-2 border-foreground shadow-brutal text-center">
+              <Card key={index} className="border-2 border-border shadow-brutal text-center">
                 <CardHeader>
                   <div className="flex justify-center mb-4 text-primary">
                     {value.icon}
@@ -134,7 +134,7 @@ const Nosotros = () => {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto">
             {team.map((member, index) => (
-              <Card key={index} className="border-2 border-foreground shadow-brutal">
+              <Card key={index} className="border-2 border-border shadow-brutal">
                 <div className="relative h-64 overflow-hidden bg-muted flex items-center justify-center">
                   {member.image ? (
                     <img 
@@ -187,7 +187,7 @@ const Nosotros = () => {
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto">
             {partners.map((partner, index) => (
-              <Card key={index} className="border-2 border-foreground shadow-brutal text-center p-6">
+              <Card key={index} className="border-2 border-border shadow-brutal text-center p-6">
                 <div className="text-4xl mb-2">{partner.logo}</div>
                 <p className="font-heading text-sm">{partner.name}</p>
               </Card>
@@ -204,7 +204,7 @@ const Nosotros = () => {
             <h2 className="font-heading text-3xl md:text-4xl">NUESTRA UBICACIÓN</h2>
           </div>
           <div className="max-w-4xl mx-auto mb-8">
-            <Card className="border-2 border-foreground shadow-brutal overflow-hidden">
+            <Card className="border-2 border-border shadow-brutal overflow-hidden">
               <div className="h-96">
                 <Map 
                   address="V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina"

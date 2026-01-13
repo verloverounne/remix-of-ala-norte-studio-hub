@@ -14,6 +14,7 @@ import { applyTokenToCSS } from "@/hooks/useDesignTokensApply";
 import DesignTokensLivePreview from "@/components/admin/DesignTokensLivePreview";
 import ComponentsDownloadPanel from "@/components/admin/ComponentsDownloadPanel";
 import { downloadFigmaTokens } from "@/lib/designTokens/exportToFigma";
+import { DEFAULT_DESIGN_TOKENS } from "@/lib/designTokens/defaultTokens";
 
 interface DesignToken {
   id: string;
@@ -74,6 +75,7 @@ const AdminDesignTokens = () => {
   const [editing, setEditing] = useState<EditingState | null>(null);
   const [saving, setSaving] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [initializing, setInitializing] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -578,6 +580,83 @@ const AdminDesignTokens = () => {
     }
   };
 
+  const initializeAllTokens = async () => {
+    if (!confirm("¿Estás seguro? Esto inicializará todos los tokens del sistema. Los tokens existentes se actualizarán con los valores por defecto.")) {
+      return;
+    }
+
+    setInitializing(true);
+    try {
+      let created = 0;
+      let updated = 0;
+
+      for (const token of DEFAULT_DESIGN_TOKENS) {
+        const existing = tokens.find((t) => t.name === token.name);
+        
+        if (existing) {
+          // Update existing token
+          const { error } = await supabase
+            .from("design_tokens")
+            .update({
+              value: token.value,
+              type: token.type,
+              description: token.description,
+              category: token.category,
+            })
+            .eq("id", existing.id);
+
+          if (!error) {
+            updated++;
+            // Apply to CSS immediately
+            applyTokenToCSS({
+              name: token.name,
+              value: token.value,
+              type: token.type,
+              category: token.category,
+            });
+          }
+        } else {
+          // Insert new token
+          const { error } = await supabase
+            .from("design_tokens")
+            .insert({
+              name: token.name,
+              value: token.value,
+              type: token.type,
+              description: token.description,
+              category: token.category,
+            });
+
+          if (!error) {
+            created++;
+            // Apply to CSS immediately
+            applyTokenToCSS({
+              name: token.name,
+              value: token.value,
+              type: token.type,
+              category: token.category,
+            });
+          }
+        }
+      }
+
+      toast({
+        title: "Tokens inicializados",
+        description: `${created} tokens creados, ${updated} tokens actualizados`,
+      });
+
+      fetchTokens();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: (error as Error).message,
+        variant: "destructive",
+      });
+    } finally {
+      setInitializing(false);
+    }
+  };
+
   const getTypeBadge = (type: string) => {
     const config = TYPE_BADGES[type] || { label: type.toUpperCase(), className: "bg-gray-500/20 text-gray-600 border-gray-500/30" };
     return (
@@ -752,6 +831,16 @@ const AdminDesignTokens = () => {
               <Zap className="h-3 w-3 flex-shrink-0" />
               Tiempo real
             </Badge>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={initializeAllTokens}
+              disabled={initializing}
+              className="text-xs"
+            >
+              <RotateCcw className={`h-3 w-3 mr-1 ${initializing ? "animate-spin" : ""}`} />
+              {initializing ? "Inicializando..." : "Inicializar Tokens"}
+            </Button>
           </div>
         </div>
 
@@ -815,7 +904,7 @@ const AdminDesignTokens = () => {
 
           {/* Right Column - Live Preview */}
           <div className="overflow-y-auto">
-            <DesignTokensLivePreview />
+            <DesignTokensLivePreview tokens={tokens} />
           </div>
         </div>
 

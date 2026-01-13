@@ -4,9 +4,12 @@ import { Carousel, CarouselContent, CarouselItem, CarouselApi } from "@/componen
 import { Button } from "@/components/ui/button";
 import { Volume2, VolumeX } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useParallax } from "@/hooks/useParallax";
+
 interface VideoSlide {
   id: string;
   video_url: string;
+  vertical_video_url?: string | null;
   title: string;
   subtitle: string;
   cta?: {
@@ -14,6 +17,88 @@ interface VideoSlide {
     link: string;
   };
 }
+
+// Componente individual para cada slide con parallax
+interface HeroSlideProps {
+  slide: VideoSlide;
+  index: number;
+  videoRef: (el: HTMLVideoElement | null) => void;
+  muted: boolean;
+}
+
+const HeroSlide = ({ slide, index, videoRef, muted }: HeroSlideProps) => {
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+  
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsMobileOrTablet(window.innerWidth < 1024); // Tablet y mobile: < 1024px
+    };
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    return () => window.removeEventListener('resize', checkDevice);
+  }, []);
+  
+  // Parallax para el video (se mueve más lento que el scroll)
+  const videoParallax = useParallax({ speed: 0.6, direction: 'up' });
+  // Parallax para el contenido (se mueve más rápido)
+  const contentParallax = useParallax({ speed: 0.4, direction: 'down' });
+
+  // Determinar qué video usar: vertical en mobile/tablet si existe, sino el horizontal
+  const videoToUse = (isMobileOrTablet && slide.vertical_video_url) ? slide.vertical_video_url : slide.video_url;
+
+  return (
+    <CarouselItem className="h-full pl-0">
+      <div className="relative h-screen w-full overflow-hidden duotone-hover-group" style={{ overflow: 'hidden' }}>
+        {videoToUse ? (
+          <div 
+            ref={videoParallax.ref as any}
+            style={videoParallax.style}
+            className="absolute inset-0 w-full h-[120%]"
+          >
+            <video
+              ref={videoRef}
+              src={videoToUse}
+              className="w-full h-full object-cover"
+              autoPlay
+              loop
+              muted={muted}
+              playsInline
+            />
+          </div>
+        ) : (
+          <div className="w-full h-full bg-foreground/95 flex items-center justify-center">
+            <div className="text-center text-background/40">
+              <p className="text-lg mb-2">Video placeholder</p>
+              <p className="text-sm">Sube un video desde el admin en "Home - Hero Videos"</p>
+            </div>
+          </div>
+        )}
+        {/* Content overlay con parallax sutil */}
+        <div 
+          ref={contentParallax.ref as any}
+          style={contentParallax.style}
+          className="absolute inset-0 flex items-center justify-center z-10"
+        >
+          <div className="text-center p-4 sm:p-6 lg:p-8 max-w-4xl">
+            <h2 className="text-background text-3xl sm:text-4xl md:text-5xl mb-2 sm:mb-4 font-bold drop-shadow-lg font-sans lg:text-8xl">
+              {slide.title}
+            </h2>
+            <p className="font-heading text-background/90 text-lg sm:text-xl md:text-2xl lg:text-4xl mb-6 sm:mb-8 drop-shadow-md">
+              {slide.subtitle}
+            </p>
+            {slide.cta && (
+              <Button asChild variant="hero" size="lg" className="text-base sm:text-lg">
+                <Link to={slide.cta.link} className="border-0">
+                  {slide.cta.label}
+                </Link>
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+    </CarouselItem>
+  );
+};
 
 // Configuración estática de los slides del hero
 const heroSlides = [
@@ -51,6 +136,7 @@ export const HomeVideoHeroSlider = () => {
     {
       id: string;
       video_url: string;
+      vertical_video_url: string | null;
       order_index: number;
     }[]
   >([]);
@@ -58,6 +144,7 @@ export const HomeVideoHeroSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [muted, setMuted] = useState(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const heroSectionRef = useRef<HTMLElement>(null);
   useEffect(() => {
     const fetchVideos = async () => {
       const { data } = await supabase
@@ -70,6 +157,7 @@ export const HomeVideoHeroSlider = () => {
           data.map((item) => ({
             id: item.id,
             video_url: item.image_url,
+            vertical_video_url: item.vertical_video_url || null,
             order_index: item.order_index || 0,
           })),
         );
@@ -89,9 +177,10 @@ export const HomeVideoHeroSlider = () => {
   const slidesWithVideos = heroSlides.map((slide, index) => ({
     ...slide,
     video_url: videos[index]?.video_url || null,
+    vertical_video_url: videos[index]?.vertical_video_url || null,
   }));
   return (
-    <section className="relative h-screen overflow-hidden border-b-4 border-foreground">
+    <section ref={heroSectionRef} className="relative h-screen overflow-hidden border-b-4 border-foreground">
       <Carousel
         className="w-full h-full"
         setApi={setApi}
@@ -101,48 +190,13 @@ export const HomeVideoHeroSlider = () => {
       >
         <CarouselContent className="h-full -ml-0">
           {slidesWithVideos.map((slide, index) => (
-            <CarouselItem key={slide.id} className="h-full pl-0">
-              <div className="relative h-screen w-full overflow-hidden duotone-hover-group">
-                {slide.video_url ? (
-                  <video
-                    ref={(el) => (videoRefs.current[index] = el)}
-                    src={slide.video_url}
-                    className="w-full h-full object-cover"
-                    autoPlay
-                    loop
-                    muted={muted}
-                    playsInline
-                  />
-                ) : (
-                  <div className="w-full h-full bg-foreground/95 flex items-center justify-center">
-                    <div className="text-center text-background/40">
-                      <p className="text-lg mb-2">Video placeholder</p>
-                      <p className="text-sm">Sube un video desde el admin en "Home - Hero Videos"</p>
-                    </div>
-                  </div>
-                )}
-                {/* <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-
-                {/* Content overlay */}
-                <div className="absolute inset-0 flex items-center justify-center z-10">
-                  <div className="text-center p-4 sm:p-6 lg:p-8 max-w-4xl">
-                    <h2 className="text-background text-3xl sm:text-4xl md:text-5xl mb-2 sm:mb-4 font-bold drop-shadow-lg font-sans lg:text-8xl">
-                      {slide.title}
-                    </h2>
-                    <p className="font-heading text-background/90 text-lg sm:text-xl md:text-2xl lg:text-4xl mb-6 sm:mb-8 drop-shadow-md">
-                      {slide.subtitle}
-                    </p>
-                    {slide.cta && (
-                      <Button asChild variant="hero" size="lg" className="text-base sm:text-lg">
-                        <Link to={slide.cta.link} className="border-0">
-                          {slide.cta.label}
-                        </Link>
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </CarouselItem>
+            <HeroSlide
+              key={slide.id}
+              slide={slide}
+              index={index}
+              videoRef={(el) => (videoRefs.current[index] = el)}
+              muted={muted}
+            />
           ))}
         </CarouselContent>
       </Carousel>

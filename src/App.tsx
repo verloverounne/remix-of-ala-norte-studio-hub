@@ -13,6 +13,7 @@ import { CartProvider } from "./hooks/useCart";
 import { HeaderVisibilityProvider } from "./hooks/useHeaderVisibility";
 import { MainContent } from "./components/layout/MainContent";
 import { useVideoDuotone } from "./hooks/useVideoDuotone";
+import { useDesignTokensApply } from "./hooks/useDesignTokensApply";
 
 // Lazy load pages for code splitting
 const Home = lazy(() => import("./pages/Home"));
@@ -43,6 +44,11 @@ const VideoDuotoneProvider = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const DesignTokensProvider = ({ children }: { children: React.ReactNode }) => {
+  useDesignTokensApply();
+  return <>{children}</>;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -50,10 +56,11 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <HeaderVisibilityProvider>
-            <VideoDuotoneProvider>
-            <ScrollToTop />
-            <Header />
+          <DesignTokensProvider>
+            <HeaderVisibilityProvider>
+              <VideoDuotoneProvider>
+              <ScrollToTop />
+              <Header />
             <MainContent>
               <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
                 <Routes>
@@ -106,6 +113,7 @@ const App = () => (
             <WhatsAppButton />
             </VideoDuotoneProvider>
           </HeaderVisibilityProvider>
+          </DesignTokensProvider>
         </BrowserRouter>
       </CartProvider>
     </TooltipProvider>

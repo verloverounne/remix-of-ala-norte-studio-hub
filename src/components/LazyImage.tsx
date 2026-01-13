@@ -55,12 +55,15 @@ export const LazyImage = ({
     portrait: "aspect-[3/4]",
   }[aspectRatio];
 
+  // Si placeholderClassName contiene w-full h-full, no usar aspectRatioClass
+  const shouldUseAspectRatio = !placeholderClassName?.includes("w-full") || !placeholderClassName?.includes("h-full");
+
   return (
     <div
       ref={imgRef}
       className={cn(
         "relative overflow-hidden bg-muted",
-        aspectRatioClass,
+        shouldUseAspectRatio && aspectRatioClass,
         placeholderClassName
       )}
     >

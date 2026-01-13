@@ -106,7 +106,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
     >
       {/* Sticky Category Header with Collapse - z-20 - same height as filter bar */}
       <div 
-        className="sticky z-20 bg-background border border-foreground mb-0"
+        className="sticky z-20 bg-background mb-0"
         style={{ top: `${stickyTop}px` }}
       >
         <div className="flex items-center justify-between px-2 sm:px-4 py-2 sm:py-3 h-[40px] sm:h-[52px]">
@@ -130,10 +130,10 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
           {/* Subcategory Dropdown */}
           {subcategories.length > 0 && isExpanded && (
             <Select value={selectedSubcategory} onValueChange={setSelectedSubcategory}>
-              <SelectTrigger className="w-[140px] sm:w-[180px] h-8 sm:h-9 text-xs sm:text-sm font-heading border border-foreground">
+              <SelectTrigger className="w-[140px] sm:w-[180px] h-8 sm:h-9 text-xs sm:text-sm font-heading">
                 <SelectValue placeholder="Subcategoría" />
               </SelectTrigger>
-              <SelectContent className="bg-background border border-foreground z-50">
+              <SelectContent className="bg-background z-50">
                 <SelectItem value="all" className="font-heading text-xs sm:text-sm">
                   Todas
                 </SelectItem>
@@ -154,7 +154,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
 
       {/* Equipment Grid - Collapsible */}
       {isExpanded && (
-        <div className="border-x border-b border-foreground p-3 sm:p-4 bg-background">
+        <div className="p-3 sm:p-4 bg-background">
           {filteredEquipment.length === 0 ? (
             <div className="text-center py-8 sm:py-12 text-muted-foreground">
               <p className="font-heading text-lg">No hay equipos en esta categoría</p>
@@ -168,28 +168,29 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                 return (
                   <Card 
                     key={item.id}
-                    className="overflow-hidden group relative"
+                    className="overflow-hidden group relative border-0"
                   >
                     {/* Cart quantity badge with stock indicator */}
                     <div className={cn(
                       "absolute top-2 right-2 z-10 rounded-full px-2 py-0.5 flex items-center justify-center font-heading text-[10px] sm:text-xs shadow-brutal-sm",
                       cartQty > 0 
                         ? "bg-primary text-primary-foreground" 
-                        : "bg-muted text-muted-foreground border border-foreground/20"
+                        : "bg-muted text-muted-foreground"
                     )}>
                       {cartQty}/{item.stock_quantity}
                     </div>
                     
-                    <div className="relative aspect-square cursor-pointer duotone-hover-group" onClick={() => onViewDetails(item)}>
+                    <div className="relative aspect-square cursor-pointer duotone-hover-group overflow-hidden" onClick={() => onViewDetails(item)}>
                       {item.image_url ? (
                         <LazyImage
                           src={item.image_url}
                           alt={item.name}
-                          className="group-hover:scale-105 transition-all duration-300 object-cover"
-                          placeholderClassName="border-b-2 border-foreground"
+                          className="w-full h-full group-hover:scale-105 transition-all duration-300"
+                          placeholderClassName="absolute inset-0 w-full h-full"
+                          aspectRatio="square"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-muted border-b-2 border-foreground">
+                        <div className="w-full h-full flex items-center justify-center bg-muted">
                           <span className="text-2xl sm:text-3xl opacity-20 font-heading">?</span>
                         </div>
                       )}
@@ -213,7 +214,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                         <p className="text-muted-foreground font-mono text-[10px] sm:text-xs truncate">{item.brand}</p>
                       )}
                       
-                      <div className="border-t border-foreground/30 pt-2 mt-2">
+                      <div className="pt-2 mt-2">
                         <div className="flex items-baseline gap-1">
                           <span className="text-primary font-heading text-lg sm:text-xl">
                             ${item.price_per_day > 0 ? (item.price_per_day / 1000).toFixed(0) + 'K' : '—'}

@@ -27,7 +27,7 @@ export const CartSidebar = ({
   const CartContent = () => (
     <>
       {/* Header */}
-      <div className="p-4 border-b-2 border-foreground">
+      <div className="p-4">
         <div className="flex items-center justify-between">
           <h3 className="font-heading text-lg sm:text-xl uppercase">Tu Cotización</h3>
           <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded">
@@ -46,11 +46,11 @@ export const CartSidebar = ({
         ) : (
           <div className="space-y-3">
             {items.map((item) => (
-              <div key={item.id} className="border-2 border-foreground/20 p-3 bg-card">
+              <div key={item.id} className="p-3 bg-card">
                 <div className="flex gap-3">
                   {/* Image */}
                   {item.imageUrl && (
-                    <div className="w-16 h-16 flex-shrink-0 border border-foreground/20 overflow-hidden">
+                    <div className="w-16 h-16 flex-shrink-0 overflow-hidden">
                       <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
                     </div>
                   )}
@@ -64,11 +64,11 @@ export const CartSidebar = ({
                 </div>
 
                 {/* Quantity controls */}
-                <div className="flex items-center justify-between mt-3 pt-3 border-t border-foreground/10">
+                <div className="flex items-center justify-between mt-3 pt-3">
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="w-7 h-7 border-2 border-foreground flex items-center justify-center hover:bg-foreground hover:text-background transition-colors"
+                      className="w-7 h-7 flex items-center justify-center hover:bg-foreground hover:text-background transition-colors"
                     >
                       <Minus className="w-3 h-3" />
                     </button>
@@ -103,7 +103,7 @@ export const CartSidebar = ({
 
       {/* Footer */}
       {items.length > 0 && (
-        <div className="p-4 border-t border-foreground bg-muted/30">
+        <div className="p-4 bg-muted/30">
           <div className="space-y-2 mb-4">
             <div className="flex justify-between items-baseline">
               <span className="font-heading text-sm">Subtotal (1 día):</span>
@@ -131,11 +131,11 @@ export const CartSidebar = ({
         <div className="fixed bottom-4 center z-40">
           <button
             onClick={() => setDrawerOpen(true)}
-            className="relative bg-primary text-primary-foreground p-4 rounded-full shadow-brutal-sm border border-foreground hover:scale-105 transition-transform"
+            className="relative bg-primary text-primary-foreground p-4 rounded-full shadow-brutal-sm hover:scale-105 transition-transform"
           >
             <ShoppingCart className="w-6 h-6" />
             {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center border border-foreground">
+              <span className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
                 {totalItems}
               </span>
             )}
@@ -145,7 +145,7 @@ export const CartSidebar = ({
         {/* Drawer */}
         <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
           <DrawerContent className="max-h-[85vh] flex flex-col">
-            <DrawerHeader className="border-b border-foreground">
+            <DrawerHeader>
               <div className="flex items-center justify-between">
                 <DrawerTitle className="font-heading text-xl uppercase">Tu Cotización</DrawerTitle>
                 <DrawerClose asChild>
@@ -167,7 +167,7 @@ export const CartSidebar = ({
   // Desktop: Sticky sidebar - responsive, no max height
   return (
     <div
-      className="sticky z-20 border border-foreground bg-card shadow-brutal"
+      className="sticky z-20 bg-card shadow-brutal"
       style={{
         top: `${stickyTop}px`,
       }}

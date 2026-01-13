@@ -15,7 +15,7 @@ export default {
   	extend: {
   		fontFamily: {
   			sans: [
-  				'Roboto',
+  				'Poppins',
   				'ui-sans-serif',
   				'system-ui',
   				'sans-serif',
@@ -25,7 +25,9 @@ export default {
   				'Noto Color Emoji'
   			],
   			heading: [
-  				'bebas-neue-pro-expanded"',
+  				'Poppins',
+  				'ui-sans-serif',
+  				'system-ui',
   				'sans-serif'
   			],
   			mono: [

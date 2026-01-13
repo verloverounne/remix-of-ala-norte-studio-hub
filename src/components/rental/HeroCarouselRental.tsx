@@ -200,7 +200,7 @@ export const HeroCarouselRental = ({
 
   if (loading || categories.length === 0) {
     return (
-      <div className="h-[50vh] bg-muted animate-pulse flex items-center justify-center border-b border-foreground">
+      <div className="h-[50vh] bg-muted animate-pulse flex items-center justify-center">
         <span className="text-muted-foreground font-heading">CARGANDO...</span>
       </div>
     );
@@ -212,7 +212,7 @@ export const HeroCarouselRental = ({
       <div
         ref={navBarRef}
         className={cn(
-          "fixed left-0 right-0 z-40 bg-background border-b border-foreground transition-all duration-300",
+          "fixed left-0 right-0 z-40 bg-background transition-all duration-300",
           isHeaderVisible || isHeaderHovering ? "top-16 sm:top-20" : "top-0",
         )}
       >
@@ -229,10 +229,10 @@ export const HeroCarouselRental = ({
                     key={category.id}
                     onClick={() => handleChipClick(category.id, index)}
                     className={cn(
-                      "flex-shrink-0 px-2 py-1 sm:px-3 sm:py-1.5 font-heading text-[10px] sm:text-xs uppercase border transition-all whitespace-nowrap",
+                      "flex-shrink-0 px-2 py-1 sm:px-3 sm:py-1.5 font-heading text-[10px] sm:text-xs uppercase transition-all whitespace-nowrap",
                       isActive
-                        ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm"
-                        : "bg-background text-foreground border-foreground hover:bg-muted",
+                        ? "bg-primary text-primary-foreground shadow-brutal-sm"
+                        : "bg-background text-foreground hover:bg-muted",
                     )}
                   >
                     <span>{category.name}</span>
@@ -259,8 +259,8 @@ export const HeroCarouselRental = ({
                   if (isFilterOpen) setIsFilterOpen(false);
                 }}
                 className={cn(
-                  "border-2 border-foreground h-7 w-7 sm:h-9 sm:w-9 p-0 flex-shrink-0",
-                  isSearchOpen && "bg-primary text-primary-foreground border-primary",
+                  "h-7 w-7 sm:h-9 sm:w-9 p-0 flex-shrink-0",
+                  isSearchOpen && "bg-primary text-primary-foreground",
                 )}
               >
                 {isSearchOpen ? <X className="h-3 w-3 sm:h-4 sm:w-4" /> : <Search className="h-3 w-3 sm:h-4 sm:w-4" />}
@@ -275,8 +275,8 @@ export const HeroCarouselRental = ({
                   if (isSearchOpen) setIsSearchOpen(false);
                 }}
                 className={cn(
-                  "border-2 border-foreground h-7 sm:h-9 px-2 flex-shrink-0",
-                  isFilterOpen && "bg-primary text-primary-foreground border-primary",
+                  "h-7 sm:h-9 px-2 flex-shrink-0",
+                  isFilterOpen && "bg-primary text-primary-foreground",
                 )}
               >
                 <Filter className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -307,7 +307,7 @@ export const HeroCarouselRental = ({
                     placeholder="Buscar equipos..."
                     value={searchTerm}
                     onChange={(e) => onSearchChange(e.target.value)}
-                    className="pl-7 sm:pl-10 border-2 border-foreground font-heading uppercase text-xs sm:text-sm h-8 sm:h-10"
+                    className="pl-7 sm:pl-10 font-heading uppercase text-xs sm:text-sm h-8 sm:h-10"
                     autoFocus
                   />
                   {searchTerm && (
@@ -324,7 +324,7 @@ export const HeroCarouselRental = ({
           <div ref={filterRef}>
             <Collapsible open={isFilterOpen}>
               <CollapsibleContent>
-                <div className="pb-2 sm:pb-3 border-t border-foreground/20 pt-2">
+                <div className="pb-2 sm:pb-3 pt-2">
                   <h4 className="font-heading text-xs mb-2 uppercase text-muted-foreground">Subcategorías</h4>
                   {filteredSubcategories.length === 0 ? (
                     <p className="text-xs text-muted-foreground">No hay subcategorías para esta categoría</p>
@@ -334,10 +334,10 @@ export const HeroCarouselRental = ({
                         <button
                           key={sub.id}
                           onClick={() => toggleSubcategory(sub.id)}
-                          className={`px-2 py-1 text-[10px] sm:text-xs font-heading uppercase border-2 transition-all ${
+                          className={`px-2 py-1 text-[10px] sm:text-xs font-heading uppercase transition-all ${
                             selectedSubcategories.includes(sub.id)
-                              ? "bg-primary text-primary-foreground border-primary"
-                              : "bg-background text-foreground border-foreground/50 hover:border-foreground"
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-background text-foreground hover:bg-muted"
                           }`}
                         >
                           {sub.name}

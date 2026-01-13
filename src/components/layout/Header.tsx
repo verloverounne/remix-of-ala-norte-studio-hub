@@ -124,7 +124,7 @@ export const Header = () => {
               variant="ghost"
               size="icon"
               asChild
-              className="hidden sm:inline-flex border border-foreground h-10 w-10 sm:h-12 sm:w-12 hover:bg-green-500 hover:text-white hover:border-green-500"
+              className="hidden sm:inline-flex h-10 w-10 xl:h-12 xl:w-12 hover:bg-green-500 hover:text-white"
               aria-label="Contactar por WhatsApp"
             >
               <a
@@ -140,7 +140,7 @@ export const Header = () => {
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="hidden sm:inline-flex border border-foreground h-10 w-10 sm:h-12 sm:w-12"
+              className="hidden sm:inline-flex h-10 w-10 xl:h-12 xl:w-12"
               aria-label={theme === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"}
             >
               {theme === "light" ? (
@@ -154,7 +154,7 @@ export const Header = () => {
               <>
                 <Button
                   asChild
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
                   className="hidden lg:inline-flex h-10 xl:h-12 text-xs xl:text-sm"
                 >
@@ -167,7 +167,7 @@ export const Header = () => {
                     signOut();
                     navigate("/");
                   }}
-                  className="hidden lg:inline-flex border border-foreground h-10 w-10 xl:h-12 xl:w-12"
+                  className="hidden lg:inline-flex h-10 w-10 xl:h-12 xl:w-12"
                   title="Cerrar sesión"
                 >
                   <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
@@ -181,7 +181,7 @@ export const Header = () => {
                   signOut();
                   navigate("/");
                 }}
-                className="hidden lg:inline-flex border border-foreground h-10 w-10 xl:h-12 xl:w-12"
+                className="hidden lg:inline-flex h-10 w-10 xl:h-12 xl:w-12"
                 title="Cerrar sesión"
               >
                 <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
@@ -202,7 +202,7 @@ export const Header = () => {
               variant="ghost"
               size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden border border-foreground h-10 w-10"
+              className="lg:hidden h-10 w-10"
               aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
             >
               {mobileMenuOpen ? (
@@ -216,14 +216,14 @@ export const Header = () => {
 
         {/* Mobile Navigation Brutal */}
         {mobileMenuOpen && (
-          <div className="lg:hidden pb-4 border-t border-foreground mt-2">
+          <div className="lg:hidden pb-4 mt-2">
             <div className="flex flex-col gap-2 mt-2">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`px-4 py-3 font-heading text-sm border border-foreground transition-none ${
+                  className={`px-4 py-3 font-heading text-sm transition-none ${
                     location.pathname === item.href
                       ? "bg-primary text-primary-foreground"
                       : "bg-background hover:bg-foreground hover:text-background"
@@ -239,15 +239,15 @@ export const Header = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 font-heading text-sm border border-foreground bg-green-500 text-white hover:bg-green-600"
+                className="flex items-center gap-3 px-4 py-3 font-heading text-sm bg-green-500 text-white hover:bg-green-600"
               >
                 <MessageCircle className="h-5 w-5" />
                 WHATSAPP
               </a>
               
-              <div className="flex items-center justify-between px-4 py-3 border border-foreground">
+              <div className="flex items-center justify-between px-4 py-3">
                 <span className="font-heading text-sm">MODO</span>
-                <Button variant="ghost" size="icon" onClick={toggleTheme} className="border border-foreground h-10 w-10" aria-label={theme === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"}>
+                <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-10 w-10" aria-label={theme === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"}>
                   {theme === "light" ? (
                     <Moon className="h-5 w-5" />
                   ) : (

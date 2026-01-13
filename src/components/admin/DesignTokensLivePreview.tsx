@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -6,17 +7,100 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Eye, ShoppingCart, Search, Star, Heart, Bell, Check, AlertCircle, Info } from "lucide-react";
 
-const DesignTokensLivePreview = () => {
+interface DesignToken {
+  id: string;
+  name: string;
+  type: string;
+  value: string;
+  description: string | null;
+  category: string;
+}
+
+interface DesignTokensLivePreviewProps {
+  tokens?: DesignToken[];
+}
+
+const DesignTokensLivePreview = ({ tokens = [] }: DesignTokensLivePreviewProps) => {
+  const [tokenValues, setTokenValues] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    // Create a map of token names to values
+    const values: Record<string, string> = {};
+    tokens.forEach(token => {
+      values[token.name] = token.value;
+    });
+    setTokenValues(values);
+  }, [tokens]);
+
+  // Listen for CSS variable changes to update preview in real-time
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      // Force re-render when CSS variables change
+      setTokenValues(prev => ({ ...prev }));
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['style'],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Helper to get token value or fallback
+  const getTokenValue = (name: string, fallback: string = "") => {
+    return tokenValues[name] || fallback;
+  };
+
+  // Helper to get CSS variable value
+  const getCSSVar = (varName: string, fallback: string = "") => {
+    if (typeof window !== "undefined") {
+      const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+      return value || fallback;
+    }
+    return fallback;
+  };
+
+  // Get color values from CSS variables
+  const getColorValue = (tokenName: string) => {
+    const cssVarMap: Record<string, string> = {
+      "color.primary": "--primary",
+      "color.secondary": "--secondary",
+      "color.accent": "--accent",
+      "color.muted": "--muted",
+      "color.destructive": "--destructive",
+      "color.background": "--background",
+      "color.foreground": "--foreground",
+      "color.card": "--card",
+      "color.popover": "--popover",
+      "color.border": "--border",
+      "color.ring": "--ring",
+    };
+    
+    const cssVar = cssVarMap[tokenName];
+    if (cssVar) {
+      const hsl = getCSSVar(cssVar);
+      if (hsl) {
+        return `hsl(${hsl})`;
+      }
+    }
+    return getTokenValue(tokenName);
+  };
   return (
     <Card className="w-full">
       <CardHeader className="pb-4">
         <CardTitle className="text-lg flex items-center gap-2">
           <Eye className="h-5 w-5" />
-          Vista Previa
+          Vista Previa en Tiempo Real
         </CardTitle>
         <CardDescription>
-          Los cambios se reflejan en tiempo real
+          Los cambios se reflejan instantáneamente al editar tokens
         </CardDescription>
+        {tokens.length > 0 && (
+          <div className="mt-2 text-xs text-muted-foreground">
+            {tokens.length} tokens cargados • Edita cualquier token para ver los cambios aquí
+          </div>
+        )}
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Buttons Section */}
@@ -98,13 +182,62 @@ const DesignTokensLivePreview = () => {
         <div className="space-y-3">
           <Label className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
             Tipografía
+            {tokenValues["font.family.sans"] && (
+              <span className="ml-2 text-[10px] font-normal text-muted-foreground">
+                ({getTokenValue("font.family.sans").split(",")[0]})
+              </span>
+            )}
           </Label>
           <div className="space-y-1">
-            <h1 className="text-2xl font-heading font-bold">Heading H1</h1>
-            <h2 className="text-xl font-heading font-semibold">Heading H2</h2>
-            <h3 className="text-lg font-heading font-medium">Heading H3</h3>
-            <p className="text-sm text-foreground">Párrafo de texto normal con estilo de cuerpo.</p>
-            <p className="text-xs text-muted-foreground">Texto secundario más pequeño y atenuado.</p>
+            <h1 
+              className="text-2xl font-heading font-bold"
+              style={{ 
+                fontFamily: getTokenValue("font.family.heading", "inherit"),
+                fontSize: getTokenValue("font.size.2xl", "1.5rem"),
+                fontWeight: getTokenValue("font.weight.bold", "700"),
+              }}
+            >
+              Heading H1
+            </h1>
+            <h2 
+              className="text-xl font-heading font-semibold"
+              style={{ 
+                fontFamily: getTokenValue("font.family.heading", "inherit"),
+                fontSize: getTokenValue("font.size.xl", "1.25rem"),
+                fontWeight: getTokenValue("font.weight.semibold", "600"),
+              }}
+            >
+              Heading H2
+            </h2>
+            <h3 
+              className="text-lg font-heading font-medium"
+              style={{ 
+                fontFamily: getTokenValue("font.family.heading", "inherit"),
+                fontSize: getTokenValue("font.size.lg", "1.125rem"),
+                fontWeight: getTokenValue("font.weight.medium", "500"),
+              }}
+            >
+              Heading H3
+            </h3>
+            <p 
+              className="text-sm text-foreground"
+              style={{ 
+                fontFamily: getTokenValue("font.family.sans", "inherit"),
+                fontSize: getTokenValue("font.size.sm", "0.875rem"),
+                lineHeight: getTokenValue("line.height.normal", "1.5"),
+              }}
+            >
+              Párrafo de texto normal con estilo de cuerpo.
+            </p>
+            <p 
+              className="text-xs text-muted-foreground"
+              style={{ 
+                fontFamily: getTokenValue("font.family.sans", "inherit"),
+                fontSize: getTokenValue("font.size.xs", "0.75rem"),
+              }}
+            >
+              Texto secundario más pequeño y atenuado.
+            </p>
             <a href="#" className="text-sm text-primary hover:underline">Enlace de ejemplo</a>
           </div>
         </div>
@@ -134,48 +267,108 @@ const DesignTokensLivePreview = () => {
         <div className="space-y-3">
           <Label className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
             Paleta de Colores
+            {tokens.length > 0 && (
+              <span className="ml-2 text-[10px] font-normal text-muted-foreground">
+                (Valores actuales)
+              </span>
+            )}
           </Label>
           <div className="grid grid-cols-5 gap-1.5">
             <div className="flex flex-col items-center gap-1">
-              <div className="w-8 h-8 rounded-md bg-primary border border-border shadow-sm" />
+              <div 
+                className="w-8 h-8 rounded-md border border-border shadow-sm" 
+                style={{ backgroundColor: getColorValue("color.primary") }}
+              />
               <span className="text-[9px] text-muted-foreground">Primary</span>
+              {tokenValues["color.primary"] && (
+                <span className="text-[8px] text-muted-foreground font-mono">
+                  {getTokenValue("color.primary").substring(0, 10)}
+                </span>
+              )}
             </div>
             <div className="flex flex-col items-center gap-1">
-              <div className="w-8 h-8 rounded-md bg-secondary border border-border shadow-sm" />
+              <div 
+                className="w-8 h-8 rounded-md border border-border shadow-sm" 
+                style={{ backgroundColor: getColorValue("color.secondary") }}
+              />
               <span className="text-[9px] text-muted-foreground">Secondary</span>
+              {tokenValues["color.secondary"] && (
+                <span className="text-[8px] text-muted-foreground font-mono">
+                  {getTokenValue("color.secondary").substring(0, 10)}
+                </span>
+              )}
             </div>
             <div className="flex flex-col items-center gap-1">
-              <div className="w-8 h-8 rounded-md bg-accent border border-border shadow-sm" />
+              <div 
+                className="w-8 h-8 rounded-md border border-border shadow-sm" 
+                style={{ backgroundColor: getColorValue("color.accent") }}
+              />
               <span className="text-[9px] text-muted-foreground">Accent</span>
+              {tokenValues["color.accent"] && (
+                <span className="text-[8px] text-muted-foreground font-mono">
+                  {getTokenValue("color.accent").substring(0, 10)}
+                </span>
+              )}
             </div>
             <div className="flex flex-col items-center gap-1">
-              <div className="w-8 h-8 rounded-md bg-muted border border-border shadow-sm" />
+              <div 
+                className="w-8 h-8 rounded-md border border-border shadow-sm" 
+                style={{ backgroundColor: getColorValue("color.muted") }}
+              />
               <span className="text-[9px] text-muted-foreground">Muted</span>
+              {tokenValues["color.muted"] && (
+                <span className="text-[8px] text-muted-foreground font-mono">
+                  {getTokenValue("color.muted").substring(0, 10)}
+                </span>
+              )}
             </div>
             <div className="flex flex-col items-center gap-1">
-              <div className="w-8 h-8 rounded-md bg-destructive border border-border shadow-sm" />
+              <div 
+                className="w-8 h-8 rounded-md border border-border shadow-sm" 
+                style={{ backgroundColor: getColorValue("color.destructive") }}
+              />
               <span className="text-[9px] text-muted-foreground">Destruct</span>
+              {tokenValues["color.destructive"] && (
+                <span className="text-[8px] text-muted-foreground font-mono">
+                  {getTokenValue("color.destructive").substring(0, 10)}
+                </span>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-5 gap-1.5">
             <div className="flex flex-col items-center gap-1">
-              <div className="w-8 h-8 rounded-md bg-background border border-border shadow-sm" />
+              <div 
+                className="w-8 h-8 rounded-md border border-border shadow-sm" 
+                style={{ backgroundColor: getColorValue("color.background") }}
+              />
               <span className="text-[9px] text-muted-foreground">BG</span>
             </div>
             <div className="flex flex-col items-center gap-1">
-              <div className="w-8 h-8 rounded-md bg-foreground border border-border shadow-sm" />
+              <div 
+                className="w-8 h-8 rounded-md border border-border shadow-sm" 
+                style={{ backgroundColor: getColorValue("color.foreground") }}
+              />
               <span className="text-[9px] text-muted-foreground">FG</span>
             </div>
             <div className="flex flex-col items-center gap-1">
-              <div className="w-8 h-8 rounded-md bg-card border border-border shadow-sm" />
+              <div 
+                className="w-8 h-8 rounded-md border border-border shadow-sm" 
+                style={{ backgroundColor: getColorValue("color.card") }}
+              />
               <span className="text-[9px] text-muted-foreground">Card</span>
             </div>
             <div className="flex flex-col items-center gap-1">
-              <div className="w-8 h-8 rounded-md bg-popover border border-border shadow-sm" />
+              <div 
+                className="w-8 h-8 rounded-md border border-border shadow-sm" 
+                style={{ backgroundColor: getColorValue("color.popover") }}
+              />
               <span className="text-[9px] text-muted-foreground">Popover</span>
             </div>
             <div className="flex flex-col items-center gap-1">
-              <div className="w-8 h-8 rounded-md border-2 border-ring" />
+              <div 
+                className="w-8 h-8 rounded-md border-2" 
+                style={{ borderColor: getColorValue("color.ring") }}
+              />
               <span className="text-[9px] text-muted-foreground">Ring</span>
             </div>
           </div>
@@ -185,17 +378,33 @@ const DesignTokensLivePreview = () => {
         <div className="space-y-3">
           <Label className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
             Espaciado
+            {tokenValues["spacing.4"] && (
+              <span className="ml-2 text-[10px] font-normal text-muted-foreground">
+                (base: {getTokenValue("spacing.4")})
+              </span>
+            )}
           </Label>
           <div className="flex items-end gap-1">
-            {[1, 2, 3, 4, 6, 8].map((size) => (
-              <div key={size} className="flex flex-col items-center">
-                <div
-                  className="bg-primary/80 rounded-sm"
-                  style={{ width: size * 4, height: size * 4 }}
-                />
-                <span className="text-[8px] text-muted-foreground mt-1">{size}</span>
-              </div>
-            ))}
+            {[1, 2, 3, 4, 6, 8].map((size) => {
+              const spacingValue = getTokenValue(`spacing.${size}`, `${size * 0.25}rem`);
+              return (
+                <div key={size} className="flex flex-col items-center">
+                  <div
+                    className="bg-primary/80 rounded-sm"
+                    style={{ 
+                      width: spacingValue,
+                      height: spacingValue,
+                    }}
+                  />
+                  <span className="text-[8px] text-muted-foreground mt-1">{size}</span>
+                  {tokenValues[`spacing.${size}`] && (
+                    <span className="text-[7px] text-muted-foreground font-mono mt-0.5">
+                      {spacingValue}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -203,14 +412,38 @@ const DesignTokensLivePreview = () => {
         <div className="space-y-3">
           <Label className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
             Border Radius
+            {tokenValues["radius.default"] && (
+              <span className="ml-2 text-[10px] font-normal text-muted-foreground">
+                (default: {getTokenValue("radius.default")})
+              </span>
+            )}
           </Label>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-muted border border-border rounded-none" title="none" />
-            <div className="w-8 h-8 bg-muted border border-border rounded-sm" title="sm" />
-            <div className="w-8 h-8 bg-muted border border-border rounded-md" title="md" />
-            <div className="w-8 h-8 bg-muted border border-border rounded-lg" title="lg" />
-            <div className="w-8 h-8 bg-muted border border-border rounded-xl" title="xl" />
-            <div className="w-8 h-8 bg-muted border border-border rounded-full" title="full" />
+          <div className="flex items-center gap-2 flex-wrap">
+            {[
+              { key: "none", token: "radius.none", value: "0rem" },
+              { key: "sm", token: "radius.sm", value: "0.125rem" },
+              { key: "md", token: "radius.md", value: "0.375rem" },
+              { key: "lg", token: "radius.lg", value: "0.5rem" },
+              { key: "xl", token: "radius.xl", value: "0.75rem" },
+              { key: "full", token: "radius.full", value: "9999px" },
+            ].map(({ key, token, value }) => {
+              const radiusValue = getTokenValue(token, value);
+              return (
+                <div key={key} className="flex flex-col items-center gap-1">
+                  <div 
+                    className="w-8 h-8 bg-muted border border-border" 
+                    style={{ borderRadius: radiusValue }}
+                    title={key}
+                  />
+                  <span className="text-[8px] text-muted-foreground">{key}</span>
+                  {tokenValues[token] && (
+                    <span className="text-[7px] text-muted-foreground font-mono">
+                      {radiusValue}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -218,22 +451,69 @@ const DesignTokensLivePreview = () => {
         <div className="space-y-3">
           <Label className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
             Sombras
+            {tokenValues["shadow.brutal"] && (
+              <span className="ml-2 text-[10px] font-normal text-muted-foreground">
+                (brutal aplicada)
+              </span>
+            )}
           </Label>
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-card border border-border rounded-md shadow-sm flex items-center justify-center">
-              <span className="text-[8px] text-muted-foreground">sm</span>
-            </div>
-            <div className="w-10 h-10 bg-card border border-border rounded-md shadow-md flex items-center justify-center">
-              <span className="text-[8px] text-muted-foreground">md</span>
-            </div>
-            <div className="w-10 h-10 bg-card border border-border rounded-md shadow-lg flex items-center justify-center">
-              <span className="text-[8px] text-muted-foreground">lg</span>
-            </div>
-            <div className="w-10 h-10 bg-card border border-border rounded-md shadow-xl flex items-center justify-center">
-              <span className="text-[8px] text-muted-foreground">xl</span>
-            </div>
+          <div className="flex items-center gap-2 flex-wrap">
+            {[
+              { key: "brutal", token: "shadow.brutal" },
+              { key: "brutal-sm", token: "shadow.brutal-sm" },
+              { key: "brutal-lg", token: "shadow.brutal-lg" },
+              { key: "sm", token: "shadow.sm" },
+              { key: "md", token: "shadow.md" },
+              { key: "lg", token: "shadow.lg" },
+            ].map(({ key, token }) => {
+              const shadowValue = getTokenValue(token);
+              const hasShadow = tokenValues[token];
+              return (
+                <div key={key} className="flex flex-col items-center gap-1">
+                  <div 
+                    className="w-10 h-10 bg-card border border-border rounded-md flex items-center justify-center"
+                    style={hasShadow ? { boxShadow: shadowValue } : {}}
+                  >
+                    <span className="text-[8px] text-muted-foreground">{key}</span>
+                  </div>
+                  {hasShadow && (
+                    <span className="text-[7px] text-muted-foreground font-mono max-w-[60px] truncate">
+                      {shadowValue.substring(0, 15)}...
+                    </span>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
+
+        {/* Token Values Summary */}
+        {tokens.length > 0 && (
+          <div className="space-y-3 pt-4 border-t">
+            <Label className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+              Valores Actuales de Tokens Clave
+            </Label>
+            <div className="space-y-2 text-xs">
+              {[
+                { name: "color.primary", label: "Primary" },
+                { name: "color.secondary", label: "Secondary" },
+                { name: "font.family.sans", label: "Font Sans" },
+                { name: "font.size.base", label: "Font Size Base" },
+                { name: "radius.default", label: "Radius Default" },
+                { name: "spacing.4", label: "Spacing Base" },
+              ].map(({ name, label }) => {
+                const value = getTokenValue(name);
+                if (!value) return null;
+                return (
+                  <div key={name} className="flex items-center justify-between p-2 bg-muted/50 rounded">
+                    <span className="font-medium text-muted-foreground">{label}:</span>
+                    <span className="font-mono text-foreground">{value}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
