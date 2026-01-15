@@ -147,7 +147,10 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
       .order('order_index');
     
     if (!error && data) {
-      setImages(data as GalleryImage[]);
+      setImages(data.map(item => ({
+        ...item,
+        vertical_video_url: (item as any).vertical_video_url || null,
+      })) as GalleryImage[]);
     }
     setLoading(false);
   };

@@ -96,9 +96,9 @@ const HeroSlide = ({ slide, index, videoRef, muted }: HeroSlideProps) => {
 };
 
 // Configuración estática de los slides del hero
-const heroSlides = [
+const heroSlides: Omit<VideoSlide, 'video_url'>[] = [
   {
-    id: 1,
+    id: "1",
     title: "ALA NORTE,MUCHO MAS QUE UN RENTAL",
     subtitle:
       "Si estás buscando alquilar equipamiento audiovisual profesional, podemos ayudarte a materializar tu visión. Trabajamos codo a codo con vos en cada proyecto.",
@@ -108,7 +108,7 @@ const heroSlides = [
     },
   },
   {
-    id: 2,
+    id: "2",
     title: "GALERÍA DE FILMACIÓN",
     subtitle: "150 m²",
     cta: {
@@ -117,7 +117,7 @@ const heroSlides = [
     },
   },
   {
-    id: 3,
+    id: "3",
     title: "SALA DE SONIDO",
     subtitle: "ProTools Ultimate",
     cta: {
@@ -151,7 +151,7 @@ export const HomeVideoHeroSlider = () => {
           data.map((item) => ({
             id: item.id,
             video_url: item.image_url,
-            vertical_video_url: item.vertical_video_url || null,
+            vertical_video_url: (item as any).vertical_video_url || null,
             order_index: item.order_index || 0,
           })),
         );
