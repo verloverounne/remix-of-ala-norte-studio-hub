@@ -30,7 +30,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
   // Parallax para la imagen (se mueve más lento)
   const imageParallax = useParallax({ speed: 0.8, direction: "up" });
   // Parallax para el texto (se mueve más rápido)
-  const textParallax = useParallax({ speed: 0.5, direction: "up" });
+  const textParallax = useParallax({ speed: 0.5, direction: "down" });
 
   return (
     <div className="flex-[0_0_100%] min-w-0">
