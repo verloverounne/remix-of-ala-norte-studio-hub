@@ -42,7 +42,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
             style={textParallax.style}
             className={cn("order-2 lg:order-1", index % 2 === 1 && "lg:order-2")}
           >
-            <div className="border-0 border-primary pl-4 sm:pl-8 mb-6 sm:mb-8">
+            <div className="border-l border-primary pl-4 sm:pl-8 mb-6 sm:mb-8">
               <span className="text-xs sm:text-sm font-heading text-muted-foreground uppercase tracking-wider">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
@@ -72,7 +72,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
             <div
               ref={imageParallax.ref as any}
               style={imageParallax.style}
-              className="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden border border-border shadow-brutal duotone-hover-group"
+              className="relative aspect-16/9] lg:aspect-[3/2] overflow-hidden border duotone-hover-group"
             >
               {service.image_url ? (
                 <LazyImage
