@@ -1,5 +1,4 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
 import type { EquipmentWithCategory } from "@/types/supabase";
@@ -22,26 +21,12 @@ export const EquipmentModal = ({ equipment, open, onOpenChange }: EquipmentModal
       : [equipment.image_url]
     : ["/placeholder.svg"];
 
-  const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      available: { text: "DISPONIBLE", variant: "success" as const },
-      rented: { text: "RENTADO", variant: "destructive" as const },
-      maintenance: { text: "MANTENIMIENTO", variant: "outline" as const },
-    };
-    return statusConfig[status as keyof typeof statusConfig] || statusConfig.available;
-  };
-
-  const statusBadge = getStatusBadge(equipment.status);
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-heading text-2xl sm:text-3xl uppercase flex items-center gap-2 sm:gap-4 flex-wrap">
+          <DialogTitle className="font-heading text-2xl sm:text-3xl uppercase">
             {equipment.name}
-            <Badge variant={statusBadge.variant as any}>
-              {statusBadge.text}
-            </Badge>
           </DialogTitle>
         </DialogHeader>
 

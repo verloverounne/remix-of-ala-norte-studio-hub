@@ -99,7 +99,7 @@ const SalaGrabacion = () => {
       )}
 
       {/* Details Section with Featured Image */}
-      <section className="py-12 sm:py-16 bg-muted/30">
+      <section className="py-12 sm:py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
             {/* Featured Image */}

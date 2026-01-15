@@ -54,6 +54,11 @@ export const DEFAULT_DESIGN_TOKENS: TokenDefinition[] = [
   { name: "color.gray-light", type: "color", value: "0 0% 70%", description: "Gris claro", category: "colors" },
   { name: "color.gray-lighter", type: "color", value: "0 0% 90%", description: "Gris muy claro", category: "colors" },
   
+  // Tritone Filter Colors
+  { name: "color.tritone.high", type: "color", value: "0 0% 98%", description: "Color para tonos altos del filtro tritone (áreas claras de la imagen)", category: "colors" },
+  { name: "color.tritone.mid", type: "color", value: "0 0% 15%", description: "Color para tonos medios del filtro tritone (áreas medias de la imagen)", category: "colors" },
+  { name: "color.tritone.low", type: "color", value: "0 0% 8%", description: "Color para tonos bajos del filtro tritone (áreas oscuras de la imagen)", category: "colors" },
+  
   // ========== TYPOGRAPHY ==========
   { name: "font.family.sans", type: "font-family", value: "Poppins, ui-sans-serif, system-ui, sans-serif", description: "Familia tipográfica principal", category: "typography" },
   { name: "font.family.serif", type: "font-family", value: "Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif", description: "Familia tipográfica serif", category: "typography" },

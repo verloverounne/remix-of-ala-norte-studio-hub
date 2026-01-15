@@ -165,7 +165,7 @@ export const ServicesSection = () => {
 
   if (loading) {
     return (
-      <section className="min-h-[500px] lg:min-h-[700px] bg-muted/30 flex items-center justify-center border-y border-border">
+      <section className="min-h-[500px] lg:min-h-[700px] bg-background flex items-center justify-center border-y border-border">
         <div className="animate-pulse font-heading text-xl">Cargando servicios...</div>
       </section>
     );

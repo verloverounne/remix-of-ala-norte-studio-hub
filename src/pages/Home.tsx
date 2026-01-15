@@ -29,7 +29,7 @@ const FeaturedEquipmentSection = ({
   const headerParallax = useParallax({ speed: 0.5, direction: 'down' });
 
   return (
-    <section className="relative border-y border-border bg-muted/30 overflow-hidden">
+    <section className="relative border-y border-border bg-background overflow-hidden">
       <div className="py-12 sm:py-16 lg:py-20">
         <div 
           ref={headerParallax.ref as any}
@@ -129,7 +129,7 @@ const CTASection = () => {
   const contentParallax = useParallax({ speed: 0.5, direction: 'down' });
 
   return (
-    <section className="py-12 sm:py-20 lg:py-32 text-primary-foreground relative border-y border-border bg-[#8a0027] border">
+    <section className="py-12 sm:py-20 lg:py-32 text-foreground relative border-y border-border bg-background border">
       <div className="container mx-auto px-4 relative">
         <div
           ref={contentParallax.ref as any}
@@ -157,7 +157,7 @@ const CartoniSection = () => {
   const contentParallax = useParallax({ speed: 0.5, direction: 'down' });
 
   return (
-    <section className="py-16 lg:py-24 bg-muted/30 border-y border-border border">
+    <section className="py-16 lg:py-24 bg-background border-y border-border border">
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
           <div

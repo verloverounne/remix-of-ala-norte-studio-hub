@@ -119,7 +119,7 @@ const Soporte = () => {
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-b from-muted/50 to-background">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="font-heading text-4xl md:text-6xl mb-6 tracking-tight">
@@ -145,7 +145,7 @@ const Soporte = () => {
       </section>
 
       {/* Quick Actions */}
-      <section className="py-12 bg-muted/30">
+      <section className="py-12 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
             <Button asChild size="lg" variant="outline" className="h-auto py-6 font-heading">
@@ -218,7 +218,7 @@ const Soporte = () => {
       </section>
 
       {/* Manuals Section */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center gap-4 mb-8">
             <Download className="h-10 w-10 text-primary" />

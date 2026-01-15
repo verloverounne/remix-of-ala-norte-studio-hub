@@ -177,7 +177,7 @@ Contactar cliente para coordinar entrega/retiro.
   };
 
   return (
-    <div className="min-h-screen pt-14 sm:pt-16 bg-muted/30">
+    <div className="min-h-screen pt-14 sm:pt-16 bg-background">
       {/* Hero Section */}
       <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20 border-b border-border">
         <div className="container mx-auto px-4 text-center">

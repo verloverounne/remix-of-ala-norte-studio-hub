@@ -48,23 +48,18 @@ const HeroSlide = ({ slide, index, videoRef, muted }: HeroSlideProps) => {
 
   return (
     <CarouselItem className="h-full pl-0">
-      <div className="relative h-screen w-full overflow-hidden duotone-hover-group" style={{ overflow: 'hidden' }}>
+      <div className="relative h-full w-full overflow-hidden duotone-hover-group" style={{ overflow: 'hidden' }}>
         {videoToUse ? (
-          <div 
-            ref={videoParallax.ref as any}
+          <video
+            ref={videoRef}
+            src={videoToUse}
+            className="absolute inset-0 w-full h-full object-cover video-duotone"
             style={videoParallax.style}
-            className="absolute inset-0 w-full h-[120%]"
-          >
-            <video
-              ref={videoRef}
-              src={videoToUse}
-              className="w-full h-full object-cover"
-              autoPlay
-              loop
-              muted={muted}
-              playsInline
-            />
-          </div>
+            autoPlay
+            loop
+            muted={muted}
+            playsInline
+          />
         ) : (
           <div className="w-full h-full bg-foreground/95 flex items-center justify-center">
             <div className="text-center text-background/40">
@@ -144,7 +139,6 @@ export const HomeVideoHeroSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [muted, setMuted] = useState(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const heroSectionRef = useRef<HTMLElement>(null);
   useEffect(() => {
     const fetchVideos = async () => {
       const { data } = await supabase
@@ -179,9 +173,10 @@ export const HomeVideoHeroSlider = () => {
     video_url: videos[index]?.video_url || null,
     vertical_video_url: videos[index]?.vertical_video_url || null,
   }));
+
   return (
-    <section ref={heroSectionRef} className="relative h-screen overflow-hidden border-b-4 border-foreground">
-      <Carousel
+    <section className="relative min-h-[500px] lg:min-h-[700px] overflow-hidden border-b-4 border-foreground">
+        <Carousel
         className="w-full h-full"
         setApi={setApi}
         opts={{
@@ -205,7 +200,7 @@ export const HomeVideoHeroSlider = () => {
       {videos.length > 0 && (
         <button
           onClick={() => setMuted(!muted)}
-          className="absolute top-24 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm rounded-full hover:bg-background/40 transition-colors"
+          className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm rounded-full hover:bg-background/40 transition-colors"
           aria-label={muted ? "Activar sonido" : "Silenciar"}
         >
           {muted ? <VolumeX className="h-5 w-5 text-background" /> : <Volume2 className="h-5 w-5 text-background" />}

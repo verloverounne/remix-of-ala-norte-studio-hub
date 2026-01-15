@@ -62,6 +62,11 @@ All colors MUST be HSL.
     --gray-light: 0 0% 70%; /* #B3B3B3 */
     --gray-lighter: 0 0% 90%; /* #E5E5E5 */
 
+    /* Tritone Filter Colors */
+    --tritone-high: 0 0% 98%; /* Color para tonos altos (áreas claras) */
+    --tritone-mid: 0 0% 15%; /* Color para tonos medios (áreas medias) */
+    --tritone-low: 0 0% 8%; /* Color para tonos bajos (áreas oscuras) */
+
     /* Sombras Brutales - Duras y sin blur pero sutiles */
     --shadow-brutal: 4px 4px 0 hsl(0 0% 8%);
     --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 8%);
@@ -126,6 +131,11 @@ All colors MUST be HSL.
     --gray-medium: 0 0% 40%;
     --gray-light: 0 0% 70%;
     --gray-lighter: 0 0% 90%;
+
+    /* Tritone Filter Colors */
+    --tritone-high: 0 0% 98%; /* Color para tonos altos (áreas claras) */
+    --tritone-mid: 0 0% 15%; /* Color para tonos medios (áreas medias) */
+    --tritone-low: 0 0% 8%; /* Color para tonos bajos (áreas oscuras) */
 
     --shadow-brutal: 4px 4px 0 hsl(0 0% 98%);
     --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 98%);
@@ -343,16 +353,73 @@ All colors MUST be HSL.
   display: none;
 }
 
-/* Duotone effect for videos and images (CSS-only; nunca controla playback) */
-.video-duotone,
-.image-duotone {
-  filter: grayscale(1) contrast(1.2) sepia(1) saturate(1.8);
-  transition: filter 0.3s ease;
+/* Tritone effect for videos and images (tres tonos: background, gray-dark, foreground) - Clave baja */
+.duotone-hover-group {
+  position: relative;
 }
 
-.dark .video-duotone,
-.dark .image-duotone {
-  filter: grayscale(1) contrast(1.4) sepia(1) saturate(2);
+.video-duotone,
+.image-duotone {
+  /* Convertir a escala de grises con alto contraste para mejor mapeo de luminosidad */
+  filter: grayscale(1) contrast(2) brightness(0.7);
+  transition: filter 0.3s ease;
+  position: relative;
+}
+
+/* Overlay tritone que mapea luminosidad a tres colores: background (altos), gray-dark (medios), foreground (bajos) */
+.duotone-hover-group::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Mapeo tritone: tonos altos -> background, medios -> gray-dark, bajos -> foreground */
+  /* Usar un gradiente que mapee la luminosidad de la imagen debajo */
+  background: 
+    linear-gradient(
+      to bottom,
+      hsl(var(--tritone-high)) 0%,
+      hsl(var(--tritone-high)) 50%,
+      hsl(var(--tritone-mid)) 50%,
+      hsl(var(--tritone-mid)) 50.1%,
+      hsl(var(--tritone-low)) 50.1%,
+      hsl(var(--tritone-low)) 100%
+    );
+  /* Usar color para mapear basándose en la luminosidad de la imagen */
+  mix-blend-mode: color;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.3s ease;
+}
+
+.dark .duotone-hover-group::before {
+  mix-blend-mode: color;
+  opacity: 1;
+  background: 
+    linear-gradient(
+      to bottom,
+      hsl(var(--tritone-high)) 0%,
+      hsl(var(--tritone-high)) 50%,
+      hsl(var(--tritone-mid)) 50%,
+      hsl(var(--tritone-mid)) 50.1%,
+      hsl(var(--tritone-low)) 50.1%,
+      hsl(var(--tritone-low)) 100%
+    );
+}
+
+/* Viñeta permanente del 15% con color #1e1319 */
+.duotone-hover-group::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 50%,
+    #1e1319 100%
+  );
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 2;
 }
 
 /* Hover = colores originales (también cuando hay overlays arriba del elemento) */
@@ -365,4 +432,9 @@ All colors MUST be HSL.
 .dark .duotone-hover-group:hover .video-duotone,
 .dark .duotone-hover-group:hover .image-duotone {
   filter: none !important;
+}
+
+.duotone-hover-group:hover::before,
+.dark .duotone-hover-group:hover::before {
+  opacity: 0 !important;
 }

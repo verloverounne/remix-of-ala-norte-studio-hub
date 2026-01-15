@@ -1,5 +1,5 @@
 import { useRef, forwardRef, useImperativeHandle, useState, useEffect } from "react";
-import { ShoppingCart, ChevronDown, ChevronRight } from "lucide-react";
+import { Plus, ChevronDown, ChevronRight, X } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -168,85 +168,89 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                 return (
                   <Card 
                     key={item.id}
-                    className="overflow-hidden group relative border-0"
+                    className="overflow-hidden group relative border-0 shadow-none hover:shadow-none [box-shadow:none!important] hover:[box-shadow:none!important]"
                   >
-                    {/* Cart quantity badge with stock indicator */}
-                    <div className={cn(
-                      "absolute top-2 right-2 z-10 rounded-full px-2 py-0.5 flex items-center justify-center font-heading text-[10px] sm:text-xs shadow-brutal-sm",
-                      cartQty > 0 
-                        ? "bg-primary text-primary-foreground" 
-                        : "bg-muted text-muted-foreground"
-                    )}>
-                      {cartQty}/{item.stock_quantity}
-                    </div>
-                    
-                    <div className="relative aspect-square cursor-pointer duotone-hover-group overflow-hidden" onClick={() => onViewDetails(item)}>
-                      {item.image_url ? (
-                        <LazyImage
-                          src={item.image_url}
-                          alt={item.name}
-                          className="w-full h-full group-hover:scale-105 transition-all duration-300"
-                          placeholderClassName="absolute inset-0 w-full h-full"
-                          aspectRatio="square"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-muted">
-                          <span className="text-2xl sm:text-3xl opacity-20 font-heading">?</span>
-                        </div>
-                      )}
-                    </div>
-
-                    <CardContent className="p-2 sm:p-3">
-                      {item.subcategories && (
-                        <Badge variant="secondary" className="mb-1 text-[10px] sm:text-xs px-1.5 py-0">
-                          {item.subcategories.name}
-                        </Badge>
-                      )}
-                      
+                    <CardContent className="p-2 sm:p-3 flex flex-col space-y-2">
+                      {/* 1. Nombre del equipo - espacio fijo de dos líneas (doble de alto) */}
                       <h3 
-                        className="font-heading text-xs sm:text-sm leading-tight mb-1 uppercase line-clamp-2 cursor-pointer hover:text-primary transition-colors"
+                        className="font-heading text-xs sm:text-sm leading-tight pt-2 uppercase line-clamp-2 cursor-pointer hover:text-primary transition-colors h-[5em]"
                         onClick={() => onViewDetails(item)}
                       >
                         {item.name}
                       </h3>
                       
-                      {item.brand && (
-                        <p className="text-muted-foreground font-mono text-[10px] sm:text-xs truncate">{item.brand}</p>
-                      )}
+                      {/* 2. Foto */}
+                      <div className="relative aspect-square cursor-pointer duotone-hover-group overflow-hidden" onClick={() => onViewDetails(item)}>
+                        {/* Badge de categoría - esquina superior izquierda */}
+                        {item.subcategories && (
+                          <div className="absolute top-2 left-2 z-10">
+                            <Badge variant="secondary" className="text-[10px] sm:text-xs px-1.5 py-0">
+                              {item.subcategories.name}
+                            </Badge>
+                          </div>
+                        )}
+                        
+                        {/* Cart quantity badge with stock indicator - esquina inferior derecha */}
+                        <div className={cn(
+                          "absolute bottom-2 right-2 z-10 rounded-none px-2 py-0.5 flex items-center justify-center font-heading text-[10px] sm:text-xs shadow-brutal-sm",
+                          cartQty > 0 
+                            ? "bg-primary text-primary-foreground" 
+                            : "bg-muted text-muted-foreground"
+                        )}>
+                          {cartQty}/{item.stock_quantity}
+                        </div>
+                        
+                        {item.image_url ? (
+                          <LazyImage
+                            src={item.image_url}
+                            alt={item.name}
+                            className="w-full h-full group-hover:scale-105 transition-all duration-300"
+                            placeholderClassName="w-full h-full"
+                            aspectRatio="square"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-muted">
+                            <span className="text-2xl sm:text-3xl opacity-20 font-heading">?</span>
+                          </div>
+                        )}
+                      </div>
                       
-                      <div className="pt-2 mt-2">
-                        <div className="flex items-baseline gap-1">
+                      {/* 4. Precio y Botón agregar - en la misma fila */}
+                      <div className="mt-auto flex items-center gap-2">
+                        {/* Precio - mitad izquierda */}
+                        <div className="flex-1 flex items-baseline gap-1">
                           <span className="text-primary font-heading text-lg sm:text-xl">
                             ${item.price_per_day > 0 ? (item.price_per_day / 1000).toFixed(0) + 'K' : '—'}
                           </span>
                           <span className="text-muted-foreground font-mono text-[10px]">/día</span>
                         </div>
+                        
+                        {/* Botón agregar - cuadrado que se expande en hover */}
+                        {item.status === 'available' ? (
+                          <Button 
+                            size="sm"
+                            className="h-8 sm:h-9 w-8 sm:w-9 p-0 overflow-hidden transition-all duration-300 hover:w-[100px] sm:hover:w-[120px] hover:px-2 sm:hover:px-3 font-black flex-shrink-0 group relative flex items-center justify-center gap-0"
+                            onClick={() => onAddToCart(item)}
+                            disabled={!canAdd}
+                          >
+                            {canAdd ? (
+                              <>
+                                <Plus className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0 m-0" />
+                                <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:opacity-100 group-hover:w-auto group-hover:ml-2 font-black">
+                                  AGREGAR
+                                </span>
+                              </>
+                            ) : (
+                              <span className="text-[10px] font-black">MÁX</span>
+                            )}
+                          </Button>
+                        ) : (
+                          <Button size="sm" className="h-8 sm:h-9 w-8 sm:w-9 p-0 font-black flex-shrink-0 flex items-center justify-center" disabled>
+                            <X className="h-3 w-3 sm:h-4 sm:w-4" />
+                          </Button>
+                        )}
                       </div>
                     </CardContent>
-
-                    <CardFooter className="p-2 sm:p-3 pt-0">
-                      {item.status === 'available' ? (
-                        <Button 
-                          size="sm"
-                          className="w-full text-xs sm:text-sm h-8 sm:h-9"
-                          onClick={() => onAddToCart(item)}
-                          disabled={!canAdd}
-                        >
-                          {canAdd ? (
-                            <>
-                              <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                              AGREGAR
-                            </>
-                          ) : (
-                            'MÁXIMO'
-                          )}
-                        </Button>
-                      ) : (
-                        <Button size="sm" className="w-full text-xs h-8" disabled>
-                          NO DISPONIBLE
-                        </Button>
-                      )}
-                    </CardFooter>
                   </Card>
                 );
               })}

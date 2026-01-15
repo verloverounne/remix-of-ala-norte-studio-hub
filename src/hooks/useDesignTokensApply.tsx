@@ -39,6 +39,10 @@ const STATIC_TOKEN_TO_CSS_MAP: Record<string, string> = {
   "color.gray-medium": "--gray-medium",
   "color.gray-light": "--gray-light",
   "color.gray-lighter": "--gray-lighter",
+  // Tritone filter colors
+  "color.tritone.high": "--tritone-high",
+  "color.tritone.mid": "--tritone-mid",
+  "color.tritone.low": "--tritone-low",
   // Typography
   "font.family.sans": "--font-sans",
   "font.family.serif": "--font-serif",

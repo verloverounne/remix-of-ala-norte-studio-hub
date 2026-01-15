@@ -101,7 +101,7 @@ const Cartoni = () => {
       </section>
 
       {/* About Cartoni */}
-      <section className="py-16 lg:py-24 bg-muted/30 border-y border-foreground">
+      <section className="py-16 lg:py-24 bg-background border-y border-foreground">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="border-l border-primary pl-8 mb-12">

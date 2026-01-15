@@ -200,7 +200,7 @@ export const HeroCarouselRental = ({
 
   if (loading || categories.length === 0) {
     return (
-      <div className="h-[50vh] bg-muted animate-pulse flex items-center justify-center">
+      <div className="h-[75vh] bg-muted animate-pulse flex items-center justify-center">
         <span className="text-muted-foreground font-heading">CARGANDO...</span>
       </div>
     );
@@ -252,7 +252,7 @@ export const HeroCarouselRental = ({
 
               {/* Search button */}
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 onClick={() => {
                   setIsSearchOpen(!isSearchOpen);
@@ -268,7 +268,7 @@ export const HeroCarouselRental = ({
 
               {/* Filter button */}
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 onClick={() => {
                   setIsFilterOpen(!isFilterOpen);
@@ -369,7 +369,7 @@ export const HeroCarouselRental = ({
 
               return (
                 <CarouselItem key={category.id} className="pl-0 basis-full">
-                  <div className="relative h-[40vh] sm:h-[45vh] overflow-hidden duotone-hover-group">
+                  <div className="relative h-[75vh] overflow-hidden duotone-hover-group">
                     {bg?.media_type === "video" && bg.image_url ? (
                       <video
                         src={bg.image_url}

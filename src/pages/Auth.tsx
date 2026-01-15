@@ -83,7 +83,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen pt-20 flex items-center justify-center bg-muted/30 px-4">
+    <div className="min-h-screen pt-20 flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="font-heading text-2xl">Panel de Administración</CardTitle>

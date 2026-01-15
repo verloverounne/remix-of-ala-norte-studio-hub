@@ -25,9 +25,20 @@ export const Header = () => {
     // Detectar tema inicial: localStorage > clase HTML > preferencia del sistema > default dark
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
-      if (savedTheme) return savedTheme;
+      if (savedTheme) {
+        // Aplicar inmediatamente al detectar
+        if (savedTheme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+        return savedTheme;
+      }
       if (document.documentElement.classList.contains("dark")) return "dark";
-      if (window.matchMedia("(prefers-color-scheme: dark)").matches) return "dark";
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        document.documentElement.classList.add("dark");
+        return "dark";
+      }
     }
     return "dark"; // Default: dark mode
   });
@@ -37,9 +48,13 @@ export const Header = () => {
   const { totalItems } = useCart();
   const { user, isAdmin, signOut } = useAuth();
 
-  // Sincronizar tema con DOM al montar
+  // Sincronizar tema con DOM al montar y cuando cambia
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
     localStorage.setItem("theme", theme);
   }, [theme]);
 
@@ -54,7 +69,11 @@ export const Header = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    if (newTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   };
 
   const handleMouseEnter = () => {
