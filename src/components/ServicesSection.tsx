@@ -186,24 +186,26 @@ export const ServicesSection = () => {
         </div>
       </div>
 
-      {/* Tab Navigation */}
+      {/* Tab Navigation - Label/Tag Style */}
       <div className="sticky top-0 z-30 bg-background border-y border-border">
         <div className="container mx-auto px-4">
-          <div className="flex overflow-x-auto scrollbar-hide py-0 gap-0">
-            {services.map((service, index) => (
-              <button
-                key={service.id}
-                onClick={() => handleTabClick(index)}
-                className={cn(
-                  "flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 font-heading text-xs sm:text-sm uppercase tracking-wider transition-all border-b -mb-[1px] whitespace-nowrap",
-                  activeIndex === index
-                    ? "border-primary text-primary bg-primary/5"
-                    : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50",
-                )}
-              >
-                {service.title}
-              </button>
-            ))}
+          <div className="flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3">
+            <div className="flex items-center overflow-x-auto scrollbar-hide gap-1 sm:gap-2">
+              {services.map((service, index) => (
+                <button
+                  key={service.id}
+                  onClick={() => handleTabClick(index)}
+                  className={cn(
+                    "flex-shrink-0 px-2 py-1 sm:px-3 sm:py-1.5 font-heading text-[10px] sm:text-xs uppercase border transition-all whitespace-nowrap",
+                    activeIndex === index
+                      ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm"
+                      : "bg-background text-foreground border-foreground hover:bg-muted",
+                  )}
+                >
+                  {service.title}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
