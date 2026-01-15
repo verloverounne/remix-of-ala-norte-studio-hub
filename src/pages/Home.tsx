@@ -199,7 +199,7 @@ const Home = () => {
       <CTASection />
 
       {/* Cartoni Official Dealer Section */}
-      <CartoniSection className="" />
+      <CartoniSection />
     </div>;
 };
 export default Home;
