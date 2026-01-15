@@ -30,10 +30,14 @@ const HeroSlide = ({
   videoRef,
   muted
 }: HeroSlideProps) => {
+  const [isMobile, setIsMobile] = useState(false);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+  const [videoOrientation, setVideoOrientation] = useState<'horizontal' | 'vertical' | null>(null);
+  
   useEffect(() => {
     const checkDevice = () => {
-      setIsMobileOrTablet(window.innerWidth < 1024); // Tablet y mobile: < 1024px
+      setIsMobile(window.innerWidth <= 768);
+      setIsMobileOrTablet(window.innerWidth < 1024);
     };
     checkDevice();
     window.addEventListener('resize', checkDevice);
@@ -51,20 +55,95 @@ const HeroSlide = ({
     direction: 'down'
   });
 
+  // Handler para detectar orientación del video
+  const handleLoadedMetadata = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const video = e.currentTarget;
+    if (video.videoWidth > video.videoHeight) {
+      setVideoOrientation('horizontal');
+    } else {
+      setVideoOrientation('vertical');
+    }
+  };
+
   // Determinar qué video usar: vertical en mobile/tablet si existe, sino el horizontal
   const videoToUse = isMobileOrTablet && slide.vertical_video_url ? slide.vertical_video_url : slide.video_url;
-  return <CarouselItem className="h-full pl-0">
-      <div className="relative h-full w-full overflow-hidden duotone-hover-group" style={{
-      overflow: 'hidden'
-    }}>
-        {videoToUse ? <video ref={videoRef} src={videoToUse} className="absolute inset-0 w-full h-full object-cover video-duotone" style={videoParallax.style} autoPlay loop muted={muted} playsInline /> : <div className="w-full h-full bg-foreground/95 flex items-center justify-center">
+
+  // Estilos dinámicos para mobile según orientación del video
+  const getMobileVideoStyles = (): React.CSSProperties => {
+    if (!isMobile || !videoOrientation) {
+      return videoParallax.style;
+    }
+    
+    const baseStyles: React.CSSProperties = {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      objectFit: 'cover',
+    };
+
+    if (videoOrientation === 'horizontal') {
+      return {
+        ...baseStyles,
+        height: '100vh',
+        width: 'auto',
+        minWidth: '100%',
+      };
+    } else {
+      return {
+        ...baseStyles,
+        width: '100vw',
+        height: 'auto',
+        minHeight: '100%',
+      };
+    }
+  };
+
+  // Clases para el video
+  const getVideoClasses = () => {
+    const baseClasses = "video-duotone";
+    if (isMobile && videoOrientation) {
+      return `${baseClasses} ${videoOrientation}`;
+    }
+    return `${baseClasses} absolute inset-0 w-full h-full object-cover`;
+  };
+
+  return (
+    <CarouselItem className="h-full pl-0">
+      <div 
+        className="relative duotone-hover-group" 
+        style={{
+          width: isMobile ? '100vw' : '100%',
+          height: isMobile ? '100vh' : '100%',
+          overflow: 'hidden'
+        }}
+      >
+        {videoToUse ? (
+          <video 
+            ref={videoRef} 
+            src={videoToUse} 
+            className={getVideoClasses()}
+            style={getMobileVideoStyles()} 
+            autoPlay 
+            loop 
+            muted={muted} 
+            playsInline
+            onLoadedMetadata={handleLoadedMetadata}
+          />
+        ) : (
+          <div className="w-full h-full bg-foreground/95 flex items-center justify-center">
             <div className="text-center text-background/40">
               <p className="text-lg mb-2">Video placeholder</p>
               <p className="text-sm">Sube un video desde el admin en "Home - Hero Videos"</p>
             </div>
-          </div>}
+          </div>
+        )}
         {/* Content overlay con parallax sutil */}
-        <div ref={contentParallax.ref as any} style={contentParallax.style} className="absolute inset-0 flex items-center justify-center z-10">
+        <div 
+          ref={contentParallax.ref as any} 
+          style={contentParallax.style} 
+          className="absolute inset-0 flex items-center justify-center z-10"
+        >
           <div className="text-center p-4 sm:p-6 lg:p-8 max-w-4xl">
             <h2 className="text-background text-3xl sm:text-4xl md:text-5xl mb-2 sm:mb-4 font-bold drop-shadow-lg font-sans lg:text-8xl">
               {slide.title}
@@ -72,15 +151,18 @@ const HeroSlide = ({
             <p className="font-heading text-background/90 text-lg sm:text-xl lg:text-4xl mb-6 sm:mb-8 drop-shadow-md md:text-lg font-normal">
               {slide.subtitle}
             </p>
-            {slide.cta && <Button asChild variant="hero" size="lg" className="text-base sm:text-lg">
+            {slide.cta && (
+              <Button asChild variant="hero" size="lg" className="text-base sm:text-lg">
                 <Link to={slide.cta.link} className="border-0">
                   {slide.cta.label}
                 </Link>
-              </Button>}
+              </Button>
+            )}
           </div>
         </div>
       </div>
-    </CarouselItem>;
+    </CarouselItem>
+  );
 };
 
 // Configuración estática de los slides del hero
