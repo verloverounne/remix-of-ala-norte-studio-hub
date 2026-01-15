@@ -38,11 +38,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
       <div className="block lg:hidden">
         <div className="relative aspect-[16/9] overflow-hidden duotone-hover-group">
           {service.image_url ? (
-            <LazyImage
-              src={service.image_url}
-              alt={service.title}
-              className="object-cover"
-            />
+            <LazyImage src={service.image_url} alt={service.title} className="object-cover" />
           ) : (
             <div className="w-full h-full bg-muted flex items-center justify-center">
               <span className="font-heading text-4xl text-muted-foreground/100">
@@ -56,14 +52,10 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
             <span className="text-xs font-heading text-muted-foreground uppercase tracking-wider">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
-            <h3 className="font-heading text-2xl mt-2 uppercase leading-tight">
-              {service.title}
-            </h3>
+            <h3 className="font-heading text-2xl mt-2 uppercase leading-tight">{service.title}</h3>
           </div>
           {service.description && (
-            <p className="text-base text-muted-foreground mb-6 leading-relaxed">
-              {service.description}
-            </p>
+            <p className="text-base text-muted-foreground mb-6 leading-relaxed">{service.description}</p>
           )}
           {service.button_text && service.button_link && (
             <Button asChild variant="default" size="lg">
@@ -90,15 +82,11 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
                 <span className="text-sm font-heading text-muted-foreground uppercase tracking-wider">
                   Servicio {String(index + 1).padStart(2, "0")}
                 </span>
-                <h3 className="font-heading text-4xl xl:text-5xl mt-2 uppercase leading-tight">
-                  {service.title}
-                </h3>
+                <h3 className="font-heading text-4xl xl:text-5xl mt-2 uppercase leading-tight">{service.title}</h3>
               </div>
 
               {service.description && (
-                <p className="text-xl text-muted-foreground mb-8 leading-relaxed max-w-xl">
-                  {service.description}
-                </p>
+                <p className="text-xl text-muted-foreground mb-8 leading-relaxed max-w-xl">{service.description}</p>
               )}
 
               {service.button_text && service.button_link && (
@@ -220,13 +208,11 @@ export const ServicesSection = () => {
     return null;
   }
 
-   return (
+  return (
     <section className="relative border-y border-border bg-background">
       {/* Section Header */}
       <div className="py-6 sm:py-8 mx-4 sm:mx-8">
-        <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">
-          NUESTROS SERVICIOS
-        </h2>
+        <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">NUESTROS SERVICIOS</h2>
       </div>
 
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
@@ -281,7 +267,7 @@ export const ServicesSection = () => {
           </div>
         </div>
 
-        {/* Navigation Arrows */}
+        {/* Navigation Arrows 
         <button
           onClick={scrollPrev}
           className={cn(
