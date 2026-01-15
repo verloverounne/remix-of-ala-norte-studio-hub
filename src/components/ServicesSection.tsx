@@ -82,7 +82,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
                 />
               ) : (
                 <div className="w-full h-full bg-muted flex items-center justify-center">
-                  <span className="font-heading text-4xl text-muted-foreground/30">
+                  <span className="font-heading text-4xl text-muted-foreground/100">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                 </div>
@@ -226,7 +226,7 @@ export const ServicesSection = () => {
         <button
           onClick={scrollPrev}
           className={cn(
-            "absolute left-1 top-1/2 -translate-y-1/2 z-20 p-3 bg-background border border-border shadow-brutal transition-all hover:bg-muted",
+            "absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-background border border-border shadow-brutal transition-all hover:bg-muted",
             activeIndex === 0 && "opacity-50 cursor-not-allowed",
           )}
           disabled={activeIndex === 0}
@@ -237,7 +237,7 @@ export const ServicesSection = () => {
         <button
           onClick={scrollNext}
           className={cn(
-            "absolute right-1 top-1/2 -translate-y-1/2 z-20 p-3 bg-background border border-border shadow-brutal transition-all hover:bg-muted",
+            "absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-background border border-border shadow-brutal transition-all hover:bg-muted",
             activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed",
           )}
           disabled={activeIndex === services.length - 1}
