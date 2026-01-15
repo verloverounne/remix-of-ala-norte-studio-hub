@@ -34,59 +34,104 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
 
   return (
     <div className="flex-[0_0_100%] min-w-0">
-      <div className="container mx-auto px-8 py-8 lg:py-40">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[400px] lg:min-h-[500px]">
-          {/* Text Column */}
-          <div
-            ref={textParallax.ref as any}
-            style={textParallax.style}
-            className={cn("order-2 lg:order-1", index % 2 === 1 && "lg:order-2")}
-          >
-            <div className="border-l border-primary pl-4 sm:pl-8 mb-6 sm:mb-8">
-              <span className="text-xs sm:text-sm font-heading text-muted-foreground uppercase tracking-wider">
-                Servicio {String(index + 1).padStart(2, "0")}
+      {/* Mobile: Full width image without border */}
+      <div className="block lg:hidden">
+        <div className="relative aspect-[16/9] overflow-hidden duotone-hover-group">
+          {service.image_url ? (
+            <LazyImage
+              src={service.image_url}
+              alt={service.title}
+              className="object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-muted flex items-center justify-center">
+              <span className="font-heading text-4xl text-muted-foreground/100">
+                {String(index + 1).padStart(2, "0")}
               </span>
-              <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl xl:text-5xl mt-2 uppercase leading-tight">
-                {service.title}
-              </h3>
+            </div>
+          )}
+        </div>
+        <div className="px-4 py-6">
+          <div className="border-l border-primary pl-4 mb-4">
+            <span className="text-xs font-heading text-muted-foreground uppercase tracking-wider">
+              Servicio {String(index + 1).padStart(2, "0")}
+            </span>
+            <h3 className="font-heading text-2xl mt-2 uppercase leading-tight">
+              {service.title}
+            </h3>
+          </div>
+          {service.description && (
+            <p className="text-base text-muted-foreground mb-6 leading-relaxed">
+              {service.description}
+            </p>
+          )}
+          {service.button_text && service.button_link && (
+            <Button asChild variant="default" size="lg">
+              <Link to={service.button_link}>
+                {service.button_text}
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {/* Desktop: Two column layout with parallax */}
+      <div className="hidden lg:block">
+        <div className="container mx-auto px-8 py-40">
+          <div className="grid grid-cols-2 gap-16 items-center min-h-[500px]">
+            {/* Text Column */}
+            <div
+              ref={textParallax.ref as any}
+              style={textParallax.style}
+              className={cn("", index % 2 === 1 && "order-2")}
+            >
+              <div className="border-l border-primary pl-8 mb-8">
+                <span className="text-sm font-heading text-muted-foreground uppercase tracking-wider">
+                  Servicio {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="font-heading text-4xl xl:text-5xl mt-2 uppercase leading-tight">
+                  {service.title}
+                </h3>
+              </div>
+
+              {service.description && (
+                <p className="text-xl text-muted-foreground mb-8 leading-relaxed max-w-xl">
+                  {service.description}
+                </p>
+              )}
+
+              {service.button_text && service.button_link && (
+                <Button asChild variant="default" size="lg">
+                  <Link to={service.button_link}>
+                    {service.button_text}
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+              )}
             </div>
 
-            {service.description && (
-              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground mb-6 sm:mb-8 leading-relaxed max-w-xl">
-                {service.description}
-              </p>
-            )}
-
-            {service.button_text && service.button_link && (
-              <Button asChild variant="default" size="lg">
-                <Link to={service.button_link}>
-                  {service.button_text}
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-            )}
-          </div>
-
-          {/* Image Column */}
-          <div className={cn("order-1 lg:order-2", index % 2 === 1 && "lg:order-1")}>
-            <div
-              ref={imageParallax.ref as any}
-              style={imageParallax.style}
-              className="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden border border-border shadow-brutal duotone-hover-group"
-            >
-              {service.image_url ? (
-                <LazyImage
-                  src={service.image_url}
-                  alt={service.title}
-                  className="object-cover hover:scale-105 transition-transform duration-500"
-                />
-              ) : (
-                <div className="w-full h-full bg-muted flex items-center justify-center">
-                  <span className="font-heading text-4xl text-muted-foreground/100">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                </div>
-              )}
+            {/* Image Column */}
+            <div className={cn("", index % 2 === 1 && "order-1")}>
+              <div
+                ref={imageParallax.ref as any}
+                style={imageParallax.style}
+                className="relative aspect-[3/2] overflow-hidden border border-border shadow-brutal duotone-hover-group"
+              >
+                {service.image_url ? (
+                  <LazyImage
+                    src={service.image_url}
+                    alt={service.title}
+                    className="object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-muted flex items-center justify-center">
+                    <span className="font-heading text-4xl text-muted-foreground/100">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -175,28 +220,26 @@ export const ServicesSection = () => {
     return null;
   }
 
-  return (
+   return (
     <section className="relative border-y border-border bg-background">
-      {/* Section Header */}
-      <div className="container mx-auto px-4 pt-12 pb-6 lg:pt-16 lg:pb-8">
-        <div className="border-l border-primary pl-4 sm:pl-8">
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">
-            NUESTROS SERVICIOS
-          </h2>
-        </div>
+      {/* Section Header - No margin */}
+      <div className="border-l border-primary pl-4 sm:pl-8 py-6 sm:py-8 mx-4 sm:mx-8">
+        <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">
+          NUESTROS SERVICIOS
+        </h2>
       </div>
 
-      {/* Tab Navigation - Label/Tag Style */}
+      {/* Tab Navigation - Label/Tag Style - Stacks on mobile */}
       <div className="sticky top-0 z-30 bg-background border-y border-border">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3">
-            <div className="flex items-center overflow-x-auto scrollbar-hide gap-1 sm:gap-2">
+          <div className="flex items-center justify-center py-2 sm:py-3">
+            <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2">
               {services.map((service, index) => (
                 <button
                   key={service.id}
                   onClick={() => handleTabClick(index)}
                   className={cn(
-                    "flex-shrink-0 px-2 py-1 sm:px-3 sm:py-1.5 font-heading text-[10px] sm:text-xs uppercase border transition-all whitespace-nowrap",
+                    "px-2 py-1 sm:px-3 sm:py-1.5 font-heading text-[10px] sm:text-xs uppercase border transition-all",
                     activeIndex === index
                       ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm"
                       : "bg-background text-foreground border-foreground hover:bg-muted",
