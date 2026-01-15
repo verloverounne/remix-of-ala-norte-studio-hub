@@ -229,17 +229,35 @@ export const ServicesSection = () => {
         </h2>
       </div>
 
-      {/* Tab Navigation - Label/Tag Style - Stacks on mobile */}
+      {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
       <div className="sticky top-0 z-30 bg-background border-y border-border">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center py-2 sm:py-3">
-            <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2">
+          <div className="py-2 sm:py-3">
+            {/* Mobile: vertical stack, full width */}
+            <div className="flex flex-col gap-1 sm:hidden">
               {services.map((service, index) => (
                 <button
                   key={service.id}
                   onClick={() => handleTabClick(index)}
                   className={cn(
-                    "px-2 py-1 sm:px-3 sm:py-1.5 font-heading text-[10px] sm:text-xs uppercase border transition-all",
+                    "w-full px-3 py-2 font-heading text-xs uppercase border transition-all text-left",
+                    activeIndex === index
+                      ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm"
+                      : "bg-background text-foreground border-foreground hover:bg-muted",
+                  )}
+                >
+                  {service.title}
+                </button>
+              ))}
+            </div>
+            {/* Desktop: horizontal row, centered */}
+            <div className="hidden sm:flex items-center justify-center gap-2">
+              {services.map((service, index) => (
+                <button
+                  key={service.id}
+                  onClick={() => handleTabClick(index)}
+                  className={cn(
+                    "px-3 py-1.5 font-heading text-xs uppercase border transition-all",
                     activeIndex === index
                       ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm"
                       : "bg-background text-foreground border-foreground hover:bg-muted",
