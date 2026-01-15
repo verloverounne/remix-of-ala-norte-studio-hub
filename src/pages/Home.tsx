@@ -32,7 +32,7 @@ const FeaturedEquipmentSection = ({
   return <section className="relative border-y border-border bg-background overflow-hidden">
       <div className="py-12 sm:py-16 lg:py-20">
         <div ref={headerParallax.ref as any} style={headerParallax.style} className="container mx-auto px-4 mb-8 sm:mb-12">
-          <div className="border-l border-primary pl-4 sm:pl-8">
+          <div>
             <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">RENTAL DESTACADO</h2>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-heading">
               TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS

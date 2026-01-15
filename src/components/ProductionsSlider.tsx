@@ -50,7 +50,7 @@ export const ProductionsSlider = () => {
   return (
     <section className="py-12 sm:py-16 lg:py-20 bg-background border-y-4 border-foreground">
       <div className="container mx-auto px-4 mb-8 sm:mb-12">
-        <div className="border-l-4 sm:border-l-8 border-primary pl-4 sm:pl-8">
+        <div>
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">
             PRODUCCIONES EN ALA NORTE
           </h2>
