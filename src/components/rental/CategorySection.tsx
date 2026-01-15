@@ -184,7 +184,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                         {/* Badge de categoría - esquina superior izquierda */}
                         {item.subcategories && (
                           <div className="absolute top-2 left-2 z-10">
-                            <Badge variant="secondary" className="text-[10px] sm:text-xs px-1.5 py-0 shadow-none hover:bg-secondary cursor-default pointer-events-none">
+                            <Badge variant="secondary" className="text-[10px] sm:text-xs px-1.5 py-0 shadow-none hover:bg-gray-600 bg-gray-600 text-white cursor-default pointer-events-none normal-case capitalize">
                               {item.subcategories.name}
                             </Badge>
                           </div>
