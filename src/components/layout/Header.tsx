@@ -22,7 +22,7 @@ const navigation = [
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">(() => {
-    // Detectar tema inicial: localStorage > clase HTML > preferencia del sistema > default dark
+    // Detectar tema inicial: localStorage > default light
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
       if (savedTheme) {
@@ -34,13 +34,10 @@ export const Header = () => {
         }
         return savedTheme;
       }
-      if (document.documentElement.classList.contains("dark")) return "dark";
-      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        document.documentElement.classList.add("dark");
-        return "dark";
-      }
+      // Default: light mode - asegurar que no tenga clase dark
+      document.documentElement.classList.remove("dark");
     }
-    return "dark"; // Default: dark mode
+    return "light"; // Default: light mode
   });
   const { isVisible, setIsVisible, isHovering, setIsHovering } = useHeaderVisibility();
   const location = useLocation();
