@@ -43,7 +43,7 @@ const ServiceSlide = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[400px] lg:min-h-[500px]">
           {/* Text Column */}
           <div ref={textParallax.ref as any} style={textParallax.style} className={cn("order-2 lg:order-1", index % 2 === 1 && "lg:order-2")}>
-            <div className="border-l pl-4 sm:pl-8 mb-6 sm:mb-8 my-[107px] border-0 px-0 border-white/0">
+            <div className="border-l pl-4 sm:pl-8 mb-6 sm:mb-8 my-[107px] border-0 border-white/0 px-0">
               <span className="text-xs sm:text-sm font-heading text-muted-foreground uppercase tracking-wider">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
