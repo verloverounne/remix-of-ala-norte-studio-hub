@@ -57,7 +57,7 @@ const HeroSlide = ({
       <div className="relative h-full w-full overflow-hidden duotone-hover-group" style={{
       overflow: 'hidden'
     }}>
-        {videoToUse ? <video ref={videoRef} src={videoToUse} className="absolute inset-0 w-auto h-full object-cover video-duotone left-1/2 -translate-x-1/2 min-w-full lg:w-full lg:left-0 lg:translate-x-0" style={videoParallax.style} autoPlay loop muted={muted} playsInline /> : <div className="w-full h-full bg-foreground/95 flex items-center justify-center">
+        {videoToUse ? <video ref={videoRef} src={videoToUse} className="absolute inset-0 w-full h-full object-cover video-duotone" style={videoParallax.style} autoPlay loop muted={muted} playsInline /> : <div className="w-full h-full bg-foreground/95 flex items-center justify-center">
             <div className="text-center text-background/40">
               <p className="text-lg mb-2">Video placeholder</p>
               <p className="text-sm">Sube un video desde el admin en "Home - Hero Videos"</p>
