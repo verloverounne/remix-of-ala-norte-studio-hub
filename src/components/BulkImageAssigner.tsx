@@ -5,9 +5,16 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Check, Image as ImageIcon, Save, RefreshCw, Trash2, Upload, Loader2 } from "lucide-react";
+import { Search, Check, Image as ImageIcon, Save, RefreshCw, Trash2, Upload, Loader2, Filter, X, Edit } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { Category, Subcategory } from "@/types/supabase";
+import { EquipmentImageManager } from "@/components/EquipmentImageManager";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,7 +30,20 @@ import {
 interface Equipment {
   id: string;
   name: string;
+  name_en: string | null;
   image_url: string | null;
+  images: string[];
+  brand: string | null;
+  model: string | null;
+  description: string | null;
+  price_per_day: number;
+  price_per_week: number | null;
+  category_id: string | null;
+  subcategory_id: string | null;
+  featured: boolean;
+  featured_copy: string | null;
+  categories: Category | null;
+  subcategories: Subcategory | null;
 }
 
 interface StorageFile {
@@ -31,8 +51,12 @@ interface StorageFile {
   url: string;
 }
 
+type ImageFilter = "all" | "with" | "without";
+
 export const BulkImageAssigner = () => {
   const [equipment, setEquipment] = useState<Equipment[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [storageFiles, setStorageFiles] = useState<StorageFile[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchEquipment, setSearchEquipment] = useState("");
@@ -42,6 +66,11 @@ export const BulkImageAssigner = () => {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [imageFilter, setImageFilter] = useState<ImageFilter>("all");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingEquipment, setEditingEquipment] = useState<Equipment | null>(null);
+  const [savingEquipment, setSavingEquipment] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -51,16 +80,38 @@ export const BulkImageAssigner = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    await Promise.all([fetchEquipment(), fetchStorageFiles()]);
+    await Promise.all([fetchEquipment(), fetchCategories(), fetchSubcategories(), fetchStorageFiles()]);
     setLoading(false);
   };
 
   const fetchEquipment = async () => {
     const { data } = await supabase
       .from('equipment')
-      .select('id, name, image_url')
+      .select('id, name, name_en, image_url, images, brand, model, description, price_per_day, price_per_week, category_id, subcategory_id, featured, featured_copy, categories (*), subcategories (*)')
       .order('name');
-    if (data) setEquipment(data);
+    if (data) {
+      const transformed = data.map((item: any) => ({
+        ...item,
+        images: Array.isArray(item.images) ? item.images : []
+      }));
+      setEquipment(transformed);
+    }
+  };
+
+  const fetchCategories = async () => {
+    const { data } = await supabase
+      .from('categories')
+      .select('*')
+      .order('order_index');
+    if (data) setCategories(data);
+  };
+
+  const fetchSubcategories = async () => {
+    const { data } = await supabase
+      .from('subcategories')
+      .select('*')
+      .order('order_index');
+    if (data) setSubcategories(data);
   };
 
   const fetchStorageFiles = async () => {
@@ -139,8 +190,60 @@ export const BulkImageAssigner = () => {
     }
   };
 
+  const getEffectiveImageUrl = (eq: Equipment | null) => {
+    if (!eq) return null;
+    return pendingChanges[eq.id] || eq.image_url;
+  };
+
+  const hasImage = (eq: Equipment) => {
+    const url = getEffectiveImageUrl(eq);
+    return url && url.includes('equipment-images');
+  };
+
+  // Búsqueda flexible: busca en nombre, marca, modelo
+  const matchesSearch = (eq: Equipment): boolean => {
+    if (!searchEquipment.trim()) return true;
+    
+    const searchTerm = searchEquipment.toLowerCase().trim();
+    const searchFields = [
+      eq.name?.toLowerCase() || '',
+      eq.brand?.toLowerCase() || '',
+      eq.model?.toLowerCase() || '',
+      eq.categories?.name?.toLowerCase() || ''
+    ];
+    
+    // Búsqueda por palabras individuales
+    const searchWords = searchTerm.split(/\s+/).filter(w => w.length > 0);
+    
+    // Si hay múltiples palabras, todas deben aparecer en algún campo
+    if (searchWords.length > 1) {
+      return searchWords.every(word => 
+        searchFields.some(field => field.includes(word))
+      );
+    }
+    
+    // Búsqueda simple: cualquier campo contiene el término
+    return searchFields.some(field => field.includes(searchTerm));
+  };
+
+  // Filtro por imagen
+  const matchesImageFilter = (eq: Equipment): boolean => {
+    const url = getEffectiveImageUrl(eq);
+    const hasImageUrl = url && url.includes('equipment-images');
+    
+    if (imageFilter === "with") return !!hasImageUrl;
+    if (imageFilter === "without") return !hasImageUrl;
+    return true; // "all"
+  };
+
+  // Filtro por categoría
+  const matchesCategoryFilter = (eq: Equipment): boolean => {
+    if (categoryFilter === "all") return true;
+    return eq.category_id === categoryFilter;
+  };
+
   const filteredEquipment = equipment.filter(e => 
-    e.name.toLowerCase().includes(searchEquipment.toLowerCase())
+    matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e)
   );
 
   const filteredImages = storageFiles.filter(f => 
@@ -251,15 +354,86 @@ export const BulkImageAssigner = () => {
     });
   };
 
-  const getEffectiveImageUrl = (eq: Equipment | null) => {
-    if (!eq) return null;
-    return pendingChanges[eq.id] || eq.image_url;
+  const handleEditEquipment = async (eq: Equipment) => {
+    // Cargar datos completos del equipo
+    const { data, error } = await supabase
+      .from('equipment')
+      .select('*, categories (*), subcategories (*)')
+      .eq('id', eq.id)
+      .single();
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "No se pudo cargar los datos del equipo",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (data) {
+      const transformed = {
+        ...data,
+        images: Array.isArray(data.images) ? data.images : []
+      };
+      setEditingEquipment(transformed);
+      setIsEditModalOpen(true);
+    }
   };
 
-  const hasImage = (eq: Equipment) => {
-    const url = getEffectiveImageUrl(eq);
-    return url && url.includes('equipment-images');
+  const handleUpdateEquipment = async () => {
+    if (!editingEquipment || !editingEquipment.name || !editingEquipment.price_per_day) {
+      toast({
+        title: "Error",
+        description: "Nombre y precio son requeridos",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setSavingEquipment(true);
+
+    const { error } = await supabase
+      .from('equipment')
+      .update({
+        name: editingEquipment.name,
+        name_en: editingEquipment.name_en || null,
+        category_id: editingEquipment.category_id || null,
+        subcategory_id: editingEquipment.subcategory_id || null,
+        brand: editingEquipment.brand || null,
+        model: editingEquipment.model || null,
+        description: editingEquipment.description || null,
+        price_per_day: editingEquipment.price_per_day,
+        price_per_week: editingEquipment.price_per_week || null,
+        image_url: editingEquipment.image_url || null,
+        images: editingEquipment.images || [],
+        featured: editingEquipment.featured || false,
+        featured_copy: editingEquipment.featured_copy || null
+      })
+      .eq('id', editingEquipment.id);
+
+    setSavingEquipment(false);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive"
+      });
+    } else {
+      toast({
+        title: "Actualizado",
+        description: "Equipo actualizado correctamente"
+      });
+      setIsEditModalOpen(false);
+      setEditingEquipment(null);
+      fetchEquipment();
+    }
   };
+
+  const editFilteredSubcategories = editingEquipment?.category_id
+    ? subcategories.filter(s => s.category_id === editingEquipment.category_id)
+    : [];
 
   if (loading) {
     return (
@@ -276,21 +450,22 @@ export const BulkImageAssigner = () => {
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-start">
-            <div>
-              <CardTitle>Asignar Imágenes a Equipos</CardTitle>
-              <CardDescription>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex-1 min-w-0">
+              <CardTitle className="text-lg sm:text-xl">Asignar Imágenes a Equipos</CardTitle>
+              <CardDescription className="text-xs sm:text-sm">
                 Selecciona un equipo a la izquierda, luego haz clic en una imagen a la derecha para asignarla
               </CardDescription>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
               {Object.keys(pendingChanges).length > 0 && (
-                <Badge variant="secondary">{Object.keys(pendingChanges).length} cambios pendientes</Badge>
+                <Badge variant="secondary" className="w-full sm:w-auto justify-center">{Object.keys(pendingChanges).length} cambios pendientes</Badge>
               )}
               <Button 
                 onClick={handleSaveChanges} 
                 disabled={Object.keys(pendingChanges).length === 0 || saving}
                 variant="hero"
+                className="w-full sm:w-auto"
               >
                 <Save className="mr-2 h-4 w-4" />
                 {saving ? 'Guardando...' : 'Guardar Cambios'}
@@ -299,26 +474,121 @@ export const BulkImageAssigner = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
             {/* Equipos Column */}
             <div className="space-y-2">
-              <h3 className="font-heading font-bold text-lg">Equipos</h3>
+              <div className="flex items-center justify-between">
+                <h3 className="font-heading font-bold text-lg">Equipos</h3>
+                <Badge variant="secondary">
+                  {filteredEquipment.length} de {equipment.length}
+                </Badge>
+              </div>
+              
+              {/* Búsqueda flexible */}
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Buscar equipo..."
+                  placeholder="Buscar por nombre, marca, modelo o categoría..."
                   value={searchEquipment}
                   onChange={(e) => setSearchEquipment(e.target.value)}
                   className="pl-10"
                 />
+                {searchEquipment && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
+                    onClick={() => setSearchEquipment("")}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                )}
               </div>
-              <ScrollArea className="h-[500px] border rounded-md">
+
+              {/* Filtros */}
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Filter className="h-3 w-3" />
+                    Imagen
+                  </Label>
+                  <Select value={imageFilter} onValueChange={(v) => setImageFilter(v as ImageFilter)}>
+                    <SelectTrigger className="h-9 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todas</SelectItem>
+                      <SelectItem value="with">Con imagen</SelectItem>
+                      <SelectItem value="without">Sin imagen</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Filter className="h-3 w-3" />
+                    Categoría
+                  </Label>
+                  <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                    <SelectTrigger className="h-9 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todas</SelectItem>
+                      {categories.map((cat) => (
+                        <SelectItem key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Mostrar filtros activos */}
+              {(imageFilter !== "all" || categoryFilter !== "all" || searchEquipment) && (
+                <div className="flex flex-wrap gap-1">
+                  {imageFilter !== "all" && (
+                    <Badge variant="secondary" className="text-xs">
+                      {imageFilter === "with" ? "Con imagen" : "Sin imagen"}
+                      <button
+                        onClick={() => setImageFilter("all")}
+                        className="ml-1 hover:text-destructive"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  )}
+                  {categoryFilter !== "all" && (
+                    <Badge variant="secondary" className="text-xs">
+                      {categories.find(c => c.id === categoryFilter)?.name || "Categoría"}
+                      <button
+                        onClick={() => setCategoryFilter("all")}
+                        className="ml-1 hover:text-destructive"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  )}
+                  {searchEquipment && (
+                    <Badge variant="secondary" className="text-xs">
+                      Búsqueda: "{searchEquipment}"
+                      <button
+                        onClick={() => setSearchEquipment("")}
+                        className="ml-1 hover:text-destructive"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  )}
+                </div>
+              )}
+              <ScrollArea className="h-[400px] sm:h-[500px] border rounded-md">
                 <div className="p-2 space-y-1">
                   {filteredEquipment.map((eq) => (
                     <div
                       key={eq.id}
                       className={cn(
-                        "w-full flex items-center gap-3 p-2 rounded-md transition-colors",
+                        "w-full flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-md transition-colors group",
                         selectedEquipment?.id === eq.id 
                           ? "bg-primary text-primary-foreground" 
                           : "hover:bg-muted",
@@ -327,9 +597,9 @@ export const BulkImageAssigner = () => {
                     >
                       <button
                         onClick={() => setSelectedEquipment(eq)}
-                        className="flex items-center gap-3 flex-1 min-w-0 text-left"
+                        className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 text-left pr-2"
                       >
-                        <div className="w-12 h-12 rounded bg-muted overflow-hidden shrink-0">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded bg-muted overflow-hidden shrink-0 border-2">
                           {getEffectiveImageUrl(eq) ? (
                             <img 
                               src={getEffectiveImageUrl(eq)!} 
@@ -347,63 +617,101 @@ export const BulkImageAssigner = () => {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{eq.name}</p>
-                          <div className="flex gap-1 mt-1">
+                          <div className="flex gap-1 mt-1 flex-wrap">
+                            {eq.categories && (
+                              <Badge variant="outline" className="text-xs">
+                                {eq.categories.name}
+                              </Badge>
+                            )}
                             {hasImage(eq) ? (
-                              <Badge variant="success" className="text-xs">Con imagen</Badge>
+                              <Badge variant="default" className="text-xs bg-green-600">Con imagen</Badge>
                             ) : (
                               <Badge variant="destructive" className="text-xs">Sin imagen</Badge>
                             )}
                             {pendingChanges[eq.id] && (
-                              <Badge variant="outline" className="text-xs">Modificado</Badge>
+                              <Badge variant="secondary" className="text-xs">Modificado</Badge>
                             )}
                           </div>
+                          {(eq.brand || eq.model) && (
+                            <p className="text-xs text-muted-foreground mt-1 truncate">
+                              {eq.brand && eq.model ? `${eq.brand} ${eq.model}` : eq.brand || eq.model}
+                            </p>
+                          )}
                         </div>
                       </button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className={cn(
-                              "shrink-0 h-8 w-8",
-                              selectedEquipment?.id === eq.id 
-                                ? "text-primary-foreground hover:bg-primary-foreground/20" 
-                                : "text-destructive hover:text-destructive hover:bg-destructive/10"
-                            )}
-                            disabled={deleting === eq.id}
-                          >
-                            {deleting === eq.id ? (
-                              <RefreshCw className="h-4 w-4 animate-spin" />
-                            ) : (
-                              <Trash2 className="h-4 w-4" />
-                            )}
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>¿Eliminar equipo?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Esta acción eliminará permanentemente <strong>"{eq.name}"</strong> de la base de datos. Esta acción no se puede deshacer.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => handleDeleteEquipment(eq)}
-                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      <div className="flex gap-2 shrink-0">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditEquipment(eq);
+                          }}
+                          title="Editar equipo"
+                          className="h-8 w-8 sm:h-10 sm:w-10"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              disabled={deleting === eq.id}
+                              title="Eliminar equipo"
+                              className="h-8 w-8 sm:h-10 sm:w-10"
+                              onClick={(e) => e.stopPropagation()}
                             >
-                              Eliminar
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                              {deleting === eq.id ? (
+                                <RefreshCw className="h-4 w-4 animate-spin text-destructive" />
+                              ) : (
+                                <Trash2 className="h-4 w-4 text-destructive" />
+                              )}
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>¿Eliminar equipo?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Esta acción eliminará permanentemente <strong>"{eq.name}"</strong> de la base de datos. Esta acción no se puede deshacer.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDeleteEquipment(eq)}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                Eliminar
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
                     </div>
                   ))}
                 </div>
               </ScrollArea>
-              <p className="text-sm text-muted-foreground">
-                {filteredEquipment.filter(e => hasImage(e)).length} de {filteredEquipment.length} con imagen
-              </p>
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <span>
+                  {filteredEquipment.filter(e => hasImage(e)).length} de {filteredEquipment.length} con imagen
+                </span>
+                {(imageFilter !== "all" || categoryFilter !== "all" || searchEquipment) && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 text-xs"
+                    onClick={() => {
+                      setImageFilter("all");
+                      setCategoryFilter("all");
+                      setSearchEquipment("");
+                    }}
+                  >
+                    <X className="h-3 w-3 mr-1" />
+                    Limpiar filtros
+                  </Button>
+                )}
+              </div>
             </div>
 
             {/* Imágenes Column */}
@@ -445,8 +753,8 @@ export const BulkImageAssigner = () => {
                   {uploading ? "Subiendo..." : "Subir"}
                 </Button>
               </div>
-              <ScrollArea className="h-[500px] border rounded-md">
-                <div className="grid grid-cols-4 gap-2 p-2">
+              <ScrollArea className="h-[400px] sm:h-[500px] border rounded-md">
+                <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-2 p-2">
                   {filteredImages.map((file) => (
                     <button
                       key={file.name}
@@ -483,6 +791,160 @@ export const BulkImageAssigner = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Equipment Edit Modal */}
+      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+        <DialogContent className="max-w-[95vw] sm:max-w-3xl max-h-[90vh] overflow-y-auto mx-2 sm:mx-auto">
+          <DialogHeader>
+            <DialogTitle className="text-lg sm:text-xl">Editar Equipo</DialogTitle>
+          </DialogHeader>
+          {editingEquipment && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+              <div className="space-y-2">
+                <Label>Nombre *</Label>
+                <Input
+                  value={editingEquipment.name}
+                  onChange={(e) => setEditingEquipment({...editingEquipment, name: e.target.value})}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Nombre EN</Label>
+                <Input
+                  value={editingEquipment.name_en || ''}
+                  onChange={(e) => setEditingEquipment({...editingEquipment, name_en: e.target.value})}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Categoría</Label>
+                <Select
+                  value={editingEquipment.category_id || ''}
+                  onValueChange={(v) => setEditingEquipment({...editingEquipment, category_id: v, subcategory_id: null})}
+                >
+                  <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                  <SelectContent>
+                    {categories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Subcategoría</Label>
+                <Select
+                  value={editingEquipment.subcategory_id || ''}
+                  onValueChange={(v) => setEditingEquipment({...editingEquipment, subcategory_id: v})}
+                  disabled={!editingEquipment.category_id}
+                >
+                  <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                  <SelectContent>
+                    {editFilteredSubcategories.map((sub) => (
+                      <SelectItem key={sub.id} value={sub.id}>{sub.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Marca</Label>
+                <Input
+                  value={editingEquipment.brand || ''}
+                  onChange={(e) => setEditingEquipment({...editingEquipment, brand: e.target.value})}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Modelo</Label>
+                <Input
+                  value={editingEquipment.model || ''}
+                  onChange={(e) => setEditingEquipment({...editingEquipment, model: e.target.value})}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Precio por día *</Label>
+                <Input
+                  type="number"
+                  value={editingEquipment.price_per_day}
+                  onChange={(e) => setEditingEquipment({...editingEquipment, price_per_day: parseInt(e.target.value) || 0})}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Precio por semana</Label>
+                <Input
+                  type="number"
+                  value={editingEquipment.price_per_week || ''}
+                  onChange={(e) => setEditingEquipment({...editingEquipment, price_per_week: e.target.value ? parseInt(e.target.value) : null})}
+                />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <Label>Descripción</Label>
+                <Textarea
+                  value={editingEquipment.description || ''}
+                  onChange={(e) => setEditingEquipment({...editingEquipment, description: e.target.value})}
+                  rows={4}
+                />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <EquipmentImageManager
+                  imageUrl={editingEquipment.image_url || null}
+                  images={editingEquipment.images || []}
+                  onImageUrlChange={(url) => setEditingEquipment({...editingEquipment, image_url: url})}
+                  onImagesChange={(images) => setEditingEquipment({...editingEquipment, images})}
+                />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <div className="flex items-center justify-between">
+                  <Label>Equipo Destacado</Label>
+                  <Switch
+                    checked={editingEquipment.featured || false}
+                    onCheckedChange={(checked) => setEditingEquipment({...editingEquipment, featured: checked})}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">Los equipos destacados aparecerán en la página principal</p>
+              </div>
+              {editingEquipment.featured && (
+                <div className="space-y-2 md:col-span-2">
+                  <Label>Descripción para Destacados</Label>
+                  <Textarea
+                    value={editingEquipment.featured_copy || ''}
+                    onChange={(e) => setEditingEquipment({...editingEquipment, featured_copy: e.target.value})}
+                    placeholder="Texto breve que aparecerá en la home para este equipo destacado"
+                    rows={2}
+                  />
+                </div>
+              )}
+
+              <div className="md:col-span-2 flex flex-col sm:flex-row gap-2 mt-4">
+                <Button
+                  onClick={handleUpdateEquipment}
+                  variant="hero"
+                  disabled={savingEquipment}
+                  className="w-full sm:flex-1"
+                >
+                  {savingEquipment ? (
+                    <>
+                      <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                      Guardando...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="mr-2 h-4 w-4" />
+                      Guardar Cambios
+                    </>
+                  )}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setIsEditModalOpen(false);
+                    setEditingEquipment(null);
+                  }}
+                  className="w-full sm:w-auto"
+                >
+                  Cancelar
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

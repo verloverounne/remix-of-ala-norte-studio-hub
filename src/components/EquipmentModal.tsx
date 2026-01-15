@@ -14,12 +14,25 @@ interface EquipmentModalProps {
 export const EquipmentModal = ({ equipment, open, onOpenChange }: EquipmentModalProps) => {
   if (!equipment) return null;
 
-  // Parse images - could be array or single URL
-  const images = equipment.image_url 
-    ? Array.isArray(equipment.image_url) 
-      ? equipment.image_url 
-      : [equipment.image_url]
-    : ["/placeholder.svg"];
+  // Combinar todas las imágenes: principal primero, luego las adicionales
+  const allImages: string[] = [];
+  
+  // Agregar imagen principal si existe
+  if (equipment.image_url) {
+    allImages.push(equipment.image_url);
+  }
+  
+  // Agregar imágenes adicionales (evitando duplicados)
+  if (Array.isArray(equipment.images)) {
+    equipment.images.forEach(img => {
+      if (img && !allImages.includes(img)) {
+        allImages.push(img);
+      }
+    });
+  }
+  
+  // Si no hay imágenes, usar placeholder
+  const images = allImages.length > 0 ? allImages : ["/placeholder.svg"];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

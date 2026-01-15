@@ -18,6 +18,7 @@ import { StorageImageSelector } from "@/components/StorageImageSelector";
 import { EquipmentImageUploader } from "@/components/EquipmentImageUploader";
 import { BulkImageAssigner } from "@/components/BulkImageAssigner";
 import { GalleryManager } from "@/components/GalleryManager";
+import { EquipmentImageManager } from "@/components/EquipmentImageManager";
 import { SpaceAdminEditor } from "@/components/SpaceAdminEditor";
 import { ServicesAdminPanel } from "@/components/admin/ServicesAdminPanel";
 import { Switch } from "@/components/ui/switch";
@@ -727,11 +728,11 @@ const Admin = () => {
               <h1 className="text-4xl font-heading font-bold mb-2">Panel de Administración</h1>
               <p className="text-lg">Gestiona equipos, espacios y configuraciones</p>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <Button asChild variant="secondary" size="lg" className="font-heading">
+            <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+              <Button asChild variant="secondary" size="lg" className="font-heading w-full sm:w-auto">
                 <a href="/admin/blog">Gestionar Blog</a>
               </Button>
-              <Button asChild variant="outline" size="lg" className="font-heading bg-background/10 border-primary-foreground/30 hover:bg-background/20">
+              <Button asChild variant="outline" size="lg" className="font-heading bg-background/10 border-primary-foreground/30 hover:bg-background/20 w-full sm:w-auto">
                 <a href="/admin/design-tokens">Design Tokens</a>
               </Button>
             </div>
@@ -820,19 +821,11 @@ const Admin = () => {
                       <Textarea value={newEquipment.description} onChange={(e) => setNewEquipment({...newEquipment, description: e.target.value})} />
                     </div>
                     <div className="space-y-2 md:col-span-2">
-                      <Label>Imagen Principal</Label>
-                      <StorageImageSelector 
-                        value={newEquipment.image_url} 
-                        onChange={(url) => setNewEquipment({...newEquipment, image_url: url})}
-                        placeholder="Seleccionar imagen del storage..."
-                      />
-                    </div>
-                    <div className="space-y-2 md:col-span-2">
-                      <Label>Imágenes Adicionales</Label>
-                      <ImageUploader 
+                      <EquipmentImageManager
+                        imageUrl={newEquipment.image_url || null}
                         images={newEquipment.images}
-                        onChange={(images) => setNewEquipment({...newEquipment, images})}
-                        maxImages={10}
+                        onImageUrlChange={(url) => setNewEquipment({...newEquipment, image_url: url || ''})}
+                        onImagesChange={(images) => setNewEquipment({...newEquipment, images})}
                       />
                     </div>
                     <div className="space-y-2 md:col-span-2">
@@ -870,28 +863,88 @@ const Admin = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2 max-h-96 overflow-y-auto">
-                    {equipment.map((item) => (
-                      <div key={item.id} className="flex items-center justify-between p-3 border rounded">
-                        <div className="flex items-center gap-4">
-                          <img src={item.image_url || "/placeholder.svg"} alt={item.name} className="w-12 h-12 rounded object-cover" />
-                          <div>
-                            <p className="font-heading">{item.name}</p>
-                            <div className="flex gap-2 mt-1">
-                              {item.subcategories && <Badge variant="outline" className="text-xs">{item.subcategories.name}</Badge>}
-                              <Badge variant={item.status === 'available' ? 'success' : 'destructive'} className="text-xs">{item.status}</Badge>
+                    {equipment.map((item) => {
+                      const allImages = [
+                        ...(item.image_url ? [item.image_url] : []),
+                        ...(item.images || []).filter((img: string) => img !== item.image_url)
+                      ];
+                      const totalImages = allImages.length;
+                      
+                      return (
+                        <div key={item.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 border rounded hover:bg-muted/50 transition-colors">
+                          <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0 w-full sm:w-auto">
+                            <div className="relative shrink-0">
+                              <img 
+                                src={item.image_url || "/placeholder.svg"} 
+                                alt={item.name} 
+                                className="w-12 h-12 sm:w-16 sm:h-16 rounded object-cover border-2"
+                              />
+                              {totalImages > 0 && (
+                                <div className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[9px] sm:text-[10px] font-bold border-2 border-background">
+                                  {totalImages}
+                                </div>
+                              )}
+                              {item.image_url && (
+                                <div className="absolute bottom-0 left-0 right-0 bg-primary/80 text-primary-foreground text-[7px] sm:text-[8px] px-1 text-center font-heading">
+                                  Principal
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-heading font-semibold truncate text-sm sm:text-base">{item.name}</p>
+                              <div className="flex gap-1 sm:gap-2 mt-1 flex-wrap">
+                                {item.subcategories && (
+                                  <Badge variant="outline" className="text-xs">
+                                    {item.subcategories.name}
+                                  </Badge>
+                                )}
+                                <Badge 
+                                  variant={item.status === 'available' ? 'default' : 'destructive'} 
+                                  className="text-xs"
+                                >
+                                  {item.status}
+                                </Badge>
+                                {totalImages > 0 ? (
+                                  <Badge variant="secondary" className="text-xs flex items-center gap-1">
+                                    <ImageIcon className="h-3 w-3" />
+                                    {totalImages} {totalImages === 1 ? 'img' : 'imgs'}
+                                  </Badge>
+                                ) : (
+                                  <Badge variant="outline" className="text-xs text-muted-foreground">
+                                    Sin imágenes
+                                  </Badge>
+                                )}
+                              </div>
+                              {totalImages > 1 && (
+                                <p className="text-xs text-muted-foreground mt-1">
+                                  {totalImages - 1} adicional{totalImages - 1 > 1 ? 'es' : ''}
+                                </p>
+                              )}
                             </div>
                           </div>
+                          <div className="flex gap-2 shrink-0 w-full sm:w-auto justify-end sm:justify-start">
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              onClick={() => handleEditEquipment(item)}
+                              title="Editar equipo"
+                              className="h-8 w-8 sm:h-10 sm:w-10"
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              onClick={() => handleDeleteEquipment(item.id)}
+                              title="Eliminar equipo"
+                              className="h-8 w-8 sm:h-10 sm:w-10"
+                            >
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
+                          </div>
                         </div>
-                        <div className="flex gap-2">
-                          <Button variant="ghost" size="icon" onClick={() => handleEditEquipment(item)}>
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon" onClick={() => handleDeleteEquipment(item.id)}>
-                            <Trash2 className="h-4 w-4 text-destructive" />
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </CardContent>
               </Card>
@@ -905,7 +958,7 @@ const Admin = () => {
                   <CardDescription>Aplica porcentaje a todos los equipos</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex gap-4 items-end">
+                  <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-end">
                     <div className="flex-1 space-y-2">
                       <Label>Porcentaje</Label>
                       <Input 
@@ -916,7 +969,7 @@ const Admin = () => {
                         onChange={(e) => setMassPercentage(e.target.value)}
                       />
                     </div>
-                    <Button variant="hero" onClick={handleMassPriceUpdate}>
+                    <Button variant="hero" onClick={handleMassPriceUpdate} className="w-full sm:w-auto">
                       <Percent className="mr-2 h-4 w-4" />
                       Aplicar
                     </Button>
@@ -932,20 +985,22 @@ const Admin = () => {
                 <CardContent>
                   <div className="space-y-2 max-h-96 overflow-y-auto">
                     {equipment.map((item) => (
-                      <div key={item.id} className="flex items-center gap-4 p-3 border rounded">
-                        <p className="flex-1 font-heading">{item.name}</p>
-                        <Input 
-                          type="number" 
-                          defaultValue={item.price_per_day}
-                          onChange={(e) => setIndividualPrices({
-                            ...individualPrices, 
-                            [item.id]: parseInt(e.target.value)
-                          })}
-                          className="w-32" 
-                        />
-                        <Button size="sm" onClick={() => handleIndividualPriceUpdate(item.id)}>
-                          Actualizar
-                        </Button>
+                      <div key={item.id} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-3 border rounded">
+                        <p className="flex-1 font-heading text-sm sm:text-base truncate">{item.name}</p>
+                        <div className="flex gap-2 flex-1 sm:flex-initial">
+                          <Input 
+                            type="number" 
+                            defaultValue={item.price_per_day}
+                            onChange={(e) => setIndividualPrices({
+                              ...individualPrices, 
+                              [item.id]: parseInt(e.target.value)
+                            })}
+                            className="w-full sm:w-32" 
+                          />
+                          <Button size="sm" onClick={() => handleIndividualPriceUpdate(item.id)} className="w-full sm:w-auto shrink-0">
+                            Actualizar
+                          </Button>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -1099,16 +1154,16 @@ const Admin = () => {
                         Actualiza la cantidad de stock de cada equipo usando el archivo CSV de EquipoEmpresa.
                         Hace match por nombre normalizado y suma las cantidades de registros duplicados.
                       </p>
-                      <div className="flex items-center gap-4">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                         <Input 
                           type="file" 
                           accept=".csv"
                           onChange={handleUpdateStockFromCSV}
-                          className="max-w-xs"
+                          className="w-full sm:max-w-xs"
                           disabled={isUpdatingStock}
                         />
                         {isUpdatingStock && (
-                          <span className="text-sm text-muted-foreground animate-pulse">
+                          <span className="text-sm text-muted-foreground animate-pulse text-center sm:text-left">
                             Actualizando stock...
                           </span>
                         )}
@@ -1142,12 +1197,12 @@ const Admin = () => {
 
       {/* Equipment Edit Modal */}
       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-[95vw] sm:max-w-3xl max-h-[90vh] overflow-y-auto mx-2 sm:mx-auto">
           <DialogHeader>
-            <DialogTitle>Editar Equipo</DialogTitle>
+            <DialogTitle className="text-lg sm:text-xl">Editar Equipo</DialogTitle>
           </DialogHeader>
           {editingEquipment && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               <div className="space-y-2">
                 <Label>Nombre *</Label>
                 <Input 
@@ -1228,19 +1283,11 @@ const Admin = () => {
                 />
               </div>
               <div className="space-y-2 md:col-span-2">
-                <Label>Imagen Principal</Label>
-                <StorageImageSelector 
-                  value={editingEquipment.image_url || ''} 
-                  onChange={(url) => setEditingEquipment({...editingEquipment, image_url: url})}
-                  placeholder="Seleccionar imagen del storage..."
-                />
-              </div>
-              <div className="space-y-2 md:col-span-2">
-                <Label>Imágenes Adicionales</Label>
-                <ImageUploader 
+                <EquipmentImageManager
+                  imageUrl={editingEquipment.image_url || null}
                   images={editingEquipment.images || []}
-                  onChange={(images) => setEditingEquipment({...editingEquipment, images})}
-                  maxImages={10}
+                  onImageUrlChange={(url) => setEditingEquipment({...editingEquipment, image_url: url})}
+                  onImagesChange={(images) => setEditingEquipment({...editingEquipment, images})}
                 />
               </div>
               <div className="space-y-2 md:col-span-2">
@@ -1317,12 +1364,12 @@ const Admin = () => {
                     unavailabilityPeriods.map((period) => (
                       <div 
                         key={period.id} 
-                        className="flex items-center justify-between p-3 border-2 rounded bg-muted/30"
+                        className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 border-2 rounded bg-muted/30"
                       >
-                        <div className="flex items-center gap-3">
-                          <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-                          <div>
-                            <p className="font-heading text-sm">
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                          <CalendarIcon className="h-4 w-4 text-muted-foreground shrink-0" />
+                          <div className="min-w-0">
+                            <p className="font-heading text-xs sm:text-sm break-words">
                               {format(new Date(period.start_date), "d 'de' MMMM, yyyy", { locale: es })}
                               {" → "}
                               {format(new Date(period.end_date), "d 'de' MMMM, yyyy", { locale: es })}
@@ -1336,7 +1383,7 @@ const Admin = () => {
                           variant="ghost"
                           size="icon"
                           onClick={() => handleDeleteUnavailabilityPeriod(period.id)}
-                          className="text-destructive hover:text-destructive"
+                          className="text-destructive hover:text-destructive shrink-0 self-end sm:self-auto"
                         >
                           <X className="h-4 w-4" />
                         </Button>
@@ -1346,11 +1393,11 @@ const Admin = () => {
                 </div>
               </div>
 
-              <div className="md:col-span-2 flex gap-2 mt-6">
-                <Button onClick={handleUpdateEquipment} variant="hero">
+              <div className="md:col-span-2 flex flex-col sm:flex-row gap-2 mt-6">
+                <Button onClick={handleUpdateEquipment} variant="hero" className="w-full sm:w-auto">
                   Actualizar Equipo
                 </Button>
-                <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>
+                <Button variant="outline" onClick={() => setIsEditModalOpen(false)} className="w-full sm:w-auto">
                   Cancelar
                 </Button>
               </div>
