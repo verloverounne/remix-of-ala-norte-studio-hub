@@ -52,7 +52,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
           )}
         </div>
         <div className="px-4 py-6">
-          <div className="border-l border-primary pl-4 mb-4">
+          <div className="mb-4">
             <span className="text-xs font-heading text-muted-foreground uppercase tracking-wider">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
@@ -86,7 +86,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
               style={textParallax.style}
               className={cn("", index % 2 === 1 && "order-2")}
             >
-              <div className="border-l border-primary pl-8 mb-8">
+              <div className="mb-8">
                 <span className="text-sm font-heading text-muted-foreground uppercase tracking-wider">
                   Servicio {String(index + 1).padStart(2, "0")}
                 </span>
@@ -222,8 +222,8 @@ export const ServicesSection = () => {
 
    return (
     <section className="relative border-y border-border bg-background">
-      {/* Section Header - No margin */}
-      <div className="border-l border-primary pl-4 sm:pl-8 py-6 sm:py-8 mx-4 sm:mx-8">
+      {/* Section Header */}
+      <div className="py-6 sm:py-8 mx-4 sm:mx-8">
         <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">
           NUESTROS SERVICIOS
         </h2>
