@@ -26,6 +26,8 @@ interface HomeService {
   hero_image_url: string | null;
   hero_media_type: string | null;
   hero_video_url: string | null;
+  section_media_type: string | null;
+  section_video_url: string | null;
   bullets: string[];
   cta_label: string | null;
   cta_url: string | null;
@@ -63,6 +65,8 @@ export const ServicesAdminPanel = () => {
         hero_image_url: s.hero_image_url,
         hero_media_type: s.hero_media_type,
         hero_video_url: s.hero_video_url,
+        section_media_type: s.section_media_type,
+        section_video_url: s.section_video_url,
         bullets: parseBullets(s.bullets),
         cta_label: s.cta_label,
         cta_url: s.cta_url,
@@ -115,6 +119,8 @@ export const ServicesAdminPanel = () => {
         hero_image_url: data.hero_image_url,
         hero_media_type: data.hero_media_type,
         hero_video_url: data.hero_video_url,
+        section_media_type: data.section_media_type,
+        section_video_url: data.section_video_url,
         bullets: parseBullets(data.bullets),
         cta_label: data.cta_label,
         cta_url: data.cta_url,
@@ -177,6 +183,8 @@ export const ServicesAdminPanel = () => {
           hero_image_url: service.hero_image_url,
           hero_media_type: service.hero_media_type,
           hero_video_url: service.hero_video_url,
+          section_media_type: service.section_media_type,
+          section_video_url: service.section_video_url,
           bullets: service.bullets,
           cta_label: service.cta_label,
           cta_url: service.cta_url,
@@ -278,7 +286,19 @@ export const ServicesAdminPanel = () => {
         });
       }
     } else {
-      updateService(serviceId, { image_url: urlData.publicUrl });
+      if (isVideo) {
+        updateService(serviceId, { 
+          section_media_type: 'video', 
+          section_video_url: urlData.publicUrl,
+          image_url: null 
+        });
+      } else {
+        updateService(serviceId, { 
+          section_media_type: 'image', 
+          image_url: urlData.publicUrl,
+          section_video_url: null 
+        });
+      }
     }
 
     toast.success('Archivo subido correctamente');
@@ -536,11 +556,32 @@ export const ServicesAdminPanel = () => {
                     </div>
                   </div>
 
-                  {/* Section Image */}
+                  {/* Section Media */}
                   <div>
-                    <Label className="text-xs font-heading">Imagen Sección</Label>
+                    <div className="flex items-center justify-between mb-2">
+                      <Label className="text-xs font-heading">Media Sección</Label>
+                      <Select
+                        value={service.section_media_type || "image"}
+                        onValueChange={(value) => updateService(service.id, { section_media_type: value })}
+                      >
+                        <SelectTrigger className="w-28 h-7 text-xs">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="image">Imagen</SelectItem>
+                          <SelectItem value="video">Video</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                     <div className="border-2 border-dashed border-foreground/50 rounded-lg p-2 aspect-video flex items-center justify-center bg-muted/30 overflow-hidden">
-                      {service.image_url ? (
+                      {service.section_media_type === 'video' && service.section_video_url ? (
+                        <video
+                          src={service.section_video_url}
+                          className="w-full h-full object-cover rounded"
+                          controls
+                          muted
+                        />
+                      ) : service.image_url ? (
                         <img
                           src={service.image_url}
                           alt={service.title}
@@ -548,24 +589,46 @@ export const ServicesAdminPanel = () => {
                         />
                       ) : (
                         <div className="text-center text-muted-foreground">
-                          <ImageIcon className="h-6 w-6 mx-auto mb-1 opacity-50" />
-                          <p className="text-xs">Imagen de la sección</p>
+                          {service.section_media_type === 'video' ? (
+                            <Video className="h-6 w-6 mx-auto mb-1 opacity-50" />
+                          ) : (
+                            <ImageIcon className="h-6 w-6 mx-auto mb-1 opacity-50" />
+                          )}
+                          <p className="text-xs">
+                            {service.section_media_type === 'video' ? 'Video de la sección' : 'Imagen de la sección'}
+                          </p>
                         </div>
                       )}
                     </div>
                     <div className="flex gap-2 mt-2">
                       <Input
-                        value={service.image_url || ""}
-                        onChange={(e) =>
-                          updateService(service.id, { image_url: e.target.value })
-                        }
-                        placeholder="URL imagen sección"
+                        value={(service.section_media_type === 'video' ? service.section_video_url : service.image_url) || ""}
+                        onChange={(e) => {
+                          if (service.section_media_type === 'video') {
+                            updateService(service.id, { section_video_url: e.target.value });
+                          } else {
+                            updateService(service.id, { image_url: e.target.value });
+                          }
+                        }}
+                        placeholder={service.section_media_type === 'video' ? "URL video MP4" : "URL imagen sección"}
                         className="border-2 border-foreground text-xs"
                       />
-                      <ImageUploadButton
-                        onUploadComplete={(url) => updateService(service.id, { image_url: url })}
-                        size="sm"
-                      />
+                      <label className="cursor-pointer">
+                        <input
+                          type="file"
+                          accept={service.section_media_type === 'video' ? "video/mp4" : "image/*"}
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleMediaUpload(service.id, file, 'section');
+                          }}
+                        />
+                        <Button variant="outline" size="sm" asChild>
+                          <span>
+                            <Upload className="h-4 w-4" />
+                          </span>
+                        </Button>
+                      </label>
                     </div>
                   </div>
                 </div>
