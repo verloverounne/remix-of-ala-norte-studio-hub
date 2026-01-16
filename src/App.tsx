@@ -13,6 +13,7 @@ import { CartProvider } from "./hooks/useCart";
 import { HeaderVisibilityProvider } from "./hooks/useHeaderVisibility";
 import { MainContent } from "./components/layout/MainContent";
 import { useVideoDuotone } from "./hooks/useVideoDuotone";
+import { useDuotoneTap } from "./hooks/useDuotoneTap";
 import { useDesignTokensApply } from "./hooks/useDesignTokensApply";
 
 // Lazy load pages for code splitting
@@ -41,6 +42,7 @@ const queryClient = new QueryClient();
 
 const VideoDuotoneProvider = ({ children }: { children: React.ReactNode }) => {
   useVideoDuotone();
+  useDuotoneTap();
   return <>{children}</>;
 };
 

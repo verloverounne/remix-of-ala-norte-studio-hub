@@ -456,7 +456,7 @@ All colors MUST be HSL.
   z-index: 2;
 }
 
-/* Hover = colores originales (también cuando hay overlays arriba del elemento) */
+/* Desktop hover = colores originales (también cuando hay overlays arriba del elemento) */
 .video-duotone:hover,
 .image-duotone:hover,
 .duotone-hover-group:hover .video-duotone,
@@ -472,3 +472,17 @@ All colors MUST be HSL.
 .dark .duotone-hover-group:hover::before {
   opacity: 0 !important;
 }
+
+/* Mobile tap override (via JS): cuando está activo, mostrar colores originales */
+.duotone-hover-group.duotone-tap-active .video-duotone,
+.duotone-hover-group.duotone-tap-active .image-duotone,
+.video-duotone.duotone-tap-active,
+.image-duotone.duotone-tap-active {
+  filter: none !important;
+}
+
+.duotone-hover-group.duotone-tap-active::before,
+.dark .duotone-hover-group.duotone-tap-active::before {
+  opacity: 0 !important;
+}
+

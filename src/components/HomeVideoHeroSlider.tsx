@@ -58,14 +58,10 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
   const [videoOrientation, setVideoOrientation] = useState<"horizontal" | "vertical" | null>(null);
-  const [filterActive, setFilterActive] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
-  const localVideoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     const checkDevice = () => {
-      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
       const isSmallScreen = window.innerWidth <= 768;
       setIsMobile(isTouchDevice || isSmallScreen);
       setIsMobileOrTablet(window.innerWidth < 1024);
@@ -83,50 +79,15 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
     setVideoOrientation(video.videoWidth > video.videoHeight ? "horizontal" : "vertical");
   };
 
-  // Mobile tap handler: first tap removes filter + plays, subsequent taps toggle play/pause
-  const handleMediaTap = () => {
-    if (!isMobile) return;
-    
-    const video = localVideoRef.current;
-    
-    if (filterActive) {
-      // First tap: remove filter and ensure video plays
-      setFilterActive(false);
-      setIsPlaying(true);
-      if (video) video.play();
-    } else {
-      // Subsequent taps: toggle play/pause
-      if (video) {
-        if (video.paused) {
-          video.play();
-          setIsPlaying(true);
-        } else {
-          video.pause();
-          setIsPlaying(false);
-          // When paused, show filter again
-          setFilterActive(true);
-        }
-      }
-    }
-  };
-
-  // Desktop hover handlers
-  const handleMouseEnter = () => {
-    if (!isMobile) setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    if (!isMobile) setIsHovered(false);
-  };
-
   // Use vertical video on mobile/tablet if available
-  const mediaUrl = slide.media_type === "video" && isMobileOrTablet && slide.vertical_video_url 
-    ? slide.vertical_video_url 
-    : slide.media_url;
+  const mediaUrl =
+    slide.media_type === "video" && isMobileOrTablet && slide.vertical_video_url
+      ? slide.vertical_video_url
+      : slide.media_url;
 
   const getMobileVideoStyles = (): React.CSSProperties => {
     if (!isMobile || !videoOrientation) return videoParallax.style;
-    
+
     const baseStyles: React.CSSProperties = {
       position: "absolute",
       top: "50%",
@@ -140,40 +101,24 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
       : { ...baseStyles, width: "100vw", height: "auto", minHeight: "100%" };
   };
 
-  // Determine if grayscale filter should be active
-  const showGrayscale = isMobile ? filterActive : !isHovered;
-
-  const getMediaClasses = () => {
-    const baseClasses = "absolute inset-0 w-full h-full object-cover transition-all duration-300";
-    return showGrayscale 
-      ? `${baseClasses} grayscale` 
-      : baseClasses;
-  };
-
   const hasMedia = mediaUrl && mediaUrl.trim() !== "";
 
   return (
     <CarouselItem className="h-full pl-0">
       <div
-        className="relative"
+        className="relative duotone-hover-group"
         style={{
           width: isMobile ? "100vw" : "100%",
           height: isMobile ? "100vh" : "100%",
           overflow: "hidden",
         }}
-        onClick={handleMediaTap}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
         {hasMedia ? (
           slide.media_type === "video" ? (
             <video
-              ref={(el) => {
-                localVideoRef.current = el;
-                videoRef(el);
-              }}
+              ref={videoRef}
               src={mediaUrl}
-              className={getMediaClasses()}
+              className="video-duotone absolute inset-0 w-full h-full object-cover"
               style={getMobileVideoStyles()}
               autoPlay
               loop
@@ -185,7 +130,7 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
             <img
               src={mediaUrl}
               alt={slide.title}
-              className={getMediaClasses()}
+              className="image-duotone absolute inset-0 w-full h-full object-cover"
             />
           )
         ) : (
