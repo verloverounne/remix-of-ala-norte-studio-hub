@@ -58,10 +58,13 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
   const [videoOrientation, setVideoOrientation] = useState<"horizontal" | "vertical" | null>(null);
+  const [filterActive, setFilterActive] = useState(true); // For mobile tap toggle
 
   useEffect(() => {
     const checkDevice = () => {
-      setIsMobile(window.innerWidth <= 768);
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth <= 768;
+      setIsMobile(isTouchDevice || isSmallScreen);
       setIsMobileOrTablet(window.innerWidth < 1024);
     };
     checkDevice();
@@ -75,6 +78,13 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
   const handleLoadedMetadata = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const video = e.currentTarget;
     setVideoOrientation(video.videoWidth > video.videoHeight ? "horizontal" : "vertical");
+  };
+
+  // Toggle filter on mobile tap
+  const handleMediaTap = () => {
+    if (isMobile) {
+      setFilterActive(!filterActive);
+    }
   };
 
   // Use vertical video on mobile/tablet if available
@@ -98,10 +108,27 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
       : { ...baseStyles, width: "100vw", height: "auto", minHeight: "100%" };
   };
 
+  // On mobile: use filterActive state; on desktop: use CSS hover via duotone-hover-group
   const getVideoClasses = () => {
+    if (isMobile) {
+      // Mobile: no hover, use state-based filter toggle
+      return filterActive
+        ? "video-duotone absolute inset-0 w-full h-full object-cover"
+        : "absolute inset-0 w-full h-full object-cover"; // No filter class
+    }
+    // Desktop: use hover group
     const baseClasses = "video-duotone";
     if (isMobile && videoOrientation) return `${baseClasses} ${videoOrientation}`;
     return `${baseClasses} absolute inset-0 w-full h-full object-cover`;
+  };
+
+  const getImageClasses = () => {
+    if (isMobile) {
+      return filterActive
+        ? "absolute inset-0 w-full h-full object-cover image-duotone"
+        : "absolute inset-0 w-full h-full object-cover"; // No filter
+    }
+    return "absolute inset-0 w-full h-full object-cover image-duotone";
   };
 
   const hasMedia = mediaUrl && mediaUrl.trim() !== "";
@@ -109,12 +136,13 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
   return (
     <CarouselItem className="h-full pl-0">
       <div
-        className="relative duotone-hover-group"
+        className={`relative ${isMobile ? '' : 'duotone-hover-group'}`}
         style={{
           width: isMobile ? "100vw" : "100%",
           height: isMobile ? "100vh" : "100%",
           overflow: "hidden",
         }}
+        onClick={handleMediaTap}
       >
         {hasMedia ? (
           slide.media_type === "video" ? (
@@ -133,7 +161,7 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
             <img
               src={mediaUrl}
               alt={slide.title}
-              className="absolute inset-0 w-full h-full object-cover image-duotone"
+              className={getImageClasses()}
             />
           )
         ) : (
