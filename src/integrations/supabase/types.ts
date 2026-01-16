@@ -543,6 +543,8 @@ export type Database = {
           image_url: string | null
           is_active: boolean | null
           order_index: number | null
+          section_media_type: string | null
+          section_video_url: string | null
           slug: string | null
           title: string
           updated_at: string
@@ -562,6 +564,8 @@ export type Database = {
           image_url?: string | null
           is_active?: boolean | null
           order_index?: number | null
+          section_media_type?: string | null
+          section_video_url?: string | null
           slug?: string | null
           title: string
           updated_at?: string
@@ -581,6 +585,8 @@ export type Database = {
           image_url?: string | null
           is_active?: boolean | null
           order_index?: number | null
+          section_media_type?: string | null
+          section_video_url?: string | null
           slug?: string | null
           title?: string
           updated_at?: string
