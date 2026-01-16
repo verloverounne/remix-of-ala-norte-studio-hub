@@ -39,7 +39,7 @@ export const Header = () => {
     }
     return "light"; // Default: light mode
   });
-  const { isVisible, setIsVisible, isHovering, setIsHovering } = useHeaderVisibility();
+  const { isVisible, setIsVisible, isHovering, setIsHovering, isMobile } = useHeaderVisibility();
   const location = useLocation();
   const navigate = useNavigate();
   const { totalItems } = useCart();
@@ -87,18 +87,20 @@ export const Header = () => {
 
   return (
     <>
-      {/* Hover trigger zone - always visible at top */}
-      <div 
-        className="fixed top-0 left-0 right-0 h-4 z-[51]"
-        onMouseEnter={handleMouseEnter}
-      />
+      {/* Hover trigger zone - only on desktop (non-touch devices) */}
+      {!isMobile && (
+        <div 
+          className="fixed top-0 left-0 right-0 h-4 z-[51]"
+          onMouseEnter={handleMouseEnter}
+        />
+      )}
       
       <header 
         className={`fixed top-0 left-0 right-0 z-50 bg-background border-b border-foreground transition-transform duration-300 ${
-          isVisible || isHovering ? 'translate-y-0' : '-translate-y-full'
+          isMobile || isVisible || isHovering ? 'translate-y-0' : '-translate-y-full'
         }`}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={!isMobile ? handleMouseEnter : undefined}
+        onMouseLeave={!isMobile ? handleMouseLeave : undefined}
       >
       <nav className="container mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex h-16 sm:h-20 items-center justify-between">
