@@ -137,7 +137,7 @@ All colors MUST be HSL.
 
     /* Tritone Filter Colors */
     --tritone-high: 0 0% 98%; /* Color para tonos altos (áreas claras) */
-    --tritone-mid: 0 0% 15%; /* Color para tonos medios (áreas medias) */
+    --tritone-mid: 0 0% 45%; /* Color para tonos medios (áreas medias) */
     --tritone-low: 0 0% 8%; /* Color para tonos bajos (áreas oscuras) */
 
     --shadow-brutal: 4px 4px 0 hsl(0 0% 98%);
