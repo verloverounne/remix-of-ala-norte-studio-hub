@@ -103,7 +103,7 @@ export const Header = () => {
         onMouseLeave={!isMobile ? handleMouseLeave : undefined}
       >
       <nav className="container mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex h-[34px] items-center justify-between">
+        <div className="flex h-16 sm:h-20 items-center justify-between">
           {/* Logo Brutal */}
           <Link to="/" className="flex items-center">
             <img 
@@ -111,7 +111,7 @@ export const Header = () => {
               alt="Ala Norte" 
               width={48}
               height={51}
-              className="h-[34px] w-auto object-contain" 
+              className="h-8 sm:h-10 md:h-12 w-auto object-contain" 
             />
           </Link>
 
@@ -142,7 +142,7 @@ export const Header = () => {
               variant="ghost"
               size="icon"
               asChild
-              className="hidden sm:inline-flex h-[34px] w-[34px] hover:bg-green-500 hover:text-white"
+              className="hidden sm:inline-flex h-10 w-10 xl:h-12 xl:w-12 hover:bg-green-500 hover:text-white"
               aria-label="Contactar por WhatsApp"
             >
               <a
@@ -158,7 +158,7 @@ export const Header = () => {
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="hidden sm:inline-flex h-[34px] w-[34px]"
+              className="hidden sm:inline-flex h-10 w-10 xl:h-12 xl:w-12"
               aria-label={theme === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"}
             >
               {theme === "light" ? (

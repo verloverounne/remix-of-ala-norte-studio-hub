@@ -40,14 +40,14 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
           {service.image_url ? (
             <LazyImage src={service.image_url} alt={service.title} className="object-cover" />
           ) : (
-            <div className="w-full h-full bg-muted flex items-center justify-center" style={{ fontWeight: 800 }}>
+            <div className="w-full h-full bg-muted flex items-center justify-center">
               <span className="font-heading text-4xl text-muted-foreground/100">
                 {String(index + 1).padStart(2, "0")}
               </span>
             </div>
           )}
         </div>
-        <div className="py-6" style={{ paddingLeft: '24px', paddingRight: '24px' }}>
+        <div className="px-4 py-6">
           <div className="mb-4">
             <span className="text-xs font-heading text-muted-foreground uppercase tracking-wider">
               Servicio {String(index + 1).padStart(2, "0")}
@@ -55,7 +55,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
             <h3 className="font-heading text-2xl mt-2 uppercase leading-tight">{service.title}</h3>
           </div>
           {service.description && (
-            <p className="text-base text-muted-foreground mb-6 leading-relaxed" style={{ lineHeight: '18px', marginLeft: '0px', marginRight: '0px' }}>{service.description}</p>
+            <p className="text-base text-muted-foreground mb-6 leading-relaxed">{service.description}</p>
           )}
           {service.button_text && service.button_link && (
             <Button asChild variant="default" size="lg">
@@ -113,7 +113,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
                     className="object-cover hover:scale-105 transition-transform duration-500"
                   />
                 ) : (
-                  <div className="w-full h-full bg-muted flex items-center justify-center" style={{ fontWeight: 800 }}>
+                  <div className="w-full h-full bg-muted flex items-center justify-center">
                     <span className="font-heading text-4xl text-muted-foreground/100">
                       {String(index + 1).padStart(2, "0")}
                     </span>
@@ -217,7 +217,7 @@ export const ServicesSection = () => {
 
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
       <div className="sticky top-0 z-30 bg-background border-y border-border">
-        <div className="container mx-auto px-4" style={{ height: '100%' }}>
+        <div className="container mx-auto px-4">
           <div className="py-2 sm:py-3">
             {/* Mobile: vertical stack, full width */}
             <div className="flex flex-col gap-1 sm:hidden">
