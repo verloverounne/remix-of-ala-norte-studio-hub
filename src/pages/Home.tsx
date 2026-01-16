@@ -121,32 +121,8 @@ const CTASection = () => {
     </section>;
 };
 
-// Componente para la sección Cartoni con parallax y video/imagen de fondo
+// Componente para la sección Cartoni con parallax
 const CartoniSection = () => {
-  const [sectionConfig, setSectionConfig] = useState<{
-    background_media_type: string | null;
-    background_image_url: string | null;
-    background_video_url: string | null;
-  } | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchSectionConfig = async () => {
-      const { data } = await supabase
-        .from('home_sections')
-        .select('background_media_type, background_image_url, background_video_url, is_active')
-        .eq('section_key', 'cartoni')
-        .eq('is_active', true)
-        .single();
-      
-      if (data) {
-        setSectionConfig(data);
-      }
-      setLoading(false);
-    };
-    
-    fetchSectionConfig();
-  }, []);
 
   const logoParallax = useParallax({
     speed: 0.6,
@@ -157,36 +133,8 @@ const CartoniSection = () => {
     direction: 'down'
   });
 
-  const hasBackground = sectionConfig && (
-    (sectionConfig.background_media_type === 'video' && sectionConfig.background_video_url) ||
-    (sectionConfig.background_media_type === 'image' && sectionConfig.background_image_url)
-  );
-
   return (
     <section className="relative py-16 lg:py-24 border-y border-border border overflow-hidden">
-      {/* Video/Imagen de fondo */}
-      {hasBackground && (
-        <div className="absolute inset-0 z-0">
-          {sectionConfig.background_media_type === 'video' && sectionConfig.background_video_url ? (
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover opacity-30"
-            >
-              <source src={sectionConfig.background_video_url} type="video/mp4" />
-            </video>
-          ) : sectionConfig.background_image_url ? (
-            <img
-              src={sectionConfig.background_image_url}
-              alt="Cartoni background"
-              className="w-full h-full object-cover opacity-30"
-            />
-          ) : null}
-        </div>
-      )}
-      
       {/* Contenido */}
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 my-[61px]">
@@ -217,6 +165,7 @@ const CartoniSection = () => {
     </section>
   );
 };
+
 const Home = () => {
   const [featuredEquipment, setFeaturedEquipment] = useState<any[]>([]);
   const [equipmentApi, setEquipmentApi] = useState<CarouselApi>();

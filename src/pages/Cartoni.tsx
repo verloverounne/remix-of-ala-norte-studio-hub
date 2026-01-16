@@ -1,13 +1,58 @@
 import { Helmet } from "react-helmet";
-import { ExternalLink, Wrench, ShoppingBag, Award, Phone, Mail, MapPin } from "lucide-react";
+import { ExternalLink, Wrench, ShoppingBag, Award, Phone, Mail, MapPin, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselApi,
+} from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
 
 const CARTONI_LOGO = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Cartoni_logo.svg/1200px-Cartoni_logo.svg.png";
 
+interface CartoniSlide {
+  id: string;
+  title: string | null;
+  description: string | null;
+  image_url: string;
+  media_type: string | null;
+}
+
 const Cartoni = () => {
+  const [slides, setSlides] = useState<CartoniSlide[]>([]);
+  const [api, setApi] = useState<CarouselApi>();
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const fetchSlides = async () => {
+      const { data } = await supabase
+        .from('gallery_images')
+        .select('id, title, description, image_url, media_type')
+        .eq('page_type', 'cartoni')
+        .order('order_index');
+      
+      if (data && data.length > 0) {
+        setSlides(data);
+      }
+    };
+    fetchSlides();
+  }, []);
+
+  useEffect(() => {
+    if (!api) return;
+    api.on("select", () => {
+      setCurrentSlide(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  const hasSlides = slides.length > 0;
+
   return (
-    <div className="min-h-screen bg-background pt-20">
+    <div className="min-h-screen bg-background">
       <Helmet>
         <title>Cartoni - Seller y Service Oficial | Ala Norte</title>
         <meta
@@ -16,47 +61,137 @@ const Cartoni = () => {
         />
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="relative py-20 lg:py-32 bg-background text-foreground border-b border-foreground overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="mb-8">
-              <img
-                src={CARTONI_LOGO}
-                alt="Cartoni Logo"
-                className="h-16 md:h-24 mx-auto bg-background p-4 rounded-lg"
-              />
+      {/* Hero Section with Carousel */}
+      {hasSlides ? (
+        <section className="relative pt-16 sm:pt-20">
+          <Carousel className="w-full" setApi={setApi} opts={{ loop: true }}>
+            <CarouselContent className="-ml-0">
+              {slides.map((slide) => (
+                <CarouselItem key={slide.id} className="pl-0 basis-full">
+                  <div className="relative h-[60vh] sm:h-[70vh] w-full overflow-hidden duotone-hover-group">
+                    {/* Full-width background media */}
+                    {slide.media_type === 'video' ? (
+                      <video
+                        src={slide.image_url}
+                        className="absolute inset-0 w-full h-full object-cover video-duotone"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                      />
+                    ) : (
+                      <img
+                        src={slide.image_url}
+                        alt={slide.title || "Cartoni"}
+                        className="absolute inset-0 w-full h-full object-cover image-duotone"
+                      />
+                    )}
+                    
+                    {/* Dark overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/30 to-transparent" />
+                    
+                    {/* Content with blur background */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="relative z-10 text-center px-4 sm:px-8 max-w-4xl mx-auto">
+                        <div className="inline-block backdrop-blur-md bg-foreground/80 px-6 sm:px-12 py-6 sm:py-10 border border-background/20">
+                          <img
+                            src={CARTONI_LOGO}
+                            alt="Cartoni Logo"
+                            className="h-12 sm:h-16 md:h-20 mx-auto mb-4 sm:mb-6 bg-background/90 p-3 rounded"
+                          />
+                          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-3 sm:mb-4 uppercase text-background">
+                            SELLER & SERVICE
+                            <br />
+                            <span className="text-primary">OFICIAL CARTONI</span>
+                          </h1>
+                          <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading mb-4 sm:mb-6 max-w-2xl mx-auto">
+                            ALA NORTE ES REPRESENTANTE OFICIAL DE CARTONI EN ARGENTINA
+                          </p>
+                          <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
+                            <Button asChild variant="hero" size="lg">
+                              <a
+                                href="https://www.cartoni.com/dealers/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                VER EN CARTONI.COM <ExternalLink className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                              </a>
+                            </Button>
+                            <Button asChild variant="secondary" size="lg">
+                              <Link to="/contacto">CONTACTAR <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" /></Link>
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+
+          {/* Navigation dots */}
+          {slides.length > 1 && (
+            <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => api?.scrollTo(index)}
+                  className={cn(
+                    "h-2 rounded-full transition-all",
+                    index === currentSlide 
+                      ? "w-12 bg-primary" 
+                      : "w-2 bg-background/40 hover:bg-background/60"
+                  )}
+                  aria-label={`Ir a slide ${index + 1}`}
+                />
+              ))}
             </div>
-            <h1 className="font-heading text-4xl md:text-6xl lg:text-brutal mb-6">
-              SELLER & SERVICE
-              <br />
-              <span className="text-primary">OFICIAL CARTONI</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-background/80 font-heading mb-8">
-              ALA NORTE ES REPRESENTANTE OFICIAL DE CARTONI EN ARGENTINA
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button asChild variant="hero" size="lg">
-                <a
-                  href="https://www.cartoni.com/dealers/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  VER EN CARTONI.COM <ExternalLink className="ml-2 h-5 w-5" />
-                </a>
-              </Button>
-              <Button asChild variant="secondary" size="lg">
-                <Link to="/contacto">CONTACTAR</Link>
-              </Button>
+          )}
+        </section>
+      ) : (
+        // Fallback hero without slides
+        <section className="relative py-20 lg:py-32 bg-background text-foreground border-b border-foreground overflow-hidden pt-32">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="mb-8">
+                <img
+                  src={CARTONI_LOGO}
+                  alt="Cartoni Logo"
+                  className="h-16 md:h-24 mx-auto bg-background p-4 rounded-lg"
+                />
+              </div>
+              <h1 className="font-heading text-4xl md:text-6xl lg:text-brutal mb-6">
+                SELLER & SERVICE
+                <br />
+                <span className="text-primary">OFICIAL CARTONI</span>
+              </h1>
+              <p className="text-xl md:text-2xl text-muted-foreground font-heading mb-8">
+                ALA NORTE ES REPRESENTANTE OFICIAL DE CARTONI EN ARGENTINA
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button asChild variant="hero" size="lg">
+                  <a
+                    href="https://www.cartoni.com/dealers/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    VER EN CARTONI.COM <ExternalLink className="ml-2 h-5 w-5" />
+                  </a>
+                </Button>
+                <Button asChild variant="secondary" size="lg">
+                  <Link to="/contacto">CONTACTAR</Link>
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Services Section */}
       <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4">
-          <div className="border-l border-primary pl-8 mb-12">
+          <div className="mb-12">
             <h2 className="font-heading text-3xl md:text-5xl mb-4">NUESTROS SERVICIOS</h2>
             <p className="text-lg text-muted-foreground font-heading">
               COMO DEALER OFICIAL OFRECEMOS SERVICIOS COMPLETOS
@@ -104,7 +239,7 @@ const Cartoni = () => {
       <section className="py-16 lg:py-24 bg-background border-y border-foreground">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="border-l border-primary pl-8 mb-12">
+            <div className="mb-12">
               <h2 className="font-heading text-3xl md:text-5xl mb-4">SOBRE CARTONI</h2>
               <p className="text-lg text-muted-foreground font-heading">
                 EXCELENCIA ITALIANA DESDE 1935

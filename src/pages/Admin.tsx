@@ -83,20 +83,6 @@ const Admin = () => {
     instagram_token: ""
   });
   
-  // Home sections state
-  const [cartoniSection, setCartoniSection] = useState<{
-    id: string | null;
-    background_media_type: string | null;
-    background_image_url: string | null;
-    background_video_url: string | null;
-    is_active: boolean;
-  }>({
-    id: null,
-    background_media_type: 'image',
-    background_image_url: null,
-    background_video_url: null,
-    is_active: true
-  });
   
   const { toast } = useToast();
 
@@ -111,8 +97,7 @@ const Admin = () => {
       fetchCategories(), 
       fetchSubcategories(), 
       fetchSpaces(),
-      fetchContactInfo(),
-      fetchCartoniSection()
+      fetchContactInfo()
     ]);
     setLoading(false);
   };
@@ -161,63 +146,6 @@ const Admin = () => {
         instagram: data.instagram || "",
         instagram_token: data.instagram_token || ""
       });
-    }
-  };
-
-  const fetchCartoniSection = async () => {
-    const { data } = await supabase
-      .from('home_sections')
-      .select('*')
-      .eq('section_key', 'cartoni')
-      .single();
-    
-    if (data) {
-      setCartoniSection({
-        id: data.id,
-        background_media_type: data.background_media_type || 'image',
-        background_image_url: data.background_image_url || null,
-        background_video_url: data.background_video_url || null,
-        is_active: data.is_active ?? true
-      });
-    }
-  };
-
-  const handleUpdateCartoniSection = async () => {
-    if (!cartoniSection.id) {
-      // Create new section
-      const { error } = await supabase
-        .from('home_sections')
-        .insert({
-          section_key: 'cartoni',
-          background_media_type: cartoniSection.background_media_type || 'image',
-          background_image_url: cartoniSection.background_image_url || null,
-          background_video_url: cartoniSection.background_video_url || null,
-          is_active: cartoniSection.is_active
-        });
-      
-      if (error) {
-        toast({ title: "ERROR", description: error.message, variant: "destructive" });
-      } else {
-        toast({ title: "GUARDADO", description: "Configuración de sección Cartoni guardada" });
-        fetchCartoniSection();
-      }
-    } else {
-      // Update existing section
-      const { error } = await supabase
-        .from('home_sections')
-        .update({
-          background_media_type: cartoniSection.background_media_type || 'image',
-          background_image_url: cartoniSection.background_image_url || null,
-          background_video_url: cartoniSection.background_video_url || null,
-          is_active: cartoniSection.is_active
-        })
-        .eq('id', cartoniSection.id);
-      
-      if (error) {
-        toast({ title: "ERROR", description: error.message, variant: "destructive" });
-      } else {
-        toast({ title: "GUARDADO", description: "Configuración de sección Cartoni guardada" });
-      }
     }
   };
 
@@ -1173,87 +1101,6 @@ const Admin = () => {
                 </CardContent>
               </Card>
 
-              {/* Cartoni Section Config */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Sección Cartoni - Home</CardTitle>
-                  <CardDescription>Configuración de video/imagen de fondo para la sección Cartoni</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label>Tipo de Media</Label>
-                    <Select
-                      value={cartoniSection.background_media_type || 'image'}
-                      onValueChange={(value) => setCartoniSection({...cartoniSection, background_media_type: value})}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="image">Imagen</SelectItem>
-                        <SelectItem value="video">Video</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {cartoniSection.background_media_type === 'image' ? (
-                    <div className="space-y-2">
-                      <Label>URL de Imagen de Fondo</Label>
-                      <div className="flex gap-2">
-                        <Input
-                          placeholder="https://..."
-                          value={cartoniSection.background_image_url || ''}
-                          onChange={(e) => setCartoniSection({...cartoniSection, background_image_url: e.target.value})}
-                        />
-                        <StorageImageSelector
-                          onSelect={(url) => setCartoniSection({...cartoniSection, background_image_url: url})}
-                          folder="home-sections"
-                        />
-                      </div>
-                      {cartoniSection.background_image_url && (
-                        <div className="mt-2">
-                          <img 
-                            src={cartoniSection.background_image_url} 
-                            alt="Preview" 
-                            className="w-full h-48 object-cover border border-foreground rounded"
-                          />
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      <Label>URL de Video de Fondo</Label>
-                      <Input
-                        placeholder="https://..."
-                        value={cartoniSection.background_video_url || ''}
-                        onChange={(e) => setCartoniSection({...cartoniSection, background_video_url: e.target.value})}
-                      />
-                      {cartoniSection.background_video_url && (
-                        <div className="mt-2">
-                          <video 
-                            src={cartoniSection.background_video_url} 
-                            className="w-full h-48 object-cover border border-foreground rounded"
-                            controls
-                            muted
-                          />
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  <div className="flex items-center gap-2">
-                    <Switch
-                      checked={cartoniSection.is_active}
-                      onCheckedChange={(checked) => setCartoniSection({...cartoniSection, is_active: checked})}
-                    />
-                    <Label>Sección activa</Label>
-                  </div>
-
-                  <Button variant="hero" onClick={handleUpdateCartoniSection}>
-                    Guardar Configuración Cartoni
-                  </Button>
-                </CardContent>
-              </Card>
             </TabsContent>
 
             {/* Backup Tab */}
