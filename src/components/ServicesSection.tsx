@@ -210,7 +210,7 @@ export const ServicesSection = () => {
 
   return (
     <section className="relative border-y border-border bg-background">
-      {/* Section Header */}
+      {/* Section Header 
       <div className="py-6 sm:py-8 mx-4 sm:mx-8">
         <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">NUESTROS SERVICIOS</h2>
       </div>
