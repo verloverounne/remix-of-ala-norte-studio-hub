@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState, useCallback } from "react";
-import { Maximize2, Minimize2 } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 declare global {
   namespace JSX {
@@ -14,42 +15,21 @@ declare global {
 interface Viewer360Props {
   imageSrc: string;
   height?: string;
+  title?: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaLink?: string;
 }
 
-const Viewer360 = ({ imageSrc, height = "500px" }: Viewer360Props) => {
+const Viewer360 = ({ 
+  imageSrc, 
+  height = "500px",
+  title,
+  subtitle,
+  ctaText,
+  ctaLink
+}: Viewer360Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<HTMLElement | null>(null);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-
-  const toggleFullscreen = useCallback(() => {
-    if (!wrapperRef.current) return;
-
-    if (!document.fullscreenElement) {
-      wrapperRef.current.requestFullscreen().then(() => {
-        setIsFullscreen(true);
-      }).catch((err) => {
-        console.error('Error entering fullscreen:', err);
-      });
-    } else {
-      document.exitFullscreen().then(() => {
-        setIsFullscreen(false);
-      }).catch((err) => {
-        console.error('Error exiting fullscreen:', err);
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => {
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
-    };
-  }, []);
 
   useEffect(() => {
     // Load A-Frame script dynamically
@@ -72,61 +52,79 @@ const Viewer360 = ({ imageSrc, height = "500px" }: Viewer360Props) => {
       if (!containerRef.current) return;
       
       // Clear existing scene if any
-      containerRef.current.innerHTML = '';
+      const sceneContainer = containerRef.current.querySelector('.a-scene-container');
+      if (sceneContainer) {
+        sceneContainer.innerHTML = '';
+      }
       
-      const currentHeight = isFullscreen ? '100vh' : height;
-      
-      // Create scene HTML with 2x scale on the sky
+      // Create scene HTML with inverted image (scale -1 on X axis)
       const sceneHTML = `
         <a-scene 
           embedded 
-          style="width: 100%; height: ${currentHeight};"
+          style="width: 100%; height: ${height};"
           vr-mode-ui="enabled: false"
           loading-screen="enabled: false"
         >
-          <a-sky src="${imageSrc}" rotation="0 -90 0" scale="2 2 2"></a-sky>
+          <a-sky src="${imageSrc}" rotation="0 -90 0" scale="-2 2 2"></a-sky>
           <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="60"></a-camera>
         </a-scene>
       `;
       
-      containerRef.current.innerHTML = sceneHTML;
-      sceneRef.current = containerRef.current.querySelector('a-scene');
+      if (sceneContainer) {
+        sceneContainer.innerHTML = sceneHTML;
+      }
     }
 
     return () => {
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '';
+      const sceneContainer = containerRef.current?.querySelector('.a-scene-container');
+      if (sceneContainer) {
+        sceneContainer.innerHTML = '';
       }
     };
-  }, [imageSrc, height, isFullscreen]);
+  }, [imageSrc, height]);
 
   return (
-    <div 
-      ref={wrapperRef}
-      className={`relative ${isFullscreen ? 'bg-black' : ''}`}
-    >
+    <div className="relative w-full">
       <div 
-        ref={containerRef} 
-        className={`w-full overflow-hidden cursor-pointer ${isFullscreen ? 'h-screen' : 'rounded-lg border border-foreground'}`}
-        style={{ height: isFullscreen ? '100vh' : height }}
-        onClick={toggleFullscreen}
-      />
-      <button
-        onClick={toggleFullscreen}
-        className="absolute top-4 right-4 z-10 bg-background/80 hover:bg-background p-2 rounded-lg border-2 border-foreground transition-all hover:scale-105"
-        title={isFullscreen ? "Salir de pantalla completa (ESC)" : "Pantalla completa"}
+        ref={containerRef}
+        className="w-full overflow-hidden rounded-lg border border-foreground relative"
+        style={{ height, width: '100%' }}
       >
-        {isFullscreen ? (
-          <Minimize2 className="h-6 w-6" />
-        ) : (
-          <Maximize2 className="h-6 w-6" />
+        <div className="a-scene-container w-full h-full" style={{ height }} />
+        
+        {/* Overlay HTML con clases CSS de la página */}
+        {(title || subtitle || ctaText) && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
+            <div className="flex flex-col items-center justify-center gap-4 sm:gap-6 pointer-events-auto">
+              {title && (
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl font-heading font-bold uppercase tracking-wider text-foreground text-center px-4">
+                  {title}
+                </h2>
+              )}
+              {subtitle && (
+                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-heading font-bold uppercase tracking-wider text-muted-foreground text-center px-4">
+                  {subtitle}
+                </h3>
+              )}
+              {ctaText && (
+                <div className="mt-2">
+                  {ctaLink ? (
+                    <Button asChild variant="default" size="default" className="pointer-events-auto">
+                      <Link to={ctaLink}>
+                        {ctaText}
+                      </Link>
+                    </Button>
+                  ) : (
+                    <Button variant="default" size="default" className="pointer-events-auto">
+                      {ctaText}
+                    </Button>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
         )}
-      </button>
-      {!isFullscreen && (
-        <p className="text-center text-sm text-muted-foreground mt-2 font-heading">
-          CLICK PARA PANTALLA COMPLETA · ESC PARA SALIR
-        </p>
-      )}
+      </div>
     </div>
   );
 };

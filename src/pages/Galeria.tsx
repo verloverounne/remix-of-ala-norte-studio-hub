@@ -77,6 +77,35 @@ const Galeria = () => {
         </section>
       )}
 
+      {/* 360° Virtual Tour Section - Movido debajo de características */}
+      {space.tour_360_url && (
+        <section className="py-12 sm:py-16 bg-background">
+          <div className="w-full px-0">
+            <div className="container mx-auto px-4 mb-8">
+              <div className="text-center">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
+                  <Eye className="inline-block mr-3 h-8 w-8" />
+                  TOUR VIRTUAL 360°
+                </h2>
+                <p className="text-muted-foreground font-heading text-lg max-w-2xl mx-auto">
+                  EXPLORÁ NUESTRO ESTUDIO EN UNA EXPERIENCIA INMERSIVA. ARRASTRÁ PARA MOVERTE.
+                </p>
+              </div>
+            </div>
+            <div className="w-full">
+              <Viewer360 
+                imageSrc={space.tour_360_url} 
+                height="500px"
+                title="TOUR VIRTUAL 360°"
+                subtitle="Explorá nuestro estudio en una experiencia inmersiva"
+                ctaText="RESERVAR BLOQUE"
+                ctaLink="/contacto"
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Details Section with Featured Image */}
       <section className="py-12 sm:py-16">
         <div className="container mx-auto px-4">
@@ -164,29 +193,6 @@ const Galeria = () => {
 
       {/* Productions Slider */}
       <ProductionsSlider />
-
-      {/* 360° Virtual Tour Section */}
-      {space.tour_360_url && (
-        <section className="py-12 sm:py-16 bg-secondary">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
-                <Eye className="inline-block mr-3 h-8 w-8" />
-                TOUR VIRTUAL 360°
-              </h2>
-              <p className="text-muted-foreground font-heading text-lg max-w-2xl mx-auto">
-                EXPLORÁ NUESTRO ESTUDIO EN UNA EXPERIENCIA INMERSIVA. ARRASTRÁ PARA MOVERTE.
-              </p>
-            </div>
-            <div className="max-w-5xl mx-auto">
-              <Viewer360 
-                imageSrc={space.tour_360_url} 
-                height="500px" 
-              />
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* CTA Section */}
       <section className="py-12 sm:py-16 bg-background">

@@ -17,7 +17,7 @@ const Cartoni = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32 bg-foreground text-background border-b border-foreground overflow-hidden">
+      <section className="relative py-20 lg:py-32 bg-background text-foreground border-b border-foreground overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <div className="mb-8">
