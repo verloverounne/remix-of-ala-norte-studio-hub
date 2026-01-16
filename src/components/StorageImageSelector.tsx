@@ -9,9 +9,11 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 
 interface StorageImageSelectorProps {
-  value: string;
-  onChange: (url: string) => void;
+  value?: string;
+  onChange?: (url: string) => void;
+  onSelect?: (url: string) => void;
   placeholder?: string;
+  folder?: string;
 }
 
 interface StorageFile {
@@ -20,10 +22,17 @@ interface StorageFile {
 }
 
 export const StorageImageSelector = ({ 
-  value, 
+  value = "", 
   onChange, 
-  placeholder = "Seleccionar imagen del storage..." 
+  onSelect,
+  placeholder = "Seleccionar imagen del storage...",
+  folder
 }: StorageImageSelectorProps) => {
+  
+  const handleChange = (url: string) => {
+    if (onChange) onChange(url);
+    if (onSelect) onSelect(url);
+  };
   const [open, setOpen] = useState(false);
   const [files, setFiles] = useState<StorageFile[]>([]);
   const [loading, setLoading] = useState(false);
@@ -120,13 +129,13 @@ export const StorageImageSelector = ({
     file.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleSelect = (url: string) => {
-    onChange(url);
+  const handleSelectImage = (url: string) => {
+    handleChange(url);
     setOpen(false);
   };
 
   const handleClear = () => {
-    onChange("");
+    handleChange("");
   };
 
   return (
@@ -191,7 +200,7 @@ export const StorageImageSelector = ({
                   {filteredFiles.map((file) => (
                     <button
                       key={file.name}
-                      onClick={() => handleSelect(file.url)}
+                      onClick={() => handleSelectImage(file.url)}
                       className={cn(
                         "relative aspect-square rounded-md overflow-hidden border-2 transition-all hover:border-primary",
                         value === file.url ? "border-primary ring-2 ring-primary" : "border-transparent"

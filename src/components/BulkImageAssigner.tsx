@@ -372,9 +372,23 @@ export const BulkImageAssigner = () => {
     }
 
     if (data) {
-      const transformed = {
-        ...data,
-        images: Array.isArray(data.images) ? data.images : []
+      const transformed: Equipment = {
+        id: data.id,
+        name: data.name,
+        name_en: data.name_en,
+        image_url: data.image_url,
+        images: Array.isArray(data.images) ? (data.images as string[]).filter((img): img is string => typeof img === 'string') : [],
+        brand: data.brand,
+        model: data.model,
+        description: data.description,
+        price_per_day: data.price_per_day,
+        price_per_week: data.price_per_week,
+        category_id: data.category_id,
+        subcategory_id: data.subcategory_id,
+        featured: data.featured || false,
+        featured_copy: data.featured_copy,
+        categories: data.categories as Category | null,
+        subcategories: data.subcategories as Subcategory | null
       };
       setEditingEquipment(transformed);
       setIsEditModalOpen(true);

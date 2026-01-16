@@ -6,8 +6,10 @@ import {
   CarouselApi,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
-import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
 import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 interface HomeService {
   id: string;
@@ -17,6 +19,9 @@ interface HomeService {
   hero_image_url: string | null;
   hero_media_type?: string | null;
   hero_video_url?: string | null;
+  bullets: string[];
+  cta_label: string | null;
+  cta_url: string | null;
   slug: string | null;
   order_index: number;
   is_active: boolean;
@@ -107,11 +112,6 @@ export const ServicesHeroSlider = ({
     }
   }, [activeServiceId, api, services, currentSlide]);
 
-  const handleChipClick = (serviceId: string, index: number) => {
-    onServiceChange(serviceId);
-    api?.scrollTo(index);
-  };
-
   return (
     <div 
       ref={heroRef} 
@@ -120,55 +120,23 @@ export const ServicesHeroSlider = ({
         isSticky ? "sticky top-0" : "relative"
       )}
     >
-      {/* Fixed Navigation Bar - synced with header visibility */}
-      <div 
-        className={cn(
-          "absolute left-0 right-0 z-40 bg-background border-b border-foreground transition-all duration-300",
-          (isHeaderVisible || isHeaderHovering) ? "top-16 sm:top-20" : "top-0"
-        )}
-      >
-        <div className="container mx-auto px-2 sm:px-4">
-          <div className="flex items-center justify-center gap-1 sm:gap-2 py-1.5 sm:py-2 h-[40px] sm:h-[52px]">
-            <div className="flex items-center overflow-x-auto scrollbar-hide gap-1 sm:gap-2">
-              {services.map((service, index) => {
-                const isActive = index === currentSlide;
-                
-                return (
-                  <button
-                    key={service.id}
-                    onClick={() => handleChipClick(service.id, index)}
-                    className={cn(
-                      "flex-shrink-0 px-2 py-1 sm:px-3 sm:py-1.5 font-heading text-[10px] sm:text-xs uppercase border transition-all whitespace-nowrap",
-                      isActive 
-                        ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm" 
-                        : "bg-background text-foreground border-foreground hover:bg-muted"
-                    )}
-                  >
-                    {service.title}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Hero content with padding for nav bar */}
+      {/* Hero content with padding for header */}
       <div className={cn(
         "transition-all duration-300",
-        (isHeaderVisible || isHeaderHovering) ? "pt-[96px] sm:pt-[132px]" : "pt-[40px] sm:pt-[52px]"
+        (isHeaderVisible || isHeaderHovering) ? "pt-16 sm:pt-20" : "pt-0"
       )}>
-        {/* Carousel slides */}
+        {/* Full-width Carousel slides */}
         <section className="relative overflow-hidden">
-          <Carousel className="w-full" setApi={setApi}>
+          <Carousel className="w-full" setApi={setApi} opts={{ loop: true }}>
             <CarouselContent className="-ml-0">
               {services.map((service) => (
-                 <CarouselItem key={service.id} className="pl-0 basis-full">
-                   <div className="relative h-[40vh] sm:h-[45vh] overflow-hidden duotone-hover-group">
-                     {service.hero_media_type === 'video' && service.hero_video_url ? (
+                <CarouselItem key={service.id} className="pl-0 basis-full">
+                  <div className="relative h-[60vh] sm:h-[70vh] w-full overflow-hidden duotone-hover-group">
+                    {/* Full-width background media */}
+                    {service.hero_media_type === 'video' && service.hero_video_url ? (
                       <video
                         src={service.hero_video_url}
-                        className="w-full h-full object-cover video-duotone"
+                        className="absolute inset-0 w-full h-full object-cover video-duotone"
                         autoPlay
                         loop
                         muted
@@ -178,35 +146,60 @@ export const ServicesHeroSlider = ({
                       <img
                         src={service.hero_image_url || service.image_url || ""}
                         alt={service.title}
-                        className="w-full h-full object-cover image-duotone"
+                        className="absolute inset-0 w-full h-full object-cover image-duotone"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />
+                      <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />
                     )}
                     
-                    {/* Overlay gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-transparent" />
+                    {/* Dark overlay for readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/30 to-transparent" />
                     
-                    {/* Text overlay */}
+                    {/* Content overlay with blur background */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center z-10 p-4 sm:p-8 max-w-4xl">
-                        <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-2 uppercase text-background drop-shadow-lg">
-                          {service.title}
-                        </h1>
-                        {service.description && (
-                          <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading drop-shadow-md max-w-2xl mx-auto">
-                            {service.description}
-                          </p>
-                        )}
+                      <div className="relative z-10 text-center px-4 sm:px-8 max-w-4xl mx-auto">
+                        {/* Blur background box */}
+                        <div className="inline-block backdrop-blur-md bg-foreground/80 px-6 sm:px-12 py-6 sm:py-10 border border-background/20">
+                          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-3 sm:mb-4 uppercase text-background">
+                            {service.title}
+                          </h1>
+                          {service.description && (
+                            <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading mb-4 sm:mb-6 max-w-2xl mx-auto">
+                              {service.description}
+                            </p>
+                          )}
+                          {service.cta_url && service.cta_label && (
+                            <Button asChild variant="hero" size="lg">
+                              <Link to={service.cta_url}>
+                                {service.cta_label} <ArrowRight className="ml-2" />
+                              </Link>
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
-            
-            <ScrollIndicator className="text-background/80 hover:text-background" />
           </Carousel>
+
+          {/* Navigation dots - same style as hero */}
+          <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+            {services.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => api?.scrollTo(index)}
+                className={cn(
+                  "h-2 rounded-full transition-all",
+                  index === currentSlide 
+                    ? "w-12 bg-primary" 
+                    : "w-2 bg-background/40 hover:bg-background/60"
+                )}
+                aria-label={`Ir a servicio ${index + 1}`}
+              />
+            ))}
+          </div>
         </section>
       </div>
     </div>
