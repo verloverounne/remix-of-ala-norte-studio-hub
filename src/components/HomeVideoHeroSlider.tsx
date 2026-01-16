@@ -5,26 +5,56 @@ import { Button } from "@/components/ui/button";
 import { Volume2, VolumeX } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useParallax } from "@/hooks/useParallax";
-interface VideoSlide {
+
+interface HeroSlide {
   id: string;
-  video_url: string;
+  media_url: string;
+  media_type: "image" | "video";
   vertical_video_url?: string | null;
   title: string;
   subtitle: string;
-  cta?: {
-    label: string;
-    link: string;
-  };
+  cta_label?: string | null;
+  cta_link?: string | null;
+  order_index: number;
 }
 
-// Componente individual para cada slide con parallax
+// Default slides if DB is empty (fallback)
+const defaultSlides: Omit<HeroSlide, "id" | "order_index">[] = [
+  {
+    media_url: "",
+    media_type: "video",
+    title: "MAS QUE UN RENTAL",
+    subtitle: "Trabajamos codo a codo con vos en cada proyecto.",
+    cta_label: "Explorá el catálogo",
+    cta_link: "/equipos",
+  },
+  {
+    media_url: "",
+    media_type: "image",
+    title: "GALERÍA DE FILMACIÓN",
+    subtitle: "más que un set: comodidad, flexibilidad y apoyo profesional en 150 m²",
+    cta_label: "Conocé los detalles",
+    cta_link: "/galeria",
+  },
+  {
+    media_url: "",
+    media_type: "image",
+    title: "ESTUDIO DE SONIDO / POSTPRODUCCIÓN",
+    subtitle: "Isla de edición y sala de grabación insonorizada",
+    cta_label: "conocé el estudio",
+    cta_link: "/sala-grabacion",
+  },
+];
+
+// Individual slide component with parallax
 interface HeroSlideProps {
-  slide: VideoSlide;
+  slide: HeroSlide;
   index: number;
   videoRef: (el: HTMLVideoElement | null) => void;
   muted: boolean;
 }
-const HeroSlide = ({ slide, index, videoRef, muted }: HeroSlideProps) => {
+
+const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
   const [videoOrientation, setVideoOrientation] = useState<"horizontal" | "vertical" | null>(null);
@@ -39,36 +69,22 @@ const HeroSlide = ({ slide, index, videoRef, muted }: HeroSlideProps) => {
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
-  // Parallax para el video (se mueve más lento que el scroll)
-  const videoParallax = useParallax({
-    speed: 0.6,
-    direction: "up",
-  });
-  // Parallax para el contenido (se mueve más rápido)
-  const contentParallax = useParallax({
-    speed: 0.4,
-    direction: "down",
-  });
+  const videoParallax = useParallax({ speed: 0.6, direction: "up" });
+  const contentParallax = useParallax({ speed: 0.4, direction: "down" });
 
-  // Handler para detectar orientación del video
   const handleLoadedMetadata = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const video = e.currentTarget;
-    if (video.videoWidth > video.videoHeight) {
-      setVideoOrientation("horizontal");
-    } else {
-      setVideoOrientation("vertical");
-    }
+    setVideoOrientation(video.videoWidth > video.videoHeight ? "horizontal" : "vertical");
   };
 
-  // Determinar qué video usar: vertical en mobile/tablet si existe, sino el horizontal
-  const videoToUse = isMobileOrTablet && slide.vertical_video_url ? slide.vertical_video_url : slide.video_url;
+  // Use vertical video on mobile/tablet if available
+  const mediaUrl = slide.media_type === "video" && isMobileOrTablet && slide.vertical_video_url 
+    ? slide.vertical_video_url 
+    : slide.media_url;
 
-  // Estilos dinámicos para mobile según orientación del video
   const getMobileVideoStyles = (): React.CSSProperties => {
-    if (!isMobile || !videoOrientation) {
-      return videoParallax.style;
-    }
-
+    if (!isMobile || !videoOrientation) return videoParallax.style;
+    
     const baseStyles: React.CSSProperties = {
       position: "absolute",
       top: "50%",
@@ -77,31 +93,18 @@ const HeroSlide = ({ slide, index, videoRef, muted }: HeroSlideProps) => {
       objectFit: "cover",
     };
 
-    if (videoOrientation === "horizontal") {
-      return {
-        ...baseStyles,
-        height: "100vh",
-        width: "auto",
-        minWidth: "100%",
-      };
-    } else {
-      return {
-        ...baseStyles,
-        width: "100vw",
-        height: "auto",
-        minHeight: "100%",
-      };
-    }
+    return videoOrientation === "horizontal"
+      ? { ...baseStyles, height: "100vh", width: "auto", minWidth: "100%" }
+      : { ...baseStyles, width: "100vw", height: "auto", minHeight: "100%" };
   };
 
-  // Clases para el video
   const getVideoClasses = () => {
     const baseClasses = "video-duotone";
-    if (isMobile && videoOrientation) {
-      return `${baseClasses} ${videoOrientation}`;
-    }
+    if (isMobile && videoOrientation) return `${baseClasses} ${videoOrientation}`;
     return `${baseClasses} absolute inset-0 w-full h-full object-cover`;
   };
+
+  const hasMedia = mediaUrl && mediaUrl.trim() !== "";
 
   return (
     <CarouselItem className="h-full pl-0">
@@ -113,27 +116,36 @@ const HeroSlide = ({ slide, index, videoRef, muted }: HeroSlideProps) => {
           overflow: "hidden",
         }}
       >
-        {videoToUse ? (
-          <video
-            ref={videoRef}
-            src={videoToUse}
-            className={getVideoClasses()}
-            style={getMobileVideoStyles()}
-            autoPlay
-            loop
-            muted={muted}
-            playsInline
-            onLoadedMetadata={handleLoadedMetadata}
-          />
+        {hasMedia ? (
+          slide.media_type === "video" ? (
+            <video
+              ref={videoRef}
+              src={mediaUrl}
+              className={getVideoClasses()}
+              style={getMobileVideoStyles()}
+              autoPlay
+              loop
+              muted={muted}
+              playsInline
+              onLoadedMetadata={handleLoadedMetadata}
+            />
+          ) : (
+            <img
+              src={mediaUrl}
+              alt={slide.title}
+              className="absolute inset-0 w-full h-full object-cover image-duotone"
+            />
+          )
         ) : (
           <div className="w-full h-full bg-foreground/95 flex items-center justify-center">
             <div className="text-center text-background/40">
-              <p className="text-lg mb-2">Video placeholder</p>
-              <p className="text-sm">Sube un video desde el admin en "Home - Hero Videos"</p>
+              <p className="text-lg mb-2">Media placeholder</p>
+              <p className="text-sm">Sube imagen o video desde el admin en "Home - Hero Videos"</p>
             </div>
           </div>
         )}
-        {/* Content overlay con parallax sutil */}
+
+        {/* Content overlay with parallax */}
         <div
           ref={contentParallax.ref as any}
           style={contentParallax.style}
@@ -146,10 +158,10 @@ const HeroSlide = ({ slide, index, videoRef, muted }: HeroSlideProps) => {
             <p className="font-heading text-background/90 text-lg sm:text-xl lg:text-4xl mb-6 sm:mb-8 drop-shadow-md md:text-lg font-normal">
               {slide.subtitle}
             </p>
-            {slide.cta && (
+            {slide.cta_label && slide.cta_link && (
               <Button asChild variant="hero" size="lg" className="text-base sm:text-lg">
-                <Link to={slide.cta.link} className="border-0">
-                  {slide.cta.label}
+                <Link to={slide.cta_link} className="border-0">
+                  {slide.cta_label}
                 </Link>
               </Button>
             )}
@@ -160,95 +172,62 @@ const HeroSlide = ({ slide, index, videoRef, muted }: HeroSlideProps) => {
   );
 };
 
-// Configuración estática de los slides del hero
-const heroSlides: Omit<VideoSlide, "video_url" | "vertical_video_url">[] = [
-  {
-    id: "1",
-    title: "MAS QUE UN RENTAL",
-    subtitle: "Trabajamos codo a codo con vos en cada proyecto.",
-    cta: {
-      label: "Explorá el catálogo",
-      link: "/equipos",
-    },
-  },
-  {
-    id: "2",
-    title: "GALERÍA DE FILMACIÓN",
-    subtitle: "más que un set: comodidad, flexibilidad y apoyo profesional en 150 m²",
-    cta: {
-      label: "Conocé los detalles",
-      link: "/galeria",
-    },
-  },
-  {
-    id: "3",
-    title: "ESTUDIO DE SONIDO / POSTPRODUCCIÓN",
-    subtitle: "Isla de edición y sala de grabación insonorizada",
-    cta: {
-      label: "conocé el estudio",
-      link: "/sala-grabacion",
-    },
-  },
-];
 export const HomeVideoHeroSlider = () => {
-  const [videos, setVideos] = useState<
-    {
-      id: string;
-      video_url: string;
-      vertical_video_url: string | null;
-      order_index: number;
-    }[]
-  >([]);
+  const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [muted, setMuted] = useState(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
   useEffect(() => {
-    const fetchVideos = async () => {
+    const fetchSlides = async () => {
       const { data } = await supabase
         .from("gallery_images")
         .select("*")
         .eq("page_type", "home_hero")
         .order("order_index");
+
       if (data && data.length > 0) {
-        setVideos(
+        setSlides(
           data.map((item) => ({
             id: item.id,
-            video_url: item.image_url,
-            vertical_video_url: null,
+            media_url: item.image_url,
+            media_type: (item.media_type as "image" | "video") || "image",
+            vertical_video_url: item.vertical_video_url || null,
+            title: item.title || defaultSlides[item.order_index || 0]?.title || "ALA NORTE",
+            subtitle: item.description || defaultSlides[item.order_index || 0]?.subtitle || "",
+            cta_label: defaultSlides[item.order_index || 0]?.cta_label || null,
+            cta_link: defaultSlides[item.order_index || 0]?.cta_link || null,
             order_index: item.order_index || 0,
-          })),
+          }))
+        );
+      } else {
+        // Use defaults with generated IDs
+        setSlides(
+          defaultSlides.map((s, i) => ({
+            ...s,
+            id: `default-${i}`,
+            order_index: i,
+          }))
         );
       }
     };
-    fetchVideos();
+    fetchSlides();
   }, []);
+
   useEffect(() => {
     if (!api) return;
-    api.on("select", () => {
-      const newSlide = api.selectedScrollSnap();
-      setCurrentSlide(newSlide);
-    });
+    api.on("select", () => setCurrentSlide(api.selectedScrollSnap()));
   }, [api]);
 
-  // Combinar slides con videos (usa placeholder si no hay video)
-  const slidesWithVideos = heroSlides.map((slide, index) => ({
-    ...slide,
-    video_url: videos[index]?.video_url || null,
-    vertical_video_url: videos[index]?.vertical_video_url || null,
-  }));
+  const hasVideos = slides.some((s) => s.media_type === "video" && s.media_url);
+
   return (
     <section className="relative min-h-[500px] lg:min-h-[700px] overflow-hidden border-b-4 border-foreground">
-      <Carousel
-        className="w-full h-full"
-        setApi={setApi}
-        opts={{
-          loop: true,
-        }}
-      >
+      <Carousel className="w-full h-full" setApi={setApi} opts={{ loop: true }}>
         <CarouselContent className="h-full -ml-0">
-          {slidesWithVideos.map((slide, index) => (
-            <HeroSlide
+          {slides.map((slide, index) => (
+            <HeroSlideComponent
               key={slide.id}
               slide={slide}
               index={index}
@@ -259,8 +238,8 @@ export const HomeVideoHeroSlider = () => {
         </CarouselContent>
       </Carousel>
 
-      {/* Mute/Unmute Button */}
-      {videos.length > 0 && (
+      {/* Mute/Unmute Button - only show if there are videos */}
+      {hasVideos && (
         <button
           onClick={() => setMuted(!muted)}
           className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm rounded-full hover:bg-background/40 transition-colors"
@@ -272,7 +251,7 @@ export const HomeVideoHeroSlider = () => {
 
       {/* Navigation dots */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-        {slidesWithVideos.map((_, index) => (
+        {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => api?.scrollTo(index)}
@@ -284,4 +263,5 @@ export const HomeVideoHeroSlider = () => {
     </section>
   );
 };
+
 export default HomeVideoHeroSlider;
