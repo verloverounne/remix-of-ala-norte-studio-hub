@@ -24,44 +24,39 @@ interface HeroSlideProps {
   videoRef: (el: HTMLVideoElement | null) => void;
   muted: boolean;
 }
-const HeroSlide = ({
-  slide,
-  index,
-  videoRef,
-  muted
-}: HeroSlideProps) => {
+const HeroSlide = ({ slide, index, videoRef, muted }: HeroSlideProps) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
-  const [videoOrientation, setVideoOrientation] = useState<'horizontal' | 'vertical' | null>(null);
-  
+  const [videoOrientation, setVideoOrientation] = useState<"horizontal" | "vertical" | null>(null);
+
   useEffect(() => {
     const checkDevice = () => {
       setIsMobile(window.innerWidth <= 768);
       setIsMobileOrTablet(window.innerWidth < 1024);
     };
     checkDevice();
-    window.addEventListener('resize', checkDevice);
-    return () => window.removeEventListener('resize', checkDevice);
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
   // Parallax para el video (se mueve más lento que el scroll)
   const videoParallax = useParallax({
     speed: 0.6,
-    direction: 'up'
+    direction: "up",
   });
   // Parallax para el contenido (se mueve más rápido)
   const contentParallax = useParallax({
     speed: 0.4,
-    direction: 'down'
+    direction: "down",
   });
 
   // Handler para detectar orientación del video
   const handleLoadedMetadata = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const video = e.currentTarget;
     if (video.videoWidth > video.videoHeight) {
-      setVideoOrientation('horizontal');
+      setVideoOrientation("horizontal");
     } else {
-      setVideoOrientation('vertical');
+      setVideoOrientation("vertical");
     }
   };
 
@@ -73,28 +68,28 @@ const HeroSlide = ({
     if (!isMobile || !videoOrientation) {
       return videoParallax.style;
     }
-    
+
     const baseStyles: React.CSSProperties = {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      objectFit: 'cover',
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      objectFit: "cover",
     };
 
-    if (videoOrientation === 'horizontal') {
+    if (videoOrientation === "horizontal") {
       return {
         ...baseStyles,
-        height: '100vh',
-        width: 'auto',
-        minWidth: '100%',
+        height: "100vh",
+        width: "auto",
+        minWidth: "100%",
       };
     } else {
       return {
         ...baseStyles,
-        width: '100vw',
-        height: 'auto',
-        minHeight: '100%',
+        width: "100vw",
+        height: "auto",
+        minHeight: "100%",
       };
     }
   };
@@ -110,23 +105,23 @@ const HeroSlide = ({
 
   return (
     <CarouselItem className="h-full pl-0">
-      <div 
-        className="relative duotone-hover-group" 
+      <div
+        className="relative duotone-hover-group"
         style={{
-          width: isMobile ? '100vw' : '100%',
-          height: isMobile ? '100vh' : '100%',
-          overflow: 'hidden'
+          width: isMobile ? "100vw" : "100%",
+          height: isMobile ? "100vh" : "100%",
+          overflow: "hidden",
         }}
       >
         {videoToUse ? (
-          <video 
-            ref={videoRef} 
-            src={videoToUse} 
+          <video
+            ref={videoRef}
+            src={videoToUse}
             className={getVideoClasses()}
-            style={getMobileVideoStyles()} 
-            autoPlay 
-            loop 
-            muted={muted} 
+            style={getMobileVideoStyles()}
+            autoPlay
+            loop
+            muted={muted}
             playsInline
             onLoadedMetadata={handleLoadedMetadata}
           />
@@ -139,9 +134,9 @@ const HeroSlide = ({
           </div>
         )}
         {/* Content overlay con parallax sutil */}
-        <div 
-          ref={contentParallax.ref as any} 
-          style={contentParallax.style} 
+        <div
+          ref={contentParallax.ref as any}
+          style={contentParallax.style}
           className="absolute inset-0 flex items-center justify-center z-10"
         >
           <div className="text-center p-4 sm:p-6 lg:p-8 max-w-4xl">
@@ -166,54 +161,64 @@ const HeroSlide = ({
 };
 
 // Configuración estática de los slides del hero
-const heroSlides: Omit<VideoSlide, 'video_url' | 'vertical_video_url'>[] = [{
-  id: "1",
-  title: "ALA NORTE,MUCHO MAS QUE UN RENTAL",
-  subtitle: "Si estás buscando alquilar equipamiento audiovisual profesional, podemos ayudarte a materializar tu visión. Trabajamos codo a codo con vos en cada proyecto.",
-  cta: {
-    label: "Explorá el catálogo",
-    link: "/equipos"
-  }
-}, {
-  id: "2",
-  title: "GALERÍA DE FILMACIÓN",
-  subtitle: "150 m²",
-  cta: {
-    label: "VER GALERÍA",
-    link: "/galeria"
-  }
-}, {
-  id: "3",
-  title: "SALA DE SONIDO",
-  subtitle: "ProTools Ultimate",
-  cta: {
-    label: "VER SALA",
-    link: "/sala-grabacion"
-  }
-}];
+const heroSlides: Omit<VideoSlide, "video_url" | "vertical_video_url">[] = [
+  {
+    id: "1",
+    title: "MAS QUE UN RENTAL",
+    subtitle: "Trabajamos codo a codo con vos en cada proyecto.",
+    cta: {
+      label: "Explorá el catálogo",
+      link: "/equipos",
+    },
+  },
+  {
+    id: "2",
+    title: "GALERÍA DE FILMACIÓN",
+    subtitle: "más que un set: comodidad, flexibilidad y apoyo profesional en 150 m²",
+    cta: {
+      label: "Conocé los detalles",
+      link: "/galeria",
+    },
+  },
+  {
+    id: "3",
+    title: "ESTUDIO DE SONIDO / POSTPRODUCCIÓN",
+    subtitle: "Isla de edición y sala de grabación insonorizada",
+    cta: {
+      label: "conocé el estudio",
+      link: "/sala-grabacion",
+    },
+  },
+];
 export const HomeVideoHeroSlider = () => {
-  const [videos, setVideos] = useState<{
-    id: string;
-    video_url: string;
-    vertical_video_url: string | null;
-    order_index: number;
-  }[]>([]);
+  const [videos, setVideos] = useState<
+    {
+      id: string;
+      video_url: string;
+      vertical_video_url: string | null;
+      order_index: number;
+    }[]
+  >([]);
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [muted, setMuted] = useState(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   useEffect(() => {
     const fetchVideos = async () => {
-      const {
-        data
-      } = await supabase.from("gallery_images").select("*").eq("page_type", "home_hero").order("order_index");
+      const { data } = await supabase
+        .from("gallery_images")
+        .select("*")
+        .eq("page_type", "home_hero")
+        .order("order_index");
       if (data && data.length > 0) {
-        setVideos(data.map(item => ({
-          id: item.id,
-          video_url: item.image_url,
-          vertical_video_url: null,
-          order_index: item.order_index || 0
-        })));
+        setVideos(
+          data.map((item) => ({
+            id: item.id,
+            video_url: item.image_url,
+            vertical_video_url: null,
+            order_index: item.order_index || 0,
+          })),
+        );
       }
     };
     fetchVideos();
@@ -230,26 +235,53 @@ export const HomeVideoHeroSlider = () => {
   const slidesWithVideos = heroSlides.map((slide, index) => ({
     ...slide,
     video_url: videos[index]?.video_url || null,
-    vertical_video_url: videos[index]?.vertical_video_url || null
+    vertical_video_url: videos[index]?.vertical_video_url || null,
   }));
-  return <section className="relative min-h-[500px] lg:min-h-[700px] overflow-hidden border-b-4 border-foreground">
-        <Carousel className="w-full h-full" setApi={setApi} opts={{
-      loop: true
-    }}>
+  return (
+    <section className="relative min-h-[500px] lg:min-h-[700px] overflow-hidden border-b-4 border-foreground">
+      <Carousel
+        className="w-full h-full"
+        setApi={setApi}
+        opts={{
+          loop: true,
+        }}
+      >
         <CarouselContent className="h-full -ml-0">
-          {slidesWithVideos.map((slide, index) => <HeroSlide key={slide.id} slide={slide} index={index} videoRef={el => videoRefs.current[index] = el} muted={muted} />)}
+          {slidesWithVideos.map((slide, index) => (
+            <HeroSlide
+              key={slide.id}
+              slide={slide}
+              index={index}
+              videoRef={(el) => (videoRefs.current[index] = el)}
+              muted={muted}
+            />
+          ))}
         </CarouselContent>
       </Carousel>
 
       {/* Mute/Unmute Button */}
-      {videos.length > 0 && <button onClick={() => setMuted(!muted)} className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm rounded-full hover:bg-background/40 transition-colors" aria-label={muted ? "Activar sonido" : "Silenciar"}>
+      {videos.length > 0 && (
+        <button
+          onClick={() => setMuted(!muted)}
+          className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm rounded-full hover:bg-background/40 transition-colors"
+          aria-label={muted ? "Activar sonido" : "Silenciar"}
+        >
           {muted ? <VolumeX className="h-5 w-5 text-background" /> : <Volume2 className="h-5 w-5 text-background" />}
-        </button>}
+        </button>
+      )}
 
       {/* Navigation dots */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-        {slidesWithVideos.map((_, index) => <button key={index} onClick={() => api?.scrollTo(index)} className={`h-2 rounded-full transition-all ${index === currentSlide ? "w-12 bg-primary" : "w-2 bg-background/40"}`} aria-label={`Ir a slide ${index + 1}`} />)}
+        {slidesWithVideos.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => api?.scrollTo(index)}
+            className={`h-2 rounded-full transition-all ${index === currentSlide ? "w-12 bg-primary" : "w-2 bg-background/40"}`}
+            aria-label={`Ir a slide ${index + 1}`}
+          />
+        ))}
       </div>
-    </section>;
+    </section>
+  );
 };
 export default HomeVideoHeroSlider;
