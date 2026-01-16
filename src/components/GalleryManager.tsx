@@ -237,7 +237,13 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
     producciones: 'Producciones en Ala Norte',
     galeria_hero: 'Galería - Hero Videos',
     sala_grabacion_hero: 'Sala Grabación - Hero Videos',
-    home_hero: 'Home - Hero Videos',
+    home_hero: 'Home - Hero Principal (3 Slides)',
+  };
+
+  const pageTypeDescriptions: Record<string, string> = {
+    home_hero: '⚡ Cada slide usa: Título = título grande, Descripción = subtítulo. El orden debe ser 0, 1, 2 para las 3 slides (Rental, Galería, Sala). Soporta imágenes y videos MP4.',
+    galeria_hero: 'Videos o imágenes para el hero de la página Galería.',
+    sala_grabacion_hero: 'Videos o imágenes para el hero de la página Sala de Grabación.',
   };
 
   return (
@@ -275,6 +281,11 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
             <div className="text-sm text-muted-foreground">
               Mostrando {images.length} imágenes de <strong>{pageTypeLabels[selectedPageType]}</strong>
             </div>
+            {pageTypeDescriptions[selectedPageType] && (
+              <div className="md:col-span-2 mt-2 p-3 bg-muted/50 rounded-lg text-sm text-muted-foreground">
+                {pageTypeDescriptions[selectedPageType]}
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
