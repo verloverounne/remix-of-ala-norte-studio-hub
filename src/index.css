@@ -172,8 +172,14 @@ All colors MUST be HSL.
   h4,
   h5,
   h6 {
-    @apply font-heading uppercase tracking-wider;
+    @apply font-heading uppercase tracking-wider text-left;
     font-weight: 800;
+  }
+
+  p,
+  .prose p,
+  span:not(.sr-only):not([class*="button"]):not([class*="btn"]) {
+    @apply text-left;
   }
 
   strong,
