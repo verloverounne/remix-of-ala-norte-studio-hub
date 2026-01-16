@@ -58,7 +58,10 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
   const [videoOrientation, setVideoOrientation] = useState<"horizontal" | "vertical" | null>(null);
-  const [filterActive, setFilterActive] = useState(true); // For mobile tap toggle
+  const [filterActive, setFilterActive] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const localVideoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     const checkDevice = () => {
@@ -80,11 +83,40 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
     setVideoOrientation(video.videoWidth > video.videoHeight ? "horizontal" : "vertical");
   };
 
-  // Toggle filter on mobile tap
+  // Mobile tap handler: first tap removes filter + plays, subsequent taps toggle play/pause
   const handleMediaTap = () => {
-    if (isMobile) {
-      setFilterActive(!filterActive);
+    if (!isMobile) return;
+    
+    const video = localVideoRef.current;
+    
+    if (filterActive) {
+      // First tap: remove filter and ensure video plays
+      setFilterActive(false);
+      setIsPlaying(true);
+      if (video) video.play();
+    } else {
+      // Subsequent taps: toggle play/pause
+      if (video) {
+        if (video.paused) {
+          video.play();
+          setIsPlaying(true);
+        } else {
+          video.pause();
+          setIsPlaying(false);
+          // When paused, show filter again
+          setFilterActive(true);
+        }
+      }
     }
+  };
+
+  // Desktop hover handlers
+  const handleMouseEnter = () => {
+    if (!isMobile) setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (!isMobile) setIsHovered(false);
   };
 
   // Use vertical video on mobile/tablet if available
@@ -108,27 +140,14 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
       : { ...baseStyles, width: "100vw", height: "auto", minHeight: "100%" };
   };
 
-  // On mobile: use filterActive state; on desktop: use CSS hover via duotone-hover-group
-  const getVideoClasses = () => {
-    if (isMobile) {
-      // Mobile: no hover, use state-based filter toggle
-      return filterActive
-        ? "video-duotone absolute inset-0 w-full h-full object-cover"
-        : "absolute inset-0 w-full h-full object-cover"; // No filter class
-    }
-    // Desktop: use hover group
-    const baseClasses = "video-duotone";
-    if (isMobile && videoOrientation) return `${baseClasses} ${videoOrientation}`;
-    return `${baseClasses} absolute inset-0 w-full h-full object-cover`;
-  };
+  // Determine if grayscale filter should be active
+  const showGrayscale = isMobile ? filterActive : !isHovered;
 
-  const getImageClasses = () => {
-    if (isMobile) {
-      return filterActive
-        ? "absolute inset-0 w-full h-full object-cover image-duotone"
-        : "absolute inset-0 w-full h-full object-cover"; // No filter
-    }
-    return "absolute inset-0 w-full h-full object-cover image-duotone";
+  const getMediaClasses = () => {
+    const baseClasses = "absolute inset-0 w-full h-full object-cover transition-all duration-300";
+    return showGrayscale 
+      ? `${baseClasses} grayscale` 
+      : baseClasses;
   };
 
   const hasMedia = mediaUrl && mediaUrl.trim() !== "";
@@ -136,20 +155,25 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
   return (
     <CarouselItem className="h-full pl-0">
       <div
-        className={`relative ${isMobile ? '' : 'duotone-hover-group'}`}
+        className="relative"
         style={{
           width: isMobile ? "100vw" : "100%",
           height: isMobile ? "100vh" : "100%",
           overflow: "hidden",
         }}
         onClick={handleMediaTap}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         {hasMedia ? (
           slide.media_type === "video" ? (
             <video
-              ref={videoRef}
+              ref={(el) => {
+                localVideoRef.current = el;
+                videoRef(el);
+              }}
               src={mediaUrl}
-              className={getVideoClasses()}
+              className={getMediaClasses()}
               style={getMobileVideoStyles()}
               autoPlay
               loop
@@ -161,7 +185,7 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
             <img
               src={mediaUrl}
               alt={slide.title}
-              className={getImageClasses()}
+              className={getMediaClasses()}
             />
           )
         ) : (
