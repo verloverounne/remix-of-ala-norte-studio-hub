@@ -156,15 +156,15 @@ export const ServicesHeroSlider = ({
                     <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/30 to-transparent" />
                     
                     {/* Content overlay with blur background */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="relative z-10 text-center px-4 sm:px-8 max-w-4xl mx-auto">
+                    <div className="absolute inset-0 flex items-end justify-start">
+                      <div className="relative z-10 text-left px-4 sm:px-8 pb-16 sm:pb-20 lg:pb-24 max-w-4xl">
                         {/* Blur background box */}
                         <div className="inline-block backdrop-blur-md bg-foreground/80 px-6 sm:px-12 py-6 sm:py-10 border border-background/20">
-                          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-3 sm:mb-4 uppercase text-background">
+                          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-3 sm:mb-4 uppercase text-background text-left">
                             {service.title}
                           </h1>
                           {service.description && (
-                            <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading mb-4 sm:mb-6 max-w-2xl mx-auto">
+                            <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading mb-4 sm:mb-6 max-w-2xl text-left">
                               {service.description}
                             </p>
                           )}
