@@ -9,7 +9,7 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:shadow-brutal-sm hover:-translate-x-0.5 hover:-translate-y-0.5 cursor-pointer",
-        secondary: "bg-secondary text-secondary-foreground hover:shadow-brutal-sm hover:-translate-x-0.5 hover:-translate-y-0.5 cursor-pointer",
+        secondary: "bg-secondary text-primary-foreground hover:shadow-brutal-sm hover:-translate-x-0.5 hover:-translate-y-0.5 cursor-pointer",
         destructive: "bg-destructive text-destructive-foreground hover:shadow-brutal-sm hover:-translate-x-0.5 hover:-translate-y-0.5",
         outline: "text-foreground bg-background hover:bg-foreground hover:text-background cursor-pointer",
         success: "bg-[#70DDB0] text-foreground border border-foreground font-bold tracking-wider hover:shadow-brutal-sm hover:-translate-x-0.5 hover:-translate-y-0.5",
