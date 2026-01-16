@@ -367,6 +367,44 @@ export type Database = {
           },
         ]
       }
+      equipment_images: {
+        Row: {
+          created_at: string
+          equipment_id: string
+          id: string
+          image_url: string
+          is_featured: boolean
+          order_index: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          equipment_id: string
+          id?: string
+          image_url: string
+          is_featured?: boolean
+          order_index?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          equipment_id?: string
+          id?: string
+          image_url?: string
+          is_featured?: boolean
+          order_index?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "equipment_images_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "equipment"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       equipment_recommendations: {
         Row: {
           created_at: string | null

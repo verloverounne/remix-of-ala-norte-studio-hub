@@ -36,11 +36,11 @@ import {
 import { ImageUploader } from "@/components/ImageUploader";
 import { StorageImageSelector } from "@/components/StorageImageSelector";
 import { EquipmentImageUploader } from "@/components/EquipmentImageUploader";
-import { BulkImageAssigner } from "@/components/BulkImageAssigner";
 import { GalleryManager } from "@/components/GalleryManager";
 import { EquipmentImageManager } from "@/components/EquipmentImageManager";
 import { SpaceAdminEditor } from "@/components/SpaceAdminEditor";
 import { ServicesAdminPanel } from "@/components/admin/ServicesAdminPanel";
+import { EquipmentManager } from "@/components/admin/EquipmentManager";
 import { Switch } from "@/components/ui/switch";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -776,12 +776,11 @@ const Admin = () => {
         <div className="container mx-auto px-4">
           <Tabs defaultValue="equipment" className="space-y-6">
             <TabsList className="flex flex-wrap h-auto gap-1 w-full lg:w-auto">
-              <TabsTrigger value="equipment">Equipos</TabsTrigger>
-              <TabsTrigger value="prices">Precios</TabsTrigger>
-              <TabsTrigger value="assign-images">
+              <TabsTrigger value="equipment">
                 <ImageIcon className="h-4 w-4 mr-1" />
-                Asignar
+                Equipos
               </TabsTrigger>
+              <TabsTrigger value="prices">Precios</TabsTrigger>
               <TabsTrigger value="images">Subir</TabsTrigger>
               <TabsTrigger value="galleries">
                 <GalleryHorizontal className="h-4 w-4 mr-1" />
@@ -793,235 +792,9 @@ const Admin = () => {
               <TabsTrigger value="backup">Backup</TabsTrigger>
             </TabsList>
 
-            {/* Equipment Tab */}
+            {/* Equipment Tab - Combined with Image Assignment */}
             <TabsContent value="equipment" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Agregar Nuevo Equipo</CardTitle>
-                  <CardDescription>Completa el formulario para agregar un equipo</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label>Nombre *</Label>
-                      <Input
-                        value={newEquipment.name}
-                        onChange={(e) => setNewEquipment({ ...newEquipment, name: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Nombre EN</Label>
-                      <Input
-                        value={newEquipment.name_en}
-                        onChange={(e) => setNewEquipment({ ...newEquipment, name_en: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Categoría</Label>
-                      <Select
-                        value={newEquipment.category_id}
-                        onValueChange={(v) => setNewEquipment({ ...newEquipment, category_id: v, subcategory_id: "" })}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccionar" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {categories.map((cat) => (
-                            <SelectItem key={cat.id} value={cat.id}>
-                              {cat.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Subcategoría</Label>
-                      <Select
-                        value={newEquipment.subcategory_id}
-                        onValueChange={(v) => setNewEquipment({ ...newEquipment, subcategory_id: v })}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccionar" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {filteredSubcategories.map((sub) => (
-                            <SelectItem key={sub.id} value={sub.id}>
-                              {sub.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Marca</Label>
-                      <Input
-                        value={newEquipment.brand}
-                        onChange={(e) => setNewEquipment({ ...newEquipment, brand: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Modelo</Label>
-                      <Input
-                        value={newEquipment.model}
-                        onChange={(e) => setNewEquipment({ ...newEquipment, model: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Precio por día *</Label>
-                      <Input
-                        type="number"
-                        value={newEquipment.price_per_day}
-                        onChange={(e) => setNewEquipment({ ...newEquipment, price_per_day: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Precio por semana</Label>
-                      <Input
-                        type="number"
-                        value={newEquipment.price_per_week}
-                        onChange={(e) => setNewEquipment({ ...newEquipment, price_per_week: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2 md:col-span-2">
-                      <Label>Descripción</Label>
-                      <Textarea
-                        value={newEquipment.description}
-                        onChange={(e) => setNewEquipment({ ...newEquipment, description: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2 md:col-span-2">
-                      <EquipmentImageManager
-                        imageUrl={newEquipment.image_url || null}
-                        images={newEquipment.images}
-                        onImageUrlChange={(url) => setNewEquipment({ ...newEquipment, image_url: url || "" })}
-                        onImagesChange={(images) => setNewEquipment({ ...newEquipment, images })}
-                      />
-                    </div>
-                    <div className="space-y-2 md:col-span-2">
-                      <div className="flex items-center justify-between">
-                        <Label>Equipo Destacado</Label>
-                        <Switch
-                          checked={newEquipment.featured}
-                          onCheckedChange={(checked) => setNewEquipment({ ...newEquipment, featured: checked })}
-                        />
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        Los equipos destacados aparecerán en la página principal
-                      </p>
-                    </div>
-                    {newEquipment.featured && (
-                      <div className="space-y-2 md:col-span-2">
-                        <Label>Descripción para Destacados</Label>
-                        <Textarea
-                          value={newEquipment.featured_copy}
-                          onChange={(e) => setNewEquipment({ ...newEquipment, featured_copy: e.target.value })}
-                          placeholder="Texto breve que aparecerá en la home para este equipo destacado"
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <Button onClick={handleCreateEquipment} className="mt-4" variant="hero">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Crear Equipo
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Lista de Equipos</CardTitle>
-                  <CardDescription>{equipment.length} equipos</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 max-h-96 overflow-y-auto">
-                    {equipment.map((item) => {
-                      const allImages = [
-                        ...(item.image_url ? [item.image_url] : []),
-                        ...(item.images || []).filter((img: string) => img !== item.image_url),
-                      ];
-                      const totalImages = allImages.length;
-
-                      return (
-                        <div
-                          key={item.id}
-                          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 border rounded hover:bg-muted/50 transition-colors"
-                        >
-                          <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0 w-full sm:w-auto">
-                            <div className="relative shrink-0">
-                              <img
-                                src={item.image_url || "/placeholder.svg"}
-                                alt={item.name}
-                                className="w-12 h-12 sm:w-16 sm:h-16 rounded object-cover border-2"
-                              />
-                              {totalImages > 0 && (
-                                <div className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[9px] sm:text-[10px] font-bold border-2 border-background">
-                                  {totalImages}
-                                </div>
-                              )}
-                              {item.image_url && (
-                                <div className="absolute bottom-0 left-0 right-0 bg-primary/80 text-primary-foreground text-[7px] sm:text-[8px] px-1 text-center font-heading">
-                                  Principal
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="font-heading font-semibold truncate text-sm sm:text-base">{item.name}</p>
-                              <div className="flex gap-1 sm:gap-2 mt-1 flex-wrap">
-                                {item.subcategories && (
-                                  <Badge variant="outline" className="text-xs">
-                                    {item.subcategories.name}
-                                  </Badge>
-                                )}
-                                <Badge
-                                  variant={item.status === "available" ? "default" : "destructive"}
-                                  className="text-xs"
-                                >
-                                  {item.status}
-                                </Badge>
-                                {totalImages > 0 ? (
-                                  <Badge variant="secondary" className="text-xs flex items-center gap-1">
-                                    <ImageIcon className="h-3 w-3" />
-                                    {totalImages} {totalImages === 1 ? "img" : "imgs"}
-                                  </Badge>
-                                ) : (
-                                  <Badge variant="outline" className="text-xs text-muted-foreground">
-                                    Sin imágenes
-                                  </Badge>
-                                )}
-                              </div>
-                              {totalImages > 1 && (
-                                <p className="text-xs text-muted-foreground mt-1">
-                                  {totalImages - 1} adicional{totalImages - 1 > 1 ? "es" : ""}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                          <div className="flex gap-2 shrink-0 w-full sm:w-auto justify-end sm:justify-start">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleEditEquipment(item)}
-                              title="Editar equipo"
-                              className="h-8 w-8 sm:h-10 sm:w-10"
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleDeleteEquipment(item.id)}
-                              title="Eliminar equipo"
-                              className="h-8 w-8 sm:h-10 sm:w-10"
-                            >
-                              <Trash2 className="h-4 w-4 text-destructive" />
-                            </Button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
+              <EquipmentManager />
             </TabsContent>
 
             {/* Prices Tab */}
@@ -1089,11 +862,6 @@ const Admin = () => {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
-
-            {/* Assign Images Tab */}
-            <TabsContent value="assign-images">
-              <BulkImageAssigner />
             </TabsContent>
 
             {/* Upload Images Tab */}
