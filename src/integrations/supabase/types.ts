@@ -489,6 +489,7 @@ export type Database = {
           page_type: string
           title: string | null
           updated_at: string
+          vertical_video_url: string | null
         }
         Insert: {
           category_id?: string | null
@@ -501,6 +502,7 @@ export type Database = {
           page_type: string
           title?: string | null
           updated_at?: string
+          vertical_video_url?: string | null
         }
         Update: {
           category_id?: string | null
@@ -513,6 +515,7 @@ export type Database = {
           page_type?: string
           title?: string | null
           updated_at?: string
+          vertical_video_url?: string | null
         }
         Relationships: [
           {
