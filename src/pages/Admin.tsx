@@ -9,10 +9,30 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Edit, Trash2, Percent, Download, Upload, Calendar as CalendarIcon, X, Image as ImageIcon, GalleryHorizontal } from "lucide-react";
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Percent,
+  Download,
+  Upload,
+  Calendar as CalendarIcon,
+  X,
+  Image as ImageIcon,
+  GalleryHorizontal,
+} from "lucide-react";
 import { ImageUploader } from "@/components/ImageUploader";
 import { StorageImageSelector } from "@/components/StorageImageSelector";
 import { EquipmentImageUploader } from "@/components/EquipmentImageUploader";
@@ -47,104 +67,107 @@ const Admin = () => {
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [spaces, setSpaces] = useState<Space[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   // Equipment form state
   const [newEquipment, setNewEquipment] = useState({
-    name: "", name_en: "", category_id: "", subcategory_id: "", brand: "", model: "",
-    description: "", price_per_day: "", price_per_week: "", image_url: "", images: [] as string[],
-    featured: false, featured_copy: ""
+    name: "",
+    name_en: "",
+    category_id: "",
+    subcategory_id: "",
+    brand: "",
+    model: "",
+    description: "",
+    price_per_day: "",
+    price_per_week: "",
+    image_url: "",
+    images: [] as string[],
+    featured: false,
+    featured_copy: "",
   });
-  
+
   // Space form state
   const [editingSpace, setEditingSpace] = useState<Space | null>(null);
-  
+
   // Equipment edit modal state
   const [editingEquipment, setEditingEquipment] = useState<EquipmentWithCategory | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  
+
   // Unavailability periods state
   const [unavailabilityPeriods, setUnavailabilityPeriods] = useState<UnavailabilityPeriod[]>([]);
   const [newPeriod, setNewPeriod] = useState({ start_date: "", end_date: "" });
-  
+
   // Space unavailability periods state
   const [spaceUnavailabilityPeriods, setSpaceUnavailabilityPeriods] = useState<SpaceUnavailabilityPeriod[]>([]);
   const [newSpacePeriod, setNewSpacePeriod] = useState({ start_date: "", end_date: "" });
-  
+
   // Price update state
   const [massPercentage, setMassPercentage] = useState<string>("");
   const [individualPrices, setIndividualPrices] = useState<Record<string, number>>({});
-  
+
   // Config state
   const [contactInfo, setContactInfo] = useState({
     whatsapp: "",
     email: "",
     quote_message: "",
     instagram: "",
-    instagram_token: ""
+    instagram_token: "",
   });
-  
-  
+
   const { toast } = useToast();
 
-  useEffect(() => { 
-    fetchAll(); 
+  useEffect(() => {
+    fetchAll();
   }, []);
 
   const fetchAll = async () => {
     setLoading(true);
-    await Promise.all([
-      fetchEquipment(), 
-      fetchCategories(), 
-      fetchSubcategories(), 
-      fetchSpaces(),
-      fetchContactInfo()
-    ]);
+    await Promise.all([fetchEquipment(), fetchCategories(), fetchSubcategories(), fetchSpaces(), fetchContactInfo()]);
     setLoading(false);
   };
 
   const fetchEquipment = async () => {
-    const { data } = await supabase.from('equipment').select(`*, categories (*), subcategories (*)`).order('name');
+    const { data } = await supabase.from("equipment").select(`*, categories (*), subcategories (*)`).order("name");
     if (data) {
       const transformed = data.map((item: any) => ({
         ...item,
-        images: Array.isArray(item.images) ? item.images : []
+        images: Array.isArray(item.images) ? item.images : [],
       }));
       setEquipment(transformed);
     }
   };
 
   const fetchCategories = async () => {
-    const { data } = await supabase.from('categories').select('*').order('order_index');
+    const { data } = await supabase.from("categories").select("*").order("order_index");
     if (data) setCategories(data);
   };
 
   const fetchSubcategories = async () => {
-    const { data } = await supabase.from('subcategories').select('*').order('order_index');
+    const { data } = await supabase.from("subcategories").select("*").order("order_index");
     if (data) setSubcategories(data);
   };
 
   const fetchSpaces = async () => {
-    const { data } = await supabase.from('spaces').select('*').order('order_index');
+    const { data } = await supabase.from("spaces").select("*").order("order_index");
     if (data) {
       const transformed = data.map((item: any) => ({
         ...item,
         images: Array.isArray(item.images) ? item.images : [],
         amenities: Array.isArray(item.amenities) ? item.amenities : [],
-        specs: item.specs || {}
+        specs: item.specs || {},
       }));
       setSpaces(transformed);
     }
   };
 
   const fetchContactInfo = async () => {
-    const { data } = await supabase.from('contact_info').select('*').limit(1).single();
+    const { data } = await supabase.from("contact_info").select("*").limit(1).single();
     if (data) {
       setContactInfo({
         whatsapp: data.whatsapp || "",
         email: data.email || "",
         quote_message: data.quote_message || "",
         instagram: data.instagram || "",
-        instagram_token: data.instagram_token || ""
+        instagram_token: data.instagram_token || "",
       });
     }
   };
@@ -155,7 +178,7 @@ const Admin = () => {
       return;
     }
 
-    const { error } = await supabase.from('equipment').insert({
+    const { error } = await supabase.from("equipment").insert({
       name: newEquipment.name,
       name_en: newEquipment.name_en || null,
       category_id: newEquipment.category_id || null,
@@ -167,9 +190,9 @@ const Admin = () => {
       price_per_week: newEquipment.price_per_week ? parseInt(newEquipment.price_per_week) : null,
       image_url: newEquipment.image_url || null,
       images: newEquipment.images,
-      status: 'available',
+      status: "available",
       featured: newEquipment.featured,
-      featured_copy: newEquipment.featured_copy || null
+      featured_copy: newEquipment.featured_copy || null,
     });
 
     if (error) {
@@ -177,9 +200,19 @@ const Admin = () => {
     } else {
       toast({ title: "CREADO", description: "Equipo creado correctamente" });
       setNewEquipment({
-        name: "", name_en: "", category_id: "", subcategory_id: "", brand: "", model: "",
-        description: "", price_per_day: "", price_per_week: "", image_url: "", images: [],
-        featured: false, featured_copy: ""
+        name: "",
+        name_en: "",
+        category_id: "",
+        subcategory_id: "",
+        brand: "",
+        model: "",
+        description: "",
+        price_per_day: "",
+        price_per_week: "",
+        image_url: "",
+        images: [],
+        featured: false,
+        featured_copy: "",
       });
       fetchEquipment();
     }
@@ -187,7 +220,7 @@ const Admin = () => {
 
   const handleDeleteEquipment = async (id: string) => {
     if (!confirm("¿Eliminar este equipo?")) return;
-    const { error } = await supabase.from('equipment').delete().eq('id', id);
+    const { error } = await supabase.from("equipment").delete().eq("id", id);
     if (error) {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
     } else {
@@ -204,10 +237,10 @@ const Admin = () => {
 
   const fetchUnavailabilityPeriods = async (equipmentId: string) => {
     const { data, error } = await supabase
-      .from('equipment_unavailability')
-      .select('*')
-      .eq('equipment_id', equipmentId)
-      .order('start_date', { ascending: true });
+      .from("equipment_unavailability")
+      .select("*")
+      .eq("equipment_id", equipmentId)
+      .order("start_date", { ascending: true });
 
     if (!error && data) {
       setUnavailabilityPeriods(data);
@@ -216,27 +249,27 @@ const Admin = () => {
 
   const handleAddUnavailabilityPeriod = async () => {
     if (!editingEquipment || !newPeriod.start_date || !newPeriod.end_date) {
-      toast({ 
-        title: "ERROR", 
-        description: "Ambas fechas son requeridas", 
-        variant: "destructive" 
+      toast({
+        title: "ERROR",
+        description: "Ambas fechas son requeridas",
+        variant: "destructive",
       });
       return;
     }
 
     if (new Date(newPeriod.start_date) > new Date(newPeriod.end_date)) {
-      toast({ 
-        title: "ERROR", 
-        description: "La fecha de inicio debe ser anterior a la fecha de fin", 
-        variant: "destructive" 
+      toast({
+        title: "ERROR",
+        description: "La fecha de inicio debe ser anterior a la fecha de fin",
+        variant: "destructive",
       });
       return;
     }
 
-    const { error } = await supabase.from('equipment_unavailability').insert({
+    const { error } = await supabase.from("equipment_unavailability").insert({
       equipment_id: editingEquipment.id,
       start_date: newPeriod.start_date,
-      end_date: newPeriod.end_date
+      end_date: newPeriod.end_date,
     });
 
     if (error) {
@@ -250,11 +283,8 @@ const Admin = () => {
 
   const handleDeleteUnavailabilityPeriod = async (periodId: string) => {
     if (!confirm("¿Eliminar este periodo?")) return;
-    
-    const { error } = await supabase
-      .from('equipment_unavailability')
-      .delete()
-      .eq('id', periodId);
+
+    const { error } = await supabase.from("equipment_unavailability").delete().eq("id", periodId);
 
     if (error) {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
@@ -272,21 +302,24 @@ const Admin = () => {
       return;
     }
 
-    const { error } = await supabase.from('equipment').update({
-      name: editingEquipment.name,
-      name_en: editingEquipment.name_en || null,
-      category_id: editingEquipment.category_id || null,
-      subcategory_id: editingEquipment.subcategory_id || null,
-      brand: editingEquipment.brand || null,
-      model: editingEquipment.model || null,
-      description: editingEquipment.description || null,
-      price_per_day: editingEquipment.price_per_day,
-      price_per_week: editingEquipment.price_per_week || null,
-      image_url: editingEquipment.image_url || null,
-      images: editingEquipment.images || [],
-      featured: editingEquipment.featured || false,
-      featured_copy: editingEquipment.featured_copy || null
-    }).eq('id', editingEquipment.id);
+    const { error } = await supabase
+      .from("equipment")
+      .update({
+        name: editingEquipment.name,
+        name_en: editingEquipment.name_en || null,
+        category_id: editingEquipment.category_id || null,
+        subcategory_id: editingEquipment.subcategory_id || null,
+        brand: editingEquipment.brand || null,
+        model: editingEquipment.model || null,
+        description: editingEquipment.description || null,
+        price_per_day: editingEquipment.price_per_day,
+        price_per_week: editingEquipment.price_per_week || null,
+        image_url: editingEquipment.image_url || null,
+        images: editingEquipment.images || [],
+        featured: editingEquipment.featured || false,
+        featured_copy: editingEquipment.featured_copy || null,
+      })
+      .eq("id", editingEquipment.id);
 
     if (error) {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
@@ -305,10 +338,10 @@ const Admin = () => {
 
   const fetchSpaceUnavailabilityPeriods = async (spaceId: string) => {
     const { data, error } = await supabase
-      .from('space_unavailability')
-      .select('*')
-      .eq('space_id', spaceId)
-      .order('start_date', { ascending: true });
+      .from("space_unavailability")
+      .select("*")
+      .eq("space_id", spaceId)
+      .order("start_date", { ascending: true });
 
     if (!error && data) {
       setSpaceUnavailabilityPeriods(data);
@@ -317,27 +350,27 @@ const Admin = () => {
 
   const handleAddSpaceUnavailabilityPeriod = async () => {
     if (!editingSpace || !newSpacePeriod.start_date || !newSpacePeriod.end_date) {
-      toast({ 
-        title: "ERROR", 
-        description: "Ambas fechas son requeridas", 
-        variant: "destructive" 
+      toast({
+        title: "ERROR",
+        description: "Ambas fechas son requeridas",
+        variant: "destructive",
       });
       return;
     }
 
     if (new Date(newSpacePeriod.start_date) > new Date(newSpacePeriod.end_date)) {
-      toast({ 
-        title: "ERROR", 
-        description: "La fecha de inicio debe ser anterior a la fecha de fin", 
-        variant: "destructive" 
+      toast({
+        title: "ERROR",
+        description: "La fecha de inicio debe ser anterior a la fecha de fin",
+        variant: "destructive",
       });
       return;
     }
 
-    const { error } = await supabase.from('space_unavailability').insert({
+    const { error } = await supabase.from("space_unavailability").insert({
       space_id: editingSpace.id,
       start_date: newSpacePeriod.start_date,
-      end_date: newSpacePeriod.end_date
+      end_date: newSpacePeriod.end_date,
     });
 
     if (error) {
@@ -351,11 +384,8 @@ const Admin = () => {
 
   const handleDeleteSpaceUnavailabilityPeriod = async (periodId: string) => {
     if (!confirm("¿Eliminar este periodo?")) return;
-    
-    const { error } = await supabase
-      .from('space_unavailability')
-      .delete()
-      .eq('id', periodId);
+
+    const { error } = await supabase.from("space_unavailability").delete().eq("id", periodId);
 
     if (error) {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
@@ -368,15 +398,18 @@ const Admin = () => {
   };
 
   const handleUpdateSpace = async (space: Space) => {
-    const { error } = await supabase.from('spaces').update({
-      name: space.name,
-      description: space.description,
-      price: space.price,
-      promotion: space.promotion,
-      images: space.images,
-      amenities: space.amenities,
-      specs: space.specs
-    }).eq('id', space.id);
+    const { error } = await supabase
+      .from("spaces")
+      .update({
+        name: space.name,
+        description: space.description,
+        price: space.price,
+        promotion: space.promotion,
+        images: space.images,
+        amenities: space.amenities,
+        specs: space.specs,
+      })
+      .eq("id", space.id);
 
     if (error) {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
@@ -394,20 +427,18 @@ const Admin = () => {
       return;
     }
 
-    const updates = equipment.map(item => {
+    const updates = equipment.map((item) => {
       const newPrice = Math.round(item.price_per_day * (1 + percentage / 100));
-      return supabase.from('equipment')
-        .update({ price_per_day: newPrice })
-        .eq('id', item.id);
+      return supabase.from("equipment").update({ price_per_day: newPrice }).eq("id", item.id);
     });
 
     const results = await Promise.all(updates);
-    const hasError = results.some(r => r.error);
+    const hasError = results.some((r) => r.error);
 
     if (hasError) {
       toast({ title: "ERROR", description: "Error al actualizar algunos precios", variant: "destructive" });
     } else {
-      toast({ title: "ACTUALIZADO", description: `Precios actualizados ${percentage > 0 ? '+' : ''}${percentage}%` });
+      toast({ title: "ACTUALIZADO", description: `Precios actualizados ${percentage > 0 ? "+" : ""}${percentage}%` });
       setMassPercentage("");
       fetchEquipment();
     }
@@ -420,9 +451,7 @@ const Admin = () => {
       return;
     }
 
-    const { error } = await supabase.from('equipment')
-      .update({ price_per_day: newPrice })
-      .eq('id', equipmentId);
+    const { error } = await supabase.from("equipment").update({ price_per_day: newPrice }).eq("id", equipmentId);
 
     if (error) {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
@@ -434,17 +463,15 @@ const Admin = () => {
 
   const handleUpdateContactInfo = async () => {
     // First check if a record exists
-    const { data: existing } = await supabase.from('contact_info').select('id').limit(1).single();
-    
+    const { data: existing } = await supabase.from("contact_info").select("id").limit(1).single();
+
     let error;
     if (existing) {
       // Update existing record
-      ({ error } = await supabase.from('contact_info')
-        .update(contactInfo)
-        .eq('id', existing.id));
+      ({ error } = await supabase.from("contact_info").update(contactInfo).eq("id", existing.id));
     } else {
       // Insert new record
-      ({ error } = await supabase.from('contact_info').insert(contactInfo));
+      ({ error } = await supabase.from("contact_info").insert(contactInfo));
     }
 
     if (error) {
@@ -454,12 +481,12 @@ const Admin = () => {
     }
   };
 
-  const filteredSubcategories = newEquipment.category_id 
-    ? subcategories.filter(s => s.category_id === newEquipment.category_id)
+  const filteredSubcategories = newEquipment.category_id
+    ? subcategories.filter((s) => s.category_id === newEquipment.category_id)
     : [];
 
-  const editFilteredSubcategories = editingEquipment?.category_id 
-    ? subcategories.filter(s => s.category_id === editingEquipment.category_id)
+  const editFilteredSubcategories = editingEquipment?.category_id
+    ? subcategories.filter((s) => s.category_id === editingEquipment.category_id)
     : [];
 
   const handleExportBackup = async () => {
@@ -471,15 +498,15 @@ const Admin = () => {
           equipment,
           categories,
           subcategories,
-          spaces
-        }
+          spaces,
+        },
       };
 
-      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.download = `alanorte-backup-${new Date().toISOString().split('T')[0]}.json`;
+      link.download = `alanorte-backup-${new Date().toISOString().split("T")[0]}.json`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -511,38 +538,42 @@ const Admin = () => {
     try {
       setIsUpdatingStock(true);
       const text = await file.text();
-      
+
       // Parse CSV (semicolon separated)
-      const lines = text.split('\n').filter(line => line.trim());
+      const lines = text.split("\n").filter((line) => line.trim());
       if (lines.length < 2) {
         toast({ title: "ERROR", description: "El archivo CSV está vacío", variant: "destructive" });
         return;
       }
 
       // Parse header
-      const header = lines[0].split(';').map(h => h.replace(/"/g, '').trim());
-      const nombreIdx = header.findIndex(h => h.toLowerCase() === 'nombre');
-      const cantidadIdx = header.findIndex(h => h.toLowerCase() === 'cantidad');
+      const header = lines[0].split(";").map((h) => h.replace(/"/g, "").trim());
+      const nombreIdx = header.findIndex((h) => h.toLowerCase() === "nombre");
+      const cantidadIdx = header.findIndex((h) => h.toLowerCase() === "cantidad");
 
       if (nombreIdx === -1 || cantidadIdx === -1) {
-        toast({ title: "ERROR", description: "El CSV debe tener columnas 'Nombre' y 'Cantidad'", variant: "destructive" });
+        toast({
+          title: "ERROR",
+          description: "El CSV debe tener columnas 'Nombre' y 'Cantidad'",
+          variant: "destructive",
+        });
         return;
       }
 
       // Build CSV map with quantities
       const csvStockMap = new Map<string, number>();
-      
+
       for (let i = 1; i < lines.length; i++) {
         // Handle quoted fields with semicolons inside
         const row = lines[i].match(/("([^"]|"")*"|[^;]*)(;("([^"]|"")*"|[^;]*))*/)
-          ? lines[i].split(/;(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(f => f.replace(/^"|"$/g, '').trim())
-          : lines[i].split(';').map(f => f.replace(/"/g, '').trim());
-        
+          ? lines[i].split(/;(?=(?:[^"]*"[^"]*")*[^"]*$)/).map((f) => f.replace(/^"|"$/g, "").trim())
+          : lines[i].split(";").map((f) => f.replace(/"/g, "").trim());
+
         if (row.length > Math.max(nombreIdx, cantidadIdx)) {
           const nombre = row[nombreIdx];
           const cantidad = parseInt(row[cantidadIdx]) || 1;
           const normalizedName = normalizeName(nombre);
-          
+
           // Sum quantities if same normalized name appears multiple times
           const existing = csvStockMap.get(normalizedName) || 0;
           csvStockMap.set(normalizedName, existing + cantidad);
@@ -559,7 +590,7 @@ const Admin = () => {
       for (const eq of equipment) {
         const normalizedName = normalizeName(eq.name);
         const stock = csvStockMap.get(normalizedName);
-        
+
         if (stock !== undefined) {
           updates.push({ id: eq.id, stock_quantity: stock, name: eq.name });
         }
@@ -569,39 +600,38 @@ const Admin = () => {
       const batchSize = 50;
       for (let i = 0; i < updates.length; i += batchSize) {
         const batch = updates.slice(i, i + batchSize);
-        
+
         for (const item of batch) {
           const { error } = await supabase
-            .from('equipment')
+            .from("equipment")
             .update({ stock_quantity: item.stock_quantity })
-            .eq('id', item.id);
-          
+            .eq("id", item.id);
+
           if (!error) {
             updated++;
           } else {
             console.error(`Error updating ${item.name}:`, error);
           }
         }
-        
-        toast({ 
-          title: "ACTUALIZANDO STOCK", 
-          description: `${updated} de ${updates.length} equipos actualizados...` 
+
+        toast({
+          title: "ACTUALIZANDO STOCK",
+          description: `${updated} de ${updates.length} equipos actualizados...`,
         });
       }
 
-      toast({ 
-        title: "✓ STOCK ACTUALIZADO", 
-        description: `Se actualizó el stock de ${updated} equipos` 
+      toast({
+        title: "✓ STOCK ACTUALIZADO",
+        description: `Se actualizó el stock de ${updated} equipos`,
       });
 
       await fetchEquipment();
-
     } catch (error: any) {
-      console.error('Stock update error:', error);
+      console.error("Stock update error:", error);
       toast({ title: "ERROR", description: error.message || "Error al actualizar stock", variant: "destructive" });
     } finally {
       setIsUpdatingStock(false);
-      event.target.value = '';
+      event.target.value = "";
     }
   };
 
@@ -612,39 +642,43 @@ const Admin = () => {
     try {
       const text = await file.text();
       const backup = JSON.parse(text);
-      
+
       if (!backup.data?.equipment || !Array.isArray(backup.data.equipment)) {
-        toast({ title: "ERROR", description: "El archivo no contiene datos de equipos válidos", variant: "destructive" });
+        toast({
+          title: "ERROR",
+          description: "El archivo no contiene datos de equipos válidos",
+          variant: "destructive",
+        });
         return;
       }
 
       const confirmed = window.confirm(
         `¿Estás seguro de que deseas reemplazar TODOS los equipos existentes?\n\n` +
-        `Se eliminarán ${equipment.length} equipos actuales y se importarán ${backup.data.equipment.length} equipos del archivo.\n\n` +
-        `Esta acción no se puede deshacer.`
+          `Se eliminarán ${equipment.length} equipos actuales y se importarán ${backup.data.equipment.length} equipos del archivo.\n\n` +
+          `Esta acción no se puede deshacer.`,
       );
 
       if (!confirmed) return;
 
       setIsImporting(true);
-      
+
       // Step 1: Delete all existing equipment
       toast({ title: "PROCESANDO", description: "Eliminando equipos existentes..." });
-      
+
       const { error: deleteError } = await supabase
-        .from('equipment')
+        .from("equipment")
         .delete()
-        .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all rows
-      
+        .neq("id", "00000000-0000-0000-0000-000000000000"); // Delete all rows
+
       if (deleteError) {
         throw new Error(`Error al eliminar equipos: ${deleteError.message}`);
       }
-      
+
       // Step 2: Prepare equipment data for insert (remove nested objects)
       const equipmentToInsert = backup.data.equipment.map((item: any) => {
         // Remove nested category and subcategory objects
         const { categories, subcategories, ...cleanItem } = item;
-        
+
         return {
           id: cleanItem.id,
           name: cleanItem.name,
@@ -659,7 +693,7 @@ const Admin = () => {
           detailed_specs: cleanItem.detailed_specs || [],
           price_per_day: cleanItem.price_per_day || 0,
           price_per_week: cleanItem.price_per_week || null,
-          status: cleanItem.status || 'available',
+          status: cleanItem.status || "available",
           image_url: cleanItem.image_url || null,
           images: cleanItem.images || [],
           tags: cleanItem.tags || [],
@@ -672,51 +706,48 @@ const Admin = () => {
           tamano: cleanItem.tamano || null,
           tipo_equipo: cleanItem.tipo_equipo || null,
           observaciones_internas: cleanItem.observaciones_internas || null,
-          id_original: cleanItem.id_original || null
+          id_original: cleanItem.id_original || null,
         };
       });
-      
+
       // Step 3: Insert equipment in batches of 50
       const batchSize = 50;
       let inserted = 0;
-      
+
       for (let i = 0; i < equipmentToInsert.length; i += batchSize) {
         const batch = equipmentToInsert.slice(i, i + batchSize);
-        
-        const { error: insertError } = await supabase
-          .from('equipment')
-          .insert(batch);
-        
+
+        const { error: insertError } = await supabase.from("equipment").insert(batch);
+
         if (insertError) {
-          throw new Error(`Error al insertar lote ${Math.floor(i/batchSize) + 1}: ${insertError.message}`);
+          throw new Error(`Error al insertar lote ${Math.floor(i / batchSize) + 1}: ${insertError.message}`);
         }
-        
+
         inserted += batch.length;
-        toast({ 
-          title: "IMPORTANDO", 
-          description: `${inserted} de ${equipmentToInsert.length} equipos importados...` 
+        toast({
+          title: "IMPORTANDO",
+          description: `${inserted} de ${equipmentToInsert.length} equipos importados...`,
         });
       }
-      
-      toast({ 
-        title: "✓ IMPORTACIÓN COMPLETA", 
-        description: `Se importaron ${inserted} equipos exitosamente` 
+
+      toast({
+        title: "✓ IMPORTACIÓN COMPLETA",
+        description: `Se importaron ${inserted} equipos exitosamente`,
       });
-      
+
       // Refresh equipment list
       await fetchEquipment();
-      
     } catch (error: any) {
-      console.error('Import error:', error);
-      toast({ 
-        title: "ERROR", 
-        description: error.message || "Error al importar datos", 
-        variant: "destructive" 
+      console.error("Import error:", error);
+      toast({
+        title: "ERROR",
+        description: error.message || "Error al importar datos",
+        variant: "destructive",
       });
     } finally {
       setIsImporting(false);
       // Clear the file input
-      event.target.value = '';
+      event.target.value = "";
     }
   };
 
@@ -730,10 +761,15 @@ const Admin = () => {
               <p className="text-lg">Gestiona equipos, espacios y configuraciones</p>
             </div>
             <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-              <Button asChild variant="secondary" size="lg" className="font-heading w-full sm:w-auto">
+              <Button asChild variant="default" size="lg" className="font-heading w-full sm:w-auto">
                 <a href="/admin/blog">Gestionar Blog</a>
               </Button>
-              <Button asChild variant="outline" size="lg" className="font-heading bg-background/10 border-primary-foreground/30 hover:bg-background/20 w-full sm:w-auto">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="font-heading bg-background/10 border-primary-foreground/30 hover:bg-background/20 w-full sm:w-auto"
+              >
                 <a href="/admin/design-tokens">Design Tokens</a>
               </Button>
             </div>
@@ -773,78 +809,117 @@ const Admin = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Nombre *</Label>
-                      <Input value={newEquipment.name} onChange={(e) => setNewEquipment({...newEquipment, name: e.target.value})} />
+                      <Input
+                        value={newEquipment.name}
+                        onChange={(e) => setNewEquipment({ ...newEquipment, name: e.target.value })}
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label>Nombre EN</Label>
-                      <Input value={newEquipment.name_en} onChange={(e) => setNewEquipment({...newEquipment, name_en: e.target.value})} />
+                      <Input
+                        value={newEquipment.name_en}
+                        onChange={(e) => setNewEquipment({ ...newEquipment, name_en: e.target.value })}
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label>Categoría</Label>
-                      <Select value={newEquipment.category_id} onValueChange={(v) => setNewEquipment({...newEquipment, category_id: v, subcategory_id: ""})}>
-                        <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                      <Select
+                        value={newEquipment.category_id}
+                        onValueChange={(v) => setNewEquipment({ ...newEquipment, category_id: v, subcategory_id: "" })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar" />
+                        </SelectTrigger>
                         <SelectContent>
                           {categories.map((cat) => (
-                            <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                            <SelectItem key={cat.id} value={cat.id}>
+                              {cat.name}
+                            </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </div>
                     <div className="space-y-2">
                       <Label>Subcategoría</Label>
-                      <Select value={newEquipment.subcategory_id} onValueChange={(v) => setNewEquipment({...newEquipment, subcategory_id: v})}>
-                        <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                      <Select
+                        value={newEquipment.subcategory_id}
+                        onValueChange={(v) => setNewEquipment({ ...newEquipment, subcategory_id: v })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar" />
+                        </SelectTrigger>
                         <SelectContent>
                           {filteredSubcategories.map((sub) => (
-                            <SelectItem key={sub.id} value={sub.id}>{sub.name}</SelectItem>
+                            <SelectItem key={sub.id} value={sub.id}>
+                              {sub.name}
+                            </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </div>
                     <div className="space-y-2">
                       <Label>Marca</Label>
-                      <Input value={newEquipment.brand} onChange={(e) => setNewEquipment({...newEquipment, brand: e.target.value})} />
+                      <Input
+                        value={newEquipment.brand}
+                        onChange={(e) => setNewEquipment({ ...newEquipment, brand: e.target.value })}
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label>Modelo</Label>
-                      <Input value={newEquipment.model} onChange={(e) => setNewEquipment({...newEquipment, model: e.target.value})} />
+                      <Input
+                        value={newEquipment.model}
+                        onChange={(e) => setNewEquipment({ ...newEquipment, model: e.target.value })}
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label>Precio por día *</Label>
-                      <Input type="number" value={newEquipment.price_per_day} onChange={(e) => setNewEquipment({...newEquipment, price_per_day: e.target.value})} />
+                      <Input
+                        type="number"
+                        value={newEquipment.price_per_day}
+                        onChange={(e) => setNewEquipment({ ...newEquipment, price_per_day: e.target.value })}
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label>Precio por semana</Label>
-                      <Input type="number" value={newEquipment.price_per_week} onChange={(e) => setNewEquipment({...newEquipment, price_per_week: e.target.value})} />
+                      <Input
+                        type="number"
+                        value={newEquipment.price_per_week}
+                        onChange={(e) => setNewEquipment({ ...newEquipment, price_per_week: e.target.value })}
+                      />
                     </div>
                     <div className="space-y-2 md:col-span-2">
                       <Label>Descripción</Label>
-                      <Textarea value={newEquipment.description} onChange={(e) => setNewEquipment({...newEquipment, description: e.target.value})} />
+                      <Textarea
+                        value={newEquipment.description}
+                        onChange={(e) => setNewEquipment({ ...newEquipment, description: e.target.value })}
+                      />
                     </div>
                     <div className="space-y-2 md:col-span-2">
                       <EquipmentImageManager
                         imageUrl={newEquipment.image_url || null}
                         images={newEquipment.images}
-                        onImageUrlChange={(url) => setNewEquipment({...newEquipment, image_url: url || ''})}
-                        onImagesChange={(images) => setNewEquipment({...newEquipment, images})}
+                        onImageUrlChange={(url) => setNewEquipment({ ...newEquipment, image_url: url || "" })}
+                        onImagesChange={(images) => setNewEquipment({ ...newEquipment, images })}
                       />
                     </div>
                     <div className="space-y-2 md:col-span-2">
                       <div className="flex items-center justify-between">
                         <Label>Equipo Destacado</Label>
-                        <Switch 
+                        <Switch
                           checked={newEquipment.featured}
-                          onCheckedChange={(checked) => setNewEquipment({...newEquipment, featured: checked})}
+                          onCheckedChange={(checked) => setNewEquipment({ ...newEquipment, featured: checked })}
                         />
                       </div>
-                      <p className="text-xs text-muted-foreground">Los equipos destacados aparecerán en la página principal</p>
+                      <p className="text-xs text-muted-foreground">
+                        Los equipos destacados aparecerán en la página principal
+                      </p>
                     </div>
                     {newEquipment.featured && (
                       <div className="space-y-2 md:col-span-2">
                         <Label>Descripción para Destacados</Label>
-                        <Textarea 
-                          value={newEquipment.featured_copy} 
-                          onChange={(e) => setNewEquipment({...newEquipment, featured_copy: e.target.value})}
+                        <Textarea
+                          value={newEquipment.featured_copy}
+                          onChange={(e) => setNewEquipment({ ...newEquipment, featured_copy: e.target.value })}
                           placeholder="Texto breve que aparecerá en la home para este equipo destacado"
                         />
                       </div>
@@ -867,17 +942,20 @@ const Admin = () => {
                     {equipment.map((item) => {
                       const allImages = [
                         ...(item.image_url ? [item.image_url] : []),
-                        ...(item.images || []).filter((img: string) => img !== item.image_url)
+                        ...(item.images || []).filter((img: string) => img !== item.image_url),
                       ];
                       const totalImages = allImages.length;
-                      
+
                       return (
-                        <div key={item.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 border rounded hover:bg-muted/50 transition-colors">
+                        <div
+                          key={item.id}
+                          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 border rounded hover:bg-muted/50 transition-colors"
+                        >
                           <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0 w-full sm:w-auto">
                             <div className="relative shrink-0">
-                              <img 
-                                src={item.image_url || "/placeholder.svg"} 
-                                alt={item.name} 
+                              <img
+                                src={item.image_url || "/placeholder.svg"}
+                                alt={item.name}
                                 className="w-12 h-12 sm:w-16 sm:h-16 rounded object-cover border-2"
                               />
                               {totalImages > 0 && (
@@ -899,8 +977,8 @@ const Admin = () => {
                                     {item.subcategories.name}
                                   </Badge>
                                 )}
-                                <Badge 
-                                  variant={item.status === 'available' ? 'default' : 'destructive'} 
+                                <Badge
+                                  variant={item.status === "available" ? "default" : "destructive"}
                                   className="text-xs"
                                 >
                                   {item.status}
@@ -908,7 +986,7 @@ const Admin = () => {
                                 {totalImages > 0 ? (
                                   <Badge variant="secondary" className="text-xs flex items-center gap-1">
                                     <ImageIcon className="h-3 w-3" />
-                                    {totalImages} {totalImages === 1 ? 'img' : 'imgs'}
+                                    {totalImages} {totalImages === 1 ? "img" : "imgs"}
                                   </Badge>
                                 ) : (
                                   <Badge variant="outline" className="text-xs text-muted-foreground">
@@ -918,24 +996,24 @@ const Admin = () => {
                               </div>
                               {totalImages > 1 && (
                                 <p className="text-xs text-muted-foreground mt-1">
-                                  {totalImages - 1} adicional{totalImages - 1 > 1 ? 'es' : ''}
+                                  {totalImages - 1} adicional{totalImages - 1 > 1 ? "es" : ""}
                                 </p>
                               )}
                             </div>
                           </div>
                           <div className="flex gap-2 shrink-0 w-full sm:w-auto justify-end sm:justify-start">
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
+                            <Button
+                              variant="ghost"
+                              size="icon"
                               onClick={() => handleEditEquipment(item)}
                               title="Editar equipo"
                               className="h-8 w-8 sm:h-10 sm:w-10"
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
+                            <Button
+                              variant="ghost"
+                              size="icon"
                               onClick={() => handleDeleteEquipment(item.id)}
                               title="Eliminar equipo"
                               className="h-8 w-8 sm:h-10 sm:w-10"
@@ -962,10 +1040,10 @@ const Admin = () => {
                   <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-end">
                     <div className="flex-1 space-y-2">
                       <Label>Porcentaje</Label>
-                      <Input 
-                        type="number" 
-                        placeholder="10" 
-                        step="0.1" 
+                      <Input
+                        type="number"
+                        placeholder="10"
+                        step="0.1"
                         value={massPercentage}
                         onChange={(e) => setMassPercentage(e.target.value)}
                       />
@@ -986,19 +1064,28 @@ const Admin = () => {
                 <CardContent>
                   <div className="space-y-2 max-h-96 overflow-y-auto">
                     {equipment.map((item) => (
-                      <div key={item.id} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-3 border rounded">
+                      <div
+                        key={item.id}
+                        className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-3 border rounded"
+                      >
                         <p className="flex-1 font-heading text-sm sm:text-base truncate">{item.name}</p>
                         <div className="flex gap-2 flex-1 sm:flex-initial">
-                          <Input 
-                            type="number" 
+                          <Input
+                            type="number"
                             defaultValue={item.price_per_day}
-                            onChange={(e) => setIndividualPrices({
-                              ...individualPrices, 
-                              [item.id]: parseInt(e.target.value)
-                            })}
-                            className="w-full sm:w-32" 
+                            onChange={(e) =>
+                              setIndividualPrices({
+                                ...individualPrices,
+                                [item.id]: parseInt(e.target.value),
+                              })
+                            }
+                            className="w-full sm:w-32"
                           />
-                          <Button size="sm" onClick={() => handleIndividualPriceUpdate(item.id)} className="w-full sm:w-auto shrink-0">
+                          <Button
+                            size="sm"
+                            onClick={() => handleIndividualPriceUpdate(item.id)}
+                            className="w-full sm:w-auto shrink-0"
+                          >
                             Actualizar
                           </Button>
                         </div>
@@ -1044,63 +1131,63 @@ const Admin = () => {
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <Label>WhatsApp</Label>
-                    <Input 
+                    <Input
                       placeholder="+54 11 1234-5678"
                       value={contactInfo.whatsapp}
-                      onChange={(e) => setContactInfo({...contactInfo, whatsapp: e.target.value})}
+                      onChange={(e) => setContactInfo({ ...contactInfo, whatsapp: e.target.value })}
                     />
                   </div>
                   <div className="space-y-2">
                     <Label>Email</Label>
-                    <Input 
-                      type="email" 
+                    <Input
+                      type="email"
                       placeholder="info@alanorte.com"
                       value={contactInfo.email}
-                      onChange={(e) => setContactInfo({...contactInfo, email: e.target.value})}
+                      onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
                     />
                   </div>
                   <div className="space-y-2">
                     <Label>Mensaje adicional para cotizaciones</Label>
-                    <Textarea 
+                    <Textarea
                       placeholder="Mensaje para cotizaciones..."
                       rows={4}
                       value={contactInfo.quote_message}
-                      onChange={(e) => setContactInfo({...contactInfo, quote_message: e.target.value})}
+                      onChange={(e) => setContactInfo({ ...contactInfo, quote_message: e.target.value })}
                     />
                   </div>
-                  
+
                   <div className="border-t-2 border-foreground pt-4 mt-6">
                     <h3 className="font-heading font-bold text-lg mb-4">Configuración de Instagram</h3>
                     <div className="space-y-4">
                       <div className="space-y-2">
                         <Label>Usuario de Instagram</Label>
-                        <Input 
+                        <Input
                           placeholder="@alanortecinedigital"
                           value={contactInfo.instagram}
-                          onChange={(e) => setContactInfo({...contactInfo, instagram: e.target.value})}
+                          onChange={(e) => setContactInfo({ ...contactInfo, instagram: e.target.value })}
                         />
                       </div>
                       <div className="space-y-2">
                         <Label>Token de Acceso (opcional)</Label>
-                        <Input 
+                        <Input
                           type="password"
                           placeholder="Token de Instagram API"
                           value={contactInfo.instagram_token}
-                          onChange={(e) => setContactInfo({...contactInfo, instagram_token: e.target.value})}
+                          onChange={(e) => setContactInfo({ ...contactInfo, instagram_token: e.target.value })}
                         />
                         <p className="text-xs text-muted-foreground">
-                          Para mostrar historias reales de Instagram, necesitas un token de acceso de la API de Instagram.
+                          Para mostrar historias reales de Instagram, necesitas un token de acceso de la API de
+                          Instagram.
                         </p>
                       </div>
                     </div>
                   </div>
-                  
+
                   <Button variant="hero" onClick={handleUpdateContactInfo}>
                     Guardar Configuración
                   </Button>
                 </CardContent>
               </Card>
-
             </TabsContent>
 
             {/* Backup Tab */}
@@ -1128,21 +1215,20 @@ const Admin = () => {
                       <p className="text-sm text-muted-foreground mb-4">
                         Reemplaza TODOS los equipos de la base de datos con los del archivo JSON.
                         <span className="block mt-2 text-destructive font-semibold">
-                          ⚠️ ATENCIÓN: Esta acción eliminará todos los equipos existentes y los reemplazará con los del archivo.
+                          ⚠️ ATENCIÓN: Esta acción eliminará todos los equipos existentes y los reemplazará con los del
+                          archivo.
                         </span>
                       </p>
                       <div className="flex items-center gap-4">
-                        <Input 
-                          type="file" 
+                        <Input
+                          type="file"
                           accept=".json"
                           onChange={handleImportEquipment}
                           className="max-w-xs"
                           disabled={isImporting}
                         />
                         {isImporting && (
-                          <span className="text-sm text-muted-foreground animate-pulse">
-                            Importando...
-                          </span>
+                          <span className="text-sm text-muted-foreground animate-pulse">Importando...</span>
                         )}
                       </div>
                       <p className="text-xs text-muted-foreground mt-2">
@@ -1153,12 +1239,12 @@ const Admin = () => {
                     <div className="border-l-4 border-green-500 pl-4 py-2">
                       <h3 className="font-heading font-bold text-lg mb-2">Actualizar Stock desde CSV</h3>
                       <p className="text-sm text-muted-foreground mb-4">
-                        Actualiza la cantidad de stock de cada equipo usando el archivo CSV de EquipoEmpresa.
-                        Hace match por nombre normalizado y suma las cantidades de registros duplicados.
+                        Actualiza la cantidad de stock de cada equipo usando el archivo CSV de EquipoEmpresa. Hace match
+                        por nombre normalizado y suma las cantidades de registros duplicados.
                       </p>
                       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                        <Input 
-                          type="file" 
+                        <Input
+                          type="file"
                           accept=".csv"
                           onChange={handleUpdateStockFromCSV}
                           className="w-full sm:max-w-xs"
@@ -1186,7 +1272,8 @@ const Admin = () => {
                         <li>Exportar el proyecto completo desde la configuración</li>
                       </ul>
                       <p className="text-xs text-muted-foreground italic">
-                        El código fuente se gestiona mejor mediante control de versiones (Git) en lugar de backups manuales.
+                        El código fuente se gestiona mejor mediante control de versiones (Git) en lugar de backups
+                        manuales.
                       </p>
                     </div>
                   </div>
@@ -1207,107 +1294,126 @@ const Admin = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               <div className="space-y-2">
                 <Label>Nombre *</Label>
-                <Input 
-                  value={editingEquipment.name} 
-                  onChange={(e) => setEditingEquipment({...editingEquipment, name: e.target.value})} 
+                <Input
+                  value={editingEquipment.name}
+                  onChange={(e) => setEditingEquipment({ ...editingEquipment, name: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
                 <Label>Nombre EN</Label>
-                <Input 
-                  value={editingEquipment.name_en || ''} 
-                  onChange={(e) => setEditingEquipment({...editingEquipment, name_en: e.target.value})} 
+                <Input
+                  value={editingEquipment.name_en || ""}
+                  onChange={(e) => setEditingEquipment({ ...editingEquipment, name_en: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
                 <Label>Categoría</Label>
-                <Select 
-                  value={editingEquipment.category_id || ''} 
-                  onValueChange={(v) => setEditingEquipment({...editingEquipment, category_id: v, subcategory_id: null})}
+                <Select
+                  value={editingEquipment.category_id || ""}
+                  onValueChange={(v) =>
+                    setEditingEquipment({ ...editingEquipment, category_id: v, subcategory_id: null })
+                  }
                 >
-                  <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccionar" />
+                  </SelectTrigger>
                   <SelectContent>
                     {categories.map((cat) => (
-                      <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                      <SelectItem key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
                 <Label>Subcategoría</Label>
-                <Select 
-                  value={editingEquipment.subcategory_id || ''} 
-                  onValueChange={(v) => setEditingEquipment({...editingEquipment, subcategory_id: v})}
+                <Select
+                  value={editingEquipment.subcategory_id || ""}
+                  onValueChange={(v) => setEditingEquipment({ ...editingEquipment, subcategory_id: v })}
                 >
-                  <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccionar" />
+                  </SelectTrigger>
                   <SelectContent>
                     {editFilteredSubcategories.map((sub) => (
-                      <SelectItem key={sub.id} value={sub.id}>{sub.name}</SelectItem>
+                      <SelectItem key={sub.id} value={sub.id}>
+                        {sub.name}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
                 <Label>Marca</Label>
-                <Input 
-                  value={editingEquipment.brand || ''} 
-                  onChange={(e) => setEditingEquipment({...editingEquipment, brand: e.target.value})} 
+                <Input
+                  value={editingEquipment.brand || ""}
+                  onChange={(e) => setEditingEquipment({ ...editingEquipment, brand: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
                 <Label>Modelo</Label>
-                <Input 
-                  value={editingEquipment.model || ''} 
-                  onChange={(e) => setEditingEquipment({...editingEquipment, model: e.target.value})} 
+                <Input
+                  value={editingEquipment.model || ""}
+                  onChange={(e) => setEditingEquipment({ ...editingEquipment, model: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
                 <Label>Precio por día *</Label>
-                <Input 
-                  type="number" 
-                  value={editingEquipment.price_per_day} 
-                  onChange={(e) => setEditingEquipment({...editingEquipment, price_per_day: parseInt(e.target.value)})} 
+                <Input
+                  type="number"
+                  value={editingEquipment.price_per_day}
+                  onChange={(e) =>
+                    setEditingEquipment({ ...editingEquipment, price_per_day: parseInt(e.target.value) })
+                  }
                 />
               </div>
               <div className="space-y-2">
                 <Label>Precio por semana</Label>
-                <Input 
-                  type="number" 
-                  value={editingEquipment.price_per_week || ''} 
-                  onChange={(e) => setEditingEquipment({...editingEquipment, price_per_week: e.target.value ? parseInt(e.target.value) : null})} 
+                <Input
+                  type="number"
+                  value={editingEquipment.price_per_week || ""}
+                  onChange={(e) =>
+                    setEditingEquipment({
+                      ...editingEquipment,
+                      price_per_week: e.target.value ? parseInt(e.target.value) : null,
+                    })
+                  }
                 />
               </div>
               <div className="space-y-2 md:col-span-2">
                 <Label>Descripción</Label>
-                <Textarea 
-                  value={editingEquipment.description || ''} 
-                  onChange={(e) => setEditingEquipment({...editingEquipment, description: e.target.value})} 
+                <Textarea
+                  value={editingEquipment.description || ""}
+                  onChange={(e) => setEditingEquipment({ ...editingEquipment, description: e.target.value })}
                 />
               </div>
               <div className="space-y-2 md:col-span-2">
                 <EquipmentImageManager
                   imageUrl={editingEquipment.image_url || null}
                   images={editingEquipment.images || []}
-                  onImageUrlChange={(url) => setEditingEquipment({...editingEquipment, image_url: url})}
-                  onImagesChange={(images) => setEditingEquipment({...editingEquipment, images})}
+                  onImageUrlChange={(url) => setEditingEquipment({ ...editingEquipment, image_url: url })}
+                  onImagesChange={(images) => setEditingEquipment({ ...editingEquipment, images })}
                 />
               </div>
               <div className="space-y-2 md:col-span-2">
                 <div className="flex items-center justify-between">
                   <Label>Equipo Destacado</Label>
-                  <Switch 
+                  <Switch
                     checked={editingEquipment.featured || false}
-                    onCheckedChange={(checked) => setEditingEquipment({...editingEquipment, featured: checked})}
+                    onCheckedChange={(checked) => setEditingEquipment({ ...editingEquipment, featured: checked })}
                   />
                 </div>
-                <p className="text-xs text-muted-foreground">Los equipos destacados aparecerán en la página principal</p>
+                <p className="text-xs text-muted-foreground">
+                  Los equipos destacados aparecerán en la página principal
+                </p>
               </div>
               {editingEquipment.featured && (
                 <div className="space-y-2 md:col-span-2">
                   <Label>Descripción para Destacados</Label>
-                  <Textarea 
-                    value={editingEquipment.featured_copy || ''} 
-                    onChange={(e) => setEditingEquipment({...editingEquipment, featured_copy: e.target.value})}
+                  <Textarea
+                    value={editingEquipment.featured_copy || ""}
+                    onChange={(e) => setEditingEquipment({ ...editingEquipment, featured_copy: e.target.value })}
                     placeholder="Texto breve que aparecerá en la home para este equipo destacado"
                   />
                 </div>
@@ -1320,7 +1426,8 @@ const Admin = () => {
                   <h3 className="font-heading text-lg font-bold">PERIODOS DE NO DISPONIBILIDAD</h3>
                 </div>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Define rangos de fechas en los que este equipo no estará disponible (mantenimiento, reparaciones, etc.)
+                  Define rangos de fechas en los que este equipo no estará disponible (mantenimiento, reparaciones,
+                  etc.)
                 </p>
 
                 {/* Add new period */}
@@ -1332,7 +1439,7 @@ const Admin = () => {
                         <Input
                           type="date"
                           value={newPeriod.start_date}
-                          onChange={(e) => setNewPeriod({...newPeriod, start_date: e.target.value})}
+                          onChange={(e) => setNewPeriod({ ...newPeriod, start_date: e.target.value })}
                         />
                       </div>
                       <div className="space-y-2">
@@ -1340,16 +1447,12 @@ const Admin = () => {
                         <Input
                           type="date"
                           value={newPeriod.end_date}
-                          onChange={(e) => setNewPeriod({...newPeriod, end_date: e.target.value})}
+                          onChange={(e) => setNewPeriod({ ...newPeriod, end_date: e.target.value })}
                           min={newPeriod.start_date}
                         />
                       </div>
                     </div>
-                    <Button 
-                      onClick={handleAddUnavailabilityPeriod} 
-                      className="mt-3 w-full"
-                      size="sm"
-                    >
+                    <Button onClick={handleAddUnavailabilityPeriod} className="mt-3 w-full" size="sm">
                       <Plus className="mr-2 h-4 w-4" />
                       Agregar Periodo
                     </Button>
@@ -1364,8 +1467,8 @@ const Admin = () => {
                     </p>
                   ) : (
                     unavailabilityPeriods.map((period) => (
-                      <div 
-                        key={period.id} 
+                      <div
+                        key={period.id}
                         className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 border-2 rounded bg-muted/30"
                       >
                         <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -1377,7 +1480,11 @@ const Admin = () => {
                               {format(new Date(period.end_date), "d 'de' MMMM, yyyy", { locale: es })}
                             </p>
                             <p className="text-xs text-muted-foreground">
-                              {Math.ceil((new Date(period.end_date).getTime() - new Date(period.start_date).getTime()) / (1000 * 60 * 60 * 24)) + 1} días
+                              {Math.ceil(
+                                (new Date(period.end_date).getTime() - new Date(period.start_date).getTime()) /
+                                  (1000 * 60 * 60 * 24),
+                              ) + 1}{" "}
+                              días
                             </p>
                           </div>
                         </div>
