@@ -304,7 +304,7 @@ All colors MUST be HSL.
     grid-template-columns: repeat(4, 1fr);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 720px) {
     .grid-responsive {
       grid-template-columns: repeat(8, 1fr);
     }
@@ -451,7 +451,7 @@ All colors MUST be HSL.
   position: absolute;
   inset: 0;
   background: radial-gradient(ellipse at center, transparent 0%, transparent 50%, #1e1319 100%);
-  opacity: 0.15;
+  opacity: 0.25;
   pointer-events: none;
   z-index: 2;
 }
