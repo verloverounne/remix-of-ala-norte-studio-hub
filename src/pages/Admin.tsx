@@ -753,7 +753,7 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen pt-16 bg-background">
-      <section className="gradient-primary text-primary-foreground py-12">
+      <section className="gradient-none text-primary-foreground py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
@@ -761,7 +761,7 @@ const Admin = () => {
               <p className="text-lg">Gestiona equipos, espacios y configuraciones</p>
             </div>
             <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-              <Button asChild variant="default" size="lg" className="font-heading w-full sm:w-auto">
+              <Button asChild variant="outline" size="lg" className="font-heading w-full sm:w-auto">
                 <a href="/admin/blog">Gestionar Blog</a>
               </Button>
               <Button
