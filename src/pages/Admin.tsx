@@ -768,7 +768,7 @@ const Admin = () => {
                 asChild
                 variant="outline"
                 size="lg"
-                className="font-heading bg-background/10 border-primary-foreground/30 hover:bg-background/20 w-full sm:w-auto"
+                className="font-heading bg-background/10 border-primary-background/30 hover:bg-background/20 w-full sm:w-auto"
               >
                 <a href="/admin/design-tokens">Design Tokens</a>
               </Button>
