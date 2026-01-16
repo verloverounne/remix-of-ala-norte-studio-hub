@@ -97,7 +97,7 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
     };
 
     return videoOrientation === "horizontal"
-      ? { ...baseStyles, height: "100vh", width: "auto", minWidth: "100%" }
+      ? { ...baseStyles, height: "100%", width: "auto", minWidth: "100%" }
       : { ...baseStyles, width: "100vw", height: "auto", minHeight: "100%" };
   };
 
@@ -148,16 +148,34 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
           style={contentParallax.style}
           className="absolute inset-0 flex items-end z-10"
         >
-          <div className="text-left p-4 sm:p-6 lg:p-8 pb-16 sm:pb-20 lg:pb-24 max-w-4xl">
-            <h2 className="text-background text-3xl sm:text-4xl md:text-5xl mb-2 sm:mb-4 font-bold drop-shadow-lg font-sans lg:text-8xl text-left">
+          <div className="text-left p-4 sm:p-6 lg:p-8 pb-16 sm:pb-20 lg:pb-24 max-w-4xl" style={{ fontWeight: 800, lineHeight: '0px', verticalAlign: 'middle', paddingLeft: '24px' }}>
+            <h2 className="text-background text-3xl sm:text-4xl md:text-5xl font-bold drop-shadow-lg font-sans lg:text-8xl text-left" style={{ marginBottom: '0px', letterSpacing: '-1.9px' }}>
               {slide.title}
             </h2>
-            <p className="font-heading text-background/90 text-lg sm:text-xl lg:text-4xl mb-6 sm:mb-8 drop-shadow-md md:text-lg font-normal text-left">
+            <p className="font-heading text-background/90 text-lg sm:text-xl lg:text-4xl drop-shadow-md md:text-lg text-left" style={{ marginBottom: '16px', fontWeight: 600 }}>
               {slide.subtitle}
             </p>
             {slide.cta_label && slide.cta_link && (
               <Button asChild variant="hero" size="lg" className="text-base sm:text-lg">
-                <Link to={slide.cta_link} className="border-0">
+                <Link 
+                  to={slide.cta_link} 
+                  className="border-0"
+                  style={{
+                    paddingLeft: '24px',
+                    paddingRight: '24px',
+                    height: '32px',
+                    fontSize: '15px',
+                    letterSpacing: '1px',
+                    verticalAlign: 'middle',
+                    backgroundColor: 'rgba(158, 0, 0, 1)',
+                    boxShadow: '0px 4px 12px 0px rgba(0, 0, 0, 0.15)',
+                    color: 'rgba(17, 15, 14, 1)',
+                    lineHeight: '37px',
+                    marginTop: '12px',
+                    paddingTop: '24px',
+                    paddingBottom: '24px'
+                  }}
+                >
                   {slide.cta_label}
                 </Link>
               </Button>
@@ -220,7 +238,7 @@ export const HomeVideoHeroSlider = () => {
   const hasVideos = slides.some((s) => s.media_type === "video" && s.media_url);
 
   return (
-    <section className="relative min-h-[500px] lg:min-h-[700px] overflow-hidden border-b-4 border-foreground">
+    <section className="relative overflow-hidden border-b-4 border-foreground" style={{ height: '100%' }}>
       <Carousel className="w-full h-full" setApi={setApi} opts={{ loop: true }}>
         <CarouselContent className="h-full -ml-0">
           {slides.map((slide, index) => (
@@ -239,7 +257,7 @@ export const HomeVideoHeroSlider = () => {
       {hasVideos && (
         <button
           onClick={() => setMuted(!muted)}
-          className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm rounded-full hover:bg-background/40 transition-colors"
+          className="absolute top-[42px] right-4 z-20 p-3 rounded-none hover:bg-background/40 transition-colors hidden"
           aria-label={muted ? "Activar sonido" : "Silenciar"}
         >
           {muted ? <VolumeX className="h-5 w-5 text-background" /> : <Volume2 className="h-5 w-5 text-background" />}

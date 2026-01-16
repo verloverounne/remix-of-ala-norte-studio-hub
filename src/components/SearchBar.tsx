@@ -176,7 +176,7 @@ export const SearchBar = () => {
             setIsOpen(true);
             setTimeout(() => inputRef.current?.focus(), 100);
           }}
-          className="h-10 w-10 xl:h-12 xl:w-12"
+          className="h-[34px] w-[34px]"
           aria-label="Abrir búsqueda"
         >
           <Search className="h-4 w-4 xl:h-5 xl:w-5" />

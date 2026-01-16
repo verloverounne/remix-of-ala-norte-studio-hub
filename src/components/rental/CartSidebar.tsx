@@ -131,9 +131,9 @@ export const CartSidebar = ({
         <div className="fixed bottom-4 center z-40">
           <button
             onClick={() => setDrawerOpen(true)}
-            className="relative bg-primary text-primary-foreground p-4 rounded-full shadow-brutal-sm hover:scale-105 transition-transform"
+            className="relative bg-primary text-primary-foreground h-12 w-12 flex items-center justify-center rounded-none shadow-brutal-sm hover:scale-105 transition-transform"
           >
-            <ShoppingCart className="w-6 h-6" />
+            <ShoppingCart className="w-4 h-4" />
             {totalItems > 0 && (
               <span className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
                 {totalItems}
