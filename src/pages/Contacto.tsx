@@ -3,13 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Map from "@/components/Map";
@@ -50,9 +44,7 @@ const Contacto = () => {
     });
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -62,13 +54,12 @@ const Contacto = () => {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
-      <section className="gradient-primary text-primary-foreground py-20">
+      <section className="py-20">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
-            Hablemos de tu próximo rodaje
-          </h1>
+          <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">Hablemos de tu próximo rodaje</h1>
           <p className="text-xl md:text-2xl max-w-3xl mx-auto">
-            Completá el formulario con algunos datos de tu proyecto y te respondemos con una propuesta de equipamiento y presupuesto.
+            Completá el formulario con algunos datos de tu proyecto y te respondemos con una propuesta de equipamiento y
+            presupuesto.
           </p>
         </div>
       </section>
@@ -81,9 +72,7 @@ const Contacto = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="text-2xl">Envíanos un mensaje</CardTitle>
-                <CardDescription>
-                  Completá el formulario y te respondemos a la brevedad
-                </CardDescription>
+                <CardDescription>Completá el formulario y te respondemos a la brevedad</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -191,12 +180,8 @@ const Contacto = () => {
                     <Clock className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                     <div>
                       <p className="font-semibold">Horarios</p>
-                      <p className="text-muted-foreground">
-                        Lunes a Viernes: 9:00 - 19:00
-                      </p>
-                      <p className="text-muted-foreground">
-                        Sábados: 10:00 - 15:00
-                      </p>
+                      <p className="text-muted-foreground">Lunes a Viernes: 9:00 - 19:00</p>
+                      <p className="text-muted-foreground">Sábados: 10:00 - 15:00</p>
                     </div>
                   </div>
                 </CardContent>
@@ -242,7 +227,7 @@ const Contacto = () => {
               {/* Map */}
               <Card className="overflow-hidden">
                 <div className="h-96">
-                  <Map 
+                  <Map
                     address="V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina"
                     latitude={-34.527}
                     longitude={-58.475}
