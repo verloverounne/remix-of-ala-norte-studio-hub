@@ -68,10 +68,10 @@ All colors MUST be HSL.
     --tritone-low: 0 0% 8%; /* Color para tonos bajos (áreas oscuras) */
 
     /* Sombras Brutales - Duras y sin blur pero sutiles */
-    --shadow-brutal: 4px 4px 0 hsl(0 0% 8%);
-    --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 8%);
-    --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 8%);
-    --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
+    --shadow-brutal: 2px 2px 0 hsl(0 0% 8%);
+    --shadow-brutal-sm: 1px 1px 0 hsl(0 0% 8%);
+    --shadow-brutal-lg: 3px 3px 0 hsl(0 0% 8%);
+    --shadow-brutal-red: 2px 2px 0 hsl(348 83% 47%);
 
     /* Gradientes Brutales */
     --gradient-primary: linear-gradient(135deg, hsl(348 83% 47%), hsl(343 100% 33%));
@@ -84,13 +84,16 @@ All colors MUST be HSL.
     /* Transiciones Brutales - Instantáneas o mecánicas */
     --transition-brutal: all 0.1s linear;
     --transition-none: none;
-    --shadow-sm: 3px 5px 7.5px -1px hsl(240, 4%, 46%);
-    --shadow: 3px 5px 15px -1px hsl(240, 4%, 46%);
-    --shadow-md: 3px 5px 22.5px -1px hsl(240, 4%, 46%);
-    --shadow-lg: 3px 5px 37.5px -1px hsl(240, 4%, 46%);
-    --font-sans: Poppins, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    --shadow-sm: 1px 1px 2px -1px hsl(240, 4%, 46%);
+    --shadow: 1px 1px 3px -1px hsl(240, 4%, 46%);
+    --shadow-md: 1px 1px 5px -1px hsl(240, 4%, 46%);
+    --shadow-lg: 1px 1px 3px -1px hsl(240, 4%, 46%);
+    --font-sans:
+      Poppins, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol,
+      Noto Color Emoji;
     --font-serif: Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
-    --font-mono: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+    --font-mono:
+      "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
   }
 
   .dark {
@@ -163,13 +166,20 @@ All colors MUST be HSL.
     font-weight: 400;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-heading uppercase tracking-wider;
-    font-weight: 700;
+    font-weight: 800;
   }
 
-  strong, b, .font-bold {
-    font-weight: 700;
+  strong,
+  b,
+  .font-bold {
+    font-weight: 800;
   }
 
   h1 {
@@ -211,7 +221,7 @@ All colors MUST be HSL.
   /* Borde Degradado Plateado Sutil */
   .border-silver-gradient {
     border: 1px solid transparent;
-    background: 
+    background:
       linear-gradient(hsl(var(--background)), hsl(var(--background))) padding-box,
       var(--border-gradient-silver) border-box;
   }
@@ -261,12 +271,24 @@ All colors MUST be HSL.
   }
 
   @keyframes glitch {
-    0% { transform: translate(0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(2px, -2px); }
-    60% { transform: translate(-2px, -2px); }
-    80% { transform: translate(2px, 2px); }
-    100% { transform: translate(0); }
+    0% {
+      transform: translate(0);
+    }
+    20% {
+      transform: translate(-2px, 2px);
+    }
+    40% {
+      transform: translate(2px, -2px);
+    }
+    60% {
+      transform: translate(-2px, -2px);
+    }
+    80% {
+      transform: translate(2px, 2px);
+    }
+    100% {
+      transform: translate(0);
+    }
   }
 
   /* Responsive Grid System 12/8/4 */
@@ -290,12 +312,24 @@ All colors MUST be HSL.
   }
 
   /* Z-Index Layers */
-  .z-base { z-index: 1; }
-  .z-content { z-index: 10; }
-  .z-sticky { z-index: 20; }
-  .z-dropdown { z-index: 50; }
-  .z-modal { z-index: 100; }
-  .z-toast { z-index: 200; }
+  .z-base {
+    z-index: 1;
+  }
+  .z-content {
+    z-index: 10;
+  }
+  .z-sticky {
+    z-index: 20;
+  }
+  .z-dropdown {
+    z-index: 50;
+  }
+  .z-modal {
+    z-index: 100;
+  }
+  .z-toast {
+    z-index: 200;
+  }
 
   /* Rich text editor styles */
   .prose {
@@ -314,7 +348,8 @@ All colors MUST be HSL.
     @apply mb-4 leading-relaxed;
   }
 
-  .prose ul, .prose ol {
+  .prose ul,
+  .prose ol {
     @apply mb-4 ml-6;
   }
 
@@ -361,28 +396,27 @@ All colors MUST be HSL.
 .video-duotone,
 .image-duotone {
   /* Convertir a escala de grises con alto contraste para mejor mapeo de luminosidad */
-  filter: grayscale(1) contrast(2) brightness(0.7);
+  filter: grayscale(1) contrast(0) brightness(1);
   transition: filter 0.3s ease;
   position: relative;
 }
 
 /* Overlay tritone que mapea luminosidad a tres colores: background (altos), gray-dark (medios), foreground (bajos) */
 .duotone-hover-group::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   /* Mapeo tritone: tonos altos -> background, medios -> gray-dark, bajos -> foreground */
   /* Usar un gradiente que mapee la luminosidad de la imagen debajo */
-  background: 
-    linear-gradient(
-      to bottom,
-      hsl(var(--tritone-high)) 0%,
-      hsl(var(--tritone-high)) 50%,
-      hsl(var(--tritone-mid)) 50%,
-      hsl(var(--tritone-mid)) 50.1%,
-      hsl(var(--tritone-low)) 50.1%,
-      hsl(var(--tritone-low)) 100%
-    );
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--tritone-high)) 0%,
+    hsl(var(--tritone-high)) 50%,
+    hsl(var(--tritone-mid)) 50%,
+    hsl(var(--tritone-mid)) 50.1%,
+    hsl(var(--tritone-low)) 50.1%,
+    hsl(var(--tritone-low)) 100%
+  );
   /* Usar color para mapear basándose en la luminosidad de la imagen */
   mix-blend-mode: color;
   opacity: 1;
@@ -394,29 +428,23 @@ All colors MUST be HSL.
 .dark .duotone-hover-group::before {
   mix-blend-mode: color;
   opacity: 1;
-  background: 
-    linear-gradient(
-      to bottom,
-      hsl(var(--tritone-high)) 0%,
-      hsl(var(--tritone-high)) 50%,
-      hsl(var(--tritone-mid)) 50%,
-      hsl(var(--tritone-mid)) 50.1%,
-      hsl(var(--tritone-low)) 50.1%,
-      hsl(var(--tritone-low)) 100%
-    );
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--tritone-high)) 0%,
+    hsl(var(--tritone-high)) 50%,
+    hsl(var(--tritone-mid)) 50%,
+    hsl(var(--tritone-mid)) 50.1%,
+    hsl(var(--tritone-low)) 50.1%,
+    hsl(var(--tritone-low)) 100%
+  );
 }
 
 /* Viñeta permanente del 15% con color #1e1319 */
 .duotone-hover-group::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 0%,
-    transparent 50%,
-    #1e1319 100%
-  );
+  background: radial-gradient(ellipse at center, transparent 0%, transparent 50%, #1e1319 100%);
   opacity: 0.15;
   pointer-events: none;
   z-index: 2;
