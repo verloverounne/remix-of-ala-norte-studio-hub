@@ -177,13 +177,13 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
         <div
           ref={contentParallax.ref as any}
           style={contentParallax.style}
-          className="absolute inset-0 flex items-center justify-center z-10"
+          className="absolute inset-0 flex items-end z-10"
         >
-          <div className="text-center p-4 sm:p-6 lg:p-8 max-w-4xl">
-            <h2 className="text-background text-3xl sm:text-4xl md:text-5xl mb-2 sm:mb-4 font-bold drop-shadow-lg font-sans lg:text-8xl">
+          <div className="text-left p-4 sm:p-6 lg:p-8 pb-16 sm:pb-20 lg:pb-24 max-w-4xl">
+            <h2 className="text-background text-3xl sm:text-4xl md:text-5xl mb-2 sm:mb-4 font-bold drop-shadow-lg font-sans lg:text-8xl text-left">
               {slide.title}
             </h2>
-            <p className="font-heading text-background/90 text-lg sm:text-xl lg:text-4xl mb-6 sm:mb-8 drop-shadow-md md:text-lg font-normal">
+            <p className="font-heading text-background/90 text-lg sm:text-xl lg:text-4xl mb-6 sm:mb-8 drop-shadow-md md:text-lg font-normal text-left">
               {slide.subtitle}
             </p>
             {slide.cta_label && slide.cta_link && (

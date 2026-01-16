@@ -138,15 +138,15 @@ export const VideoHeroSlider = ({ pageType, space }: VideoHeroSliderProps) => {
 };
 
 const HeroContent = ({ space }: { space: Space }) => (
-  <div className="container mx-auto">
+  <div className="container mx-auto text-left">
     <Badge variant="secondary" className="mb-4 text-lg px-4 py-2">
       <Clock className="mr-2 h-4 w-4" />
       BLOQUES DE {space.block_hours || 4}HS
     </Badge>
-    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4">
+    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4 text-left">
       {space.hero_title || space.name}
     </h1>
-    <p className="text-lg sm:text-xl md:text-2xl max-w-2xl mb-6 font-heading text-muted-foreground">
+    <p className="text-lg sm:text-xl md:text-2xl max-w-2xl mb-6 font-heading text-muted-foreground text-left">
       {space.hero_subtitle || space.description}
     </p>
     
@@ -178,13 +178,15 @@ const HeroContent = ({ space }: { space: Space }) => (
       </div>
     )}
 
-    <Button variant="hero" size="lg" asChild className="text-lg">
-      <Link to="/contacto">
-        <Calendar className="mr-2 h-5 w-5" />
-        {space.cta_text || "RESERVAR BLOQUE"}
-        <ArrowRight className="ml-2 h-5 w-5" />
-      </Link>
-    </Button>
+    <div className="text-left">
+      <Button variant="hero" size="lg" asChild className="text-lg">
+        <Link to="/contacto">
+          <Calendar className="mr-2 h-5 w-5" />
+          {space.cta_text || "RESERVAR BLOQUE"}
+          <ArrowRight className="ml-2 h-5 w-5" />
+        </Link>
+      </Button>
+    </div>
   </div>
 );
 
