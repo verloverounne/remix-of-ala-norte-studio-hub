@@ -753,11 +753,11 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen pt-16 bg-background">
-      <section className="gradient-none text-primary-foreground py-12">
+      <section className="gradient-none text-primary-background py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h1 className="text-4xl font-heading font-bold mb-20 text-primary-foreground">Panel de Administración</h1>
+              <h1 className="text-4xl font-heading font-bold mb-20">Panel de Administración</h1>
               <p className="text-lg">Gestiona equipos, espacios y configuraciones</p>
             </div>
             <div className="flex flex-wrap gap-2 w-full sm:w-auto">
