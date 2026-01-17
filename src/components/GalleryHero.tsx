@@ -89,7 +89,7 @@ export const GalleryHero = ({
             {/* Slide 1: Text Content */}
             <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center">
               <div className="container mx-auto px-4 py-12 space-y-6">
-                <Badge variant="secondary" className="text-lg px-4 py-2">
+                <Badge variant="secondary" className="text-lg px-4 py-2 text-[#9d1402]">
                   <Clock className="mr-2 h-4 w-4" />
                   BLOQUES DE {space.block_hours || 4}HS
                 </Badge>
@@ -100,7 +100,7 @@ export const GalleryHero = ({
                   {space.hero_subtitle || space.description}
                 </p>
 
-                <div className="flex flex-wrap gap-4 items-center">
+                <div className="flex-wrap gap-4 flex-col flex items-start justify-start">
                   <div className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg">
                     <span className="text-2xl font-bold font-heading">
                       ${(space.block_price || space.price)?.toLocaleString()}
