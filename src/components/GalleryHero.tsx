@@ -11,6 +11,25 @@ interface GalleryHeroProps {
 export const GalleryHero = ({ space }: GalleryHeroProps) => {
   const [muted, setMuted] = useState(true);
   const [api, setApi] = useState<CarouselApi>();
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isDuotoneActive, setIsDuotoneActive] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleVideoToggle = () => {
+    if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
+      if (videoRef.current) {
+        if (isVideoPlaying) {
+          videoRef.current.pause();
+          setIsVideoPlaying(false);
+          setIsDuotoneActive(true);
+        } else {
+          videoRef.current.play();
+          setIsVideoPlaying(true);
+          setIsDuotoneActive(false);
+        }
+      }
+    }
+  };
   return (
     <section className="relative min-h-screen pt-16 lg:pt-0 flex items-center bg-background">
       {" "}
@@ -180,6 +199,14 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                       loop
                       muted={muted}
                       playsInline
+                      ref={videoRef}
+                      onClick={handleVideoToggle}
+                      style={{
+                        filter:
+                          isDuotoneActive && ("ontouchstart" in window || navigator.maxTouchPoints > 0)
+                            ? "grayscale(100%) contrast(1.2)"
+                            : "none",
+                      }}
                     />
                     <button
                       onClick={() => setMuted(!muted)}
