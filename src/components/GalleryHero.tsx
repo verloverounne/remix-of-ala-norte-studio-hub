@@ -192,6 +192,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center justify-center">
                 <div className="relative w-full flex items-center justify-center">
                   <div className="relative w-full max-w-sm">
+                                    {space.video_url ? (
                     <video
                       src={space.video_url}
                       className="w-full object-contain"

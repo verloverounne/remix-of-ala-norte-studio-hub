@@ -58,13 +58,14 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
   const [videoOrientation, setVideoOrientation] = useState<"horizontal" | "vertical" | null>(null);
-
+  const [isLandscape, setIsLandscape] = useState(false);
   useEffect(() => {
     const checkDevice = () => {
       const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
       const isSmallScreen = window.innerWidth <= 768;
       setIsMobile(isTouchDevice || isSmallScreen);
       setIsMobileOrTablet(window.innerWidth < 1024);
+      setIsLandscape(window.innerWidth > window.innerHeight);
     };
     checkDevice();
     window.addEventListener("resize", checkDevice);
@@ -79,11 +80,10 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
     setVideoOrientation(video.videoWidth > video.videoHeight ? "horizontal" : "vertical");
   };
 
-  // Use vertical video on mobile/tablet if available
-  const mediaUrl =
-    slide.media_type === "video" && isMobileOrTablet && slide.vertical_video_url
-      ? slide.vertical_video_url
-      : slide.media_url;
+  // Use vertical video only on mobile/tablet in portrait; landscape uses horizontal video  const mediaUrl =
+  slide.media_type === "video" && isMobileOrTablet && !isLandscape && slide.vertical_video_url
+    ? slide.vertical_video_url
+    : slide.media_url;
 
   const getMobileVideoStyles = (): React.CSSProperties => {
     if (!isMobile || !videoOrientation) return videoParallax.style;
@@ -196,7 +196,7 @@ export const HomeVideoHeroSlider = () => {
             cta_label: defaultSlides[item.order_index || 0]?.cta_label || null,
             cta_link: defaultSlides[item.order_index || 0]?.cta_link || null,
             order_index: item.order_index || 0,
-          }))
+          })),
         );
       } else {
         // Use defaults with generated IDs
@@ -205,7 +205,7 @@ export const HomeVideoHeroSlider = () => {
             ...s,
             id: `default-${i}`,
             order_index: i,
-          }))
+          })),
         );
       }
     };
