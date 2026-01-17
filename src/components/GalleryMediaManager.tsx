@@ -13,7 +13,7 @@ interface GalleryImage {
   id: string;
   page_type: string;
   image_url: string;
-  media_type: 'image' | 'video';
+  media_type: "image" | "video";
   title: string | null;
   description: string | null;
   order_index: number;
@@ -21,7 +21,7 @@ interface GalleryImage {
 }
 
 interface GalleryMediaManagerProps {
-  spaceSlug: 'galeria' | 'sala-grabacion';
+  spaceSlug: "galeria" | "sala-grabacion";
   spaceName: string;
   spaceId: string;
 }
@@ -38,11 +38,11 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
   const { toast } = useToast();
 
   // Determine page_type based on spaceSlug
-  const galleryPageType = spaceSlug === 'galeria' ? 'galeria' : 'sala_grabacion';
+  const galleryPageType = spaceSlug === "galeria" ? "galeria" : "sala_grabacion";
 
   const [newGalleryImage, setNewGalleryImage] = useState({
     image_url: "",
-    media_type: "image" as 'image' | 'video',
+    media_type: "image" as "image" | "video",
     title: "",
     description: "",
   });
@@ -53,30 +53,28 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
 
   const fetchAllMedia = async () => {
     setLoading(true);
-    
+
     // Fetch space video_url
-    const { data: spaceData } = await supabase
-      .from('spaces')
-      .select('video_url')
-      .eq('id', spaceId)
-      .single();
-    
+    const { data: spaceData } = await supabase.from("spaces").select("video_url").eq("id", spaceId).single();
+
     if (spaceData) {
       setHeroVideoUrl(spaceData.video_url || "");
     }
 
     // Fetch gallery images
     const { data: galleryData } = await supabase
-      .from('gallery_images')
-      .select('*')
-      .eq('page_type', galleryPageType)
-      .order('order_index');
-    
+      .from("gallery_images")
+      .select("*")
+      .eq("page_type", galleryPageType)
+      .order("order_index");
+
     if (galleryData) {
-      setGalleryImages(galleryData.map(item => ({
-        ...item,
-        vertical_video_url: (item as any).vertical_video_url || null,
-      })) as GalleryImage[]);
+      setGalleryImages(
+        galleryData.map((item) => ({
+          ...item,
+          vertical_video_url: (item as any).vertical_video_url || null,
+        })) as GalleryImage[],
+      );
     }
 
     setLoading(false);
@@ -121,7 +119,7 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
       if (uploadError) throw uploadError;
 
       const url = `https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/${fileName}`;
-      
+
       setHeroVideoUrl(url);
       toast({ title: "Video subido correctamente" });
     } catch (error: any) {
@@ -134,18 +132,18 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
 
   const handleSaveHeroVideo = async () => {
     setSavingHero(true);
-    
+
     const { error } = await supabase
-      .from('spaces')
+      .from("spaces")
       .update({ video_url: heroVideoUrl || null })
-      .eq('id', spaceId);
+      .eq("id", spaceId);
 
     if (error) {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "✓ VIDEO DEL HERO GUARDADO" });
     }
-    
+
     setSavingHero(false);
   };
 
@@ -155,7 +153,7 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
 
     const isImage = file.type.startsWith("image/");
     const isVideo = file.type.startsWith("video/");
-    
+
     if (!isImage && !isVideo) {
       toast({ title: "Solo se permiten imágenes o videos", variant: "destructive" });
       return;
@@ -163,7 +161,7 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
 
     const maxSize = isVideo ? 100 * 1024 * 1024 : 10 * 1024 * 1024;
     if (file.size > maxSize) {
-      toast({ title: `El tamaño máximo es ${isVideo ? '100MB' : '10MB'}`, variant: "destructive" });
+      toast({ title: `El tamaño máximo es ${isVideo ? "100MB" : "10MB"}`, variant: "destructive" });
       return;
     }
 
@@ -181,13 +179,13 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
       if (uploadError) throw uploadError;
 
       const url = `https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/${fileName}`;
-      
+
       toast({ title: isVideo ? "Video subido correctamente" : "Imagen subida correctamente" });
-      
-      setNewGalleryImage(prev => ({ 
-        ...prev, 
+
+      setNewGalleryImage((prev) => ({
+        ...prev,
         image_url: url,
-        media_type: isVideo ? 'video' : 'image'
+        media_type: isVideo ? "video" : "image",
       }));
     } catch (error: any) {
       toast({ title: "Error al subir", description: error.message, variant: "destructive" });
@@ -203,18 +201,16 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
       return;
     }
 
-    const maxOrder = galleryImages.length > 0 ? Math.max(...galleryImages.map(i => i.order_index)) + 1 : 0;
+    const maxOrder = galleryImages.length > 0 ? Math.max(...galleryImages.map((i) => i.order_index)) + 1 : 0;
 
-    const { error } = await supabase
-      .from('gallery_images')
-      .insert({
-        page_type: galleryPageType,
-        image_url: newGalleryImage.image_url,
-        media_type: newGalleryImage.media_type,
-        title: newGalleryImage.title || null,
-        description: newGalleryImage.description || null,
-        order_index: maxOrder,
-      });
+    const { error } = await supabase.from("gallery_images").insert({
+      page_type: galleryPageType,
+      image_url: newGalleryImage.image_url,
+      media_type: newGalleryImage.media_type,
+      title: newGalleryImage.title || null,
+      description: newGalleryImage.description || null,
+      order_index: maxOrder,
+    });
 
     if (error) {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
@@ -228,10 +224,7 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
   const handleDeleteMedia = async (id: string) => {
     if (!window.confirm("¿Seguro que deseas eliminar este media?")) return;
 
-    const { error } = await supabase
-      .from('gallery_images')
-      .delete()
-      .eq('id', id);
+    const { error } = await supabase.from("gallery_images").delete().eq("id", id);
 
     if (error) {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
@@ -242,10 +235,7 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
   };
 
   const handleUpdateOrder = async (id: string, newOrder: number) => {
-    const { error } = await supabase
-      .from('gallery_images')
-      .update({ order_index: newOrder })
-      .eq('id', id);
+    const { error } = await supabase.from("gallery_images").update({ order_index: newOrder }).eq("id", id);
 
     if (!error) {
       fetchAllMedia();
@@ -309,22 +299,13 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
                 <div className="space-y-2">
                   <Label>Vista previa</Label>
                   <div className="w-full max-w-md aspect-video bg-muted rounded overflow-hidden">
-                    <video 
-                      src={heroVideoUrl} 
-                      className="w-full h-full object-cover" 
-                      muted 
-                      autoPlay 
-                      loop 
-                      playsInline
-                    />
+                    <video src={heroVideoUrl} className="w-full h-full object-cover" muted autoPlay loop playsInline />
                   </div>
                 </div>
               )}
 
               <Button onClick={handleSaveHeroVideo} variant="hero" disabled={savingHero}>
-                {savingHero ? (
-                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                ) : null}
+                {savingHero ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                 {savingHero ? "Guardando..." : "Guardar Video del Hero"}
               </Button>
             </div>
@@ -339,9 +320,7 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
             <ImageIcon className="h-5 w-5" />
             Imágenes de la Galería - {spaceName}
           </CardTitle>
-          <CardDescription>
-            Imágenes destacadas que se muestran en la página del espacio
-          </CardDescription>
+          <CardDescription>Imágenes destacadas que se muestran en la página del espacio</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Add New Gallery Image Form */}
@@ -350,9 +329,9 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2 md:col-span-2">
                 <Label>Tipo de Media</Label>
-                <Select 
+                <Select
                   value={newGalleryImage.media_type}
-                  onValueChange={(v) => setNewGalleryImage({ ...newGalleryImage, media_type: v as 'image' | 'video' })}
+                  onValueChange={(v) => setNewGalleryImage({ ...newGalleryImage, media_type: v as "image" | "video" })}
                 >
                   <SelectTrigger className="w-[200px]">
                     <SelectValue />
@@ -368,9 +347,9 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
                 <Label>Imagen o Video *</Label>
                 <div className="flex gap-2">
                   <div className="flex-1">
-                    {newGalleryImage.media_type === 'image' ? (
-                      <StorageImageSelector 
-                        value={newGalleryImage.image_url} 
+                    {newGalleryImage.media_type === "image" ? (
+                      <StorageImageSelector
+                        value={newGalleryImage.image_url}
                         onChange={(url) => setNewGalleryImage({ ...newGalleryImage, image_url: url })}
                         placeholder="Seleccionar imagen del storage..."
                       />
@@ -385,7 +364,7 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
                   <input
                     ref={fileInputRef}
                     type="file"
-                    accept={newGalleryImage.media_type === 'video' ? "video/mp4,video/webm,video/mov" : "image/*"}
+                    accept={newGalleryImage.media_type === "video" ? "video/mp4,video/webm,video/mov" : "image/*"}
                     onChange={handleFileUpload}
                     className="hidden"
                   />
@@ -407,7 +386,7 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
 
               <div className="space-y-2">
                 <Label>Título (opcional)</Label>
-                <Input 
+                <Input
                   value={newGalleryImage.title}
                   onChange={(e) => setNewGalleryImage({ ...newGalleryImage, title: e.target.value })}
                   placeholder="Título"
@@ -415,7 +394,7 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
               </div>
               <div className="space-y-2">
                 <Label>Descripción (opcional)</Label>
-                <Input 
+                <Input
                   value={newGalleryImage.description}
                   onChange={(e) => setNewGalleryImage({ ...newGalleryImage, description: e.target.value })}
                   placeholder="Descripción"
@@ -435,10 +414,10 @@ export const GalleryMediaManager = ({ spaceSlug, spaceName, spaceId }: GalleryMe
             ) : (
               galleryImages.map((item) => (
                 <div key={item.id} className="relative group aspect-square bg-muted rounded overflow-hidden">
-                  {item.media_type === 'video' ? (
+                  {item.media_type === "video" ? (
                     <video src={item.image_url} className="w-full h-full object-cover" muted />
                   ) : (
-                    <img src={item.image_url} alt={item.title || ''} className="w-full h-full object-cover" />
+                    <img src={item.image_url} alt={item.title || ""} className="w-full h-full object-cover" />
                   )}
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                     <Input
