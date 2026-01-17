@@ -93,7 +93,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
 
         {/* Right Column: Vertical Video - Full Width and Height */}
         {space.video_url ? (
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full overflow-hidden">
             <video
               src={space.video_url}
               className="w-full h-full object-cover"
