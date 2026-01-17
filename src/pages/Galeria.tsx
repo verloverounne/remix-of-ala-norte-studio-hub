@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { Space } from "@/types/supabase";
 import Viewer360 from "@/components/Viewer360";
-import { VideoHeroSlider } from "@/components/VideoHeroSlider";
+import { GalleryHero } from "@/components/GalleryHero";
 import { ProductionsSlider } from "@/components/ProductionsSlider";
 
 const Galeria = () => {
@@ -52,8 +52,8 @@ const Galeria = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section with Video Slider */}
-      <VideoHeroSlider pageType="galeria_hero" space={space} />
+      {/* Hero Section with 2 Column Layout */}
+      <GalleryHero space={space} />
 
       {/* Features Section */}
       {space.features && space.features.length > 0 && (
@@ -200,7 +200,7 @@ const Galeria = () => {
           <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4">
             ¿LISTO PARA RESERVAR TU BLOQUE?
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading">
+          <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading leading-tight">
             CONTACTANOS PARA CONOCER DISPONIBILIDAD Y COORDINAR TU PRODUCCIÓN.
           </p>
           <Button variant="hero" size="lg" asChild>

@@ -166,7 +166,7 @@ const Cartoni = () => {
                 <br />
                 <span className="text-primary">OFICIAL CARTONI</span>
               </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground font-heading mb-8">
+              <p className="text-sm md:text-base text-muted-foreground font-heading mb-8 leading-tight">
                 ALA NORTE ES REPRESENTANTE OFICIAL DE CARTONI EN ARGENTINA
               </p>
               <div className="flex flex-wrap justify-center gap-4">
@@ -193,7 +193,7 @@ const Cartoni = () => {
         <div className="container mx-auto px-4">
           <div className="mb-12">
             <h2 className="font-heading text-3xl md:text-5xl mb-4">NUESTROS SERVICIOS</h2>
-            <p className="text-lg text-muted-foreground font-heading">
+            <p className="text-sm text-muted-foreground font-heading leading-tight">
               COMO DEALER OFICIAL OFRECEMOS SERVICIOS COMPLETOS
             </p>
           </div>
@@ -241,23 +241,23 @@ const Cartoni = () => {
           <div className="max-w-4xl mx-auto">
             <div className="mb-12">
               <h2 className="font-heading text-3xl md:text-5xl mb-4">SOBRE CARTONI</h2>
-              <p className="text-lg text-muted-foreground font-heading">
+              <p className="text-sm text-muted-foreground font-heading leading-tight">
                 EXCELENCIA ITALIANA DESDE 1935
               </p>
             </div>
 
             <div className="prose prose-lg max-w-none text-foreground">
-              <p className="text-lg mb-6">
+              <p className="text-sm mb-6 leading-tight">
                 <strong>Cartoni</strong> es una empresa italiana fundada en 1935, reconocida mundialmente
                 por fabricar los mejores soportes de cámara profesionales del mercado. Sus productos
                 son utilizados en las producciones cinematográficas y televisivas más importantes del mundo.
               </p>
-              <p className="text-lg mb-6">
+              <p className="text-sm mb-6 leading-tight">
                 Con casi 90 años de experiencia, Cartoni combina la tradición artesanal italiana con
                 la más avanzada tecnología para crear trípodes y cabezales que ofrecen precisión,
                 suavidad y durabilidad incomparables.
               </p>
-              <p className="text-lg">
+              <p className="text-sm leading-tight">
                 Como <strong>Seller y Service Oficial</strong> en Argentina, Ala Norte garantiza el
                 acceso a productos originales, precios competitivos y servicio técnico especializado
                 para toda la línea Cartoni.
@@ -272,7 +272,7 @@ const Cartoni = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="font-heading text-3xl md:text-5xl mb-8">CONTACTANOS</h2>
-            <p className="text-lg text-muted-foreground mb-8">
+            <p className="text-sm text-muted-foreground mb-8 leading-tight">
               Para consultas sobre productos Cartoni, cotizaciones o servicio técnico
             </p>
 

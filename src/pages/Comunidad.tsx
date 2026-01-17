@@ -173,7 +173,7 @@ const Comunidad = () => {
             <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-4 sm:mb-6 tracking-tight">
               DESDE EL NORTE HASTA EL SUR, JUNTOS HACEMOS CINE
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
+            <p className="text-sm sm:text-base md:text-sm text-muted-foreground leading-tight">
               Somos una red federal de creadores audiovisuales. Conectamos talento, compartimos proyectos y construimos la industria del futuro.
             </p>
             <p className="text-xs text-muted-foreground/60 mt-4">
@@ -419,7 +419,7 @@ const Comunidad = () => {
             <h2 className="font-heading text-3xl md:text-4xl mb-6">
               COMPARTÍ TU PROYECTO CON NOSOTROS
             </h2>
-            <p className="text-lg mb-8 text-muted-foreground">
+            <p className="text-sm mb-8 text-muted-foreground leading-tight">
               ¿Hiciste algo increíble con nuestro equipo? Queremos conocer tu historia y compartirla con la comunidad.
             </p>
             <Button asChild size="lg" className="font-heading">

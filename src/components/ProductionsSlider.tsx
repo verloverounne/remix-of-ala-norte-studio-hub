@@ -54,7 +54,7 @@ export const ProductionsSlider = () => {
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">
             PRODUCCIONES EN ALA NORTE
           </h2>
-          <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-heading">
+          <p className="text-sm sm:text-base lg:text-sm text-muted-foreground font-heading leading-tight">
             PROYECTOS REALIZADOS EN NUESTRA GALERÍA DE FILMACIÓN
           </p>
         </div>

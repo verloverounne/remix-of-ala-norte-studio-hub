@@ -41,7 +41,7 @@ export const ServiceSection = forwardRef<HTMLElement, ServiceSectionProps>(({
               </h2>
             </div>
             
-            {description && <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+            {description && <p className="text-sm sm:text-base text-muted-foreground leading-tight">
                 {description}
               </p>}
 

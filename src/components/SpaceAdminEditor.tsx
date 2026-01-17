@@ -95,7 +95,8 @@ export const SpaceAdminEditor = () => {
       location: editingSpace.location,
       featured_image: editingSpace.featured_image,
       tour_360_url: editingSpace.tour_360_url,
-      cta_text: editingSpace.cta_text
+      cta_text: editingSpace.cta_text,
+      video_url: editingSpace.video_url
     }).eq('id', editingSpace.id);
 
     setSaving(false);
@@ -401,6 +402,15 @@ export const SpaceAdminEditor = () => {
                     placeholder="/images/360-studio.jpg"
                   />
                   <p className="text-xs text-muted-foreground">Ruta a la imagen 360° o URL externa del tour</p>
+                </div>
+                <div className="space-y-2">
+                  <Label>URL del Video Vertical (Hero Galería)</Label>
+                  <Input 
+                    value={editingSpace.video_url || ''} 
+                    onChange={(e) => updateEditingField('video_url', e.target.value)}
+                    placeholder="https://ejemplo.com/video.mp4"
+                  />
+                  <p className="text-xs text-muted-foreground">URL del video vertical para el hero de la galería (formato 9:16)</p>
                 </div>
               </CardContent>
             </Card>

@@ -212,7 +212,7 @@ const SalaGrabacion = () => {
           <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4">
             ¿QUERÉS RESERVAR NUESTRA SALA?
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading">
+          <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading leading-tight">
             CONTACTANOS PARA CONOCER DISPONIBILIDAD Y TARIFAS ESPECIALES PARA TU PRODUCCIÓN.
           </p>
           <Button variant="hero" size="lg" asChild>

@@ -34,7 +34,7 @@ const FeaturedEquipmentSection = ({
         <div ref={headerParallax.ref as any} style={headerParallax.style} className="container mx-auto px-4 mb-8 sm:mb-12">
           <div>
             <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-2 sm:mb-4">RENTAL DESTACADO</h2>
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-heading">
+            <p className="text-sm sm:text-base lg:text-sm text-muted-foreground font-heading leading-tight">
               TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
             </p>
           </div>
@@ -110,7 +110,7 @@ const CTASection = () => {
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-4 sm:mb-6 lg:mb-8">
             ¿Estás por encarar un rodaje?
           </h2>
-          <p className="text-base sm:text-lg lg:text-2xl mb-6 sm:mb-8 lg:mb-12 font-heading">
+          <p className="text-sm sm:text-base lg:text-sm mb-6 sm:mb-8 lg:mb-12 font-heading leading-tight">
             Contanos qué querés filmar y armamos una propuesta de equipamiento a medida.
           </p>
           <Button asChild variant="outline" size="lg" className="bg-background text-foreground">
@@ -145,7 +145,7 @@ const CartoniSection = () => {
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mb-4">
               SELLER & SERVICE <span className="text-primary">OFICIAL CARTONI</span>
             </h2>
-            <p className="text-lg text-muted-foreground mb-6 max-w-2xl">
+            <p className="text-sm text-muted-foreground mb-6 max-w-2xl leading-tight">
               Ala Norte es representante oficial de Cartoni en Argentina. Venta, reparación y mantenimiento de
               trípodes y cabezales profesionales con garantía y repuestos originales.
             </p>

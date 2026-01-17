@@ -85,7 +85,7 @@ const Blog = () => {
             <h1 className="font-heading text-4xl md:text-6xl mb-6 tracking-tight">
               BLOG ALA NORTE
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8">
+            <p className="text-sm md:text-base text-muted-foreground mb-8 leading-tight">
               Consejos técnicos, entrevistas, behind the scenes y todo lo que necesitás saber sobre producción audiovisual.
             </p>
             

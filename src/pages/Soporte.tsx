@@ -125,7 +125,7 @@ const Soporte = () => {
             <h1 className="font-heading text-4xl md:text-6xl mb-6 tracking-tight">
               CENTRO DE SOPORTE
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8">
+            <p className="text-sm md:text-base text-muted-foreground mb-8 leading-tight">
               Encontrá respuestas rápidas a tus preguntas sobre alquiler, seguros, envíos y más.
             </p>
             
@@ -249,7 +249,7 @@ const Soporte = () => {
             <h2 className="font-heading text-3xl md:text-4xl mb-6">
               ¿NO ENCONTRASTE LO QUE BUSCABAS?
             </h2>
-            <p className="text-lg mb-8 text-muted-foreground">
+            <p className="text-sm mb-8 text-muted-foreground leading-tight">
               Nuestro equipo de soporte está disponible para ayudarte. Escribinos y te respondemos en minutos.
             </p>
             <Button asChild size="lg" className="font-heading">

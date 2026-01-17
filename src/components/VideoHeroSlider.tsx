@@ -146,7 +146,7 @@ const HeroContent = ({ space }: { space: Space }) => (
     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4 text-left">
       {space.hero_title || space.name}
     </h1>
-    <p className="text-lg sm:text-xl md:text-2xl max-w-2xl mb-6 font-heading text-muted-foreground text-left">
+    <p className="text-sm sm:text-base md:text-sm max-w-2xl mb-6 font-heading text-muted-foreground text-left leading-tight">
       {space.hero_subtitle || space.description}
     </p>
     

@@ -96,6 +96,7 @@ export interface Space {
   featured_image: string | null;
   tour_360_url: string | null;
   cta_text: string | null;
+  video_url: string | null;
 }
 
 export interface Quote {

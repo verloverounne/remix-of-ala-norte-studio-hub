@@ -73,7 +73,7 @@ const Nosotros = () => {
             <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-4 sm:mb-6 tracking-tight">
               Un estudio pensado para realizadores
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
+            <p className="text-sm sm:text-base md:text-sm text-muted-foreground leading-tight">
               ALA NORTE nace del trabajo en rodajes reales. Sabemos lo que pasa en set y qué se necesita para llegar con tranquilidad al día de filmación.
             </p>
           </div>
@@ -88,13 +88,13 @@ const Nosotros = () => {
               Más que equipo, acompañamiento
             </h2>
             <div className="prose prose-lg max-w-none">
-              <p className="text-lg text-muted-foreground mb-4">
+              <p className="text-sm text-muted-foreground mb-4 leading-tight">
                 No solo alquilamos equipamiento audiovisual. Nos interesa entender tu proyecto, sugerir alternativas y ayudarte a tomar decisiones técnicas con criterio.
               </p>
-              <p className="text-lg text-muted-foreground mb-4">
+              <p className="text-sm text-muted-foreground mb-4 leading-tight">
                 Trabajamos con personas que están empezando y con equipos con experiencia. Lo importante es que tengas una historia que quieras contar.
               </p>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-sm text-muted-foreground leading-tight">
                 Te ayudamos a elegir el equipo que mejor se adapta a tu proyecto, a tu presupuesto y a tu forma de trabajar. Podés consultarnos antes, durante y después del rodaje.
               </p>
             </div>

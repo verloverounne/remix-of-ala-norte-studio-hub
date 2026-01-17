@@ -55,7 +55,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
             <h3 className="font-heading text-2xl mt-2 uppercase leading-tight">{service.title}</h3>
           </div>
           {service.description && (
-            <p className="text-base text-muted-foreground mb-6 leading-relaxed">{service.description}</p>
+            <p className="text-sm text-muted-foreground mb-6 leading-tight">{service.description}</p>
           )}
           {service.button_text && service.button_link && (
             <Button asChild variant="default" size="lg">
@@ -86,7 +86,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
               </div>
 
               {service.description && (
-                <p className="text-xl text-muted-foreground mb-8 leading-relaxed max-w-xl">{service.description}</p>
+                <p className="text-sm text-muted-foreground mb-8 leading-tight max-w-xl">{service.description}</p>
               )}
 
               {service.button_text && service.button_link && (
