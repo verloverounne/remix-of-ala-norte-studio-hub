@@ -221,7 +221,7 @@ export const HomeVideoHeroSlider = () => {
   const hasVideos = slides.some((s) => s.media_type === "video" && s.media_url);
 
   return (
-    <section className="relative min-h-[500px] lg:min-h-[700px] overflow-hidden border-b-4 border-foreground">
+    <section className="relative w-full h-screen overflow-hidden border-b-4 border-foreground">
       <Carousel className="w-full h-full" setApi={setApi} opts={{ loop: true }}>
         <CarouselContent className="h-full -ml-0">
           {slides.map((slide, index) => (
