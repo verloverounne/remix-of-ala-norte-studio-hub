@@ -8,8 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ImageUploader } from "@/components/ImageUploader";
+import { GalleryMediaManager } from "@/components/GalleryMediaManager";
 import { useToast } from "@/hooks/use-toast";
-import { Save, Edit, X, Calendar as CalendarIcon, MapPin, Clock, DollarSign, Ruler, List, Settings } from "lucide-react";
+import { Save, Edit, X, Calendar as CalendarIcon, MapPin, Clock, DollarSign, Ruler, List, Settings, GalleryHorizontal } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
@@ -170,12 +171,16 @@ export const SpaceAdminEditor = () => {
         </div>
 
         <Tabs defaultValue="hero" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="hero">Hero</TabsTrigger>
             <TabsTrigger value="pricing">Precios</TabsTrigger>
             <TabsTrigger value="features">Características</TabsTrigger>
             <TabsTrigger value="layout">Layout</TabsTrigger>
             <TabsTrigger value="images">Imágenes</TabsTrigger>
+            <TabsTrigger value="media" className="flex items-center gap-1">
+              <GalleryHorizontal className="h-3 w-3" />
+              Media
+            </TabsTrigger>
             <TabsTrigger value="availability">Disponibilidad</TabsTrigger>
           </TabsList>
 
@@ -442,6 +447,14 @@ export const SpaceAdminEditor = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Media Tab - Gallery Management */}
+          <TabsContent value="media" className="space-y-4">
+            <GalleryMediaManager 
+              spaceSlug={editingSpace.slug === 'galeria' ? 'galeria' : 'sala-grabacion'}
+              spaceName={editingSpace.name}
+            />
           </TabsContent>
 
           {/* Availability Tab */}

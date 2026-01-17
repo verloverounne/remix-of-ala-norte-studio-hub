@@ -12,7 +12,7 @@ import { StorageImageSelector } from "@/components/StorageImageSelector";
 
 interface GalleryImage {
   id: string;
-  page_type: 'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental' | 'producciones' | 'galeria_hero' | 'sala_grabacion_hero' | 'home_hero';
+  page_type: 'home' | 'servicios' | 'hero_rental' | 'producciones' | 'home_hero';
   image_url: string;
   media_type: 'image' | 'video';
   title: string | null;
@@ -35,7 +35,7 @@ interface GalleryManagerProps {
 export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedPageType, setSelectedPageType] = useState<'galeria' | 'sala_grabacion' | 'home' | 'servicios' | 'hero_rental' | 'producciones' | 'galeria_hero' | 'sala_grabacion_hero' | 'home_hero'>('galeria');
+  const [selectedPageType, setSelectedPageType] = useState<'home' | 'servicios' | 'hero_rental' | 'producciones' | 'home_hero'>('home_hero');
   const [newImage, setNewImage] = useState({
     image_url: "",
     media_type: "image" as 'image' | 'video',
@@ -229,21 +229,15 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
   };
 
   const pageTypeLabels = {
-    galeria: 'Galería',
-    sala_grabacion: 'Sala de Grabación',
     home: 'Home - Slider Institucional',
     servicios: 'Servicios - Slider',
     hero_rental: 'Hero Rental - Equipos',
     producciones: 'Producciones en Ala Norte',
-    galeria_hero: 'Galería - Hero Videos',
-    sala_grabacion_hero: 'Sala Grabación - Hero Videos',
     home_hero: 'Home - Hero Principal (3 Slides)',
   };
 
   const pageTypeDescriptions: Record<string, string> = {
     home_hero: '⚡ Cada slide usa: Título = título grande, Descripción = subtítulo. El orden debe ser 0, 1, 2 para las 3 slides (Rental, Galería, Sala). Soporta imágenes y videos MP4.',
-    galeria_hero: 'Videos o imágenes para el hero de la página Galería.',
-    sala_grabacion_hero: 'Videos o imágenes para el hero de la página Sala de Grabación.',
   };
 
   return (
@@ -267,14 +261,10 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="home_hero">Home - Hero Videos</SelectItem>
-                  <SelectItem value="galeria_hero">Galería - Hero Videos</SelectItem>
-                  <SelectItem value="sala_grabacion_hero">Sala Grabación - Hero Videos</SelectItem>
                   <SelectItem value="producciones">Producciones en Ala Norte</SelectItem>
                   <SelectItem value="hero_rental">Hero Rental - Equipos</SelectItem>
                   <SelectItem value="home">Home - Slider Institucional</SelectItem>
                   <SelectItem value="servicios">Servicios - Slider</SelectItem>
-                  <SelectItem value="galeria">Galería (imágenes)</SelectItem>
-                  <SelectItem value="sala_grabacion">Sala de Grabación (imágenes)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -357,7 +347,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
             </div>
             
             {/* Video Vertical - Solo para videos en sliders hero */}
-            {newImage.media_type === 'video' && (selectedPageType === 'home_hero' || selectedPageType === 'galeria_hero' || selectedPageType === 'sala_grabacion_hero') && (
+            {newImage.media_type === 'video' && selectedPageType === 'home_hero' && (
               <div className="space-y-2 md:col-span-2">
                 <Label>Video Vertical (Mobile/Tablet) - Opcional</Label>
                 <p className="text-xs text-muted-foreground mb-2">
@@ -522,7 +512,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
                       />
                     </div>
                     {/* Video Vertical - Solo para videos en sliders hero */}
-                    {img.media_type === 'video' && (selectedPageType === 'home_hero' || selectedPageType === 'galeria_hero' || selectedPageType === 'sala_grabacion_hero') && (
+                    {img.media_type === 'video' && selectedPageType === 'home_hero' && (
                       <div className="flex items-center gap-2 md:col-span-3">
                         <Label className="text-xs text-muted-foreground whitespace-nowrap">Video Vertical (Mobile/Tablet):</Label>
                         <Input 
