@@ -952,6 +952,7 @@ export type Database = {
           surface_area: string | null
           tour_360_url: string | null
           updated_at: string
+          video_url: string | null
         }
         Insert: {
           amenities?: Json | null
@@ -984,6 +985,7 @@ export type Database = {
           surface_area?: string | null
           tour_360_url?: string | null
           updated_at?: string
+          video_url?: string | null
         }
         Update: {
           amenities?: Json | null
@@ -1016,6 +1018,7 @@ export type Database = {
           surface_area?: string | null
           tour_360_url?: string | null
           updated_at?: string
+          video_url?: string | null
         }
         Relationships: []
       }
