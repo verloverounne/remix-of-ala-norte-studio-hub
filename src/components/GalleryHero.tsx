@@ -11,7 +11,8 @@ interface GalleryHeroProps {
 export const GalleryHero = ({ space }: GalleryHeroProps) => {
   const [muted, setMuted] = useState(true);
   const [api, setApi] = useState<CarouselApi>();
-  <section className="relative min-h-screen pt-16 lg:pt-0 flex items-center bg-background">
+  return (
+    <section className="relative min-h-screen pt-16 lg:pt-0 flex items-center bg-background">
     {" "}
     {/* Desktop: 2 Column Layout */}
     <div className="hidden lg:grid lg:grid-cols-2 lg:gap-8 w-full h-screen">
@@ -201,5 +202,6 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
         </div>
       )}
     </div>
-  </section>;
+    </section>
+  );
 };
