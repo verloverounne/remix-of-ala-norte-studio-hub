@@ -454,6 +454,7 @@ export const SpaceAdminEditor = () => {
             <GalleryMediaManager 
               spaceSlug={editingSpace.slug === 'galeria' ? 'galeria' : 'sala-grabacion'}
               spaceName={editingSpace.name}
+              spaceId={editingSpace.id}
             />
           </TabsContent>
 
