@@ -30,7 +30,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                 <span className="text-2xl sm:text-3xl font-bold font-heading">
                   ${(space.block_price || space.price)?.toLocaleString()}
                 </span>
-                <span className="text-sm opacity-80">/ bloque {space.block_hours || 4}hs</span>
+                <span className="text-2x1 opacity-100">/ bloque {space.block_hours || 4}hs</span>
               </div>
             </div>
             <div className="flex flex-wrap gap-4 items-center">
