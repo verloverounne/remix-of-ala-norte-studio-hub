@@ -111,9 +111,18 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted, parallaxOffset }: H
     <CarouselItem className="h-full pl-0">
       {/* Desktop: 2 columnas con video parallax */}
       <div className="hidden md:grid md:grid-cols-2 h-screen bg-foreground">
-        {/* Columna izquierda: Texto con fondo oscuro y márgenes externos */}
-        <div className="flex flex-col justify-center mx-8 lg:mx-16">
-          <h1 className="text-background text-6xl lg:text-8xl font-bold mb-4">{slide.title}</h1>
+        {/* Columna izquierda: Texto con fondo oscuro y padding simétrico */}
+        <div className="flex flex-col justify-center pl-8 pr-8 lg:pl-16 lg:pr-16">
+          <h1 
+            className="text-background font-bold mb-4 break-words hyphens-none leading-tight"
+            style={{ 
+              fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+              wordBreak: 'break-word',
+              overflowWrap: 'break-word',
+            }}
+          >
+            {slide.title}
+          </h1>
           <p className="text-background text-xl mb-6">{slide.subtitle}</p>
           {slide.cta_label && slide.cta_link && (
             <Link to={slide.cta_link}>
