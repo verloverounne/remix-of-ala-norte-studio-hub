@@ -31,7 +31,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
     }
   };
   return (
-    <section className="relative min-h-screen pt-16 lg:pt-0 flex items-center bg-background">
+    <section className="relative min-h-screen pt-0 flex items-center bg-background">
       {" "}
       {/* Desktop: 2 Column Layout */}
       <div className="hidden lg:grid lg:grid-cols-2 lg:gap-8 w-full h-screen">
