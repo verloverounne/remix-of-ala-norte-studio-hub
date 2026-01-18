@@ -36,7 +36,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                 {space.hero_title || space.name}
               </h1>
               {space.location && (
-                <div className="flex items-center gap-2 bg-secondary px-4 py-2 rounded-lg">
+                <div className="flex items-left gap-2 bg-secondary px-4 py-2 rounded-lg">
                   <MapPin className="h-5 w-5" />
                   <span className="font-heading">{space.location}</span>
                 </div>
