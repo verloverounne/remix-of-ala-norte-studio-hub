@@ -71,7 +71,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               </div>
             )}
             <div>
-              <Button variant="hero" size="lg" asChild className="text-lg">
+              <Button variant="default" size="lg" asChild className="text-lg">
                 <Link to="/contacto">
                   <Calendar className="mr-2 h-5 w-5" />
                   {space.cta_text || "RESERVAR BLOQUE"}
