@@ -30,6 +30,7 @@ interface EquipmentModalProps {
   onAddToCart?: (item: EquipmentWithCategory) => void;
   getCartQuantity?: (id: string) => number;
   canAddMore?: (item: EquipmentWithCategory) => boolean;
+  onViewDetails?: (item: EquipmentWithCategory) => void;
 }
 
 export const EquipmentModal = ({ 
@@ -38,7 +39,8 @@ export const EquipmentModal = ({
   onOpenChange,
   onAddToCart,
   getCartQuantity,
-  canAddMore
+  canAddMore,
+  onViewDetails
 }: EquipmentModalProps) => {
   const [equipmentImages, setEquipmentImages] = useState<string[]>([]);
 
@@ -234,6 +236,7 @@ export const EquipmentModal = ({
             onAddToCart={onAddToCart}
             getCartQuantity={getCartQuantity}
             canAddMore={canAddMore}
+            onViewDetails={onViewDetails}
           />
         </div>
       </DialogContent>

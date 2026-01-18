@@ -335,6 +335,9 @@ const Equipos = () => {
         onAddToCart={handleAddToCart}
         getCartQuantity={getCartQuantity}
         canAddMore={canAddMore}
+        onViewDetails={(item) => {
+          setSelectedEquipment(item);
+        }}
       />
     </div>
   );
