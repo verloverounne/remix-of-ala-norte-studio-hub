@@ -402,8 +402,8 @@ All colors MUST be HSL.
 .video-duotone,
 .image-duotone {
   /* Convertir a escala de grises con alto contraste para mejor mapeo de luminosidad */
-  filter: grayscale(1) contrast(3) brightness(1);
-  transition: filter 0.3s ease;
+  filter: grayscale(1) contrast(1) brightness(1);
+  transition: filter 0.2s ease;
   position: relative;
 }
 
