@@ -66,8 +66,8 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               </div>
             )}
 
-            {/* Price and CTA with same width */}
-
+            {/* CTA Button */}
+            <div>
               <Button variant="default" size="lg" asChild className="text-lg w-full max-w-fit">
                 <Link to="/contacto">
                   <Calendar className="mr-2 h-5 w-5" />
