@@ -174,7 +174,7 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted, parallaxOffset }: H
               <video
                 ref={videoRef}
                 src={mediaUrl}
-                className="video-duotone absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover video-duotone"
                 style={getMobileVideoStyles()}
                 autoPlay
                 loop
@@ -186,7 +186,7 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted, parallaxOffset }: H
               <img
                 src={mediaUrl}
                 alt={slide.title}
-                className="image-duotone absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover image-duotone"
               />
             )
           ) : null}
