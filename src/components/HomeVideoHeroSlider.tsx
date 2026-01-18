@@ -132,17 +132,17 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
           )}
         </div>
 
-        {/* Columna derecha: Video con parallax - overflow visible en scroll */}
+        {/* Columna derecha: Video con parallax y duotono */}
         <div 
           ref={videoParallax.ref as any}
-          className="h-screen overflow-hidden relative"
+          className="h-screen overflow-hidden relative duotone-hover-group"
         >
           {hasMedia ? (
             slide.media_type === "video" ? (
               <video
                 ref={videoRef}
                 src={mediaUrl}
-                className="w-full object-cover"
+                className="video-duotone w-full object-cover"
                 style={{
                   height: '130%',
                   position: 'absolute',
@@ -160,7 +160,7 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
               <img 
                 src={mediaUrl} 
                 alt={slide.title} 
-                className="w-full object-cover"
+                className="image-duotone w-full object-cover"
                 style={{
                   height: '130%',
                   position: 'absolute',
