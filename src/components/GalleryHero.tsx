@@ -21,19 +21,10 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
         {/* Left Column: Text Content */}
         <div className="container mx-auto px-4 lg:px-8 flex items-center">
           <div className="space-y-6 w-full">
-            <Badge variant="secondary" className="text-lg px-4 py-2">
+            {/* <Badge variant="secondary" className="text-lg px-4 py-2">
               <Clock className="mr-2 h-4 w-4" />
               BLOQUES DE {space.block_hours || 4}HS
-            </Badge>
-
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold">
-              {space.hero_title || space.name}
-            </h1>
-
-            <p className="text-sm sm:text-base md:text-sm max-w-2xl font-heading text-muted-foreground leading-tight">
-              {space.hero_subtitle || space.description}
-            </p>
-
+            </Badge>*/}
             <div className="flex flex-wrap gap-4 items-center">
               <div className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg">
                 <span className="text-2xl sm:text-3xl font-bold font-heading">
@@ -41,6 +32,14 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                 </span>
                 <span className="text-sm opacity-80">/ bloque {space.block_hours || 4}hs</span>
               </div>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold">
+                {space.hero_title || space.name}
+              </h1>
+
+              <p className="text-sm sm:text-base md:text-sm max-w-2xl font-heading text-muted-foreground leading-tight">
+                {space.hero_subtitle || space.description}
+              </p>
+
               {/* /{space.surface_area && (
                 <div className="flex items-center gap-2 bg-secondary px-4 py-2 rounded-lg">
                   <Ruler className="h-5 w-5" />
