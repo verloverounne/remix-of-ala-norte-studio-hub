@@ -104,62 +104,87 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
 
   return (
     <CarouselItem className="h-full pl-0">
-      <div
-        className="relative duotone-hover-group"
-        style={{
-          width: isMobile ? "100vw" : "100%",
-          height: isMobile ? "100vh" : "100%",
-          overflow: "hidden",
-        }}
-      >
-        {hasMedia ? (
-          slide.media_type === "video" ? (
-            <video
-              ref={videoRef}
-              src={mediaUrl}
-              className="video-duotone absolute inset-0 w-full h-full object-cover"
-              style={getMobileVideoStyles()}
-              autoPlay
-              loop
-              muted={muted}
-              playsInline
-              onLoadedMetadata={handleLoadedMetadata}
-            />
-          ) : (
-            <img
-              src={mediaUrl}
-              alt={slide.title}
-              className="image-duotone absolute inset-0 w-full h-full object-cover"
-            />
-          )
-        ) : (
-          <div className="w-full h-full bg-foreground/95 flex items-center justify-center">
-            <div className="text-center text-background/40">
-              <p className="text-lg mb-2">Media placeholder</p>
-              <p className="text-sm">Sube imagen o video desde el admin en "Home - Hero Videos"</p>
-            </div>
-          </div>
-        )}
-
-        {/* Content overlay with parallax */}
-        <div
-          ref={contentParallax.ref as any}
-          style={contentParallax.style}
-          className="absolute inset-0 flex items-end z-10"
-        >
-          <div className="text-left p-4 sm:p-6 lg:p-8 pb-16 sm:pb-20 lg:pb-24 max-w-4xl">
-            <h2 className="text-background text-3xl sm:text-4xl md:text-5xl mb-2 sm:mb-4 font-bold drop-shadow-lg font-sans lg:text-8xl text-left">
-              {slide.title}
-            </h2>
-            <p className="font-heading text-background/90 text-lg sm:text-xl lg:text-4xl mb-6 sm:mb-8 drop-shadow-md md:text-lg font-normal text-left">
-              {slide.subtitle}
-            </p>
-            {slide.cta_label && slide.cta_link && (
-              <Button asChild variant="hero" size="lg" className="text-base sm:text-lg">
-                <Link to={slide.cta_link} className="border-0">
-                  {slide.cta_label}
-                </Link>
+      {/* Desktop: 2 columnas */}
+      <div className="hidden md:grid md:grid-cols-2 h-full">
+        {/* Columna izquierda: Texto con fondo oscuro y márgenes externos */}
+        <div className="bg-foreground flex flex-col justify-center mx-8 lg:mx-16">
+          <h2 className="text-background text-4xl font-bold mb-4">{slide.title}</h2>
+          <p className="text-background text-xl mb-6">{slide.subtitle}</p>
+          {slide.cta_label && slide.cta_link && (
+            <Link to={slide.cta_link}>
+              <Button variant="secondary" size="lg">
+                {slide.cta_label}
               </Button>
+            </Link>
+          )}
+        </div>
+
+        {/* Columna derecha: Video vertical sin márgenes */}
+        <div className="h-full overflow-hidden">
+          {hasMedia ? (
+            slide.media_type === "video" ? (
+              <video
+                ref={videoRef}
+                src={mediaUrl}
+                className="w-full h-full object-cover"
+                autoPlay
+                loop
+                muted={muted}
+                playsInline
+                onLoadedMetadata={handleLoadedMetadata}
+              />
+            ) : (
+              <img src={mediaUrl} alt={slide.title} className="w-full h-full object-cover" />
+            )
+          ) : null}
+        </div>
+      </div>
+
+      {/* Mobile: Mantener estructura actual con video/imagen de fondo y texto superpuesto */}
+      <div className="md:hidden h-full relative">
+        <div
+          className="relative duotone-hover-group"
+          style={{
+            width: isMobile ? "100vw" : "100%",
+            height: isMobile ? "100vh" : "100%",
+            overflow: "hidden",
+          }}
+        >
+          {hasMedia ? (
+            slide.media_type === "video" ? (
+              <video
+                ref={videoRef}
+                src={mediaUrl}
+                className="video-duotone absolute inset-0 w-full h-full object-cover"
+                style={getMobileVideoStyles()}
+                autoPlay
+                loop
+                muted={muted}
+                playsInline
+                onLoadedMetadata={handleLoadedMetadata}
+              />
+            ) : (
+              <img
+                src={mediaUrl}
+                alt={slide.title}
+                className="image-duotone absolute inset-0 w-full h-full object-cover"
+              />
+            )
+          ) : null}
+        </div>
+
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div
+            ref={contentParallax.ref as any}
+            style={contentParallax.style}
+            className="text-center text-background/40 px-8"
+          >
+            <h2 className="text-background text-3xl font-bold mb-2">{slide.title}</h2>
+            <p className="text-background text-lg mb-4">{slide.subtitle}</p>
+            {slide.cta_label && slide.cta_link && (
+              <Link to={slide.cta_link}>
+                <Button variant="secondary">{slide.cta_label}</Button>
+              </Link>
             )}
           </div>
         </div>
