@@ -19,7 +19,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
       {/* Desktop: 2 Column Layout */}
       <div className="hidden lg:grid lg:grid-cols-2 lg:gap-8 w-full h-screen">
         {/* Left Column: Text Content */}
-        <div className="container mx-auto px-4 lg:px-8 flex items-center">
+        <div className="container mx-auto px-4 lg:px-8 flex items-down">
           <div className="space-y-6 w-full">
             {/* <Badge variant="secondary" className="text-lg px-4 py-2">
               <Clock className="mr-2 h-4 w-4" />
