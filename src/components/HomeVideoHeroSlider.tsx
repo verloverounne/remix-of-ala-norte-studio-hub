@@ -107,12 +107,21 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
   const hasMedia = mediaUrl && mediaUrl.trim() !== "";
 
   return (
-    <CarouselItem className="h-full pl-0">
-      {/* Desktop: 2 columnas */}
-      <div className="hidden md:grid md:grid-cols-2 h-full bg-foreground">
-        {/* Columna izquierda: Texto con fondo oscuro y márgenes externos */}
-        <div className="flex flex-col justify-center mx-8 lg:mx-16">
-          <h1 className="text-background text-6xl lg:text-8xl font-bold mb-4">{slide.title}</h1>
+    <CarouselItem className="h-screen pl-0">
+      {/* Desktop: 2 columnas - contenedor 100vh */}
+      <div className="hidden md:grid md:grid-cols-2 h-screen bg-foreground">
+        {/* Columna izquierda: Texto llena 100% alto con padding simétrico */}
+        <div className="flex flex-col justify-center h-screen pl-8 pr-8 lg:pl-16 lg:pr-16">
+          <h1 
+            className="text-background font-bold mb-4 break-words hyphens-none leading-tight"
+            style={{ 
+              fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+              wordBreak: 'break-word',
+              overflowWrap: 'break-word',
+            }}
+          >
+            {slide.title}
+          </h1>
           <p className="text-background text-xl mb-6">{slide.subtitle}</p>
           {slide.cta_label && slide.cta_link && (
             <Link to={slide.cta_link}>
@@ -123,14 +132,24 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
           )}
         </div>
 
-        {/* Columna derecha: Video vertical sin márgenes */}
-        <div className="h-full overflow-hidden">
+        {/* Columna derecha: Video con parallax - overflow visible en scroll */}
+        <div 
+          ref={videoParallax.ref as any}
+          className="h-screen overflow-hidden relative"
+        >
           {hasMedia ? (
             slide.media_type === "video" ? (
               <video
                 ref={videoRef}
                 src={mediaUrl}
-                className="w-full h-full object-cover"
+                className="w-full object-cover"
+                style={{
+                  height: '130%',
+                  position: 'absolute',
+                  top: '0',
+                  left: '0',
+                  ...videoParallax.style,
+                }}
                 autoPlay
                 loop
                 muted={muted}
@@ -138,19 +157,30 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
                 onLoadedMetadata={handleLoadedMetadata}
               />
             ) : (
-              <img src={mediaUrl} alt={slide.title} className="w-full h-full object-cover" />
+              <img 
+                src={mediaUrl} 
+                alt={slide.title} 
+                className="w-full object-cover"
+                style={{
+                  height: '130%',
+                  position: 'absolute',
+                  top: '0',
+                  left: '0',
+                  ...videoParallax.style,
+                }}
+              />
             )
           ) : null}
         </div>
       </div>
 
-      {/* Mobile: Mantener estructura actual con video/imagen de fondo y texto superpuesto */}
-      <div className="md:hidden h-full relative">
+      {/* Mobile: layout horizontal con video/imagen de fondo */}
+      <div className="md:hidden h-screen relative">
         <div
           className="relative duotone-hover-group"
           style={{
-            width: isMobile ? "100vw" : "100%",
-            height: isMobile ? "100vh" : "100%",
+            width: "100vw",
+            height: "100vh",
             overflow: "hidden",
           }}
         >
@@ -248,9 +278,9 @@ export const HomeVideoHeroSlider = () => {
   const hasVideos = slides.some((s) => s.media_type === "video" && s.media_url);
 
   return (
-    <section className="relative min-h-screen overflow-hidden border-b-4 border-foreground">
-      <Carousel className="w-full h-full" setApi={setApi} opts={{ loop: true }}>
-        <CarouselContent className="h-full -ml-0">
+    <section className="relative h-screen overflow-hidden border-b-4 border-foreground">
+      <Carousel className="w-full h-screen" setApi={setApi} opts={{ loop: true }}>
+        <CarouselContent className="h-screen -ml-0">
           {slides.map((slide, index) => (
             <HeroSlideComponent
               key={slide.id}
