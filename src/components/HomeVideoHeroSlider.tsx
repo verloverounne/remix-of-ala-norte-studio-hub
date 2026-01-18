@@ -81,10 +81,10 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
   };
 
   // Use vertical video only on mobile/tablet in portrait; landscape uses horizontal video
-  const mediaUrl =
-    slide.media_type === "video" && isMobileOrTablet && !isLandscape && slide.vertical_video_url
-      ? slide.vertical_video_url
-      : slide.media_url;
+  // const mediaUrl =
+  //   slide.media_type === "video" && isMobileOrTablet && !isLandscape && slide.vertical_video_url
+  //     ? slide.vertical_video_url
+  //     : slide.media_url;
 
   const getMobileVideoStyles = (): React.CSSProperties => {
     if (!isMobile || !videoOrientation) return videoParallax.style;
@@ -112,7 +112,7 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
       <div className="hidden md:grid md:grid-cols-2 h-full bg-foreground">
         {/* Columna izquierda: Texto con fondo oscuro y márgenes externos */}
         <div className="flex flex-col justify-center mx-8 lg:mx-16">
-          <h1 className="text-background text-6xl lg:text-8xl font-bold mb-4">{slide.title}</h1>
+          <h1 className="text-background text-4xl lg:text-6xl font-bold mb-4">{slide.title}</h1>
           <p className="text-background text-xl mb-6">{slide.subtitle}</p>
           {slide.cta_label && slide.cta_link && (
             <Link to={slide.cta_link}>
@@ -123,14 +123,17 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
           )}
         </div>
 
-        {/* Columna derecha: Video vertical sin márgenes */}
-        <div className="h-full overflow-hidden">
+        {/* Columna derecha: Video/imagen siempre ocupa 100% alto del contenedor */}
+        <div className="relative h-full w-full overflow-hidden">
           {hasMedia ? (
             slide.media_type === "video" ? (
               <video
                 ref={videoRef}
                 src={mediaUrl}
-                className="w-full h-full object-cover"
+                className="absolute inset-0 min-w-full min-h-full object-cover"
+                style={{
+                  width: "100%",
+                }}
                 autoPlay
                 loop
                 muted={muted}
@@ -138,7 +141,15 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
                 onLoadedMetadata={handleLoadedMetadata}
               />
             ) : (
-              <img src={mediaUrl} alt={slide.title} className="w-full h-full object-cover" />
+              <img
+                src={mediaUrl}
+                alt={slide.title}
+                className="absolute inset-0 min-w-full min-h-full object-cover"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
             )
           ) : null}
         </div>
@@ -267,7 +278,7 @@ export const HomeVideoHeroSlider = () => {
       {hasVideos && (
         <button
           onClick={() => setMuted(!muted)}
-          className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm hover:bg-background/40 transition-colors"
+          className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm rounded-full hover:bg-background/40 transition-colors"
           aria-label={muted ? "Activar sonido" : "Silenciar"}
         >
           {muted ? <VolumeX className="h-5 w-5 text-background" /> : <Volume2 className="h-5 w-5 text-background" />}
