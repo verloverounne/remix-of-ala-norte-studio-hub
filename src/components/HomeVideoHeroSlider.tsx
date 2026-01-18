@@ -80,11 +80,9 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
     setVideoOrientation(video.videoWidth > video.videoHeight ? "horizontal" : "vertical");
   };
 
-  // Use vertical video only on mobile/tablet in portrait; landscape uses horizontal video
+  // Always use vertical video if available, otherwise use regular media_url
   const mediaUrl =
-    slide.media_type === "video" && isMobileOrTablet && !isLandscape && slide.vertical_video_url
-      ? slide.vertical_video_url
-      : slide.media_url;
+    slide.media_type === "video" && slide.vertical_video_url ? slide.vertical_video_url : slide.media_url;
 
   const getMobileVideoStyles = (): React.CSSProperties => {
     if (!isMobile || !videoOrientation) return videoParallax.style;
