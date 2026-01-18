@@ -30,6 +30,7 @@ interface RelatedEquipmentProps {
   onAddToCart?: (item: EquipmentWithCategory) => void;
   getCartQuantity?: (id: string) => number;
   canAddMore?: (item: EquipmentWithCategory) => boolean;
+  onViewDetails?: (item: EquipmentWithCategory) => void;
 }
 
 export const RelatedEquipment = ({
@@ -39,6 +40,7 @@ export const RelatedEquipment = ({
   onAddToCart: externalAddToCart,
   getCartQuantity: externalGetCartQuantity,
   canAddMore: externalCanAddMore,
+  onViewDetails,
 }: RelatedEquipmentProps) => {
   const [relatedItems, setRelatedItems] = useState<EquipmentWithCategory[]>([]);
   const [loading, setLoading] = useState(true);
@@ -174,12 +176,16 @@ export const RelatedEquipment = ({
                 {/* 1. Nombre del equipo - formateado sin uppercase */}
                 <h3 
                   className="font-heading text-xs sm:text-sm leading-tight pt-2 line-clamp-2 cursor-pointer hover:text-primary transition-colors h-[5em]"
+                  onClick={() => onViewDetails?.(item)}
                 >
                   {formatEquipmentName(item.name)}
                 </h3>
                 
                 {/* 2. Foto con badge */}
-                <div className="relative aspect-square cursor-pointer duotone-hover-group overflow-hidden">
+                <div 
+                  className="relative aspect-square cursor-pointer duotone-hover-group overflow-hidden"
+                  onClick={() => onViewDetails?.(item)}
+                >
                   {/* Cart quantity badge */}
                   <div className={cn(
                     "absolute bottom-2 right-2 z-10 rounded-none px-2 py-0.5 flex items-center justify-center font-heading text-[10px] sm:text-xs shadow-brutal-sm",
