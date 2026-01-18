@@ -11,25 +11,8 @@ interface GalleryHeroProps {
 export const GalleryHero = ({ space }: GalleryHeroProps) => {
   const [muted, setMuted] = useState(true);
   const [api, setApi] = useState<CarouselApi>();
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [isDuotoneActive, setIsDuotoneActive] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const handleVideoToggle = () => {
-    if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
-      if (videoRef.current) {
-        if (isVideoPlaying) {
-          videoRef.current.pause();
-          setIsVideoPlaying(false);
-          setIsDuotoneActive(true);
-        } else {
-          videoRef.current.play();
-          setIsVideoPlaying(true);
-          setIsDuotoneActive(false);
-        }
-      }
-    }
-  };
   return (
     <section className="relative min-h-screen pt-0 flex items-center bg-background">
       {" "}
@@ -93,10 +76,10 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
 
         {/* Right Column: Vertical Video - Full Width and Height */}
         {space.video_url ? (
-          <div className="relative w-full h-full overflow-hidden">
+          <div className="relative w-full h-full overflow-hidden duotone-hover-group">
             <video
               src={space.video_url}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover video-duotone"
               autoPlay
               loop
               muted={muted}
@@ -191,22 +174,15 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
             {space.video_url && (
               <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center justify-center">
                 <div className="relative w-full flex items-center justify-center">
-                  <div className="relative w-full max-w-sm">
+                  <div className="relative w-full max-w-sm duotone-hover-group">
                     <video
                       src={space.video_url}
-                      className="w-full object-contain"
+                      className="w-full object-contain video-duotone"
                       autoPlay
                       loop
                       muted={muted}
                       playsInline
                       ref={videoRef}
-                      onClick={handleVideoToggle}
-                      style={{
-                        filter:
-                          isDuotoneActive && ("ontouchstart" in window || navigator.maxTouchPoints > 0)
-                            ? "grayscale(100%) contrast(1.2)"
-                            : "none",
-                      }}
                     />
                     <button
                       onClick={() => setMuted(!muted)}
