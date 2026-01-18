@@ -96,15 +96,32 @@ export const Header = () => {
         />
       )}
       
+      {/* Mobile: Floating hamburger button only */}
+      {isMobile && (
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="fixed top-3 right-3 z-50 h-10 w-10 bg-background/80 backdrop-blur-sm border border-foreground shadow-brutal-sm"
+          aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+        >
+          {mobileMenuOpen ? (
+            <X className="h-5 w-5" />
+          ) : (
+            <Menu className="h-5 w-5" />
+          )}
+        </Button>
+      )}
+      
       <header 
         className={`fixed top-0 left-0 right-0 z-50 bg-background border-b border-foreground transition-transform duration-300 ${
-          isMobile || isVisible || isHovering ? 'translate-y-0' : '-translate-y-full'
+          isMobile ? (mobileMenuOpen ? 'translate-y-0' : '-translate-y-full') : (isVisible || isHovering ? 'translate-y-0' : '-translate-y-full')
         }`}
         onMouseEnter={!isMobile ? handleMouseEnter : undefined}
         onMouseLeave={!isMobile ? handleMouseLeave : undefined}
       >
       <nav className="container mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex h-8 sm:h-10 items-center justify-between">
+        <div className="flex h-10 lg:h-14 items-center justify-between">
           {/* Logo Brutal - hidden on mobile */}
           <Link to="/" className="hidden lg:flex items-center">
             <img 
@@ -218,20 +235,7 @@ export const Header = () => {
               </Button>
             )}
 
-            {/* Mobile menu button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden h-8 w-8"
-              aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
-            >
-              {mobileMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </Button>
+            {/* Mobile menu button - hidden, using floating button instead */}
           </div>
         </div>
 
