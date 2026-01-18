@@ -1,11 +1,12 @@
+import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Plus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 import type { EquipmentWithCategory } from "@/types/supabase";
-import { AvailabilityCalendar } from "./AvailabilityCalendar";
 import { RelatedEquipment } from "./RelatedEquipment";
 
 // Formatear nombre: primera letra mayúscula, resto minúsculas, siglas en mayúsculas
@@ -39,17 +40,47 @@ export const EquipmentModal = ({
   getCartQuantity,
   canAddMore
 }: EquipmentModalProps) => {
+  const [equipmentImages, setEquipmentImages] = useState<string[]>([]);
+
+  // Fetch images from equipment_images table
+  useEffect(() => {
+    if (!equipment?.id || !open) return;
+
+    const fetchEquipmentImages = async () => {
+      const { data, error } = await supabase
+        .from("equipment_images")
+        .select("image_url, order_index")
+        .eq("equipment_id", equipment.id)
+        .order("order_index");
+
+      if (!error && data && data.length > 0) {
+        setEquipmentImages(data.map(img => img.image_url));
+      } else {
+        setEquipmentImages([]);
+      }
+    };
+
+    fetchEquipmentImages();
+  }, [equipment?.id, open]);
+
   if (!equipment) return null;
 
-  // Combinar todas las imágenes: principal primero, luego las adicionales
+  // Combinar imágenes: equipment_images primero, luego principal, luego adicionales
   const allImages: string[] = [];
 
-  // Agregar imagen principal si existe
-  if (equipment.image_url) {
+  // Agregar imágenes de equipment_images table primero
+  equipmentImages.forEach((img) => {
+    if (img && !allImages.includes(img)) {
+      allImages.push(img);
+    }
+  });
+
+  // Agregar imagen principal si existe y no está duplicada
+  if (equipment.image_url && !allImages.includes(equipment.image_url)) {
     allImages.push(equipment.image_url);
   }
 
-  // Agregar imágenes adicionales (evitando duplicados)
+  // Agregar imágenes adicionales del campo images (evitando duplicados)
   if (Array.isArray(equipment.images)) {
     equipment.images.forEach((img) => {
       if (img && !allImages.includes(img)) {
@@ -194,25 +225,15 @@ export const EquipmentModal = ({
             </div>
           </div>
 
-          {/* Availability Calendar 
-          {equipment.status === 'available' && (
-            <>
-              <Separator className="my-6" />
-              <AvailabilityCalendar
-                equipmentId={equipment.id}
-                pricePerDay={equipment.price_per_day}
-                pricePerWeek={equipment.price_per_week || undefined}
-                equipmentName={equipment.name}
-              />
-            </>
-          )}
-
           {/* Related Equipment */}
           <Separator className="my-6" />
           <RelatedEquipment
             equipmentId={equipment.id}
             categoryId={equipment.category_id || undefined}
             subcategoryId={equipment.subcategory_id || undefined}
+            onAddToCart={onAddToCart}
+            getCartQuantity={getCartQuantity}
+            canAddMore={canAddMore}
           />
         </div>
       </DialogContent>
