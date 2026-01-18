@@ -65,7 +65,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               </div>
             )}
             {space.discount_text && (
-              <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 rounded-lg">
+              <div className="inline-flex items-center gap-20 border-2 border-primary px-4 py-2 rounded-lg">
                 <Sparkles className="h-5 w-5 text-primary" />
                 <span className="font-heading font-bold text-primary">{space.discount_text}</span>
               </div>
