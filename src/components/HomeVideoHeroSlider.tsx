@@ -100,7 +100,7 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
     // Portrait video (taller than wide): width 100%, height auto
     // Landscape video (wider than tall): height 100%, width auto (overflow hidden)
     return videoOrientation === "vertical"
-      ? { ...baseStyles, width: "100%", height: "auto", minHeight: "100vw" }
+      ? { ...baseStyles, width: "100vw", height: "auto", minHeight: "100%" }
       : { ...baseStyles, height: "100vh", width: "auto", minWidth: "100%" };
   };
 
@@ -267,7 +267,7 @@ export const HomeVideoHeroSlider = () => {
       {hasVideos && (
         <button
           onClick={() => setMuted(!muted)}
-          className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm rounded-full hover:bg-background/40 transition-colors"
+          className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm hover:bg-background/40 transition-colors"
           aria-label={muted ? "Activar sonido" : "Silenciar"}
         >
           {muted ? <VolumeX className="h-5 w-5 text-background" /> : <Volume2 className="h-5 w-5 text-background" />}
