@@ -26,7 +26,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               BLOQUES DE {space.block_hours || 4}HS
             </Badge>*/}
             <div className="flex flex-col gap-3 items-start">
-              <div className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg w-full max-w-fit">
+              <div className="flex items-center justify-center gap-2 bg-primary-foreground text-primary px-4 py-2 rounded-lg w-full max-w-fit">
                 <span className="text-2xl sm:text-3xl font-bold font-heading">
                   ${(space.block_price || space.price)?.toLocaleString()}
                 </span>
