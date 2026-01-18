@@ -12,6 +12,7 @@ import logo from "@/assets/logo-brutal.png";
 const WHATSAPP_NUMBER = "541147180732"; // +54 (11) 4718-0732
 
 const navigation = [
+  { name: "INICIO", href: "/" },
   { name: "RENTAL", href: "/equipos" },
   { name: "GALERÍA", href: "/galeria" },
   { name: "SALA", href: "/sala-grabacion" },
@@ -103,15 +104,15 @@ export const Header = () => {
         onMouseLeave={!isMobile ? handleMouseLeave : undefined}
       >
       <nav className="container mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex h-16 sm:h-20 items-center justify-between">
-          {/* Logo Brutal */}
-          <Link to="/" className="flex items-center">
+        <div className="flex h-8 sm:h-10 items-center justify-between">
+          {/* Logo Brutal - hidden on mobile */}
+          <Link to="/" className="hidden lg:flex items-center">
             <img 
               src={logo} 
               alt="Ala Norte" 
               width={48}
               height={51}
-              className="h-8 sm:h-10 md:h-12 w-auto object-contain" 
+              className="h-6 lg:h-8 w-auto object-contain" 
             />
           </Link>
 
@@ -134,8 +135,10 @@ export const Header = () => {
 
           {/* Actions Brutales */}
           <div className="flex flex-wrap items-center gap-1 sm:gap-2">
-            {/* Search */}
-            <SearchBar />
+            {/* Search - hidden on mobile */}
+            <div className="hidden lg:block">
+              <SearchBar />
+            </div>
 
             {/* WhatsApp Button */}
             <Button
@@ -220,7 +223,7 @@ export const Header = () => {
               variant="ghost"
               size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden h-10 w-10"
+              className="lg:hidden h-8 w-8"
               aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
             >
               {mobileMenuOpen ? (
