@@ -407,70 +407,13 @@ All colors MUST be HSL.
   position: relative;
 }
 
-/* Overlay tritone que mapea luminosidad a tres colores: background (altos), gray-dark (medios), foreground (bajos) */
-.duotone-hover-group::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  /* Mapeo tritone: tonos altos -> background, medios -> gray-dark, bajos -> foreground */
-  /* Usar un gradiente que mapee la luminosidad de la imagen debajo */
-  background: linear-gradient(
-    to bottom,
-    hsl(var(--tritone-high)) 0%,
-    hsl(var(--tritone-high)) 50%,
-    hsl(var(--tritone-mid)) 50%,
-    hsl(var(--tritone-mid)) 50.1%,
-    hsl(var(--tritone-low)) 50.1%,
-    hsl(var(--tritone-low)) 100%
-  );
-  /* Usar color para mapear basándose en la luminosidad de la imagen */
-  mix-blend-mode: color;
-  opacity: 1;
-  pointer-events: none;
-  z-index: 1;
-  transition: opacity 0.3s ease;
-}
-
-.dark .duotone-hover-group::before {
-  mix-blend-mode: color;
-  opacity: 1;
-  background: linear-gradient(
-    to bottom,
-    hsl(var(--tritone-high)) 0%,
-    hsl(var(--tritone-high)) 50%,
-    hsl(var(--tritone-mid)) 50%,
-    hsl(var(--tritone-mid)) 50.1%,
-    hsl(var(--tritone-low)) 50.1%,
-    hsl(var(--tritone-low)) 100%
-  );
-}
-
-/* Viñeta permanente del 15% con color #1e1319 */
-.duotone-hover-group::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at center, transparent 0%, transparent 50%, #1e1319 100%);
-  opacity: 0.25;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* Desktop hover = colores originales (también cuando hay overlays arriba del elemento) */
+/* Overlay removido - solo usamos escala de grises */
+/* Desktop hover = colores originales */
 .video-duotone:hover,
 .image-duotone:hover,
 .duotone-hover-group:hover .video-duotone,
-.duotone-hover-group:hover .image-duotone,
-.dark .video-duotone:hover,
-.dark .image-duotone:hover,
-.dark .duotone-hover-group:hover .video-duotone,
-.dark .duotone-hover-group:hover .image-duotone {
+.duotone-hover-group:hover .image-duotone {
   filter: none !important;
-}
-
-.duotone-hover-group:hover::before,
-.dark .duotone-hover-group:hover::before {
-  opacity: 0 !important;
 }
 
 /* Mobile tap override (via JS): cuando está activo, mostrar colores originales */
@@ -479,9 +422,4 @@ All colors MUST be HSL.
 .video-duotone.duotone-tap-active,
 .image-duotone.duotone-tap-active {
   filter: none !important;
-}
-
-.duotone-hover-group.duotone-tap-active::before,
-.dark .duotone-hover-group.duotone-tap-active::before {
-  opacity: 0 !important;
 }
