@@ -332,6 +332,9 @@ const Equipos = () => {
         equipment={selectedEquipment}
         open={modalOpen}
         onOpenChange={setModalOpen}
+        onAddToCart={handleAddToCart}
+        getCartQuantity={getCartQuantity}
+        canAddMore={canAddMore}
       />
     </div>
   );
