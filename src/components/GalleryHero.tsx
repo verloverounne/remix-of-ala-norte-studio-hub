@@ -62,6 +62,18 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               </div>
             )}
 
+            {/* Features inline - 2 columns, no borders */}
+            {space.features && Array.isArray(space.features) && space.features.length > 0 && (
+              <div className="grid grid-cols-2 gap-x-6 gap-y-1">
+                {(space.features as string[]).map((feature, index) => (
+                  <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
+                    <span className="text-primary">•</span>
+                    {feature}
+                  </p>
+                ))}
+              </div>
+            )}
+
             <div>
               <Button variant="hero" size="lg" asChild className="text-lg">
                 <Link to="/contacto">
@@ -155,6 +167,18 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                   <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 rounded-lg bg-transparent">
                     <Sparkles className="h-5 w-5 text-primary" />
                     <span className="font-heading font-bold text-primary">{space.discount_text}</span>
+                  </div>
+                )}
+
+                {/* Features inline - 2 columns, no borders */}
+                {space.features && Array.isArray(space.features) && space.features.length > 0 && (
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                    {(space.features as string[]).map((feature, index) => (
+                      <p key={index} className="text-xs text-muted-foreground font-heading flex items-start gap-2">
+                        <span className="text-primary">•</span>
+                        {feature}
+                      </p>
+                    ))}
                   </div>
                 )}
 
