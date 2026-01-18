@@ -1,12 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { LazyImage } from "@/components/LazyImage";
 import useEmblaCarousel from "embla-carousel-react";
-import type { EmblaCarouselType } from "embla-carousel";
 import { useParallax } from "@/hooks/useParallax";
 
 interface HomeService {
@@ -14,113 +12,159 @@ interface HomeService {
   title: string;
   description: string | null;
   image_url: string | null;
+  section_media_type: string | null;
+  section_video_url: string | null;
   button_text: string | null;
   button_link: string | null;
   order_index: number;
   is_active: boolean;
 }
 
-// Componente para cada slide de servicio con parallax
+// Componente para cada slide de servicio con layout hero-like
 interface ServiceSlideProps {
   service: HomeService;
   index: number;
 }
 
 const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
-  // Parallax para la imagen (se mueve más lento)
-  const imageParallax = useParallax({ speed: 0.8, direction: "up" });
-  // Parallax para el texto (se mueve más rápido)
-  const textParallax = useParallax({ speed: 0.5, direction: "down" });
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const mediaParallax = useParallax({ speed: 0.6, direction: "up" });
+
+  const isVideo = service.section_media_type === "video" && service.section_video_url;
+  const mediaUrl = isVideo ? service.section_video_url : service.image_url;
+  const hasMedia = mediaUrl && mediaUrl.trim() !== "";
 
   return (
     <div className="flex-[0_0_100%] min-w-0">
-      {/* Mobile: Full width image without border */}
-      <div className="block lg:hidden">
-        <div className="relative aspect-[16/9] overflow-hidden duotone-hover-group">
-          {service.image_url ? (
-            <LazyImage src={service.image_url} alt={service.title} className="object-cover" />
+      {/* Desktop: 2 columnas - imagen izquierda, texto derecha con blur */}
+      <div className="hidden lg:grid lg:grid-cols-2 h-[600px] xl:h-[700px]">
+        {/* Columna izquierda: Media con parallax y duotono */}
+        <div 
+          ref={mediaParallax.ref as any}
+          className="h-full overflow-hidden relative duotone-hover-group bg-muted"
+        >
+          {hasMedia ? (
+            isVideo ? (
+              <video
+                ref={videoRef}
+                src={mediaUrl!}
+                className="video-duotone w-full object-cover"
+                style={{
+                  height: '130%',
+                  position: 'absolute',
+                  top: '0',
+                  left: '0',
+                  ...mediaParallax.style,
+                }}
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <img 
+                src={mediaUrl!} 
+                alt={service.title} 
+                className="image-duotone w-full object-cover"
+                style={{
+                  height: '130%',
+                  position: 'absolute',
+                  top: '0',
+                  left: '0',
+                  ...mediaParallax.style,
+                }}
+              />
+            )
           ) : (
             <div className="w-full h-full bg-muted flex items-center justify-center">
-              <span className="font-heading text-4xl text-muted-foreground/100">
+              <span className="font-heading text-6xl text-muted-foreground/30">
                 {String(index + 1).padStart(2, "0")}
               </span>
             </div>
           )}
         </div>
-        <div className="px-4 py-6">
-          <div className="mb-4">
-            <span className="text-xs font-heading text-muted-foreground uppercase tracking-wider">
+
+        {/* Columna derecha: Texto con fondo */}
+        <div className="flex flex-col justify-end h-full bg-foreground p-8 lg:p-12 xl:p-16">
+          <div className="max-w-xl">
+            <span className="text-xs font-heading text-background/60 uppercase tracking-wider mb-2 block">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
-            <h3 className="font-heading text-2xl mt-2 uppercase leading-tight">{service.title}</h3>
+            <h3 className="font-heading text-3xl xl:text-4xl text-background uppercase leading-tight mb-4">
+              {service.title}
+            </h3>
+            {service.description && (
+              <p className="text-sm text-background/80 mb-6 leading-relaxed">
+                {service.description}
+              </p>
+            )}
+            {service.button_text && service.button_link && (
+              <Button asChild variant="default" size="lg">
+                <Link to={service.button_link}>
+                  {service.button_text}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+            )}
           </div>
-          {service.description && (
-            <p className="text-sm text-muted-foreground mb-6 leading-tight">{service.description}</p>
-          )}
-          {service.button_text && service.button_link && (
-            <Button asChild variant="default" size="lg">
-              <Link to={service.button_link}>
-                {service.button_text}
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-          )}
         </div>
       </div>
 
-      {/* Desktop: Two column layout with parallax */}
-      <div className="hidden lg:block">
-        <div className="container mx-auto px-8 py-40">
-          <div className="grid grid-cols-2 gap-16 items-center min-h-[500px]">
-            {/* Text Column */}
-            <div
-              ref={textParallax.ref as any}
-              style={textParallax.style}
-              className={cn("", index % 2 === 1 && "order-2")}
-            >
-              <div className="mb-8">
-                <span className="text-sm font-heading text-muted-foreground uppercase tracking-wider">
-                  Servicio {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3 className="font-heading text-4xl xl:text-5xl mt-2 uppercase leading-tight">{service.title}</h3>
-              </div>
-
-              {service.description && (
-                <p className="text-sm text-muted-foreground mb-8 leading-tight max-w-xl">{service.description}</p>
-              )}
-
-              {service.button_text && service.button_link && (
-                <Button asChild variant="default" size="lg">
-                  <Link to={service.button_link}>
-                    {service.button_text}
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-              )}
+      {/* Mobile: Media de fondo con texto superpuesto */}
+      <div className="lg:hidden h-[70vh] relative">
+        {/* Media de fondo */}
+        <div className="absolute inset-0 duotone-hover-group">
+          {hasMedia ? (
+            isVideo ? (
+              <video
+                src={mediaUrl!}
+                className="video-duotone w-full h-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <img 
+                src={mediaUrl!} 
+                alt={service.title} 
+                className="image-duotone w-full h-full object-cover"
+              />
+            )
+          ) : (
+            <div className="w-full h-full bg-muted flex items-center justify-center">
+              <span className="font-heading text-6xl text-muted-foreground/30">
+                {String(index + 1).padStart(2, "0")}
+              </span>
             </div>
+          )}
+        </div>
 
-            {/* Image Column */}
-            <div className={cn("", index % 2 === 1 && "order-1")}>
-              <div
-                ref={imageParallax.ref as any}
-                style={imageParallax.style}
-                className="relative aspect-[3/2] overflow-hidden border border-border shadow-brutal duotone-hover-group"
-              >
-                {service.image_url ? (
-                  <LazyImage
-                    src={service.image_url}
-                    alt={service.title}
-                    className="object-cover hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-muted flex items-center justify-center">
-                    <span className="font-heading text-4xl text-muted-foreground/100">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
+        {/* Overlay oscuro */}
+        <div className="absolute inset-0 bg-foreground/40" />
+
+        {/* Contenido con blur */}
+        <div className="absolute inset-0 flex items-end p-6">
+          <div className="backdrop-blur-md bg-foreground/70 p-6 w-full">
+            <span className="text-xs font-heading text-background/60 uppercase tracking-wider mb-1 block">
+              Servicio {String(index + 1).padStart(2, "0")}
+            </span>
+            <h3 className="font-heading text-2xl text-background uppercase leading-tight mb-2">
+              {service.title}
+            </h3>
+            {service.description && (
+              <p className="text-sm text-background/80 mb-4 leading-relaxed line-clamp-3">
+                {service.description}
+              </p>
+            )}
+            {service.button_text && service.button_link && (
+              <Button asChild variant="default" size="sm">
+                <Link to={service.button_link}>
+                  {service.button_text}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>
@@ -143,12 +187,17 @@ export const ServicesSection = () => {
     const fetchServices = async () => {
       const { data, error } = await supabase
         .from("home_services")
-        .select("*")
+        .select("id, title, description, image_url, section_media_type, section_video_url, button_text, button_link, order_index, is_active")
         .eq("is_active", true)
         .order("order_index");
 
       if (!error && data) {
-        setServices(data);
+        setServices(data.map(s => ({
+          ...s,
+          order_index: s.order_index ?? 0,
+          section_media_type: s.section_media_type ?? null,
+          section_video_url: s.section_video_url ?? null,
+        })));
       }
       setLoading(false);
     };
