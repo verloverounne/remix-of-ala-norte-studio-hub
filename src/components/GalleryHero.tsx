@@ -26,12 +26,6 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               BLOQUES DE {space.block_hours || 4}HS
             </Badge>*/}
             <div className="flex flex-wrap gap-4 items-center">
-              <div className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg">
-                <span className="text-2xl sm:text-3xl font-bold font-heading">
-                  ${(space.block_price || space.price)?.toLocaleString()}
-                </span>
-                <span className="text-sm opacity-80">/ bloque {space.block_hours || 4}hs</span>
-              </div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold">
                 {space.hero_title || space.name}
               </h1>
@@ -44,13 +38,6 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               <p className="text-sm sm:text-base md:text-sm max-w-2xl font-heading text-muted-foreground leading-tight">
                 {space.hero_subtitle || space.description}
               </p>
-
-              {/* /{space.surface_area && (
-                <div className="flex items-center gap-2 bg-secondary px-4 py-2 rounded-lg">
-                  <Ruler className="h-5 w-5" />
-                  <span className="font-heading font-bold">{space.surface_area}</span>
-                </div>
-              )}*/}
             </div>
 
             {/* Features inline - 2 columns, no borders */}
@@ -70,8 +57,16 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                 <span className="font-heading font-bold text-primary">{space.discount_text}</span>
               </div>
             )}
-            <div>
-              <Button variant="default" size="lg" asChild className="text-lg">
+
+            {/* Price and CTA with same width */}
+            <div className="flex flex-col gap-3 items-start">
+              <div className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg w-full max-w-fit">
+                <span className="text-2xl sm:text-3xl font-bold font-heading">
+                  ${(space.block_price || space.price)?.toLocaleString()}
+                </span>
+                <span className="text-sm opacity-80">/ bloque {space.block_hours || 4}hs</span>
+              </div>
+              <Button variant="default" size="lg" asChild className="text-lg w-full max-w-fit">
                 <Link to="/contacto">
                   <Calendar className="mr-2 h-5 w-5" />
                   {space.cta_text || "RESERVAR BLOQUE"}
