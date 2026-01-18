@@ -80,9 +80,11 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
     setVideoOrientation(video.videoWidth > video.videoHeight ? "horizontal" : "vertical");
   };
 
-  // Always use vertical video if available, otherwise use regular media_url
+  // Use vertical video only on mobile/tablet in portrait; landscape uses horizontal video
   const mediaUrl =
-    slide.media_type === "video" && slide.vertical_video_url ? slide.vertical_video_url : slide.media_url;
+    slide.media_type === "video" && isMobileOrTablet && !isLandscape && slide.vertical_video_url
+      ? slide.vertical_video_url
+      : slide.media_url;
 
   const getMobileVideoStyles = (): React.CSSProperties => {
     if (!isMobile || !videoOrientation) return videoParallax.style;
@@ -95,9 +97,11 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
       objectFit: "cover",
     };
 
-    return videoOrientation === "horizontal"
-      ? { ...baseStyles, height: "100vh", width: "auto", minWidth: "100%" }
-      : { ...baseStyles, width: "100vw", height: "auto", minHeight: "100%" };
+    // Portrait video (taller than wide): width 100%, height auto
+    // Landscape video (wider than tall): height 100%, width auto (overflow hidden)
+    return videoOrientation === "vertical"
+      ? { ...baseStyles, width: "100vw", height: "auto", minHeight: "100%" }
+      : { ...baseStyles, height: "100vh", width: "auto", minWidth: "100%" };
   };
 
   const hasMedia = mediaUrl && mediaUrl.trim() !== "";
@@ -105,14 +109,14 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
   return (
     <CarouselItem className="h-full pl-0">
       {/* Desktop: 2 columnas */}
-      <div className="hidden md:grid md:grid-cols-2 h-full">
+      <div className="hidden md:grid md:grid-cols-2 h-full bg-foreground">
         {/* Columna izquierda: Texto con fondo oscuro y márgenes externos */}
-        <div className="bg-foreground flex flex-col justify-center mx-8 lg:mx-16">
-          <h2 className="text-background text-4xl font-bold mb-4">{slide.title}</h2>
+        <div className="flex flex-col justify-center mx-8 lg:mx-16">
+          <h1 className="text-background text-6xl lg:text-8xl font-bold mb-4">{slide.title}</h1>
           <p className="text-background text-xl mb-6">{slide.subtitle}</p>
           {slide.cta_label && slide.cta_link && (
             <Link to={slide.cta_link}>
-              <Button variant="secondary" size="lg">
+              <Button variant="default" size="lg">
                 {slide.cta_label}
               </Button>
             </Link>
@@ -179,11 +183,11 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
             style={contentParallax.style}
             className="text-center text-background/40 px-8"
           >
-            <h2 className="text-background text-3xl font-bold mb-2">{slide.title}</h2>
+            <h1 className="text-background text-5xl md:text-6xl font-bold mb-2">{slide.title}</h1>
             <p className="text-background text-lg mb-4">{slide.subtitle}</p>
             {slide.cta_label && slide.cta_link && (
               <Link to={slide.cta_link}>
-                <Button variant="secondary">{slide.cta_label}</Button>
+                <Button variant="default">{slide.cta_label}</Button>
               </Link>
             )}
           </div>
