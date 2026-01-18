@@ -123,14 +123,18 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
           )}
         </div>
 
-        {/* Columna derecha: Video vertical sin márgenes */}
-        <div className="h-full overflow-hidden">
+        {/* Columna derecha: Video/imagen siempre ocupa 100% alto del contenedor */}
+        <div className="relative h-full w-full overflow-hidden">
           {hasMedia ? (
             slide.media_type === "video" ? (
               <video
                 ref={videoRef}
                 src={mediaUrl}
-                className="w-full h-full object-cover"
+                className="absolute inset-0 min-w-full min-h-full object-cover"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                }}
                 autoPlay
                 loop
                 muted={muted}
@@ -138,7 +142,15 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
                 onLoadedMetadata={handleLoadedMetadata}
               />
             ) : (
-              <img src={mediaUrl} alt={slide.title} className="w-full h-full object-cover" />
+              <img 
+                src={mediaUrl} 
+                alt={slide.title} 
+                className="absolute inset-0 min-w-full min-h-full object-cover"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                }}
+              />
             )
           ) : null}
         </div>
