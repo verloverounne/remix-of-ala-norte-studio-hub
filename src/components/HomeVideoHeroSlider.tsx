@@ -52,13 +52,15 @@ interface HeroSlideProps {
   index: number;
   videoRef: (el: HTMLVideoElement | null) => void;
   muted: boolean;
+  parallaxOffset: number;
 }
 
-const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) => {
+const HeroSlideComponent = ({ slide, index, videoRef, muted, parallaxOffset }: HeroSlideProps) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
   const [videoOrientation, setVideoOrientation] = useState<"horizontal" | "vertical" | null>(null);
   const [isLandscape, setIsLandscape] = useState(false);
+  
   useEffect(() => {
     const checkDevice = () => {
       const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
@@ -72,7 +74,6 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
-  const videoParallax = useParallax({ speed: 0.6, direction: "up" });
   const contentParallax = useParallax({ speed: 0.4, direction: "down" });
 
   const handleLoadedMetadata = (e: React.SyntheticEvent<HTMLVideoElement>) => {
@@ -87,7 +88,7 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
       : slide.media_url;
 
   const getMobileVideoStyles = (): React.CSSProperties => {
-    if (!isMobile || !videoOrientation) return videoParallax.style;
+    if (!isMobile || !videoOrientation) return {};
 
     const baseStyles: React.CSSProperties = {
       position: "absolute",
@@ -108,8 +109,8 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
 
   return (
     <CarouselItem className="h-full pl-0">
-      {/* Desktop: 2 columnas */}
-      <div className="hidden md:grid md:grid-cols-2 h-full bg-foreground">
+      {/* Desktop: 2 columnas con video parallax */}
+      <div className="hidden md:grid md:grid-cols-2 h-screen bg-foreground">
         {/* Columna izquierda: Texto con fondo oscuro y márgenes externos */}
         <div className="flex flex-col justify-center mx-8 lg:mx-16">
           <h1 className="text-background text-6xl lg:text-8xl font-bold mb-4">{slide.title}</h1>
@@ -123,14 +124,19 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
           )}
         </div>
 
-        {/* Columna derecha: Video vertical sin márgenes */}
-        <div className="h-full overflow-hidden">
+        {/* Columna derecha: Video con overflow oculto y parallax */}
+        <div className="h-screen overflow-hidden relative">
           {hasMedia ? (
             slide.media_type === "video" ? (
               <video
                 ref={videoRef}
                 src={mediaUrl}
-                className="w-full h-full object-cover"
+                className="w-full object-cover absolute left-0"
+                style={{
+                  height: '130%', // Extra height for parallax
+                  top: `${-15 + parallaxOffset * 0.3}%`, // Parallax movement
+                  transition: 'top 0.1s ease-out',
+                }}
                 autoPlay
                 loop
                 muted={muted}
@@ -138,7 +144,16 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
                 onLoadedMetadata={handleLoadedMetadata}
               />
             ) : (
-              <img src={mediaUrl} alt={slide.title} className="w-full h-full object-cover" />
+              <img 
+                src={mediaUrl} 
+                alt={slide.title} 
+                className="w-full object-cover absolute left-0"
+                style={{
+                  height: '130%',
+                  top: `${-15 + parallaxOffset * 0.3}%`,
+                  transition: 'top 0.1s ease-out',
+                }}
+              />
             )
           ) : null}
         </div>
@@ -202,7 +217,31 @@ export const HomeVideoHeroSlider = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [muted, setMuted] = useState(true);
+  const [parallaxOffset, setParallaxOffset] = useState(0);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Parallax scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+      
+      const rect = sectionRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate parallax based on how much of the section has scrolled
+      if (rect.bottom > 0 && rect.top < windowHeight) {
+        // Normalize scroll position: 0 when at top, 100 when fully scrolled past
+        const scrollProgress = Math.max(0, -rect.top / windowHeight) * 100;
+        setParallaxOffset(scrollProgress);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial call
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const fetchSlides = async () => {
@@ -248,7 +287,7 @@ export const HomeVideoHeroSlider = () => {
   const hasVideos = slides.some((s) => s.media_type === "video" && s.media_url);
 
   return (
-    <section className="relative min-h-screen overflow-hidden border-b-4 border-foreground">
+    <section ref={sectionRef} className="relative h-screen overflow-hidden border-b-4 border-foreground">
       <Carousel className="w-full h-full" setApi={setApi} opts={{ loop: true }}>
         <CarouselContent className="h-full -ml-0">
           {slides.map((slide, index) => (
@@ -258,6 +297,7 @@ export const HomeVideoHeroSlider = () => {
               index={index}
               videoRef={(el) => (videoRefs.current[index] = el)}
               muted={muted}
+              parallaxOffset={parallaxOffset}
             />
           ))}
         </CarouselContent>
