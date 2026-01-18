@@ -112,7 +112,7 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
       <div className="hidden md:grid md:grid-cols-2 h-full bg-foreground">
         {/* Columna izquierda: Texto con fondo oscuro y márgenes externos */}
         <div className="flex flex-col justify-center mx-8 lg:mx-16">
-          <h1 className="text-background text-6xl lg:text-8xl font-bold mb-4">{slide.title}</h1>
+          <h1 className="text-background text-4xl lg:text-6xl font-bold mb-4">{slide.title}</h1>
           <p className="text-background text-xl mb-6">{slide.subtitle}</p>
           {slide.cta_label && slide.cta_link && (
             <Link to={slide.cta_link}>
@@ -267,7 +267,7 @@ export const HomeVideoHeroSlider = () => {
       {hasVideos && (
         <button
           onClick={() => setMuted(!muted)}
-          className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm hover:bg-background/40 transition-colors"
+          className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm rounded-full hover:bg-background/40 transition-colors"
           aria-label={muted ? "Activar sonido" : "Silenciar"}
         >
           {muted ? <VolumeX className="h-5 w-5 text-background" /> : <Volume2 className="h-5 w-5 text-background" />}
