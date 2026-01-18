@@ -25,6 +25,14 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               <Clock className="mr-2 h-4 w-4" />
               BLOQUES DE {space.block_hours || 4}HS
             </Badge>*/}
+            <div className="flex flex-col gap-3 items-start">
+              <div className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg w-full max-w-fit">
+                <span className="text-2xl sm:text-3xl font-bold font-heading">
+                  ${(space.block_price || space.price)?.toLocaleString()}
+                </span>
+                <span className="text-sm opacity-80">/ bloque {space.block_hours || 4}hs</span>
+              </div>
+            </div>
             <div className="flex flex-wrap gap-4 items-center">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold">
                 {space.hero_title || space.name}
@@ -52,20 +60,14 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               </div>
             )}
             {space.discount_text && (
-              <div className="inline-flex items-center gap-20 border-2 border-primary px-4 py-2 rounded-lg">
+              <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 rounded-lg">
                 <Sparkles className="h-5 w-5 text-primary" />
                 <span className="font-heading font-bold text-primary">{space.discount_text}</span>
               </div>
             )}
 
             {/* Price and CTA with same width */}
-            <div className="flex flex-col gap-3 items-start">
-              <div className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg w-full max-w-fit">
-                <span className="text-2xl sm:text-3xl font-bold font-heading">
-                  ${(space.block_price || space.price)?.toLocaleString()}
-                </span>
-                <span className="text-sm opacity-80">/ bloque {space.block_hours || 4}hs</span>
-              </div>
+
               <Button variant="default" size="lg" asChild className="text-lg w-full max-w-fit">
                 <Link to="/contacto">
                   <Calendar className="mr-2 h-5 w-5" />
