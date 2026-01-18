@@ -41,12 +41,12 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                 </span>
                 <span className="text-sm opacity-80">/ bloque {space.block_hours || 4}hs</span>
               </div>
-              {space.surface_area && (
+              {/* /{space.surface_area && (
                 <div className="flex items-center gap-2 bg-secondary px-4 py-2 rounded-lg">
                   <Ruler className="h-5 w-5" />
                   <span className="font-heading font-bold">{space.surface_area}</span>
                 </div>
-              )}
+              )}*/}
             </div>
 
             {space.discount_text && (
