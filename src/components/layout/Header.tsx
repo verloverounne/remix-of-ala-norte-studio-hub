@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Moon, Sun, ShoppingCart, LogOut, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -45,6 +45,10 @@ export const Header = () => {
   const navigate = useNavigate();
   const { totalItems } = useCart();
   const { user, isAdmin, signOut } = useAuth();
+  
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const autoCloseTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Sincronizar tema con DOM al montar y cuando cambia
   useEffect(() => {
@@ -62,6 +66,55 @@ export const Header = () => {
       setIsVisible(true);
     }
   }, [mobileMenuOpen, setIsVisible]);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (!mobileMenuOpen) return;
+      
+      const target = event.target as Node;
+      const isOutsideMenu = menuRef.current && !menuRef.current.contains(target);
+      const isOutsideButton = menuButtonRef.current && !menuButtonRef.current.contains(target);
+      
+      if (isOutsideMenu && isOutsideButton) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [mobileMenuOpen]);
+
+  // Auto-close menu after 5 seconds
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      autoCloseTimerRef.current = setTimeout(() => {
+        setMobileMenuOpen(false);
+      }, 5000);
+    }
+
+    return () => {
+      if (autoCloseTimerRef.current) {
+        clearTimeout(autoCloseTimerRef.current);
+        autoCloseTimerRef.current = null;
+      }
+    };
+  }, [mobileMenuOpen]);
+
+  // Reset timer on menu interaction
+  const resetAutoCloseTimer = useCallback(() => {
+    if (autoCloseTimerRef.current) {
+      clearTimeout(autoCloseTimerRef.current);
+    }
+    autoCloseTimerRef.current = setTimeout(() => {
+      setMobileMenuOpen(false);
+    }, 5000);
+  }, []);
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
@@ -99,6 +152,7 @@ export const Header = () => {
       {/* Mobile: Floating hamburger button only */}
       {isMobile && (
         <Button
+          ref={menuButtonRef}
           variant="ghost"
           size="icon"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -241,7 +295,7 @@ export const Header = () => {
 
         {/* Mobile Navigation Brutal */}
         {mobileMenuOpen && (
-          <div className="lg:hidden pb-4 mt-2">
+          <div ref={menuRef} className="lg:hidden pb-4 mt-2" onTouchStart={resetAutoCloseTimer} onMouseMove={resetAutoCloseTimer}>
             <div className="flex flex-col gap-2 mt-2">
               {navigation.map((item) => (
                 <Link
