@@ -159,7 +159,7 @@ export const ServicesHeroSlider = ({
                     <div className="absolute inset-0 flex items-end justify-start">
                       <div className="relative z-10 text-left px-4 sm:px-8 pb-16 sm:pb-20 lg:pb-24 max-w-4xl">
                         {/* Blur background box */}
-                        <div className="inline-block backdrop-blur-md bg-foreground/80 px-6 sm:px-12 py-6 sm:py-10 border border-background/20">
+                        <div className="inline-block backdrop-blur-md bg-foreground/80 px-6 sm:px-12 py-6 sm:py-10">
                           <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-3 sm:mb-4 uppercase text-background text-left">
                             {service.title}
                           </h1>

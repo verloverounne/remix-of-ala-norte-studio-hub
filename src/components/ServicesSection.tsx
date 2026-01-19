@@ -38,19 +38,12 @@ const ServiceSlide = ({
   const hasMedia = mediaUrl && mediaUrl.trim() !== "";
   return <div className="flex-[0_0_100%] min-w-0">
       {/* Desktop: 2 columnas - imagen izquierda, texto derecha con blur */}
-      <div className="hidden lg:grid lg:grid-cols-2 min-h-[600px] max-h-[900px]">
+      <div className="hidden lg:grid lg:grid-cols-2 min-h-[600px] max-h-[1000px]">
         {/* Columna izquierda: Media con parallax y duotono */}
-        <div ref={mediaParallax.ref as any} className="min-h-[600px] max-h-[900px] overflow-hidden relative duotone-hover-group bg-muted">
-          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone w-full h-full object-cover bg-foreground border-0 " style={{
-          position: "absolute",
-          top: "0",
-          left: "0",
+        <div ref={mediaParallax.ref as any} className="min-h-[600px] max-h-[1000px] overflow-hidden relative duotone-hover-group bg-muted">
+          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone absolute inset-0 w-full h-full object-cover" style={{
           ...mediaParallax.style
-        }} autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone w-full object-cover" style={{
-          height: "130%",
-          position: "absolute",
-          top: "0",
-          left: "0",
+        }} autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone absolute inset-0 w-full h-full object-cover" style={{
           ...mediaParallax.style
         }} /> : <div className="w-full h-full bg-muted flex items-center justify-center">
               <span className="font-heading text-6xl text-muted-foreground/30">
@@ -169,21 +162,21 @@ export const ServicesSection = () => {
     scrollTo(index);
   };
   if (loading) {
-    return <section className="min-h-[500px] lg:min-h-[700px] bg-background flex items-center justify-center border-y border-border">
+    return <section className="min-h-[500px] lg:min-h-[700px] bg-background flex items-center justify-center">
         <div className="animate-pulse font-heading text-xl">Cargando servicios...</div>
       </section>;
   }
   if (services.length === 0) {
     return null;
   }
-  return <section className="relative border-y border-border bg-background">
+  return <section className="relative bg-background">
       {/* Section Header 
        <div className="py-6 sm:py-8 mx-4 sm:mx-8">
         <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">NUESTROS SERVICIOS</h2>
        </div>
        {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
-      <div className="sticky top-0 z-30 bg-foreground border-y border-border">
-        <div className="container mx-auto px-4 border-0 bg-[#282725] border-foreground">
+      <div className="sticky top-0 z-30 bg-foreground">
+        <div className="container mx-auto px-4 bg-[#282725]">
           <div className="py-2 sm:py-3">
             {/* Mobile: vertical stack, full width */}
             <div className="flex flex-col gap-1 sm:hidden">

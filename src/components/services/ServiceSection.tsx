@@ -20,7 +20,7 @@ export const ServiceSection = forwardRef<HTMLElement, ServiceSectionProps>(
       <section
         ref={ref}
         id={slug || id}
-        className="min-h-[60vh] md:min-h-[70vh] flex items-center border-b border-foreground/20 relative z-10 bg-background"
+        className="min-h-[60vh] md:min-h-[70vh] flex items-center relative z-10 bg-background"
         style={{
           scrollMarginTop: "calc(40vh + 100px)",
         }}
