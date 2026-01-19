@@ -180,13 +180,13 @@ export const ServicesSection = () => {
           <div className="py-2 sm:py-3">
             {/* Mobile: vertical stack, full width */}
             <div className="flex flex-col gap-1 sm:hidden">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full px-3 py-2 font-heading text-xs uppercase transition-all text-left", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-foreground text-background hover:bg-muted")}>
+              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full px-3 py-2 font-heading text-xs uppercase transition-all text-left", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-foreground text-background hover:bg-primary-dark")}>
                   {service.title}
                 </button>)}
             </div>
             {/* Desktop: horizontal row, centered */}
             <div className="hidden sm:flex items-center justify-center gap-2">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs uppercase transition-all", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-foreground text-background hover:bg-muted")}>
+              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs uppercase transition-all", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-foreground text-background hover:bg-primary-dark")}>
                   {service.title}
                 </button>)}
             </div>
