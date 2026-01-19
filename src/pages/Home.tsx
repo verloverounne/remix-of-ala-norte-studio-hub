@@ -139,7 +139,7 @@ const CartoniSection = () => {
       const { data } = await supabase
         .from('gallery_images')
         .select('image_url, media_type')
-        .eq('page_type', 'cartoni_home')
+        .eq('page_type', 'cartoni_home' as string)
         .order('order_index')
         .limit(1);
       
