@@ -135,10 +135,10 @@ const CTASection = () => {
     <section className="py-12 sm:py-20 lg:py-32 text-foreground relative border-y border-border bg-background border">
       <div className="container mx-auto px-4 relative">
         <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-4xl mx-auto text-center">
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-4 sm:mb-6 lg:mb-8">
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-4 sm:mb-6 lg:mb-8 text-center">
             ¿Estás por encarar un rodaje?
           </h2>
-          <p className="text-sm sm:text-base lg:text-sm mb-6 sm:mb-8 lg:mb-12 font-heading leading-tight">
+          <p className="text-sm sm:text-base lg:text-sm mb-6 sm:mb-8 lg:mb-12 font-heading leading-tight text-center">
             Contanos qué querés filmar y armamos una propuesta de equipamiento a medida.
           </p>
           <Button asChild variant="outline" size="lg" className="bg-background text-foreground">
