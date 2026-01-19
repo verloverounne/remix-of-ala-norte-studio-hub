@@ -62,13 +62,13 @@ const ServiceSlide = ({
         {/* Columna derecha: Texto con fondo */}
         <div className="flex flex-col justify-end h-full p-8 lg:p-12 xl:p-16 bg-background">
           <div className="max-w-xl text-foreground">
-            <span className="text-xs font-heading text-background/60 uppercase tracking-wider mb-2 block">
+            <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-foreground">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
-            <h3 className="font-heading text-3xl xl:text-4xl uppercase leading-tight mb-4 text-foreground">
+            <h3 className="font-heading text-3xl uppercase leading-tight mb-4 text-foreground xl:text-6xl">
               {service.title}
             </h3>
-            {service.description && <p className="text-sm text-background/80 mb-6 leading-relaxed">{service.description}</p>}
+            {service.description && <p className="text-sm mb-6 leading-relaxed text-foreground">{service.description}</p>}
             {service.button_text && service.button_link && <Button asChild variant="default" size="lg">
                 <Link to={service.button_link}>
                   {service.button_text}
