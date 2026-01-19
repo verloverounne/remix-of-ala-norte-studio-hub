@@ -41,7 +41,7 @@ const ServiceSlide = ({
       <div className="hidden lg:grid lg:grid-cols-2 min-h-[600px] max-h-[900px]">
         {/* Columna izquierda: Media con parallax y duotono */}
         <div ref={mediaParallax.ref as any} className="min-h-[600px] max-h-[900px] overflow-hidden relative duotone-hover-group bg-muted">
-          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone w-full h-full object-cover bg-foreground" style={{
+          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone w-full h-full object-cover bg-background" style={{
           position: "absolute",
           top: "0",
           left: "0",
@@ -60,7 +60,7 @@ const ServiceSlide = ({
         </div>
 
         {/* Columna derecha: Texto con fondo */}
-        <div className="flex flex-col justify-end h-full bg-foreground p-8 lg:p-12 xl:p-16">
+        <div className="flex flex-col justify-end h-full p-8 lg:p-12 xl:p-16 bg-background">
           <div className="max-w-xl">
             <span className="text-xs font-heading text-background/60 uppercase tracking-wider mb-2 block">
               Servicio {String(index + 1).padStart(2, "0")}
@@ -183,7 +183,7 @@ export const ServicesSection = () => {
        </div>
        {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
       <div className="sticky top-0 z-30 bg-foreground border-y border-border">
-        <div className="container mx-auto px-4 border-0">
+        <div className="container mx-auto px-4 border-0 bg-[#282725] border-foreground">
           <div className="py-2 sm:py-3">
             {/* Mobile: vertical stack, full width */}
             <div className="flex flex-col gap-1 sm:hidden">
@@ -193,7 +193,7 @@ export const ServicesSection = () => {
             </div>
             {/* Desktop: horizontal row, centered */}
             <div className="hidden sm:flex items-center justify-center gap-2 border-0">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs uppercase border transition-all text-[#babab0] border-[#babab0]", activeIndex === index ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm" : "bg-foreground text-background border-background hover:bg-muted")}>
+              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs uppercase transition-all text-[#babab0] border-destructive border-0", activeIndex === index ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm" : "bg-foreground text-background border-background hover:bg-muted")}>
                   {service.title}
                 </button>)}
             </div>
@@ -233,7 +233,7 @@ export const ServicesSection = () => {
           <ChevronRight className="h-6 w-6" />
          </button>
          {/* Dots indicator */}
-        <div className="flex justify-center gap-2 py-6">
+        <div className="flex justify-center gap-2 py-6 bg-background">
           {services.map((_, index) => <button key={index} onClick={() => handleTabClick(index)} className={cn("w-3 h-3 border border-border transition-all rounded-full", activeIndex === index ? "bg-primary" : "bg-transparent hover:bg-muted")} aria-label={`Ir al slide ${index + 1}`} />)}
         </div>
       </div>
