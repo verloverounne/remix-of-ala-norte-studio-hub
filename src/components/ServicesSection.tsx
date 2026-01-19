@@ -176,17 +176,17 @@ export const ServicesSection = () => {
        </div>
        {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
       <div className="sticky top-0 z-30 bg-foreground">
-        <div className="container mx-auto px-4 bg-[#282725]">
+        <div className="container mx-auto px-4 bg-foreground">
           <div className="py-2 sm:py-3">
             {/* Mobile: vertical stack, full width */}
             <div className="flex flex-col gap-1 sm:hidden">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full px-3 py-2 font-heading text-xs uppercase border transition-all text-left", activeIndex === index ? "bg-foreground text-background border-primary shadow-brutal-sm" : "bg-background text-background  border-background hover:bg-muted")}>
+              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full px-3 py-2 font-heading text-xs uppercase transition-all text-left", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-foreground text-background hover:bg-muted")}>
                   {service.title}
                 </button>)}
             </div>
             {/* Desktop: horizontal row, centered */}
-            <div className="hidden sm:flex items-center justify-center gap-2 border-0">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs uppercase transition-all text-[#babab0] border-destructive border-0", activeIndex === index ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm" : "bg-foreground text-background border-background hover:bg-muted")}>
+            <div className="hidden sm:flex items-center justify-center gap-2">
+              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs uppercase transition-all", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-foreground text-background hover:bg-muted")}>
                   {service.title}
                 </button>)}
             </div>
