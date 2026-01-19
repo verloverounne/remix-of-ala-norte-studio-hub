@@ -124,6 +124,7 @@ const CTASection = () => {
 // Componente para la sección Cartoni con parallax y video de fondo
 const CartoniSection = () => {
   const [backgroundVideo, setBackgroundVideo] = useState<string | null>(null);
+  const [videoStatus, setVideoStatus] = useState<'idle' | 'loaded' | 'error'>('idle');
 
   const logoParallax = useParallax({
     speed: 0.6,
@@ -136,17 +137,25 @@ const CartoniSection = () => {
 
   useEffect(() => {
     const fetchBackgroundVideo = async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('gallery_images')
         .select('image_url, media_type')
         .eq('page_type', 'cartoni_home' as string)
         .order('order_index')
         .limit(1);
-      
-      if (data && data.length > 0 && data[0].media_type === 'video') {
-        setBackgroundVideo(data[0].image_url);
+
+      if (error) {
+        console.warn('[CartoniSection] Error trayendo video de fondo:', error.message);
+        return;
+      }
+
+      const row = data?.[0];
+      if (row?.image_url) {
+        // Si subieron algo por error como imagen, igual lo intentamos usar como src
+        setBackgroundVideo(row.image_url);
       }
     };
+
     fetchBackgroundVideo();
   }, []);
 
@@ -155,17 +164,27 @@ const CartoniSection = () => {
       {/* Video de fondo */}
       {backgroundVideo && (
         <video
-          src={backgroundVideo}
+          key={backgroundVideo}
           autoPlay
           loop
           muted
           playsInline
+          preload="auto"
+          crossOrigin="anonymous"
+          onCanPlay={() => setVideoStatus('loaded')}
+          onError={() => {
+            console.warn('[CartoniSection] No se pudo reproducir el video. Recomendación: MP4 H.264 + AAC. URL:', backgroundVideo);
+            setVideoStatus('error');
+          }}
           className="absolute inset-0 w-full h-full object-cover z-0"
-        />
+        >
+          <source src={backgroundVideo} type="video/mp4" />
+        </video>
       )}
-      {/* Overlay oscuro para legibilidad */}
-      <div className="absolute inset-0 bg-background/70 z-[1]" />
-      
+
+      {/* Overlay para legibilidad */}
+      <div className="pointer-events-none absolute inset-0 bg-background/40 z-[1]" />
+
       {/* Contenido */}
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 my-[61px]">
