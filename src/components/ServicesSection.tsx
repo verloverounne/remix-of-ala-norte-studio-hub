@@ -41,7 +41,7 @@ const ServiceSlide = ({
       <div className="hidden lg:grid lg:grid-cols-2 min-h-[600px] max-h-[900px]">
         {/* Columna izquierda: Media con parallax y duotono */}
         <div ref={mediaParallax.ref as any} className="min-h-[600px] max-h-[900px] overflow-hidden relative duotone-hover-group bg-muted">
-          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone w-full h-full object-cover bg-background border-0" style={{
+          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone w-full h-full object-cover bg-foreground border-0 " style={{
           position: "absolute",
           top: "0",
           left: "0",
@@ -61,11 +61,11 @@ const ServiceSlide = ({
 
         {/* Columna derecha: Texto con fondo */}
         <div className="flex flex-col justify-end h-full p-8 lg:p-12 xl:p-16 bg-background">
-          <div className="max-w-xl">
+          <div className="max-w-xl text-foreground">
             <span className="text-xs font-heading text-background/60 uppercase tracking-wider mb-2 block">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
-            <h3 className="font-heading text-3xl xl:text-4xl text-background uppercase leading-tight mb-4">
+            <h3 className="font-heading text-3xl xl:text-4xl uppercase leading-tight mb-4 text-foreground">
               {service.title}
             </h3>
             {service.description && <p className="text-sm text-background/80 mb-6 leading-relaxed">{service.description}</p>}
