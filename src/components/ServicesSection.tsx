@@ -41,7 +41,7 @@ const ServiceSlide = ({
       <div className="hidden lg:grid lg:grid-cols-2 min-h-[600px] max-h-[900px]">
         {/* Columna izquierda: Media con parallax y duotono */}
         <div ref={mediaParallax.ref as any} className="min-h-[600px] max-h-[900px] overflow-hidden relative duotone-hover-group bg-muted">
-          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone w-full h-full object-cover" style={{
+          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone w-full h-full object-cover bg-foreground" style={{
           position: "absolute",
           top: "0",
           left: "0",
@@ -193,7 +193,7 @@ export const ServicesSection = () => {
             </div>
             {/* Desktop: horizontal row, centered */}
             <div className="hidden sm:flex items-center justify-center gap-2 border-0">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs uppercase border transition-all", activeIndex === index ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm" : "bg-foreground text-background border-background hover:bg-muted")}>
+              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs uppercase border transition-all text-[#babab0] border-[#babab0]", activeIndex === index ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm" : "bg-foreground text-background border-background hover:bg-muted")}>
                   {service.title}
                 </button>)}
             </div>
@@ -204,7 +204,7 @@ export const ServicesSection = () => {
       {/* Carousel Container */}
       <div className="relative">
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex">
+          <div className="flex bg-foreground">
             {services.map((service, index) => <ServiceSlide key={service.id} service={service} index={index} />)}
           </div>
         </div>
