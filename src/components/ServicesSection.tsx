@@ -38,9 +38,9 @@ const ServiceSlide = ({
   const hasMedia = mediaUrl && mediaUrl.trim() !== "";
   return <div className="flex-[0_0_100%] min-w-0">
       {/* Desktop: 2 columnas - imagen izquierda, texto derecha con blur */}
-      <div className="hidden lg:grid lg:grid-cols-2 min-h-[600px] max-h-[1000px]">
+      <div className="hidden lg:grid lg:grid-cols-2 min-h-[800px] max-h-[1000px]">
         {/* Columna izquierda: Media con parallax y duotono */}
-        <div ref={mediaParallax.ref as any} className="min-h-[600px] max-h-[1000px] overflow-hidden relative duotone-hover-group bg-muted">
+        <div ref={mediaParallax.ref as any} className="min-h-[800px] max-h-[1000px] overflow-hidden relative duotone-hover-group bg-muted">
           {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone absolute inset-0 w-full h-full object-cover" style={{
           ...mediaParallax.style
         }} autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone absolute inset-0 w-full h-full object-cover" style={{
