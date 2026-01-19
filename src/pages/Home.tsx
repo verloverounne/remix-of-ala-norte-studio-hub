@@ -121,8 +121,9 @@ const CTASection = () => {
     </section>;
 };
 
-// Componente para la sección Cartoni con parallax
+// Componente para la sección Cartoni con parallax y video de fondo
 const CartoniSection = () => {
+  const [backgroundVideo, setBackgroundVideo] = useState<string | null>(null);
 
   const logoParallax = useParallax({
     speed: 0.6,
@@ -133,8 +134,38 @@ const CartoniSection = () => {
     direction: 'down'
   });
 
+  useEffect(() => {
+    const fetchBackgroundVideo = async () => {
+      const { data } = await supabase
+        .from('gallery_images')
+        .select('image_url, media_type')
+        .eq('page_type', 'cartoni_home')
+        .order('order_index')
+        .limit(1);
+      
+      if (data && data.length > 0 && data[0].media_type === 'video') {
+        setBackgroundVideo(data[0].image_url);
+      }
+    };
+    fetchBackgroundVideo();
+  }, []);
+
   return (
     <section className="relative py-16 lg:py-24 border-y border-border border overflow-hidden">
+      {/* Video de fondo */}
+      {backgroundVideo && (
+        <video
+          src={backgroundVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        />
+      )}
+      {/* Overlay oscuro para legibilidad */}
+      <div className="absolute inset-0 bg-background/70 z-[1]" />
+      
       {/* Contenido */}
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 my-[61px]">
