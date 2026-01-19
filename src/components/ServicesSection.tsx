@@ -36,7 +36,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
   return (
     <div className="flex-[0_0_100%] min-w-0">
       {/* Desktop: 2 columnas - imagen izquierda, texto derecha con blur */}
-      <div className="hidden lg:grid lg:grid-cols-2 min-h-[800px] max-h-[1000px]">
+      <div className="hidden lg:grid lg:grid-cols-2">
         {/* Columna izquierda: Media con parallax y duotono */}
         <div
           ref={mediaParallax.ref as any}
