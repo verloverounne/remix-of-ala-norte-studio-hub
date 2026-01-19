@@ -268,8 +268,8 @@ export const ServicesSection = () => {
                   className={cn(
                     "w-full px-3 py-2 font-heading text-xs uppercase border transition-all text-left",
                     activeIndex === index
-                      ? "bg-f text-primary-foreground border-primary shadow-brutal-sm"
-                      : "bg-background text-foreground border-foreground hover:bg-muted",
+                      ? "bg-foreground text-background border-primary shadow-brutal-sm"
+                      : "bg-background text-background  border-background hover:bg-muted",
                   )}
                 >
                   {service.title}
