@@ -215,8 +215,10 @@ const CartoniSection = () => {
           </video>
         )}
 
-        {/* Overlay para legibilidad */}
-        <div className="pointer-events-none absolute inset-0 bg-background/40 z-[1]" />
+        {/* Overlay para legibilidad
+        <div className="pointer-events-none absolute inset-0 bg-background/0 z-[1]" />
+
+         */}
 
         {/* Contenido - superpuesto, abajo izquierda */}
         <div className="absolute inset-0 z-10 flex items-end">
@@ -225,7 +227,7 @@ const CartoniSection = () => {
               <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mb-4">
                 SELLER & SERVICE <span className="text-primary">OFICIAL CARTONI</span>
               </h2>
-              <p className="text-sm text-muted-foreground mb-6 leading-tight">
+              <p className="text-sm text-2x1-foreground mb-6 leading-tight">
                 Ala Norte es representante oficial de Cartoni en Argentina. Venta, reparación y mantenimiento de
                 trípodes y cabezales profesionales con garantía y repuestos originales.
               </p>
@@ -289,11 +291,11 @@ const Home = () => {
       {/* Productions Slider Section */}
       <ProductionsSlider />
 
-      {/* Cartoni Official Dealer Section */}
-      <CartoniSection />
-
       {/* CTA Section */}
       <CTASection />
+
+      {/* Cartoni Official Dealer Section */}
+      <CartoniSection />
     </div>
   );
 };
