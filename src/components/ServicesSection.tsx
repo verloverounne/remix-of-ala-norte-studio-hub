@@ -37,17 +37,16 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
   return (
     <div className="flex-[0_0_100%] min-w-0">
       {/* Desktop: 2 columnas - imagen izquierda, texto derecha con blur */}
-      <div className="hidden lg:grid lg:grid-cols-2 h-[600px] xl:h-[700px]">
+      <div className="hidden lg:grid lg:grid-cols-2 min-h-[600px] max-h-[900px]">
         {/* Columna izquierda: Media con parallax y duotono */}
-        <div ref={mediaParallax.ref as any} className="h-full overflow-hidden relative duotone-hover-group bg-muted">
+        <div ref={mediaParallax.ref as any} className="min-h-[600px] max-h-[900px] overflow-hidden relative duotone-hover-group bg-muted">
           {hasMedia ? (
             isVideo ? (
               <video
                 ref={videoRef}
                 src={mediaUrl!}
-                className="video-duotone w-full object-cover"
+                className="video-duotone w-full h-full object-cover"
                 style={{
-                  height: "130%",
                   position: "absolute",
                   top: "0",
                   left: "0",
@@ -256,7 +255,7 @@ export const ServicesSection = () => {
       </div>
 
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
-      <div className="sticky top-0 z-30 bg-background border-y border-border">
+      <div className="sticky top-0 z-30 bg-foreground border-y border-border">
         <div className="container mx-auto px-4">
           <div className="py-2 sm:py-3">
             {/* Mobile: vertical stack, full width */}
@@ -286,7 +285,7 @@ export const ServicesSection = () => {
                     "px-3 py-1.5 font-heading text-xs uppercase border transition-all",
                     activeIndex === index
                       ? "bg-primary text-primary-foreground border-primary shadow-brutal-sm"
-                      : "bg-background text-foreground border-foreground hover:bg-muted",
+                      : "bg-foreground text-background border-background hover:bg-muted",
                   )}
                 >
                   {service.title}
