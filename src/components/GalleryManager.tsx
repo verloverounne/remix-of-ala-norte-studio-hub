@@ -12,7 +12,7 @@ import { StorageImageSelector } from "@/components/StorageImageSelector";
 
 interface GalleryImage {
   id: string;
-  page_type: 'home' | 'servicios' | 'hero_rental' | 'producciones' | 'home_hero';
+  page_type: 'home' | 'servicios' | 'hero_rental' | 'producciones' | 'home_hero' | 'cartoni_home';
   image_url: string;
   media_type: 'image' | 'video';
   title: string | null;
@@ -35,7 +35,7 @@ interface GalleryManagerProps {
 export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedPageType, setSelectedPageType] = useState<'home' | 'servicios' | 'hero_rental' | 'producciones' | 'home_hero'>('home_hero');
+  const [selectedPageType, setSelectedPageType] = useState<'home' | 'servicios' | 'hero_rental' | 'producciones' | 'home_hero' | 'cartoni_home'>('home_hero');
   const [newImage, setNewImage] = useState({
     image_url: "",
     media_type: "image" as 'image' | 'video',
@@ -234,10 +234,12 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
     hero_rental: 'Hero Rental - Equipos',
     producciones: 'Producciones en Ala Norte',
     home_hero: 'Home - Hero Principal (3 Slides)',
+    cartoni_home: 'Home - Sección Cartoni (Fondo)',
   };
 
   const pageTypeDescriptions: Record<string, string> = {
     home_hero: '⚡ Cada slide usa: Título = título grande, Descripción = subtítulo. El orden debe ser 0, 1, 2 para las 3 slides (Rental, Galería, Sala). Soporta imágenes y videos MP4.',
+    cartoni_home: '🎬 Sube un video MP4 que se mostrará como fondo de la sección Cartoni en el Home. Se reproduce en loop, sin audio, 100% ancho.',
   };
 
   return (
@@ -261,6 +263,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="home_hero">Home - Hero Videos</SelectItem>
+                  <SelectItem value="cartoni_home">Home - Sección Cartoni</SelectItem>
                   <SelectItem value="producciones">Producciones en Ala Norte</SelectItem>
                   <SelectItem value="hero_rental">Hero Rental - Equipos</SelectItem>
                   <SelectItem value="home">Home - Slider Institucional</SelectItem>
