@@ -160,50 +160,54 @@ const CartoniSection = () => {
   }, []);
 
   return (
-    <section className="relative min-h-[50vh] lg:min-h-[60vh] border-y border-border overflow-hidden flex items-end">
-      {/* Video de fondo */}
-      {backgroundVideo && (
-        <video
-          key={backgroundVideo}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          crossOrigin="anonymous"
-          onCanPlay={() => setVideoStatus('loaded')}
-          onError={() => {
-            console.warn('[CartoniSection] No se pudo reproducir el video. Recomendación: MP4 H.264 + AAC. URL:', backgroundVideo);
-            setVideoStatus('error');
-          }}
-          className="absolute inset-0 w-full h-full object-cover z-0"
-        >
-          <source src={backgroundVideo} type="video/mp4" />
-        </video>
-      )}
+    <section className="relative border-y border-border">
+      {/* Contenedor del video - el video define el alto */}
+      <div className="relative w-full">
+        {backgroundVideo && (
+          <video
+            key={backgroundVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            crossOrigin="anonymous"
+            onCanPlay={() => setVideoStatus('loaded')}
+            onError={() => {
+              console.warn('[CartoniSection] No se pudo reproducir el video. Recomendación: MP4 H.264 + AAC. URL:', backgroundVideo);
+              setVideoStatus('error');
+            }}
+            className="w-full h-auto min-h-[720px] object-cover object-top"
+          >
+            <source src={backgroundVideo} type="video/mp4" />
+          </video>
+        )}
 
-      {/* Overlay para legibilidad */}
-      <div className="pointer-events-none absolute inset-0 bg-background/40 z-[1]" />
+        {/* Overlay para legibilidad */}
+        <div className="pointer-events-none absolute inset-0 bg-background/40 z-[1]" />
 
-      {/* Contenido - superpuesto, abajo izquierda */}
-      <div className="container mx-auto px-4 relative z-10 pb-16">
-        <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl text-left">
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mb-4">
-            SELLER & SERVICE <span className="text-primary">OFICIAL CARTONI</span>
-          </h2>
-          <p className="text-sm text-muted-foreground mb-6 leading-tight">
-            Ala Norte es representante oficial de Cartoni en Argentina. Venta, reparación y mantenimiento de
-            trípodes y cabezales profesionales con garantía y repuestos originales.
-          </p>
-          <div className="flex flex-wrap justify-start gap-2 sm:gap-4">
-            <Button asChild variant="default" size="lg" className="flex-1 sm:flex-none">
-              <Link to="/cartoni">CONOCER MÁS</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="flex-1 sm:flex-none">
-              <a href="https://www.cartoni.com/dealers/" target="_blank" rel="noopener noreferrer">
-                VER EN CARTONI.COM
-              </a>
-            </Button>
+        {/* Contenido - superpuesto, abajo izquierda */}
+        <div className="absolute inset-0 z-10 flex items-end">
+          <div className="container mx-auto px-4 pb-16">
+            <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl text-left">
+              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mb-4">
+                SELLER & SERVICE <span className="text-primary">OFICIAL CARTONI</span>
+              </h2>
+              <p className="text-sm text-muted-foreground mb-6 leading-tight">
+                Ala Norte es representante oficial de Cartoni en Argentina. Venta, reparación y mantenimiento de
+                trípodes y cabezales profesionales con garantía y repuestos originales.
+              </p>
+              <div className="flex flex-wrap justify-start gap-2 sm:gap-4">
+                <Button asChild variant="default" size="lg" className="flex-1 sm:flex-none">
+                  <Link to="/cartoni">CONOCER MÁS</Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="flex-1 sm:flex-none">
+                  <a href="https://www.cartoni.com/dealers/" target="_blank" rel="noopener noreferrer">
+                    VER EN CARTONI.COM
+                  </a>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
