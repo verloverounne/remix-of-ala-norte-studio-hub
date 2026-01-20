@@ -66,6 +66,7 @@ interface CategorySectionProps {
   canAddMore: (item: EquipmentWithStock) => boolean;
   stickyTop: number;
   defaultExpanded?: boolean;
+  onCategoryActivate?: (categoryId: string) => void;
 }
 
 export interface CategorySectionRef {
@@ -82,9 +83,11 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
   getCartQuantity,
   canAddMore,
   stickyTop,
-  defaultExpanded = false
+  defaultExpanded = false,
+  onCategoryActivate
 }, ref) => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("all");
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
@@ -123,7 +126,27 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
     ? equipment
     : equipment.filter(e => e.subcategory_id === selectedSubcategory);
 
-  const toggleExpand = () => setIsExpanded(!isExpanded);
+  const handleHeaderClick = () => {
+    const wasExpanded = isExpanded;
+    setIsExpanded(!isExpanded);
+    
+    // Notify parent to activate this category's tab
+    onCategoryActivate?.(category.id);
+    
+    // If expanding, scroll to show the grid at the top edge after a brief delay
+    if (!wasExpanded) {
+      setTimeout(() => {
+        if (sectionRef.current) {
+          const headerHeight = stickyTop + 52; // nav bar + category header height
+          const sectionTop = sectionRef.current.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo({
+            top: sectionTop - headerHeight + 52, // Position so grid starts at top
+            behavior: 'smooth'
+          });
+        }
+      }, 50);
+    }
+  };
 
   return (
     <section 
@@ -139,7 +162,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
       >
         <div className="flex items-center justify-between px-2 sm:px-4 py-2 sm:py-3 h-[40px] sm:h-[52px]">
           <button 
-            onClick={toggleExpand}
+            onClick={handleHeaderClick}
             className="flex items-center gap-1 sm:gap-3 cursor-pointer hover:text-primary transition-colors"
           >
             {isExpanded ? (
@@ -182,7 +205,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
 
       {/* Equipment Grid - Collapsible */}
       {isExpanded && (
-        <div className="p-3 sm:p-4 bg-background">
+        <div ref={gridRef} className="p-3 sm:p-4 bg-background">
           {filteredEquipment.length === 0 ? (
             <div className="text-center py-8 sm:py-12 text-muted-foreground">
               <p className="font-heading text-lg">No hay equipos en esta categoría</p>
