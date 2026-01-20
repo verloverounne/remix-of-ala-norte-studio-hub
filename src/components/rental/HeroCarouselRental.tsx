@@ -72,12 +72,7 @@ export const HeroCarouselRental = ({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
   const heroRef = useRef<HTMLDivElement>(null);
-  const { isVisible: isHeaderVisible, isHovering: isHeaderHovering, isMobile } = useHeaderVisibility();
-  
-  // Calculate sticky top based on header visibility
-  // Mobile: header always visible, h-10 (40px)
-  // Desktop: h-14 (56px) when visible, 0 when hidden
-  const stickyNavTop = isMobile ? 40 : (isHeaderVisible || isHeaderHovering ? 56 : 0);
+  const { isVisible: isHeaderVisible, isHovering: isHeaderHovering } = useHeaderVisibility();
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -275,11 +270,10 @@ export const HeroCarouselRental = ({
         </Carousel>
       </section>
 
-      {/* Sticky Navigation Bar - flush with hero, adjusts to header visibility */}
+      {/* Sticky Navigation Bar - flush with hero, no gap */}
       <div
         ref={navBarRef}
-        className="sticky z-40 bg-background border-b border-foreground/10 -mt-px transition-[top] duration-300"
-        style={{ top: `${stickyNavTop}px` }}
+        className="sticky top-0 z-40 bg-background border-b border-foreground/10 -mt-px"
       >
         <div className="container mx-auto px-2 sm:px-4">
           <div className="flex items-center justify-center gap-1 sm:gap-2 py-1.5 sm:py-2 h-[40px] sm:h-[52px]">

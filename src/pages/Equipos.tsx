@@ -258,11 +258,9 @@ const Equipos = () => {
   const hasActiveFilters = searchTerm.length > 0 || selectedSubcategories.length > 0;
 
   // Calculate sticky top for category headers (below nav bar)
-  // Mobile: header h-10 (40px) + nav bar ~40px
-  // Desktop: header h-14 (56px) when visible + nav bar ~52px, or just nav bar when header hidden
-  const headerHeight = isMobile ? 40 : (headerVisible ? 56 : 0);
-  const navBarHeightCalc = isMobile ? 40 : 52;
-  const categoryTitleTop = headerHeight + navBarHeightCalc;
+  // On desktop when header is hidden, sticky should be at top (0)
+  // On mobile, always use navBarHeight since header is always visible
+  const categoryTitleTop = isMobile ? navBarHeight : (headerVisible ? navBarHeight : 0);
   const cartStickyTop = categoryTitleTop + 16;
 
   return (
