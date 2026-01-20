@@ -59,12 +59,8 @@ const ServiceSlide = ({
         </div>
 
         {/* Columna derecha: Texto con fondo y parallax lento */}
-        <div className="flex flex-col justify-end h-full p-8 lg:p-12 xl:p-16 bg-background overflow-hidden">
-          <div 
-            ref={textParallax.ref as any}
-            className="max-w-xl text-foreground"
-            style={textParallax.style}
-          >
+        <div className="flex-col h-full p-8 lg:p-12 xl:p-16 bg-background overflow-hidden flex items-start justify-center">
+          <div ref={textParallax.ref as any} className="max-w-xl text-foreground" style={textParallax.style}>
             <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-foreground">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
