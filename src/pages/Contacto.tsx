@@ -22,14 +22,14 @@ const Contacto = () => {
   useEffect(() => {
     const fetchContactVideo = async () => {
       const { data } = await supabase
-        .from('gallery_images')
-        .select('image_url, media_type')
-        .eq('page_type', 'contacto')
-        .order('order_index', { ascending: true })
+        .from("gallery_images")
+        .select("image_url, media_type")
+        .eq("page_type", "contacto")
+        .order("order_index", { ascending: true })
         .limit(1)
         .single();
-      
-      if (data && data.media_type === 'video') {
+
+      if (data && data.media_type === "video") {
         setContactVideo(data.image_url);
       }
     };
@@ -163,14 +163,7 @@ const Contacto = () => {
               {/* Vertical Video */}
               {contactVideo && (
                 <div className="aspect-[9/16] w-full max-w-sm mx-auto rounded-lg overflow-hidden bg-muted">
-                  <video
-                    src={contactVideo}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover"
-                  />
+                  <video src={contactVideo} autoPlay loop muted playsInline className="w-full object-cover" />
                 </div>
               )}
               <Card>
