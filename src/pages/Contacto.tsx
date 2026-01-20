@@ -74,9 +74,9 @@ const Contacto = () => {
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
       <section className="py-20">
-        <div className="container mx-auto px-4 text-left">
+        <div className="container mx-auto px-4 max-w-6xl text-left">
           <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">Hablemos de tu próximo rodaje</h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto text-left">
+          <p className="text-xl md:text-2xl max-w-3xl text-left">
             Completá el formulario con algunos datos de tu proyecto y te respondemos con una propuesta de equipamiento y
             presupuesto.
           </p>
@@ -162,8 +162,8 @@ const Contacto = () => {
             <div className="space-y-6">
               {/* Vertical Video */}
               {contactVideo && (
-                <div className="aspect-[9/16] w-full max-w-sm mx-auto rounded-lg overflow-hidden bg-muted">
-                  <video src={contactVideo} autoPlay loop muted playsInline className="w-full object-cover" />
+                <div className="aspect-[9/16] w-full rounded-lg overflow-hidden bg-muted">
+                  <video src={contactVideo} autoPlay loop muted playsInline className="w-full h-full object-cover" />
                 </div>
               )}
               <Card>
