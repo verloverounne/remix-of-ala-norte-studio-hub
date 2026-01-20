@@ -157,8 +157,8 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
     >
       {/* Sticky Category Header with Collapse - z-20 - same height as filter bar */}
       <div 
-        className="sticky z-20 bg-background mb-0"
-        style={{ top: `${stickyTop}px` }}
+        className="sticky z-20 bg-background mb-0 -mt-px"
+        style={{ top: `${stickyTop - 1}px` }}
       >
         <div className="flex items-center justify-between px-2 sm:px-4 py-2 sm:py-3 h-[40px] sm:h-[52px]">
           <button 
