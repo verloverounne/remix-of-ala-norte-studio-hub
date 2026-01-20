@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Eye, MapPin, Clock, Check, Ruler, Calendar } from "lucide-react";
+import planoIlustrativo from "@/assets/plano-ilustrativo.png";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
@@ -89,13 +90,25 @@ const Galeria = () => {
       <section className="py-12 sm:py-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-            {/* Featured Image */}
-            <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border border-foreground shadow-brutal">
-              <img
-                src={space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
-                alt={space.name}
-                className="w-full h-full object-cover"
-              />
+            {/* Left Column: Featured Image + Floor Plan */}
+            <div className="space-y-6">
+              {/* Featured Image */}
+              <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border border-foreground shadow-brutal">
+                <img
+                  src={space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
+                  alt={space.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              
+              {/* Floor Plan - Only visible on mobile below layout, handled via order in mobile */}
+              <div className="hidden lg:block relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
+                <img
+                  src={planoIlustrativo}
+                  alt="Plano ilustrativo del estudio"
+                  className="w-full h-auto object-contain bg-background"
+                />
+              </div>
             </div>
 
             {/* Details */}
@@ -158,6 +171,15 @@ const Galeria = () => {
                   <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
                 </div>
               )}
+
+              {/* Floor Plan - Mobile only (appears after layout description) */}
+              <div className="lg:hidden relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
+                <img
+                  src={planoIlustrativo}
+                  alt="Plano ilustrativo del estudio"
+                  className="w-full h-auto object-contain bg-background"
+                />
+              </div>
 
               <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
                 <Link to="/contacto">
