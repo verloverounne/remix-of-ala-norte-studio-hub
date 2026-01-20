@@ -58,7 +58,7 @@ const Viewer360 = ({ imageSrc, height = "1000px", title, subtitle, ctaText, ctaL
           vr-mode-ui="enabled: false"
           loading-screen="enabled: false"
         >
-          <a-sky src="${imageSrc}" rotation="0 0 0" scale="-1 1 1"></a-sky>
+          <a-sky src="${imageSrc}" rotation="0 0 0" scale="-1.5 1.5 1.5"></a-sky>
           <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="120"></a-camera>
         </a-scene>
       `;
@@ -90,12 +90,12 @@ const Viewer360 = ({ imageSrc, height = "1000px", title, subtitle, ctaText, ctaL
           <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
             <div className="flex flex-col items-center justify-center gap-4 sm:gap-6 pointer-events-auto">
               {title && (
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl font-heading font-bold uppercase tracking-wider text-foreground text-center px-4">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-2xl xl:text-3xl font-heading font-bold uppercase tracking-wider text-background text-center px-4">
                   {title}
                 </h2>
               )}
               {subtitle && (
-                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-heading font-bold uppercase tracking-wider text-muted-foreground text-center px-4">
+                <h3 className="text-lg sm:text-xl md:text-1xl lg:text-2xl xl:text-3xl font-heading font-bold uppercase tracking-wider text-muted-foreground text-center px-4">
                   {subtitle}
                 </h3>
               )}
