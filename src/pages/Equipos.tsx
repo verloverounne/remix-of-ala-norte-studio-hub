@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { EquipmentWithCategory } from "@/types/supabase";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
+import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
 import { EquipmentModal } from "@/components/EquipmentModal";
 import { HeroCarouselRental } from "@/components/rental/HeroCarouselRental";
 import { CategorySection, CategorySectionRef } from "@/components/rental/CategorySection";
@@ -29,6 +30,7 @@ const Equipos = () => {
   const [navBarHeight, setNavBarHeight] = useState(0);
   const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
   const { toast } = useToast();
+  const { isVisible: headerVisible, isMobile } = useHeaderVisibility();
   
   const categoryRefs = useRef<Map<string, CategorySectionRef>>(new Map());
   const navBarRef = useRef<HTMLDivElement>(null);
@@ -256,8 +258,10 @@ const Equipos = () => {
   const hasActiveFilters = searchTerm.length > 0 || selectedSubcategories.length > 0;
 
   // Calculate sticky top for category headers (below nav bar)
-  const categoryTitleTop = navBarHeight;
-  const cartStickyTop = navBarHeight + 16;
+  // On desktop when header is hidden, sticky should be at top (0)
+  // On mobile, always use navBarHeight since header is always visible
+  const categoryTitleTop = isMobile ? navBarHeight : (headerVisible ? navBarHeight : 0);
+  const cartStickyTop = categoryTitleTop + 16;
 
   return (
     <div className="min-h-screen bg-background">
