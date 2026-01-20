@@ -208,11 +208,8 @@ export const HeroCarouselRental = ({
 
   return (
     <div ref={heroRef} className="relative">
-      {/* Fixed Navigation Bar - always visible at top, z-50 to always be above category headers */}
-      <div
-        ref={navBarRef}
-        className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-foreground/10"
-      >
+      {/* Fixed Navigation Bar - always visible at top, z-30 to always be above category headers */}
+      <div ref={navBarRef} className="fixed top-0 left-0 right-0 z-30 bg-background border-b border-foreground/10">
         <div className="container mx-auto px-2 sm:px-4">
           <div className="flex items-center justify-center gap-1 sm:gap-2 py-1.5 sm:py-2 h-[40px] sm:h-[52px]">
             {/* Category chips - always show all 5 categories */}
@@ -271,10 +268,7 @@ export const HeroCarouselRental = ({
                   setIsFilterOpen(!isFilterOpen);
                   if (isSearchOpen) setIsSearchOpen(false);
                 }}
-                className={cn(
-                  "h-7 sm:h-9 px-2 flex-shrink-0",
-                  isFilterOpen && "bg-primary text-primary-foreground",
-                )}
+                className={cn("h-7 sm:h-9 px-2 flex-shrink-0", isFilterOpen && "bg-primary text-primary-foreground")}
               >
                 <Filter className="h-3 w-3 sm:h-4 sm:w-4" />
                 {selectedSubcategories.length > 0 && (
