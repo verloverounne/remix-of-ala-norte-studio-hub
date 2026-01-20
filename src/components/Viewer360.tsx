@@ -85,12 +85,12 @@ const Viewer360 = ({ imageSrc, height = "1000px", title, subtitle, ctaText, ctaL
       >
         <div className="a-scene-container w-full h-full" style={{ height }} />
 
-        {/* Overlay HTML con clases CSS de la página
+        {/* Overlay HTML con clases CSS de la página */}
         {(title || subtitle || ctaText) && (
           <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
             <div className="flex flex-col items-center justify-center gap-4 sm:gap-6 pointer-events-auto">
               {title && (
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl font-heading font-bold uppercase tracking-wider text-foreground text-center px-4">
+               {/*    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl font-heading font-bold uppercase tracking-wider text-foreground text-center px-4">
                   {title}
                 </h2>
               )}
@@ -108,9 +108,9 @@ const Viewer360 = ({ imageSrc, height = "1000px", title, subtitle, ctaText, ctaL
                   ) : (
                     <Button variant="default" size="default" className="pointer-events-auto">
                       {ctaText}
-                    </Button>
+                    </Button> */}
                   )}
-                </div>  */}
+                </div>
               )}
             </div>
           </div>
