@@ -33,6 +33,12 @@ const ServiceSlide = ({
     speed: 0.6,
     direction: "up"
   });
+  // Parallax más lento para el texto - permanece visible más tiempo
+  const textParallax = useParallax({
+    speed: 0.15,
+    direction: "up",
+    offset: 100 // Offset inicial para que empiece más arriba
+  });
   const isVideo = service.section_media_type === "video" && service.section_video_url;
   const mediaUrl = isVideo ? service.section_video_url : service.image_url;
   const hasMedia = mediaUrl && mediaUrl.trim() !== "";
@@ -52,9 +58,13 @@ const ServiceSlide = ({
             </div>}
         </div>
 
-        {/* Columna derecha: Texto con fondo */}
-        <div className="flex flex-col justify-end h-full p-8 lg:p-12 xl:p-16 bg-background">
-          <div className="max-w-xl text-foreground">
+        {/* Columna derecha: Texto con fondo y parallax lento */}
+        <div className="flex flex-col justify-end h-full p-8 lg:p-12 xl:p-16 bg-background overflow-hidden">
+          <div 
+            ref={textParallax.ref as any}
+            className="max-w-xl text-foreground"
+            style={textParallax.style}
+          >
             <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-foreground">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
