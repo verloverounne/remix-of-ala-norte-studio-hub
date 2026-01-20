@@ -51,7 +51,6 @@ interface HeroCarouselRentalProps {
   onClearFilters: () => void;
   hasActiveFilters: boolean;
   navBarRef?: React.RefObject<HTMLDivElement>;
-  navBarStickyTop?: number;
 }
 
 export const HeroCarouselRental = ({
@@ -66,7 +65,6 @@ export const HeroCarouselRental = ({
   onClearFilters,
   hasActiveFilters,
   navBarRef,
-  navBarStickyTop = 0,
 }: HeroCarouselRentalProps) => {
   // Map of category_id -> slide with background media from admin
   const [categoryBackgrounds, setCategoryBackgrounds] = useState<Record<string, HeroSlide>>({});
@@ -272,11 +270,10 @@ export const HeroCarouselRental = ({
         </Carousel>
       </section>
 
-      {/* Sticky Navigation Bar - uses same dynamic positioning as category headers */}
+      {/* Sticky Navigation Bar - flush with hero, no gap */}
       <div
         ref={navBarRef}
-        className="sticky z-40 bg-background border-b border-foreground/10 -mt-px"
-        style={{ top: `${navBarStickyTop}px` }}
+        className="sticky top-0 z-40 bg-background border-b border-foreground/10 -mt-px"
       >
         <div className="container mx-auto px-2 sm:px-4">
           <div className="flex items-center justify-center gap-1 sm:gap-2 py-1.5 sm:py-2 h-[40px] sm:h-[52px]">

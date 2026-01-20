@@ -257,13 +257,10 @@ const Equipos = () => {
 
   const hasActiveFilters = searchTerm.length > 0 || selectedSubcategories.length > 0;
 
-  // Calculate sticky top for nav bar (same dynamic behavior as category headers)
+  // Calculate sticky top for category headers (below nav bar)
   // On desktop when header is hidden, sticky should be at top (0)
-  // On mobile, always at top (0) since header floats
-  const navBarStickyTop = isMobile ? 0 : (headerVisible ? 56 : 0); // 56px = header height on desktop
-  
-  // Category headers should be positioned below the nav bar
-  const categoryTitleTop = navBarStickyTop + navBarHeight;
+  // On mobile, always use navBarHeight since header is always visible
+  const categoryTitleTop = isMobile ? navBarHeight : (headerVisible ? navBarHeight : 0);
   const cartStickyTop = categoryTitleTop + 16;
 
   return (
@@ -281,7 +278,6 @@ const Equipos = () => {
         onClearFilters={clearFilters}
         hasActiveFilters={hasActiveFilters}
         navBarRef={navBarRef}
-        navBarStickyTop={navBarStickyTop}
       />
 
       <div className="container mx-auto px-4 py-4 sm:py-6">
