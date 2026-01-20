@@ -55,11 +55,11 @@ const Viewer360 = ({ imageSrc, height = "1000px", title, subtitle, ctaText, ctaL
         <a-scene 
           embedded 
           style="width: 100%; height: ${height};"
-          vr-mode-ui="enabled: false"
-          loading-screen="enabled: false"
+          vr-mode-ui="enabled: true"
+          loading-screen="enabled: true"
         >
-          <a-sky src="${imageSrc}" rotation="0 0 0" scale="-1 1 1"></a-sky>
-          <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="90"></a-camera>
+          <a-sky src="${imageSrc}" rotation="0 -30 0" scale="-1.5 1.5 1.5"></a-sky>
+          <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="60"></a-camera>
         </a-scene>
       `;
 
