@@ -30,7 +30,7 @@ export const ServiceSection = forwardRef<HTMLElement, ServiceSectionProps>(
             className={`grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center ${isEven ? "" : "md:grid-flow-dense"}`}
           >
             {/* Text content */}
-            <div className={`space-y-6 ${isEven ? "" : "md:col-start-2"}`}>
+            <div className={`space-y-6 pb-8 ${isEven ? "" : "md:col-start-2"}`}>
               <div className="space-y-4">
                 <span className="font-heading text-sm text-muted-foreground uppercase tracking-wider">
                   Servicio {String(index + 1).padStart(2, "0")}

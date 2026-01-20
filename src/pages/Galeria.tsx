@@ -84,10 +84,6 @@ const Galeria = () => {
               <Viewer360
                 imageSrc={space.tour_360_url}
                 height="1000px"
-                title="TOUR VIRTUAL 360°"
-                subtitle="Explorá la galería en una experiencia inmersiva"
-                //               ctaText="VER EN PANTALLA COMPLETA"
-                //              ctaLink="/contacto"
               />
             </div>
           </div>
