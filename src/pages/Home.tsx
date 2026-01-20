@@ -126,22 +126,38 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
 };
 
 // Componente para la sección CTA con parallax
+import ctaBackground from "@/assets/cta-background.jpg";
+
 const CTASection = () => {
   const contentParallax = useParallax({
     speed: 0.5,
     direction: "down",
   });
   return (
-    <section className="py-12 sm:py-20 lg:py-32 text-foreground relative border-y border-border bg-background border">
-      <div className="container mx-auto px-4 relative">
-        <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-4xl mx-auto text-center">
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal mb-4 sm:mb-6 lg:mb-8 text-center">
+    <section className="relative border-y border-border overflow-hidden min-h-[60vh] flex items-center duotone-hover-group">
+      {/* Background image with duotone treatment */}
+      <div className="absolute inset-0 w-full h-full">
+        <img
+          src={ctaBackground}
+          alt=""
+          className="w-full h-full object-cover image-duotone"
+        />
+      </div>
+      
+      {/* Content overlay */}
+      <div className="relative z-10 container mx-auto px-4">
+        <div 
+          ref={contentParallax.ref as any} 
+          style={contentParallax.style} 
+          className="max-w-2xl p-6 backdrop-blur-md bg-background/40 rounded-lg"
+        >
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6">
             ¿Estás por encarar un rodaje?
           </h2>
-          <p className="text-sm sm:text-base lg:text-sm mb-6 sm:mb-8 lg:mb-12 font-heading leading-tight text-center">
+          <p className="text-sm sm:text-base mb-6 sm:mb-8 font-heading leading-tight">
             Contanos qué querés filmar y armamos una propuesta de equipamiento a medida.
           </p>
-          <Button asChild variant="outline" size="lg" className="bg-background text-foreground">
+          <Button asChild variant="default" size="lg">
             <Link to="/cotizador">Hablemos de tu proyecto</Link>
           </Button>
         </div>
