@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Map from "@/components/Map.tsx";
-import { supabase } from "@/integrations/supabase/client";
+
 const Contacto = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
@@ -16,24 +16,6 @@ const Contacto = () => {
     phone: "",
     message: "",
   });
-  const [heroVideoUrl, setHeroVideoUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchHeroVideo = async () => {
-      const { data } = await supabase
-        .from("gallery_images")
-        .select("image_url, media_type")
-        .eq("page_type", "contacto")
-        .order("order_index", { ascending: true })
-        .limit(1)
-        .single();
-      
-      if (data?.image_url) {
-        setHeroVideoUrl(data.image_url);
-      }
-    };
-    fetchHeroVideo();
-  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,7 +55,7 @@ const Contacto = () => {
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
       <section className="py-20">
-        <div className="container mx-auto px-4 max-w-6xl text-center">
+        <div className="container mx-auto px-4 text-left">
           <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">Hablemos de tu próximo rodaje</h1>
           <p className="text-xl md:text-2xl max-w-3xl mx-auto">
             Completá el formulario con algunos datos de tu proyecto y te respondemos con una propuesta de equipamiento y
@@ -159,19 +141,6 @@ const Contacto = () => {
 
             {/* Contact Info */}
             <div className="space-y-6">
-              {/* Video Vertical */}
-              {heroVideoUrl && (
-                <div className="w-full aspect-[9/16] max-h-[600px] rounded-lg overflow-hidden bg-muted">
-                  <video
-                    src={heroVideoUrl}
-                    className="w-full h-full object-cover"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                  />
-                </div>
-              )}
               <Card>
                 <CardHeader>
                   <CardTitle>Información de contacto</CardTitle>
