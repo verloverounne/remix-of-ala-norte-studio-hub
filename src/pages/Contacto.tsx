@@ -73,7 +73,7 @@ const Contacto = () => {
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
       <section className="py-20">
-        <div className="container mx-auto px-4 text-center">
+        <div className="container mx-auto px-4 max-w-6xl text-center">
           <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">Hablemos de tu próximo rodaje</h1>
           <p className="text-xl md:text-2xl max-w-3xl mx-auto">
             Completá el formulario con algunos datos de tu proyecto y te respondemos con una propuesta de equipamiento y
