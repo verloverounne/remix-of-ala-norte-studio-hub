@@ -122,7 +122,7 @@ const HeroSlideComponent = ({
         }}>
             {slide.title}
           </h1>
-          <p className="text-background mb-6 text-base">{slide.subtitle}</p>
+          <p className="text-background text-base my-[15px] mb-[152px]">{slide.subtitle}</p>
           {slide.cta_label && slide.cta_link && <Link to={slide.cta_link}>
               <Button variant="default" size="lg">
                 {slide.cta_label}
