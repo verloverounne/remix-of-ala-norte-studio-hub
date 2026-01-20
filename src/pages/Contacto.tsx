@@ -87,16 +87,6 @@ const Contacto = () => {
       <section className="py-16">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Map */}
-            <Card className="overflow-hidden">
-              <div className="h-96">
-                <Map
-                  address="V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina"
-                  latitude={-34.527}
-                  longitude={-58.475}
-                />
-              </div>
-            </Card>
             {/* Contact Form */}
             <Card>
               <CardHeader>
@@ -167,7 +157,16 @@ const Contacto = () => {
                 </form>
               </CardContent>
             </Card>
-
+            {/* Map */}
+            <Card className="overflow-hidden">
+              <div className="h-96">
+                <Map
+                  address="V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina"
+                  latitude={-34.527}
+                  longitude={-58.475}
+                />
+              </div>
+            </Card>
             {/* Contact Info */}
             <div className="space-y-6">
               {/* Vertical Video */}
@@ -176,6 +175,7 @@ const Contacto = () => {
                   <video src={contactVideo} autoPlay loop muted playsInline className="w-full h-full object-cover" />
                 </div>
               )}
+
               <Card>
                 <CardHeader>
                   <CardTitle>Información de contacto</CardTitle>
