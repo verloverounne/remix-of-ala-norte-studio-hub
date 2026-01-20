@@ -175,7 +175,10 @@ export const HomeVideoHeroSlider = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [muted, setMuted] = useState(true);
+  const [autoplayEnabled, setAutoplayEnabled] = useState(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const autoplayIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     const fetchSlides = async () => {
       const {
@@ -204,12 +207,39 @@ export const HomeVideoHeroSlider = () => {
     };
     fetchSlides();
   }, []);
+
+  // Autoplay effect - advances every 4 seconds until user interacts
+  useEffect(() => {
+    if (!api || !autoplayEnabled || slides.length <= 1) return;
+
+    autoplayIntervalRef.current = setInterval(() => {
+      api.scrollNext();
+    }, 4000);
+
+    return () => {
+      if (autoplayIntervalRef.current) {
+        clearInterval(autoplayIntervalRef.current);
+      }
+    };
+  }, [api, autoplayEnabled, slides.length]);
+
+  // Stop autoplay on user interaction
+  const handleUserInteraction = () => {
+    if (autoplayEnabled) {
+      setAutoplayEnabled(false);
+      if (autoplayIntervalRef.current) {
+        clearInterval(autoplayIntervalRef.current);
+        autoplayIntervalRef.current = null;
+      }
+    }
+  };
+
   useEffect(() => {
     if (!api) return;
     api.on("select", () => setCurrentSlide(api.selectedScrollSnap()));
   }, [api]);
   const hasVideos = slides.some(s => s.media_type === "video" && s.media_url);
-  return <section className="relative h-screen overflow-hidden border-b-4 border-foreground">
+  return <section className="relative h-screen overflow-hidden border-b-4 border-foreground" onMouseDown={handleUserInteraction} onTouchStart={handleUserInteraction}>
       <Carousel className="w-full h-screen" setApi={setApi} opts={{
       loop: true
     }}>
@@ -219,13 +249,13 @@ export const HomeVideoHeroSlider = () => {
       </Carousel>
 
       {/* Mute/Unmute Button - only show if there are videos */}
-      {hasVideos && <button onClick={() => setMuted(!muted)} className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm hover:bg-background/40 transition-colors" aria-label={muted ? "Activar sonido" : "Silenciar"}>
+      {hasVideos && <button onClick={() => { handleUserInteraction(); setMuted(!muted); }} className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm hover:bg-background/40 transition-colors" aria-label={muted ? "Activar sonido" : "Silenciar"}>
           {muted ? <VolumeX className="h-5 w-5 text-background" /> : <Volume2 className="h-5 w-5 text-background" />}
         </button>}
 
       {/* Navigation dots */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-        {slides.map((_, index) => <button key={index} onClick={() => api?.scrollTo(index)} className={`h-2 rounded-full transition-all ${index === currentSlide ? "w-12 bg-primary" : "w-2 bg-background/40"}`} aria-label={`Ir a slide ${index + 1}`} />)}
+        {slides.map((_, index) => <button key={index} onClick={() => { handleUserInteraction(); api?.scrollTo(index); }} className={`h-2 rounded-full transition-all ${index === currentSlide ? "w-12 bg-primary" : "w-2 bg-background/40"}`} aria-label={`Ir a slide ${index + 1}`} />)}
       </div>
     </section>;
 };
