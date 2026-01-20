@@ -270,10 +270,10 @@ export const HeroCarouselRental = ({
         </Carousel>
       </section>
 
-      {/* Sticky Navigation Bar - flush with hero, no gap */}
+      {/* Sticky Navigation Bar - flush with hero, no gap, z-50 to always be above category headers */}
       <div
         ref={navBarRef}
-        className="sticky top-0 z-40 bg-background border-b border-foreground/10 -mt-px"
+        className="sticky top-0 z-50 bg-background border-b border-foreground/10 -mt-px"
       >
         <div className="container mx-auto px-2 sm:px-4">
           <div className="flex items-center justify-center gap-1 sm:gap-2 py-1.5 sm:py-2 h-[40px] sm:h-[52px]">
