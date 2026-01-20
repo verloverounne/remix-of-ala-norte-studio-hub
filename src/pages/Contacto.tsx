@@ -155,6 +155,17 @@ const Contacto = () => {
                     Enviar Mensaje
                   </Button>
                 </form>
+
+                {/* Map */}
+                <Card className="overflow-hidden">
+                  <div className="h-96">
+                    <Map
+                      address="V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina"
+                      latitude={-34.527}
+                      longitude={-58.475}
+                    />
+                  </div>
+                </Card>
               </CardContent>
             </Card>
 
@@ -247,17 +258,6 @@ const Contacto = () => {
                     </a>
                   </div>
                 </CardContent>
-              </Card>
-
-              {/* Map */}
-              <Card className="overflow-hidden">
-                <div className="h-96">
-                  <Map
-                    address="V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina"
-                    latitude={-34.527}
-                    longitude={-58.475}
-                  />
-                </div>
               </Card>
             </div>
           </div>
