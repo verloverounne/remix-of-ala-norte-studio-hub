@@ -236,6 +236,18 @@ const Equipos = () => {
     });
   };
 
+  // Handler for when a category header is clicked (activates tab without scrolling to top)
+  const handleCategoryActivate = (categoryId: string) => {
+    setActiveCategory(categoryId);
+    
+    // Collapse other categories
+    categoryRefs.current.forEach((ref, id) => {
+      if (id !== categoryId) {
+        ref.collapse();
+      }
+    });
+  };
+
   const clearFilters = () => {
     setSearchTerm("");
     setSelectedSubcategories([]);
@@ -298,6 +310,7 @@ const Equipos = () => {
                     canAddMore={canAddMore}
                     stickyTop={categoryTitleTop}
                     defaultExpanded={index === 0}
+                    onCategoryActivate={handleCategoryActivate}
                   />
                 ))}
               </div>
