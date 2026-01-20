@@ -20,26 +20,22 @@ const Galeria = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    
+
     // Fetch space data
-    const { data: spaceData } = await supabase
-      .from('spaces')
-      .select('*')
-      .eq('slug', 'galeria')
-      .single();
-    
+    const { data: spaceData } = await supabase.from("spaces").select("*").eq("slug", "galeria").single();
+
     if (spaceData) {
       setSpace({
         ...spaceData,
-        images: Array.isArray(spaceData.images) ? spaceData.images as string[] : [],
-        features: Array.isArray(spaceData.features) ? spaceData.features as string[] : [],
-        included_items: Array.isArray(spaceData.included_items) ? spaceData.included_items as string[] : [],
-        optional_services: Array.isArray(spaceData.optional_services) ? spaceData.optional_services as string[] : [],
-        amenities: Array.isArray(spaceData.amenities) ? spaceData.amenities as any[] : [],
-        specs: spaceData.specs || {}
+        images: Array.isArray(spaceData.images) ? (spaceData.images as string[]) : [],
+        features: Array.isArray(spaceData.features) ? (spaceData.features as string[]) : [],
+        included_items: Array.isArray(spaceData.included_items) ? (spaceData.included_items as string[]) : [],
+        optional_services: Array.isArray(spaceData.optional_services) ? (spaceData.optional_services as string[]) : [],
+        amenities: Array.isArray(spaceData.amenities) ? (spaceData.amenities as any[]) : [],
+        specs: spaceData.specs || {},
       } as Space);
     }
-    
+
     setLoading(false);
   };
 
@@ -56,30 +52,29 @@ const Galeria = () => {
       {/* Hero Section with 2 Column Layout */}
       <GalleryHero space={space} />
 
-
       {/* 360° Virtual Tour Section - Movido debajo de características */}
       {space.tour_360_url && (
         <section className="py-12 sm:py-16 bg-background">
           <div className="w-full px-0">
             <div className="container mx-auto px-4 mb-8">
               <div className="text-center">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
+                {/*     <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
                   <Eye className="inline-block mr-3 h-8 w-8" />
                   TOUR VIRTUAL 360°
                 </h2>
                 <p className="text-muted-foreground font-heading text-lg max-w-2xl mx-auto">
                   EXPLORÁ NUESTRO ESTUDIO EN UNA EXPERIENCIA INMERSIVA. ARRASTRÁ PARA MOVERTE.
-                </p>
+                </p>*/}
               </div>
             </div>
             <div className="w-full">
-              <Viewer360 
-                imageSrc={space.tour_360_url} 
-                height="500px"
+              <Viewer360
+                imageSrc={space.tour_360_url}
+                height="1000px"
                 title="TOUR VIRTUAL 360°"
-                subtitle="Explorá nuestro estudio en una experiencia inmersiva"
-                ctaText="RESERVAR BLOQUE"
-                ctaLink="/contacto"
+                subtitle="Explorá la galería en una experiencia inmersiva"
+                //               ctaText="VER EN PANTALLA COMPLETA"
+                //              ctaLink="/contacto"
               />
             </div>
           </div>
@@ -100,7 +95,7 @@ const Galeria = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              
+
               {/* Floor Plan - Only visible on mobile below layout, handled via order in mobile */}
               <div className="hidden lg:block relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
                 <img
@@ -142,12 +137,8 @@ const Galeria = () => {
                 <h3 className="font-heading font-bold mb-2 flex items-center gap-2">
                   <Clock className="h-5 w-5 text-primary" /> HORARIOS
                 </h3>
-                <p className="text-sm text-muted-foreground font-heading">
-                  {space.schedule_weekday}
-                </p>
-                <p className="text-sm text-muted-foreground font-heading">
-                  {space.schedule_weekend}
-                </p>
+                <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekday}</p>
+                <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekend}</p>
               </div>
 
               {/* Optional Services */}
@@ -198,9 +189,7 @@ const Galeria = () => {
       {/* CTA Section */}
       <section className="py-12 sm:py-16 bg-background">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4">
-            ¿LISTO PARA RESERVAR TU BLOQUE?
-          </h2>
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4">¿LISTO PARA RESERVAR TU BLOQUE?</h2>
           <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading leading-tight">
             CONTACTANOS PARA CONOCER DISPONIBILIDAD Y COORDINAR TU PRODUCCIÓN.
           </p>
