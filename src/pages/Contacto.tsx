@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Map from "@/components/Map.tsx";
+import { supabase } from "@/integrations/supabase/client";
 
 const Contacto = () => {
   const { toast } = useToast();
@@ -16,6 +17,24 @@ const Contacto = () => {
     phone: "",
     message: "",
   });
+  const [contactVideo, setContactVideo] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchContactVideo = async () => {
+      const { data } = await supabase
+        .from('gallery_images')
+        .select('image_url, media_type')
+        .eq('page_type', 'contacto')
+        .order('order_index', { ascending: true })
+        .limit(1)
+        .single();
+      
+      if (data && data.media_type === 'video') {
+        setContactVideo(data.image_url);
+      }
+    };
+    fetchContactVideo();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -141,6 +160,19 @@ const Contacto = () => {
 
             {/* Contact Info */}
             <div className="space-y-6">
+              {/* Vertical Video */}
+              {contactVideo && (
+                <div className="aspect-[9/16] w-full max-w-sm mx-auto rounded-lg overflow-hidden bg-muted">
+                  <video
+                    src={contactVideo}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
               <Card>
                 <CardHeader>
                   <CardTitle>Información de contacto</CardTitle>
