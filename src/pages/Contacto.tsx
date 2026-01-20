@@ -157,7 +157,7 @@ const Contacto = () => {
                 </form>
               </CardContent>
               {/* Map */}
-              <Card className="overflow-hidden flex gap-16">
+              <Card className="overflow-hidden flex gap-100">
                 <div className="h-96">
                   <Map
                     address="V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina"
