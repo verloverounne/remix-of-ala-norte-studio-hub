@@ -57,7 +57,7 @@ const Contacto = () => {
       <section className="py-20">
         <div className="container mx-auto px-4 text-left">
           <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">Hablemos de tu próximo rodaje</h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl max-w-3xl mx-auto text-left">
             Completá el formulario con algunos datos de tu proyecto y te respondemos con una propuesta de equipamiento y
             presupuesto.
           </p>
