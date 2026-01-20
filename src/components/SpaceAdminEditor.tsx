@@ -425,8 +425,8 @@ export const SpaceAdminEditor = () => {
           <TabsContent value="images" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Imágenes del Espacio</CardTitle>
-                <CardDescription>Slider del hero y galería</CardDescription>
+                <CardTitle>Imagen Destacada</CardTitle>
+                <CardDescription>La imagen del cuerpo de la página se obtiene del primer item en el panel Media</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -436,14 +436,9 @@ export const SpaceAdminEditor = () => {
                     onChange={(e) => updateEditingField('featured_image', e.target.value)}
                     placeholder="URL de la imagen destacada"
                   />
-                </div>
-                <div className="space-y-2">
-                  <Label>Imágenes del Carrusel</Label>
-                  <ImageUploader 
-                    images={editingSpace.images || []}
-                    onChange={(images) => updateEditingField('images', images)}
-                    maxImages={20}
-                  />
+                  <p className="text-xs text-muted-foreground">
+                    Nota: Si deseas cambiar la imagen que aparece en el cuerpo de la página, usa el panel "Media" y reordena las imágenes.
+                  </p>
                 </div>
               </CardContent>
             </Card>

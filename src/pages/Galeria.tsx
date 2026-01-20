@@ -13,6 +13,7 @@ import { ProductionsSlider } from "@/components/ProductionsSlider";
 const Galeria = () => {
   const [space, setSpace] = useState<Space | null>(null);
   const [loading, setLoading] = useState(true);
+  const [featuredMediaImage, setFeaturedMediaImage] = useState<string | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -23,6 +24,18 @@ const Galeria = () => {
 
     // Fetch space data
     const { data: spaceData } = await supabase.from("spaces").select("*").eq("slug", "galeria").single();
+
+    // Fetch first image from gallery_images with page_type='galeria' ordered by order_index
+    const { data: galleryImages } = await supabase
+      .from("gallery_images")
+      .select("image_url")
+      .eq("page_type", "galeria")
+      .order("order_index", { ascending: true })
+      .limit(1);
+
+    if (galleryImages && galleryImages.length > 0) {
+      setFeaturedMediaImage(galleryImages[0].image_url);
+    }
 
     if (spaceData) {
       setSpace({
@@ -87,10 +100,10 @@ const Galeria = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
             {/* Left Column: Featured Image + Floor Plan */}
             <div className="space-y-6">
-              {/* Featured Image */}
+              {/* Featured Image from Media panel */}
               <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border border-foreground shadow-brutal">
                 <img
-                  src={space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
+                  src={featuredMediaImage || space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
                   alt={space.name}
                   className="w-full h-full object-cover"
                 />
