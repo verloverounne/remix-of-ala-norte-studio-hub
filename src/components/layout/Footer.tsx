@@ -105,8 +105,8 @@ export const Footer = () => {
 
         <div className="mt-8 pt-8 border-t border-background/20 text-center text-sm opacity-70">
           <p>
-            &copy; {new Date().getFullYear()} 2026 Ala Norte. Diseño y Desarrollo: Verónica Seniquel @verlovero. Todos
-            los derechos reservados.
+            &copy; {new Date().getFullYear()} Ala Norte. Diseño y Desarrollo: Verónica Seniquel @verlovero. Todos los
+            derechos reservados.
           </p>
         </div>
       </div>
