@@ -71,20 +71,17 @@ const Galeria = () => {
           <div className="w-full px-0">
             <div className="container mx-auto px-4 mb-8">
               <div className="text-center">
-                {/*     <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
                   <Eye className="inline-block mr-3 h-8 w-8" />
-                  TOUR VIRTUAL 360°
+                  Recorrido virtual 360°
                 </h2>
                 <p className="text-muted-foreground font-heading text-lg max-w-2xl mx-auto">
-                  EXPLORÁ NUESTRO ESTUDIO EN UNA EXPERIENCIA INMERSIVA. ARRASTRÁ PARA MOVERTE.
-                </p>*/}
+                  Explorá la galería antes de tu reserva. Arrastrá para moverte y conocer cada rincón del espacio.
+                </p>
               </div>
             </div>
             <div className="w-full">
-              <Viewer360
-                imageSrc={space.tour_360_url}
-                height="1000px"
-              />
+              <Viewer360 imageSrc={space.tour_360_url} height="1000px" />
             </div>
           </div>
         </section>
@@ -99,7 +96,12 @@ const Galeria = () => {
               {/* Featured Image from Media panel */}
               <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border border-foreground shadow-brutal">
                 <img
-                  src={featuredMediaImage || space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
+                  src={
+                    featuredMediaImage ||
+                    space.featured_image ||
+                    (space.images && space.images[0]) ||
+                    "/placeholder.svg"
+                  }
                   alt={space.name}
                   className="w-full h-full object-cover"
                 />
