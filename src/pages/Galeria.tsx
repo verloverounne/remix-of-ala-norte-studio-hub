@@ -86,28 +86,13 @@ const Galeria = () => {
                 <img src={featuredMediaImage || space.featured_image || space.images && space.images[0] || "/placeholder.svg"} alt={space.name} className="w-full h-full object-cover" />
               </div>
 
-              {/* Floor Plan - Only visible on mobile below layout, handled via order in mobile */}
+              {/* Floor Plan - Only visible on desktop */}
               <div className="hidden lg:block relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
                 <img src={planoIlustrativo} alt="Plano ilustrativo del estudio" className="w-full h-auto object-contain bg-background" />
               </div>
             </div>
 
-              {/* Layout Description */}
-              {space.layout_description && <div className="bg-muted p-4 rounded-lg border-l border-primary">
-                  <h3 className="font-heading font-bold mb-2">LAYOUT DEL ESTUDIO</h3>
-                  <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
-                </div>}
-
-              {/* Floor Plan - Mobile only (appears after layout description) */}
-              <div className="lg:hidden relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
-                <img src={planoIlustrativo} alt="Plano ilustrativo del estudio" className="w-full h-auto object-contain bg-background" />
-              </div>
-
-              <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
-                <Link to="/contacto">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  {space.cta_text || "RESERVAR BLOQUE"}
-            {/* Details */}
+            {/* Right Column: Details */}
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">DETALLES DEL ESPACIO</h2>
@@ -116,18 +101,35 @@ const Galeria = () => {
                 </p>
               </div>
 
+              {/* Layout Description */}
+              {space.layout_description && (
+                <div className="bg-muted p-4 rounded-lg border-l border-primary">
+                  <h3 className="font-heading font-bold mb-2">LAYOUT DEL ESTUDIO</h3>
+                  <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
+                </div>
+              )}
+
+              {/* Floor Plan - Mobile only */}
+              <div className="lg:hidden relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
+                <img src={planoIlustrativo} alt="Plano ilustrativo del estudio" className="w-full h-auto object-contain bg-background" />
+              </div>
+
               {/* Included Items */}
-              {space.included_items && space.included_items.length > 0 && <div>
+              {space.included_items && space.included_items.length > 0 && (
+                <div>
                   <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
                     <Check className="h-5 w-5 text-primary" /> INCLUIDO EN EL BLOQUE
                   </h3>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {space.included_items.map((item, index) => <li key={index} className="flex items-center gap-2 text-muted-foreground">
+                    {space.included_items.map((item, index) => (
+                      <li key={index} className="flex items-center gap-2 text-muted-foreground">
                         <span className="text-primary">•</span>
                         <span className="font-heading">{item}</span>
-                      </li>)}
+                      </li>
+                    ))}
                   </ul>
-                </div>}
+                </div>
+              )}
 
               {/* Schedule Info */}
               <div className="bg-secondary border border-foreground p-4 rounded-lg">
@@ -139,15 +141,23 @@ const Galeria = () => {
               </div>
 
               {/* Optional Services */}
-              {space.optional_services && space.optional_services.length > 0 && <div>
+              {space.optional_services && space.optional_services.length > 0 && (
+                <div>
                   <h3 className="text-xl font-heading font-bold mb-3">SERVICIOS OPCIONALES</h3>
                   <div className="flex flex-wrap gap-2">
-                    {space.optional_services.map((service, index) => <Badge key={index} variant="outline" className="font-heading">
+                    {space.optional_services.map((service, index) => (
+                      <Badge key={index} variant="outline" className="font-heading">
                         {service}
-                      </Badge>)}
+                      </Badge>
+                    ))}
                   </div>
-                </div>}
+                </div>
+              )}
 
+              <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
+                <Link to="/contacto">
+                  <Calendar className="mr-2 h-5 w-5" />
+                  {space.cta_text || "RESERVAR BLOQUE"}
                 </Link>
               </Button>
             </div>
