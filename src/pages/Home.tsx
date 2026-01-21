@@ -137,23 +137,17 @@ const CTASection = () => {
     <section className="relative border-y border-border overflow-hidden min-h-[60vh] flex items-center duotone-hover-group">
       {/* Background image with duotone treatment */}
       <div className="absolute inset-0 w-full h-full">
-        <img
-          src={ctaBackground}
-          alt=""
-          className="w-full h-full object-cover image-duotone"
-        />
+        <img src={ctaBackground} alt="" className="w-full h-full object-cover image-duotone" />
       </div>
-      
+
       {/* Content overlay */}
-      <div className="relative z-10 container mx-auto px-4">
-        <div 
-          ref={contentParallax.ref as any} 
-          style={contentParallax.style} 
+      <div className="relative z-10 container mx-auto px-4 flex justify-end">
+        <div
+          ref={contentParallax.ref as any}
+          style={contentParallax.style}
           className="max-w-2xl p-6 backdrop-blur-md bg-background/40 rounded-lg"
         >
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6">
-            ¿Estás por encarar un rodaje?
-          </h2>
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6">¿Estás por encarar un rodaje?</h2>
           <p className="text-sm sm:text-base mb-6 sm:mb-8 font-heading leading-tight">
             Contanos qué querés filmar y armamos una propuesta de equipamiento a medida.
           </p>
@@ -239,7 +233,11 @@ const CartoniSection = () => {
         {/* Contenido - superpuesto, abajo izquierda */}
         <div className="absolute inset-0 z-10 flex items-end">
           <div className="container mx-auto px-4 pb-16">
-            <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl text-left p-6 backdrop-blur-md bg-background/40 rounded-lg">
+            <div
+              ref={contentParallax.ref as any}
+              style={contentParallax.style}
+              className="max-w-2xl text-left p-6 backdrop-blur-md bg-background/40 rounded-lg"
+            >
               <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mb-4">
                 SELLER & SERVICE <span className="text-primary">OFICIAL CARTONI</span>
               </h2>
