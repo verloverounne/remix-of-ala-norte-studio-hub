@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MapPin, Clock, Check, Ruler, Calendar } from "lucide-react";
+import { Eye, MapPin, Clock, Check, Ruler, Calendar } from "lucide-react";
 import planoIlustrativo from "@/assets/plano-ilustrativo.png";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -56,14 +56,15 @@ const Galeria = () => {
       <GalleryHero space={space} />
 
       {/* 360° Virtual Tour Section - Movido debajo de características */}
-      {space.tour_360_url && <section className="py-12 sm:py-16 bg-foreground">
-          <div className="w-full px-0 text-center mx-0">
+      {space.tour_360_url && <section className="py-12 sm:py-16 bg-background">
+          <div className="w-full px-0">
             <div className="container mx-auto px-4 mb-8">
-              <div className="text-left mx-[24px]">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 text-background">RECORRIDO 360°
+              <div className="text-left">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
+                  <Eye className="inline-block mr-3 h-8 w-8" />
                   Recorrido virtual 360°
                 </h2>
-                <p className="font-heading text-lg text-background">
+                <p className="text-muted-foreground font-heading text-lg ">
                   Explorá la galería antes de tu reserva. Arrastrá para moverte y conocer cada rincón del espacio.
                 </p>
               </div>
@@ -91,6 +92,21 @@ const Galeria = () => {
               </div>
             </div>
 
+              {/* Layout Description */}
+              {space.layout_description && <div className="bg-muted p-4 rounded-lg border-l border-primary">
+                  <h3 className="font-heading font-bold mb-2">LAYOUT DEL ESTUDIO</h3>
+                  <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
+                </div>}
+
+              {/* Floor Plan - Mobile only (appears after layout description) */}
+              <div className="lg:hidden relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
+                <img src={planoIlustrativo} alt="Plano ilustrativo del estudio" className="w-full h-auto object-contain bg-background" />
+              </div>
+
+              <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
+                <Link to="/contacto">
+                  <Calendar className="mr-2 h-5 w-5" />
+                  {space.cta_text || "RESERVAR BLOQUE"}
             {/* Details */}
             <div className="space-y-6">
               <div>
@@ -132,21 +148,6 @@ const Galeria = () => {
                   </div>
                 </div>}
 
-              {/* Layout Description */}
-              {space.layout_description && <div className="bg-muted p-4 rounded-lg border-l border-primary">
-                  <h3 className="font-heading font-bold mb-2">LAYOUT DEL ESTUDIO</h3>
-                  <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
-                </div>}
-
-              {/* Floor Plan - Mobile only (appears after layout description) */}
-              <div className="lg:hidden relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
-                <img src={planoIlustrativo} alt="Plano ilustrativo del estudio" className="w-full h-auto object-contain bg-background" />
-              </div>
-
-              <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
-                <Link to="/contacto">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  {space.cta_text || "RESERVAR BLOQUE"}
                 </Link>
               </Button>
             </div>
