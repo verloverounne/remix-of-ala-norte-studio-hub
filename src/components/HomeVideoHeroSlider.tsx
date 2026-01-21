@@ -113,8 +113,8 @@ const HeroSlideComponent = ({
   return <CarouselItem className="h-screen pl-0">
       {/* Desktop: 2 columnas - contenedor 100vh */}
       <div className="hidden md:grid md:grid-cols-2 h-screen bg-foreground">
-        {/* Columna izquierda: Texto llena 100% alto con padding simétrico */}
-        <div className="flex flex-col justify-center h-screen pl-8 pr-8 lg:pl-16 lg:pr-16">
+        {/* Columna izquierda: Texto posicionado al 90% del alto de pantalla */}
+        <div className="flex flex-col justify-end h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[10vh]">
           <h1 className="text-background font-bold mb-4 leading-tight border-0 font-sans text-3xl" style={{
           fontSize: "clamp(2.5rem, 8vw, 6rem)",
           wordBreak: "break-word",
