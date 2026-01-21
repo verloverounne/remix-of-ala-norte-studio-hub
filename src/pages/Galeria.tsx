@@ -9,68 +9,57 @@ import type { Space } from "@/types/supabase";
 import Viewer360 from "@/components/Viewer360";
 import { GalleryHero } from "@/components/GalleryHero";
 import { ProductionsSlider } from "@/components/ProductionsSlider";
-
 const Galeria = () => {
   const [space, setSpace] = useState<Space | null>(null);
   const [loading, setLoading] = useState(true);
   const [featuredMediaImage, setFeaturedMediaImage] = useState<string | null>(null);
-
   useEffect(() => {
     fetchData();
   }, []);
-
   const fetchData = async () => {
     setLoading(true);
 
     // Fetch space data
-    const { data: spaceData } = await supabase.from("spaces").select("*").eq("slug", "galeria").single();
+    const {
+      data: spaceData
+    } = await supabase.from("spaces").select("*").eq("slug", "galeria").single();
 
     // Fetch first image from gallery_images with page_type='galeria' ordered by order_index
-    const { data: galleryImages } = await supabase
-      .from("gallery_images")
-      .select("image_url")
-      .eq("page_type", "galeria")
-      .order("order_index", { ascending: true })
-      .limit(1);
-
+    const {
+      data: galleryImages
+    } = await supabase.from("gallery_images").select("image_url").eq("page_type", "galeria").order("order_index", {
+      ascending: true
+    }).limit(1);
     if (galleryImages && galleryImages.length > 0) {
       setFeaturedMediaImage(galleryImages[0].image_url);
     }
-
     if (spaceData) {
       setSpace({
         ...spaceData,
-        images: Array.isArray(spaceData.images) ? (spaceData.images as string[]) : [],
-        features: Array.isArray(spaceData.features) ? (spaceData.features as string[]) : [],
-        included_items: Array.isArray(spaceData.included_items) ? (spaceData.included_items as string[]) : [],
-        optional_services: Array.isArray(spaceData.optional_services) ? (spaceData.optional_services as string[]) : [],
-        amenities: Array.isArray(spaceData.amenities) ? (spaceData.amenities as any[]) : [],
-        specs: spaceData.specs || {},
+        images: Array.isArray(spaceData.images) ? spaceData.images as string[] : [],
+        features: Array.isArray(spaceData.features) ? spaceData.features as string[] : [],
+        included_items: Array.isArray(spaceData.included_items) ? spaceData.included_items as string[] : [],
+        optional_services: Array.isArray(spaceData.optional_services) ? spaceData.optional_services as string[] : [],
+        amenities: Array.isArray(spaceData.amenities) ? spaceData.amenities as any[] : [],
+        specs: spaceData.specs || {}
       } as Space);
     }
-
     setLoading(false);
   };
-
   if (loading || !space) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
+    return <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       {/* Hero Section with 2 Column Layout */}
       <GalleryHero space={space} />
 
       {/* 360° Virtual Tour Section - Movido debajo de características */}
-      {space.tour_360_url && (
-        <section className="py-12 sm:py-16 bg-background">
+      {space.tour_360_url && <section className="py-12 sm:py-16 bg-background">
           <div className="w-full px-0">
             <div className="container mx-auto px-4 mb-8">
-              <div className="text-center">
+              <div className="text-left">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
                   <Eye className="inline-block mr-3 h-8 w-8" />
                   Recorrido virtual 360°
@@ -84,8 +73,7 @@ const Galeria = () => {
               <Viewer360 imageSrc={space.tour_360_url} height="1000px" />
             </div>
           </div>
-        </section>
-      )}
+        </section>}
 
       {/* Details Section with Featured Image */}
       <section className="py-12 sm:py-16">
@@ -95,25 +83,12 @@ const Galeria = () => {
             <div className="space-y-6">
               {/* Featured Image from Media panel */}
               <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border border-foreground shadow-brutal">
-                <img
-                  src={
-                    featuredMediaImage ||
-                    space.featured_image ||
-                    (space.images && space.images[0]) ||
-                    "/placeholder.svg"
-                  }
-                  alt={space.name}
-                  className="w-full h-full object-cover"
-                />
+                <img src={featuredMediaImage || space.featured_image || space.images && space.images[0] || "/placeholder.svg"} alt={space.name} className="w-full h-full object-cover" />
               </div>
 
               {/* Floor Plan - Only visible on mobile below layout, handled via order in mobile */}
               <div className="hidden lg:block relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
-                <img
-                  src={planoIlustrativo}
-                  alt="Plano ilustrativo del estudio"
-                  className="w-full h-auto object-contain bg-background"
-                />
+                <img src={planoIlustrativo} alt="Plano ilustrativo del estudio" className="w-full h-auto object-contain bg-background" />
               </div>
             </div>
 
@@ -127,21 +102,17 @@ const Galeria = () => {
               </div>
 
               {/* Included Items */}
-              {space.included_items && space.included_items.length > 0 && (
-                <div>
+              {space.included_items && space.included_items.length > 0 && <div>
                   <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
                     <Check className="h-5 w-5 text-primary" /> INCLUIDO EN EL BLOQUE
                   </h3>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {space.included_items.map((item, index) => (
-                      <li key={index} className="flex items-center gap-2 text-muted-foreground">
+                    {space.included_items.map((item, index) => <li key={index} className="flex items-center gap-2 text-muted-foreground">
                         <span className="text-primary">•</span>
                         <span className="font-heading">{item}</span>
-                      </li>
-                    ))}
+                      </li>)}
                   </ul>
-                </div>
-              )}
+                </div>}
 
               {/* Schedule Info */}
               <div className="bg-secondary border border-foreground p-4 rounded-lg">
@@ -153,34 +124,24 @@ const Galeria = () => {
               </div>
 
               {/* Optional Services */}
-              {space.optional_services && space.optional_services.length > 0 && (
-                <div>
+              {space.optional_services && space.optional_services.length > 0 && <div>
                   <h3 className="text-xl font-heading font-bold mb-3">SERVICIOS OPCIONALES</h3>
                   <div className="flex flex-wrap gap-2">
-                    {space.optional_services.map((service, index) => (
-                      <Badge key={index} variant="outline" className="font-heading">
+                    {space.optional_services.map((service, index) => <Badge key={index} variant="outline" className="font-heading">
                         {service}
-                      </Badge>
-                    ))}
+                      </Badge>)}
                   </div>
-                </div>
-              )}
+                </div>}
 
               {/* Layout Description */}
-              {space.layout_description && (
-                <div className="bg-muted p-4 rounded-lg border-l border-primary">
+              {space.layout_description && <div className="bg-muted p-4 rounded-lg border-l border-primary">
                   <h3 className="font-heading font-bold mb-2">LAYOUT DEL ESTUDIO</h3>
                   <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
-                </div>
-              )}
+                </div>}
 
               {/* Floor Plan - Mobile only (appears after layout description) */}
               <div className="lg:hidden relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
-                <img
-                  src={planoIlustrativo}
-                  alt="Plano ilustrativo del estudio"
-                  className="w-full h-auto object-contain bg-background"
-                />
+                <img src={planoIlustrativo} alt="Plano ilustrativo del estudio" className="w-full h-auto object-contain bg-background" />
               </div>
 
               <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
@@ -212,8 +173,6 @@ const Galeria = () => {
           </Button>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default Galeria;
