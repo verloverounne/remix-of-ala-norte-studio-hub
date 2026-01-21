@@ -11,7 +11,19 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Check, Image as ImageIcon, Save, RefreshCw, Trash2, Upload, Loader2, Filter, X, Edit } from "lucide-react";
+import {
+  Search,
+  Check,
+  Image as ImageIcon,
+  Save,
+  RefreshCw,
+  Trash2,
+  Upload,
+  Loader2,
+  Filter,
+  X,
+  Edit,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Category, Subcategory } from "@/types/supabase";
 import { EquipmentImageManager } from "@/components/EquipmentImageManager";
@@ -86,52 +98,48 @@ export const BulkImageAssigner = () => {
 
   const fetchEquipment = async () => {
     const { data } = await supabase
-      .from('equipment')
-      .select('id, name, name_en, image_url, images, brand, model, description, price_per_day, price_per_week, category_id, subcategory_id, featured, featured_copy, categories (*), subcategories (*)')
-      .order('name');
+      .from("equipment")
+      .select(
+        "id, name, name_en, image_url, images, brand, model, description, price_per_day, price_per_week, category_id, subcategory_id, featured, featured_copy, categories (*), subcategories (*)",
+      )
+      .order("name");
     if (data) {
       const transformed = data.map((item: any) => ({
         ...item,
-        images: Array.isArray(item.images) ? item.images : []
+        images: Array.isArray(item.images) ? item.images : [],
       }));
       setEquipment(transformed);
     }
   };
 
   const fetchCategories = async () => {
-    const { data } = await supabase
-      .from('categories')
-      .select('*')
-      .order('order_index');
+    const { data } = await supabase.from("categories").select("*").order("order_index");
     if (data) setCategories(data);
   };
 
   const fetchSubcategories = async () => {
-    const { data } = await supabase
-      .from('subcategories')
-      .select('*')
-      .order('order_index');
+    const { data } = await supabase.from("subcategories").select("*").order("order_index");
     if (data) setSubcategories(data);
   };
 
   const fetchStorageFiles = async () => {
     try {
       const { data, error } = await supabase.storage
-        .from('equipment-images')
-        .list('', { limit: 500, sortBy: { column: 'name', order: 'asc' } });
+        .from("equipment-images")
+        .list("", { limit: 500, sortBy: { column: "name", order: "asc" } });
 
       if (error) throw error;
 
       const imageFiles = (data || [])
-        .filter(file => file.name && /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name))
-        .map(file => ({
+        .filter((file) => file.name && /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name))
+        .map((file) => ({
           name: file.name,
-          url: `https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/${file.name}`
+          url: `https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/${file.name}`,
         }));
 
       setStorageFiles(imageFiles);
     } catch (error) {
-      console.error('Error fetching storage files:', error);
+      console.error("Error fetching storage files:", error);
     }
   };
 
@@ -172,12 +180,12 @@ export const BulkImageAssigner = () => {
       if (uploadError) throw uploadError;
 
       const url = `https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/${fileName}`;
-      
+
       toast({ title: "Imagen subida correctamente" });
-      
+
       // Add to files list
-      setStorageFiles(prev => [{ name: fileName, url }, ...prev]);
-      
+      setStorageFiles((prev) => [{ name: fileName, url }, ...prev]);
+
       // If equipment is selected, assign the image
       if (selectedEquipment) {
         handleSelectImage(url);
@@ -197,40 +205,38 @@ export const BulkImageAssigner = () => {
 
   const hasImage = (eq: Equipment) => {
     const url = getEffectiveImageUrl(eq);
-    return url && url.includes('equipment-images');
+    return url && url.includes("equipment-images");
   };
 
   // Búsqueda flexible: busca en nombre, marca, modelo
   const matchesSearch = (eq: Equipment): boolean => {
     if (!searchEquipment.trim()) return true;
-    
+
     const searchTerm = searchEquipment.toLowerCase().trim();
     const searchFields = [
-      eq.name?.toLowerCase() || '',
-      eq.brand?.toLowerCase() || '',
-      eq.model?.toLowerCase() || '',
-      eq.categories?.name?.toLowerCase() || ''
+      eq.name?.toLowerCase() || "",
+      eq.brand?.toLowerCase() || "",
+      eq.model?.toLowerCase() || "",
+      eq.categories?.name?.toLowerCase() || "",
     ];
-    
+
     // Búsqueda por palabras individuales
-    const searchWords = searchTerm.split(/\s+/).filter(w => w.length > 0);
-    
+    const searchWords = searchTerm.split(/\s+/).filter((w) => w.length > 0);
+
     // Si hay múltiples palabras, todas deben aparecer en algún campo
     if (searchWords.length > 1) {
-      return searchWords.every(word => 
-        searchFields.some(field => field.includes(word))
-      );
+      return searchWords.every((word) => searchFields.some((field) => field.includes(word)));
     }
-    
+
     // Búsqueda simple: cualquier campo contiene el término
-    return searchFields.some(field => field.includes(searchTerm));
+    return searchFields.some((field) => field.includes(searchTerm));
   };
 
   // Filtro por imagen
   const matchesImageFilter = (eq: Equipment): boolean => {
     const url = getEffectiveImageUrl(eq);
-    const hasImageUrl = url && url.includes('equipment-images');
-    
+    const hasImageUrl = url && url.includes("equipment-images");
+
     if (imageFilter === "with") return !!hasImageUrl;
     if (imageFilter === "without") return !hasImageUrl;
     return true; // "all"
@@ -242,33 +248,29 @@ export const BulkImageAssigner = () => {
     return eq.category_id === categoryFilter;
   };
 
-  const filteredEquipment = equipment.filter(e => 
-    matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e)
+  const filteredEquipment = equipment.filter(
+    (e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e),
   );
 
-  const filteredImages = storageFiles.filter(f => 
-    f.name.toLowerCase().includes(searchImage.toLowerCase())
-  );
+  const filteredImages = storageFiles.filter((f) => f.name.toLowerCase().includes(searchImage.toLowerCase()));
 
   const handleSelectImage = (imageUrl: string) => {
     if (!selectedEquipment) {
       toast({ title: "Selecciona un equipo primero", variant: "destructive" });
       return;
     }
-    
-    setPendingChanges(prev => ({
+
+    setPendingChanges((prev) => ({
       ...prev,
-      [selectedEquipment.id]: imageUrl
+      [selectedEquipment.id]: imageUrl,
     }));
-    
+
     // Actualizar en la lista local para ver el preview
-    setEquipment(prev => prev.map(e => 
-      e.id === selectedEquipment.id ? { ...e, image_url: imageUrl } : e
-    ));
-    
-    toast({ 
-      title: "Imagen seleccionada", 
-      description: `Imagen asignada a ${selectedEquipment.name}. Guarda los cambios cuando termines.` 
+    setEquipment((prev) => prev.map((e) => (e.id === selectedEquipment.id ? { ...e, image_url: imageUrl } : e)));
+
+    toast({
+      title: "Imagen seleccionada",
+      description: `Imagen asignada a ${selectedEquipment.name}. Guarda los cambios cuando termines.`,
     });
   };
 
@@ -284,10 +286,7 @@ export const BulkImageAssigner = () => {
     let errorCount = 0;
 
     for (const [equipmentId, imageUrl] of changes) {
-      const { error } = await supabase
-        .from('equipment')
-        .update({ image_url: imageUrl })
-        .eq('id', equipmentId);
+      const { error } = await supabase.from("equipment").update({ image_url: imageUrl }).eq("id", equipmentId);
 
       if (error) {
         errorCount++;
@@ -300,15 +299,15 @@ export const BulkImageAssigner = () => {
     setPendingChanges({});
 
     if (errorCount === 0) {
-      toast({ 
-        title: "Cambios guardados", 
-        description: `${successCount} equipos actualizados correctamente` 
+      toast({
+        title: "Cambios guardados",
+        description: `${successCount} equipos actualizados correctamente`,
       });
     } else {
-      toast({ 
-        title: "Algunos errores", 
+      toast({
+        title: "Algunos errores",
         description: `${successCount} exitosos, ${errorCount} errores`,
-        variant: "destructive"
+        variant: "destructive",
       });
     }
 
@@ -317,26 +316,23 @@ export const BulkImageAssigner = () => {
 
   const handleDeleteEquipment = async (eq: Equipment) => {
     setDeleting(eq.id);
-    
-    const { error } = await supabase
-      .from('equipment')
-      .delete()
-      .eq('id', eq.id);
+
+    const { error } = await supabase.from("equipment").delete().eq("id", eq.id);
 
     setDeleting(null);
 
     if (error) {
-      toast({ 
-        title: "Error al eliminar", 
+      toast({
+        title: "Error al eliminar",
         description: error.message,
-        variant: "destructive" 
+        variant: "destructive",
       });
       return;
     }
 
     // Remover de la lista local
-    setEquipment(prev => prev.filter(e => e.id !== eq.id));
-    
+    setEquipment((prev) => prev.filter((e) => e.id !== eq.id));
+
     // Si estaba seleccionado, deseleccionar
     if (selectedEquipment?.id === eq.id) {
       setSelectedEquipment(null);
@@ -348,25 +344,25 @@ export const BulkImageAssigner = () => {
       setPendingChanges(rest);
     }
 
-    toast({ 
-      title: "Equipo eliminado", 
-      description: `${eq.name} ha sido eliminado correctamente` 
+    toast({
+      title: "Equipo eliminado",
+      description: `${eq.name} ha sido eliminado correctamente`,
     });
   };
 
   const handleEditEquipment = async (eq: Equipment) => {
     // Cargar datos completos del equipo
     const { data, error } = await supabase
-      .from('equipment')
-      .select('*, categories (*), subcategories (*)')
-      .eq('id', eq.id)
+      .from("equipment")
+      .select("*, categories (*), subcategories (*)")
+      .eq("id", eq.id)
       .single();
 
     if (error) {
       toast({
         title: "Error",
         description: "No se pudo cargar los datos del equipo",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -377,7 +373,9 @@ export const BulkImageAssigner = () => {
         name: data.name,
         name_en: data.name_en,
         image_url: data.image_url,
-        images: Array.isArray(data.images) ? (data.images as string[]).filter((img): img is string => typeof img === 'string') : [],
+        images: Array.isArray(data.images)
+          ? (data.images as string[]).filter((img): img is string => typeof img === "string")
+          : [],
         brand: data.brand,
         model: data.model,
         description: data.description,
@@ -388,7 +386,7 @@ export const BulkImageAssigner = () => {
         featured: data.featured || false,
         featured_copy: data.featured_copy,
         categories: data.categories as Category | null,
-        subcategories: data.subcategories as Subcategory | null
+        subcategories: data.subcategories as Subcategory | null,
       };
       setEditingEquipment(transformed);
       setIsEditModalOpen(true);
@@ -400,7 +398,7 @@ export const BulkImageAssigner = () => {
       toast({
         title: "Error",
         description: "Nombre y precio son requeridos",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -408,7 +406,7 @@ export const BulkImageAssigner = () => {
     setSavingEquipment(true);
 
     const { error } = await supabase
-      .from('equipment')
+      .from("equipment")
       .update({
         name: editingEquipment.name,
         name_en: editingEquipment.name_en || null,
@@ -422,9 +420,9 @@ export const BulkImageAssigner = () => {
         image_url: editingEquipment.image_url || null,
         images: editingEquipment.images || [],
         featured: editingEquipment.featured || false,
-        featured_copy: editingEquipment.featured_copy || null
+        featured_copy: editingEquipment.featured_copy || null,
       })
-      .eq('id', editingEquipment.id);
+      .eq("id", editingEquipment.id);
 
     setSavingEquipment(false);
 
@@ -432,12 +430,12 @@ export const BulkImageAssigner = () => {
       toast({
         title: "Error",
         description: error.message,
-        variant: "destructive"
+        variant: "destructive",
       });
     } else {
       toast({
         title: "Actualizado",
-        description: "Equipo actualizado correctamente"
+        description: "Equipo actualizado correctamente",
       });
       setIsEditModalOpen(false);
       setEditingEquipment(null);
@@ -446,7 +444,7 @@ export const BulkImageAssigner = () => {
   };
 
   const editFilteredSubcategories = editingEquipment?.category_id
-    ? subcategories.filter(s => s.category_id === editingEquipment.category_id)
+    ? subcategories.filter((s) => s.category_id === editingEquipment.category_id)
     : [];
 
   if (loading) {
@@ -473,16 +471,18 @@ export const BulkImageAssigner = () => {
             </div>
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
               {Object.keys(pendingChanges).length > 0 && (
-                <Badge variant="secondary" className="w-full sm:w-auto justify-center">{Object.keys(pendingChanges).length} cambios pendientes</Badge>
+                <Badge variant="default" className="w-full sm:w-auto justify-center">
+                  {Object.keys(pendingChanges).length} cambios pendientes
+                </Badge>
               )}
-              <Button 
-                onClick={handleSaveChanges} 
+              <Button
+                onClick={handleSaveChanges}
                 disabled={Object.keys(pendingChanges).length === 0 || saving}
                 variant="hero"
                 className="w-full sm:w-auto"
               >
                 <Save className="mr-2 h-4 w-4" />
-                {saving ? 'Guardando...' : 'Guardar Cambios'}
+                {saving ? "Guardando..." : "Guardar Cambios"}
               </Button>
             </div>
           </div>
@@ -493,11 +493,11 @@ export const BulkImageAssigner = () => {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="font-heading font-bold text-lg">Equipos</h3>
-                <Badge variant="secondary">
+                <Badge variant="default">
                   {filteredEquipment.length} de {equipment.length}
                 </Badge>
               </div>
-              
+
               {/* Búsqueda flexible */}
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -562,34 +562,25 @@ export const BulkImageAssigner = () => {
               {(imageFilter !== "all" || categoryFilter !== "all" || searchEquipment) && (
                 <div className="flex flex-wrap gap-1">
                   {imageFilter !== "all" && (
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant="default" className="text-xs">
                       {imageFilter === "with" ? "Con imagen" : "Sin imagen"}
-                      <button
-                        onClick={() => setImageFilter("all")}
-                        className="ml-1 hover:text-destructive"
-                      >
+                      <button onClick={() => setImageFilter("all")} className="ml-1 hover:text-destructive">
                         <X className="h-3 w-3" />
                       </button>
                     </Badge>
                   )}
                   {categoryFilter !== "all" && (
-                    <Badge variant="secondary" className="text-xs">
-                      {categories.find(c => c.id === categoryFilter)?.name || "Categoría"}
-                      <button
-                        onClick={() => setCategoryFilter("all")}
-                        className="ml-1 hover:text-destructive"
-                      >
+                    <Badge variant="default" className="text-xs">
+                      {categories.find((c) => c.id === categoryFilter)?.name || "Categoría"}
+                      <button onClick={() => setCategoryFilter("all")} className="ml-1 hover:text-destructive">
                         <X className="h-3 w-3" />
                       </button>
                     </Badge>
                   )}
                   {searchEquipment && (
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant="default" className="text-xs">
                       Búsqueda: "{searchEquipment}"
-                      <button
-                        onClick={() => setSearchEquipment("")}
-                        className="ml-1 hover:text-destructive"
-                      >
+                      <button onClick={() => setSearchEquipment("")} className="ml-1 hover:text-destructive">
                         <X className="h-3 w-3" />
                       </button>
                     </Badge>
@@ -603,10 +594,8 @@ export const BulkImageAssigner = () => {
                       key={eq.id}
                       className={cn(
                         "w-full flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-md transition-colors group",
-                        selectedEquipment?.id === eq.id 
-                          ? "bg-primary text-primary-foreground" 
-                          : "hover:bg-muted",
-                        pendingChanges[eq.id] && "ring-2 ring-primary"
+                        selectedEquipment?.id === eq.id ? "bg-primary text-primary-foreground" : "hover:bg-muted",
+                        pendingChanges[eq.id] && "ring-2 ring-primary",
                       )}
                     >
                       <button
@@ -615,12 +604,12 @@ export const BulkImageAssigner = () => {
                       >
                         <div className="w-10 h-10 sm:w-12 sm:h-12 rounded bg-muted overflow-hidden shrink-0 border-2">
                           {getEffectiveImageUrl(eq) ? (
-                            <img 
-                              src={getEffectiveImageUrl(eq)!} 
-                              alt={eq.name} 
+                            <img
+                              src={getEffectiveImageUrl(eq)!}
+                              alt={eq.name}
                               className="w-full h-full object-cover"
                               onError={(e) => {
-                                (e.target as HTMLImageElement).style.display = 'none';
+                                (e.target as HTMLImageElement).style.display = "none";
                               }}
                             />
                           ) : (
@@ -638,12 +627,18 @@ export const BulkImageAssigner = () => {
                               </Badge>
                             )}
                             {hasImage(eq) ? (
-                              <Badge variant="default" className="text-xs bg-green-600">Con imagen</Badge>
+                              <Badge variant="default" className="text-xs bg-green-600">
+                                Con imagen
+                              </Badge>
                             ) : (
-                              <Badge variant="destructive" className="text-xs">Sin imagen</Badge>
+                              <Badge variant="destructive" className="text-xs">
+                                Sin imagen
+                              </Badge>
                             )}
                             {pendingChanges[eq.id] && (
-                              <Badge variant="secondary" className="text-xs">Modificado</Badge>
+                              <Badge variant="default" className="text-xs">
+                                Modificado
+                              </Badge>
                             )}
                           </div>
                           {(eq.brand || eq.model) && (
@@ -654,9 +649,9 @@ export const BulkImageAssigner = () => {
                         </div>
                       </button>
                       <div className="flex gap-2 shrink-0">
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleEditEquipment(eq);
@@ -668,9 +663,9 @@ export const BulkImageAssigner = () => {
                         </Button>
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
+                            <Button
+                              variant="ghost"
+                              size="icon"
                               disabled={deleting === eq.id}
                               title="Eliminar equipo"
                               className="h-8 w-8 sm:h-10 sm:w-10"
@@ -687,7 +682,8 @@ export const BulkImageAssigner = () => {
                             <AlertDialogHeader>
                               <AlertDialogTitle>¿Eliminar equipo?</AlertDialogTitle>
                               <AlertDialogDescription>
-                                Esta acción eliminará permanentemente <strong>"{eq.name}"</strong> de la base de datos. Esta acción no se puede deshacer.
+                                Esta acción eliminará permanentemente <strong>"{eq.name}"</strong> de la base de datos.
+                                Esta acción no se puede deshacer.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
@@ -708,7 +704,7 @@ export const BulkImageAssigner = () => {
               </ScrollArea>
               <div className="flex items-center justify-between text-sm text-muted-foreground">
                 <span>
-                  {filteredEquipment.filter(e => hasImage(e)).length} de {filteredEquipment.length} con imagen
+                  {filteredEquipment.filter((e) => hasImage(e)).length} de {filteredEquipment.length} con imagen
                 </span>
                 {(imageFilter !== "all" || categoryFilter !== "all" || searchEquipment) && (
                   <Button
@@ -731,10 +727,8 @@ export const BulkImageAssigner = () => {
             {/* Imágenes Column */}
             <div className="space-y-2">
               <h3 className="font-heading font-bold text-lg">
-                Imágenes del Storage 
-                {selectedEquipment && (
-                  <span className="text-primary ml-2">→ {selectedEquipment.name}</span>
-                )}
+                Imágenes del Storage
+                {selectedEquipment && <span className="text-primary ml-2">→ {selectedEquipment.name}</span>}
               </h3>
               <div className="flex gap-2">
                 <div className="relative flex-1">
@@ -746,24 +740,14 @@ export const BulkImageAssigner = () => {
                     className="pl-10"
                   />
                 </div>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                />
+                <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
                 <Button
                   variant="hero"
                   size="default"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={uploading}
                 >
-                  {uploading ? (
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  ) : (
-                    <Upload className="h-4 w-4 mr-2" />
-                  )}
+                  {uploading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Upload className="h-4 w-4 mr-2" />}
                   {uploading ? "Subiendo..." : "Subir"}
                 </Button>
               </div>
@@ -777,15 +761,12 @@ export const BulkImageAssigner = () => {
                       className={cn(
                         "relative aspect-square rounded-md overflow-hidden border-2 transition-all",
                         selectedEquipment ? "hover:border-primary cursor-pointer" : "opacity-50 cursor-not-allowed",
-                        selectedEquipment && getEffectiveImageUrl(selectedEquipment) === file.url ? "border-primary ring-2 ring-primary" : "border-transparent"
+                        selectedEquipment && getEffectiveImageUrl(selectedEquipment) === file.url
+                          ? "border-primary ring-2 ring-primary"
+                          : "border-transparent",
                       )}
                     >
-                      <img
-                        src={file.url}
-                        alt={file.name}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
+                      <img src={file.url} alt={file.name} className="w-full h-full object-cover" loading="lazy" />
                       {selectedEquipment && getEffectiveImageUrl(selectedEquipment) === file.url && (
                         <div className="absolute inset-0 bg-primary/30 flex items-center justify-center">
                           <Check className="h-6 w-6 text-primary-foreground" />
@@ -798,9 +779,7 @@ export const BulkImageAssigner = () => {
                   ))}
                 </div>
               </ScrollArea>
-              <p className="text-sm text-muted-foreground">
-                {storageFiles.length} imágenes disponibles
-              </p>
+              <p className="text-sm text-muted-foreground">{storageFiles.length} imágenes disponibles</p>
             </div>
           </div>
         </CardContent>
@@ -818,26 +797,32 @@ export const BulkImageAssigner = () => {
                 <Label>Nombre *</Label>
                 <Input
                   value={editingEquipment.name}
-                  onChange={(e) => setEditingEquipment({...editingEquipment, name: e.target.value})}
+                  onChange={(e) => setEditingEquipment({ ...editingEquipment, name: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
                 <Label>Nombre EN</Label>
                 <Input
-                  value={editingEquipment.name_en || ''}
-                  onChange={(e) => setEditingEquipment({...editingEquipment, name_en: e.target.value})}
+                  value={editingEquipment.name_en || ""}
+                  onChange={(e) => setEditingEquipment({ ...editingEquipment, name_en: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
                 <Label>Categoría</Label>
                 <Select
-                  value={editingEquipment.category_id || ''}
-                  onValueChange={(v) => setEditingEquipment({...editingEquipment, category_id: v, subcategory_id: null})}
+                  value={editingEquipment.category_id || ""}
+                  onValueChange={(v) =>
+                    setEditingEquipment({ ...editingEquipment, category_id: v, subcategory_id: null })
+                  }
                 >
-                  <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccionar" />
+                  </SelectTrigger>
                   <SelectContent>
                     {categories.map((cat) => (
-                      <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                      <SelectItem key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -845,14 +830,18 @@ export const BulkImageAssigner = () => {
               <div className="space-y-2">
                 <Label>Subcategoría</Label>
                 <Select
-                  value={editingEquipment.subcategory_id || ''}
-                  onValueChange={(v) => setEditingEquipment({...editingEquipment, subcategory_id: v})}
+                  value={editingEquipment.subcategory_id || ""}
+                  onValueChange={(v) => setEditingEquipment({ ...editingEquipment, subcategory_id: v })}
                   disabled={!editingEquipment.category_id}
                 >
-                  <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccionar" />
+                  </SelectTrigger>
                   <SelectContent>
                     {editFilteredSubcategories.map((sub) => (
-                      <SelectItem key={sub.id} value={sub.id}>{sub.name}</SelectItem>
+                      <SelectItem key={sub.id} value={sub.id}>
+                        {sub.name}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -860,15 +849,15 @@ export const BulkImageAssigner = () => {
               <div className="space-y-2">
                 <Label>Marca</Label>
                 <Input
-                  value={editingEquipment.brand || ''}
-                  onChange={(e) => setEditingEquipment({...editingEquipment, brand: e.target.value})}
+                  value={editingEquipment.brand || ""}
+                  onChange={(e) => setEditingEquipment({ ...editingEquipment, brand: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
                 <Label>Modelo</Label>
                 <Input
-                  value={editingEquipment.model || ''}
-                  onChange={(e) => setEditingEquipment({...editingEquipment, model: e.target.value})}
+                  value={editingEquipment.model || ""}
+                  onChange={(e) => setEditingEquipment({ ...editingEquipment, model: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
@@ -876,22 +865,29 @@ export const BulkImageAssigner = () => {
                 <Input
                   type="number"
                   value={editingEquipment.price_per_day}
-                  onChange={(e) => setEditingEquipment({...editingEquipment, price_per_day: parseInt(e.target.value) || 0})}
+                  onChange={(e) =>
+                    setEditingEquipment({ ...editingEquipment, price_per_day: parseInt(e.target.value) || 0 })
+                  }
                 />
               </div>
               <div className="space-y-2">
                 <Label>Precio por semana</Label>
                 <Input
                   type="number"
-                  value={editingEquipment.price_per_week || ''}
-                  onChange={(e) => setEditingEquipment({...editingEquipment, price_per_week: e.target.value ? parseInt(e.target.value) : null})}
+                  value={editingEquipment.price_per_week || ""}
+                  onChange={(e) =>
+                    setEditingEquipment({
+                      ...editingEquipment,
+                      price_per_week: e.target.value ? parseInt(e.target.value) : null,
+                    })
+                  }
                 />
               </div>
               <div className="space-y-2 md:col-span-2">
                 <Label>Descripción</Label>
                 <Textarea
-                  value={editingEquipment.description || ''}
-                  onChange={(e) => setEditingEquipment({...editingEquipment, description: e.target.value})}
+                  value={editingEquipment.description || ""}
+                  onChange={(e) => setEditingEquipment({ ...editingEquipment, description: e.target.value })}
                   rows={4}
                 />
               </div>
@@ -899,8 +895,8 @@ export const BulkImageAssigner = () => {
                 <EquipmentImageManager
                   imageUrl={editingEquipment.image_url || null}
                   images={editingEquipment.images || []}
-                  onImageUrlChange={(url) => setEditingEquipment({...editingEquipment, image_url: url})}
-                  onImagesChange={(images) => setEditingEquipment({...editingEquipment, images})}
+                  onImageUrlChange={(url) => setEditingEquipment({ ...editingEquipment, image_url: url })}
+                  onImagesChange={(images) => setEditingEquipment({ ...editingEquipment, images })}
                 />
               </div>
               <div className="space-y-2 md:col-span-2">
@@ -908,17 +904,19 @@ export const BulkImageAssigner = () => {
                   <Label>Equipo Destacado</Label>
                   <Switch
                     checked={editingEquipment.featured || false}
-                    onCheckedChange={(checked) => setEditingEquipment({...editingEquipment, featured: checked})}
+                    onCheckedChange={(checked) => setEditingEquipment({ ...editingEquipment, featured: checked })}
                   />
                 </div>
-                <p className="text-xs text-muted-foreground">Los equipos destacados aparecerán en la página principal</p>
+                <p className="text-xs text-muted-foreground">
+                  Los equipos destacados aparecerán en la página principal
+                </p>
               </div>
               {editingEquipment.featured && (
                 <div className="space-y-2 md:col-span-2">
                   <Label>Descripción para Destacados</Label>
                   <Textarea
-                    value={editingEquipment.featured_copy || ''}
-                    onChange={(e) => setEditingEquipment({...editingEquipment, featured_copy: e.target.value})}
+                    value={editingEquipment.featured_copy || ""}
+                    onChange={(e) => setEditingEquipment({ ...editingEquipment, featured_copy: e.target.value })}
                     placeholder="Texto breve que aparecerá en la home para este equipo destacado"
                     rows={2}
                   />
