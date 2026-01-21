@@ -281,7 +281,7 @@ Contactar cliente para coordinar entrega/retiro.
                                     +
                                   </Button>
                                 </div>
-                                <div className="text-sm">
+                                <div className="text-sm bg-primary">
                                   <span className="text-muted-foreground">${item.pricePerDay.toLocaleString()}/día × {item.quantity} × {days} días</span>
                                 </div>
                               </div>
