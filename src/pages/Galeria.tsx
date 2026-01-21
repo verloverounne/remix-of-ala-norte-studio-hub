@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Eye, MapPin, Clock, Check, Ruler, Calendar } from "lucide-react";
+import { MapPin, Clock, Check, Ruler, Calendar, Move } from "lucide-react";
 import planoIlustrativo from "@/assets/plano-ilustrativo.png";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -56,15 +56,15 @@ const Galeria = () => {
       <GalleryHero space={space} />
 
       {/* 360° Virtual Tour Section - Movido debajo de características */}
-      {space.tour_360_url && <section className="py-12 sm:py-16 bg-background">
-          <div className="w-full px-0">
+      {space.tour_360_url && <section className="py-12 sm:py-16 bg-foreground">
+          <div className="w-full px-0 mx-[24px] text-center ">
             <div className="container mx-auto px-4 mb-8">
               <div className="text-left">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
-                  <Eye className="inline-block mr-3 h-8 w-8" />
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 text-background">
+                  <Move className="inline-block mr-3 h-8 w-8" />
                   Recorrido virtual 360°
                 </h2>
-                <p className="text-muted-foreground font-heading text-lg ">
+                <p className="font-heading text-lg text-background">
                   Explorá la galería antes de tu reserva. Arrastrá para moverte y conocer cada rincón del espacio.
                 </p>
               </div>
