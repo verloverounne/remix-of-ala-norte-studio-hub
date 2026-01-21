@@ -39,7 +39,7 @@ export const GalleryHero = ({
               </h1>
               {space.location && <div className="flex items-left gap-2 px-4 py-2 rounded-lg border-2 bg-background border-foreground border-solid">
                   <MapPin className="h-5 w-5 text-input" />
-                  <span className="font-heading text-destructive">{space.location}</span>
+                  <span className="font-heading text-foreground">{space.location}</span>
                 </div>}
               <p className="text-sm sm:text-base max-w-2xl font-heading text-muted-foreground leading-tight font-bold md:text-2xl">
                 {space.hero_subtitle || space.description}
