@@ -93,8 +93,8 @@ const ServiceSlide = ({
         <div className="absolute inset-0 bg-foreground/40" />
 
         {/* Contenido con blur */}
-        <div className="absolute inset-0 flex items-end p-6">
-          <div className="backdrop-blur-md bg-foreground/40 p-6 w-full">
+        <div className="absolute inset-0 p-6 flex items-center justify-center">
+          <div className="backdrop-blur-md p-6 w-full bg-primary-dark">
             <span className="text-xs font-heading text-background/60 uppercase tracking-wider mb-1 block">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
@@ -182,7 +182,7 @@ export const ServicesSection = () => {
        </div>
        {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
       <div className="sticky top-0 z-30 bg-foreground">
-        <div className="container mx-auto px-4 bg-foreground">
+        <div className="container mx-auto px-4 bg-foreground border-foreground">
           <div className="py-2 sm:py-3">
             {/* Mobile: vertical stack, full width */}
             <div className="flex flex-col gap-1 sm:hidden">
@@ -192,7 +192,7 @@ export const ServicesSection = () => {
             </div>
             {/* Desktop: horizontal row, centered */}
             <div className="hidden sm:flex items-center justify-center gap-2">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs uppercase transition-all", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-foreground text-background hover:bg-primary-dark")}>
+              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs uppercase transition-all bg-[#1b1b18]", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-foreground text-background hover:bg-primary-dark")}>
                   {service.title}
                 </button>)}
             </div>
@@ -233,7 +233,7 @@ export const ServicesSection = () => {
          </button>
          {/* Dots indicator */}
         <div className="flex justify-center gap-2 py-6 bg-foreground">
-          {services.map((_, index) => <button key={index} onClick={() => handleTabClick(index)} className={cn("w-3 h-3 border transition-all rounded-full border-primary-hover", activeIndex === index ? "bg-primary" : "bg-transparent hover:bg-muted")} aria-label={`Ir al slide ${index + 1}`} />)}
+          {services.map((_, index) => <button key={index} onClick={() => handleTabClick(index)} className={cn("w-3 h-3 border transition-all rounded-full border-primary", activeIndex === index ? "bg-primary" : "bg-transparent hover:bg-muted")} aria-label={`Ir al slide ${index + 1}`} />)}
         </div>
       </div>
     </section>;
