@@ -115,7 +115,7 @@ const HeroSlideComponent = ({
       <div className="hidden md:grid md:grid-cols-2 h-screen bg-foreground">
         {/* Columna izquierda: Texto llena 100% alto con padding simétrico */}
         <div className="flex flex-col justify-center h-screen pl-8 pr-8 lg:pl-16 lg:pr-16">
-          <h1 className="text-background font-bold mb-4 break-words hyphens-none leading-tight border-0 text-5xl" style={{
+          <h1 className="text-background font-bold mb-4 break-words hyphens-none leading-tight border-0 text-6xl" style={{
           fontSize: "clamp(2.5rem, 8vw, 6rem)",
           wordBreak: "break-word",
           overflowWrap: "break-word"
