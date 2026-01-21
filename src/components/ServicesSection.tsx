@@ -232,8 +232,8 @@ export const ServicesSection = () => {
           <ChevronRight className="h-6 w-6" />
          </button>
          {/* Dots indicator */}
-        <div className="flex justify-center gap-2 py-6 bg-background">
-          {services.map((_, index) => <button key={index} onClick={() => handleTabClick(index)} className={cn("w-3 h-3 border border-border transition-all rounded-full", activeIndex === index ? "bg-primary" : "bg-transparent hover:bg-muted")} aria-label={`Ir al slide ${index + 1}`} />)}
+        <div className="flex justify-center gap-2 py-6 bg-foreground">
+          {services.map((_, index) => <button key={index} onClick={() => handleTabClick(index)} className={cn("w-3 h-3 border transition-all rounded-full border-primary-hover", activeIndex === index ? "bg-primary" : "bg-transparent hover:bg-muted")} aria-label={`Ir al slide ${index + 1}`} />)}
         </div>
       </div>
     </section>;
