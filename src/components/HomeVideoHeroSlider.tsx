@@ -115,14 +115,14 @@ const HeroSlideComponent = ({
       <div className="hidden md:grid md:grid-cols-2 h-screen bg-foreground">
         {/* Columna izquierda: Texto posicionado al 90% del alto de pantalla */}
         <div className="flex flex-col justify-end h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[10vh]">
-          <h1 className="text-background font-bold mb-4 leading-tight border-0 font-sans text-3xl" style={{
-          fontSize: "clamp(2.5rem, 8vw, 6rem)",
+          <h1 className="text-background font-bold mb-4 leading-tight border-0 font-sans" style={{
+          fontSize: "clamp(2rem, 5vw, 4rem)",
           wordBreak: "break-word",
           overflowWrap: "break-word"
         }}>
             {slide.title}
           </h1>
-          <p className="text-background text-base my-[15px] mb-[152px]">{slide.subtitle}</p>
+          <p className="text-background text-base mb-6">{slide.subtitle}</p>
           {slide.cta_label && slide.cta_link && <Link to={slide.cta_link}>
               <Button variant="default" size="lg">
                 {slide.cta_label}
