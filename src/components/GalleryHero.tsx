@@ -34,10 +34,10 @@ export const GalleryHero = ({
               </div>
             </div>
             <div className="flex flex-wrap gap-4 items-center">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-destructive lg:text-6xl">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold lg:text-6xl text-foreground">
                 {space.hero_title || space.name}
               </h1>
-              {space.location && <div className="flex items-left gap-2 bg-secondary px-4 py-2 rounded-lg border-2 border-destructive">
+              {space.location && <div className="flex items-left gap-2 px-4 py-2 rounded-lg border-2 bg-background border-foreground border-solid">
                   <MapPin className="h-5 w-5 text-input" />
                   <span className="font-heading text-destructive">{space.location}</span>
                 </div>}

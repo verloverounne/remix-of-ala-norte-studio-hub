@@ -64,7 +64,7 @@ const Galeria = () => {
                   <Eye className="inline-block mr-3 h-8 w-8" />
                   Recorrido virtual 360°
                 </h2>
-                <p className="text-muted-foreground font-heading text-lg max-w-2xl mx-auto">
+                <p className="text-muted-foreground font-heading text-lg ">
                   Explorá la galería antes de tu reserva. Arrastrá para moverte y conocer cada rincón del espacio.
                 </p>
               </div>
