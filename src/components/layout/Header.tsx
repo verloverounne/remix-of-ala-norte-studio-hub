@@ -146,20 +146,20 @@ export const Header = () => {
 
       {/* Mobile: Floating hamburger button only */}
       {isMobile && (
-        <Button
+        <button
           ref={menuButtonRef}
-          variant="ghost"
-          size="icon"
+          type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="fixed top-3 right-3 z-50 h-10 w-10 bg-background/80 backdrop-blur-sm border border-foreground shadow-brutal-sm"
+          className="fixed top-3 right-3 z-[60] h-10 w-10 bg-background/80 backdrop-blur-sm border border-foreground shadow-brutal-sm flex items-center justify-center touch-manipulation"
           aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+          style={{ WebkitTapHighlightColor: 'transparent' }}
         >
-          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </Button>
+          {mobileMenuOpen ? <X className="h-5 w-5 text-foreground" /> : <Menu className="h-5 w-5 text-foreground" />}
+        </button>
       )}
 
       <header
-        className={`fixed top-0 left-0 right-0 z-50 bg-background border-b border-foreground transition-transform duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-[55] bg-background border-b border-foreground transition-transform duration-300 ${
           isMobile
             ? mobileMenuOpen
               ? "translate-y-0"
@@ -288,7 +288,7 @@ export const Header = () => {
           {mobileMenuOpen && (
             <div
               ref={menuRef}
-              className="lg:hidden pb-4 mt-2"
+              className="lg:hidden pb-4 mt-2 relative z-[56]"
               onTouchStart={resetAutoCloseTimer}
               onMouseMove={resetAutoCloseTimer}
             >
@@ -298,11 +298,12 @@ export const Header = () => {
                     key={item.name}
                     to={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`px-4 py-3 font-heading text-sm transition-none ${
+                    className={`block px-4 py-3 font-heading text-sm touch-manipulation ${
                       location.pathname === item.href
                         ? "bg-primary text-primary-foreground"
-                        : "bg-background hover:bg-foreground hover:text-background"
+                        : "bg-background text-foreground active:bg-foreground active:text-background"
                     }`}
+                    style={{ WebkitTapHighlightColor: 'rgba(0,0,0,0.1)' }}
                   >
                     {item.name}
                   </Link>
@@ -314,45 +315,57 @@ export const Header = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 font-heading text-sm bg-green-500 text-white hover:bg-green-600"
+                  className="flex items-center gap-3 px-4 py-3 font-heading text-sm bg-green-500 text-white active:bg-green-600 touch-manipulation"
+                  style={{ WebkitTapHighlightColor: 'rgba(0,0,0,0.1)' }}
                 >
                   <MessageCircle className="h-5 w-5" />
                   WHATSAPP
                 </a>
 
-                <div className="flex items-center justify-between px-4 py-3">
-                  <span className="font-heading text-sm">MODO</span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
+                <div className="flex items-center justify-between px-4 py-3 bg-background">
+                  <span className="font-heading text-sm text-foreground">MODO</span>
+                  <button
+                    type="button"
                     onClick={toggleTheme}
-                    className="h-10 w-10"
+                    className="h-10 w-10 flex items-center justify-center touch-manipulation bg-muted rounded"
                     aria-label={theme === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"}
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
                   >
-                    {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-                  </Button>
+                    {theme === "light" ? <Moon className="h-5 w-5 text-foreground" /> : <Sun className="h-5 w-5 text-foreground" />}
+                  </button>
                 </div>
                 {user && isAdmin && (
-                  <Button asChild variant="default" size="sm" onClick={() => setMobileMenuOpen(false)}>
-                    <Link to="/admin">ADMIN PANEL</Link>
-                  </Button>
+                  <Link
+                    to="/admin"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-4 py-3 font-heading text-sm bg-primary text-primary-foreground text-center touch-manipulation"
+                    style={{ WebkitTapHighlightColor: 'rgba(0,0,0,0.1)' }}
+                  >
+                    ADMIN PANEL
+                  </Link>
                 )}
                 {user ? (
-                  <Button
-                    variant="outline"
-                    size="sm"
+                  <button
+                    type="button"
                     onClick={() => {
                       setMobileMenuOpen(false);
                       signOut();
                       navigate("/");
                     }}
+                    className="block w-full px-4 py-3 font-heading text-sm border border-foreground bg-background text-foreground text-center touch-manipulation"
+                    style={{ WebkitTapHighlightColor: 'rgba(0,0,0,0.1)' }}
                   >
                     CERRAR SESIÓN
-                  </Button>
+                  </button>
                 ) : (
-                  <Button asChild variant="default" size="sm" onClick={() => setMobileMenuOpen(false)}>
-                    <Link to="/auth">LOGIN</Link>
-                  </Button>
+                  <Link
+                    to="/auth"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-4 py-3 font-heading text-sm bg-primary text-primary-foreground text-center touch-manipulation"
+                    style={{ WebkitTapHighlightColor: 'rgba(0,0,0,0.1)' }}
+                  >
+                    LOGIN
+                  </Link>
                 )}
               </div>
             </div>
