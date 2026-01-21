@@ -141,7 +141,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
         <div className="flex items-center justify-between px-2 sm:px-4 py-2 sm:py-3 h-[40px] sm:h-[52px]">
           <button onClick={handleHeaderClick} className="flex items-center gap-1 sm:gap-3 cursor-pointer hover:text-primary transition-colors">
             {isExpanded ? <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5 transition-transform flex-shrink-0" /> : <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform flex-shrink-0" />}
-            <h2 className="font-heading text-sm sm:text-lg md:text-xl uppercase truncate">
+            <h2 className="font-heading text-sm sm:text-lg md:text-xl uppercase truncate bg-[#d9d8da]">
               {category.name}
             </h2>
             <Badge variant="secondary" className="text-[10px] sm:text-xs px-1.5 py-0 flex-shrink-0 text-primary-dark">
