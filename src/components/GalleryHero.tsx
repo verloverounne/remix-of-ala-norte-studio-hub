@@ -73,7 +73,7 @@ export const GalleryHero = ({
         {/* Right Column: Vertical Video - Full Width and Height */}
         {space.video_url ? <div className="relative w-full h-full overflow-hidden duotone-hover-group">
             <video src={space.video_url} className="w-full h-full object-cover video-duotone" autoPlay loop muted={muted} playsInline />
-            <button onClick={() => setMuted(!muted)} className="absolute top-4 right-4 z-20 p-3 backdrop-blur-sm rounded-full transition-colors my-[64px] bg-transparent border-0" aria-label={muted ? "Activar sonido" : "Silenciar"}>
+            <button onClick={() => setMuted(!muted)} className="absolute top-4 right-4 z-20 p-3 backdrop-blur-sm rounded-full transition-colors my-[64px] bg-transparent border-0 text-background" aria-label={muted ? "Activar sonido" : "Silenciar"}>
               {muted ? <VolumeX className="h-5 w-5 text-foreground" /> : <Volume2 className="h-5 w-5 text-foreground" />}
             </button>
           </div> : <div className="relative w-full h-full bg-muted flex items-center justify-center">
