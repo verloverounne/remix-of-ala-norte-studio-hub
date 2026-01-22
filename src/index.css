@@ -224,19 +224,6 @@ All colors MUST be HSL.
     @apply border-foreground;
   }
 
-  /* Borde Degradado Plateado Sutil */
-  .border-silver-gradient {
-    border: 1px solid transparent;
-    background:
-      linear-gradient(hsl(var(--background)), hsl(var(--background))) padding-box,
-      var(--border-gradient-silver) border-box;
-  }
-
-  /* Separador con Degradado Plateado */
-  .separator-silver-gradient {
-    background-image: var(--border-gradient-silver);
-  }
-
   .transition-brutal {
     transition: var(--transition-brutal);
   }
