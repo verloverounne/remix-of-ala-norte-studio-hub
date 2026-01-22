@@ -199,8 +199,8 @@ export const ServicesSection = () => {
     return null;
   }
   return <section className="relative bg-background">
-      <div className="py-6 sm:py-8 mx-4 pt-[60px] sm:mx-0 pb-[24px]">
-        <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase pt-[36px] mx-[3px]">PROFESIONALES, EQUIPAMIENTO Y ESPACIOS.</h2>
+      <div className="py-6 sm:py-8 mx-4 pt-[60px] sm:mx-0 pb-[24px] px-[32px]">
+        <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase pt-[36px] mx-[32px]">PROFESIONALES, EQUIPAMIENTO Y ESPACIOS.</h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
       <div className="sticky top-0 z-30 bg-background border-b border-border my-0 py-[48px] pb-0">
@@ -213,7 +213,7 @@ export const ServicesSection = () => {
                 </button>)}
             </div>
             {/* Desktop: horizontal row */}
-            <div className="hidden gap-2 sm:flex items-center justify-start mx-[32px] mb-[32px]">
+            <div className="hidden gap-2 sm:flex items-center justify-start mb-[32px] mx-0">
               {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs transition-all rounded-none shadow-none", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground border border-border hover:bg-muted")}>
                   {service.title}
                 </button>)}
