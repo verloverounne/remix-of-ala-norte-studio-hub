@@ -25,7 +25,7 @@ export const GalleryHero = ({
               BLOQUES DE {space.block_hours || 4}HS
              </Badge>*/}
             <div className="flex flex-col gap-3 items-start">
-              <div className="flex items-center justify-center gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-destructive">
+              <div className="flex items-center justify-center gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-foreground">
                 <span className="text-2xl sm:text-3xl font-bold font-heading text-background">
                   ${(space.block_price || space.price)?.toLocaleString()}
                 </span>
@@ -102,14 +102,14 @@ export const GalleryHero = ({
 
                 {/* Title + Location + Subtitle */}
                 <div className="flex-wrap gap-3 flex-col flex items-start justify-center py-[64px]">
-                  <h1 className="sm:text-3xl font-heading font-bold text-foreground text-4xl my-0 mt-[32px]">
+                  <h1 className="sm:text-6xl font-heading font-bold text-foreground text-4xl my-0 mt-[32px]">
                     {space.hero_title || space.name}
                   </h1>
                   {space.location && <div className="flex items-left gap-2 rounded-lg border-2 bg-background border-foreground border-solid py-[6px] px-[6px] my-0 mb-[64px]">
                       <MapPin className="h-4 w-4 text-input" />
                       <span className="font-heading text-foreground text-sm">{space.location}</span>
                     </div>}
-                  <p className="text-sm max-w-2xl font-heading text-muted-foreground leading-tight font-thin px-0 py-0">
+                  <p className="max-w-2xl font-heading text-muted-foreground leading-tight px-0 py-0 text-2xl font-bold">
                     {space.hero_subtitle || space.description}
                   </p>
                 </div>
