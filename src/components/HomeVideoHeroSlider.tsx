@@ -115,7 +115,7 @@ const HeroSlideComponent = ({
       {/* Desktop: 2 columnas - contenedor 100vh */}
       <div className="hidden md:grid md:grid-cols-2 h-screen bg-foreground">
         {/* Columna izquierda: Texto posicionado al 90% del alto de pantalla */}
-        <div className="flex flex-col justify-end h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[10vh] px-0 text-left text-4xl">
+        <div className="flex flex-col justify-end h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[16vh] px-0 text-left text-4xl">
           <h1 className="text-background font-bold mb-4 leading-tight border-0 font-sans" style={{
           fontSize: "clamp(2rem, 5vw, 4rem)",
           wordBreak: "break-word",
@@ -249,7 +249,7 @@ export const HomeVideoHeroSlider = () => {
       {hasVideos && <button onClick={() => {
       handleUserInteraction();
       setMuted(!muted);
-    }} className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm hover:bg-background/40 transition-colors" aria-label={muted ? "Activar sonido" : "Silenciar"}>
+    }} className="absolute top-4 right-4 z-20 p-3 backdrop-blur-sm transition-colors my-[60px] bg-transparent border-0 rounded-none shadow-none" aria-label={muted ? "Activar sonido" : "Silenciar"}>
           {muted ? <VolumeX className="h-5 w-5 text-background" /> : <Volume2 className="h-5 w-5 text-background" />}
         </button>}
 
