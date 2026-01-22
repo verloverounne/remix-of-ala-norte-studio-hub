@@ -104,7 +104,7 @@ const CTASection = () => {
   return <section className="relative border-y border-border overflow-hidden min-h-[60vh] flex items-center duotone-hover-group">
       {/* Background image with duotone treatment */}
       <div className="absolute inset-0 w-full h-full border-0">
-        <img alt="" className="w-full h-full object-cover image-duotone border-0" src="/lovable-uploads/53e6aa86-ed39-4b84-bd22-02156ae11ccf.png" />
+        <img alt="" className="w-full h-full object-cover image-duotone border-0" src="/lovable-uploads/fb5916aa-2049-4f18-aa32-4bfb53fbdc4f.png" />
       </div>
 
       {/* Content overlay */}
