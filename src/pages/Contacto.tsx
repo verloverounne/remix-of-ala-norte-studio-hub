@@ -65,17 +65,17 @@ const Contacto = () => {
   };
   return <div className="min-h-screen pt-16">
       {/* Hero Section */}
-      <section className="py-20">
+      <section className="py-20 bg-foreground text-background">
         <div className="container mx-auto px-4 max-w-6xl text-left">
-          <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6 my-[64px]">Hablemos de tu proyecto</h1>
-          <p className="md:text-2xl max-w-3xl text-left font-medium text-base">
+          <h1 className="text-5xl md:text-6xl font-heading font-bold my-[64px] mb-[2px]">Hablemos de tu proyecto</h1>
+          <p className="max-w-3xl text-left font-medium text-base md:text-lg bg-primary-light">
             Contanos tu idea, tus fechas y qué necesitás. Armamos juntos una propuesta de equipamiento y espacios a medida. Nuestro equipo te responde con asesoramiento técnico dedicado.
           </p>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 flex gap-4">
+      <section className="py-16 flex gap-4 bg-foreground">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Form */}
