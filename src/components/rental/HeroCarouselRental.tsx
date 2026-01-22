@@ -293,7 +293,7 @@ export const HeroCarouselRental = ({
             </>}
 
           {/* Scroll indicator */}
-          <ScrollIndicator className="text-background/80 hover:text-background" />
+          <ScrollIndicator className="text-background/80 hover:text-primary " />
         </Carousel>
       </section>
     </div>;
