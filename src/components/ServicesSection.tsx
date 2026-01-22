@@ -199,13 +199,13 @@ export const ServicesSection = () => {
     return null;
   }
   return <section className="relative bg-background">
-      <div className=" sticky top-0 z-30 py-6 sm:py-8 mx-4 sm:mx-8">
-        <h2 className=" font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">NUESTROS SERVICIOS</h2>
+      <div className="py-6 sm:py-8 mx-4 sm:mx-8">
+        <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">NUESTROS SERVICIOS</h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
-      <div className=" bg-background border-b border-border">
-        <div className="sticky top-0 z-30 container px-0 mx-0 pt-[60px]">
-          <div className="z-30 py-2 sm:py-3 mx-0 border-0">
+      <div className="sticky top-0 z-30 bg-background border-b border-border">
+        <div className="container px-0 mx-0">
+          <div className="py-2 sm:py-3 mx-0 border-0">
             {/* Mobile: vertical stack, full width */}
             <div className="flex flex-col gap-1 sm:hidden">
               {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full px-3 py-2 font-heading text-xs uppercase transition-all text-left", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
@@ -213,7 +213,7 @@ export const ServicesSection = () => {
                 </button>)}
             </div>
             {/* Desktop: horizontal row */}
-            <div className="sticky top-0 z-30 hidden gap-2 sm:flex items-center justify-start mx-[32px]">
+            <div className="hidden gap-2 sm:flex items-center justify-start mx-[32px]">
               {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs transition-all rounded-none shadow-none", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground border border-border hover:bg-muted")}>
                   {service.title}
                 </button>)}
