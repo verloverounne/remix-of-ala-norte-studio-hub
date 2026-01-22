@@ -102,12 +102,10 @@ const Galeria = () => {
               </div>
 
               {/* Layout Description */}
-              {space.layout_description && (
-                <div className="bg-muted p-4 rounded-lg border-l border-primary">
+              {space.layout_description && <div className="bg-muted p-4 rounded-lg border-l border-primary border-0">
                   <h3 className="font-heading font-bold mb-2">LAYOUT DEL ESTUDIO</h3>
                   <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
-                </div>
-              )}
+                </div>}
 
               {/* Floor Plan - Mobile only */}
               <div className="lg:hidden relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
@@ -115,21 +113,17 @@ const Galeria = () => {
               </div>
 
               {/* Included Items */}
-              {space.included_items && space.included_items.length > 0 && (
-                <div>
+              {space.included_items && space.included_items.length > 0 && <div>
                   <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
                     <Check className="h-5 w-5 text-primary" /> INCLUIDO EN EL BLOQUE
                   </h3>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {space.included_items.map((item, index) => (
-                      <li key={index} className="flex items-center gap-2 text-muted-foreground">
+                    {space.included_items.map((item, index) => <li key={index} className="flex items-center gap-2 text-muted-foreground">
                         <span className="text-primary">•</span>
                         <span className="font-heading">{item}</span>
-                      </li>
-                    ))}
+                      </li>)}
                   </ul>
-                </div>
-              )}
+                </div>}
 
               {/* Schedule Info */}
               <div className="bg-secondary border border-foreground p-4 rounded-lg">
@@ -141,18 +135,14 @@ const Galeria = () => {
               </div>
 
               {/* Optional Services */}
-              {space.optional_services && space.optional_services.length > 0 && (
-                <div>
+              {space.optional_services && space.optional_services.length > 0 && <div>
                   <h3 className="text-xl font-heading font-bold mb-3">SERVICIOS OPCIONALES</h3>
                   <div className="flex flex-wrap gap-2">
-                    {space.optional_services.map((service, index) => (
-                      <Badge key={index} variant="outline" className="font-heading">
+                    {space.optional_services.map((service, index) => <Badge key={index} variant="outline" className="font-heading">
                         {service}
-                      </Badge>
-                    ))}
+                      </Badge>)}
                   </div>
-                </div>
-              )}
+                </div>}
 
               <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
                 <Link to="/contacto">
