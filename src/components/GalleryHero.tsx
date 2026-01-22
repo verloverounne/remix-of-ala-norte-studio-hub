@@ -40,21 +40,21 @@ export const GalleryHero = ({
                   <MapPin className="h-5 w-5 text-input" />
                   <span className="font-heading text-foreground">{space.location}</span>
                 </div>}
-              <p className="text-sm sm:text-base max-w-2xl font-heading leading-tight font-bold my-[64px] text-foreground md:text-2xl">
+              <p className="text-sm sm:text-base max-w-2xl font-heading leading-tight font-bold my-[64px] text-foreground md:text-2xl mb-[32px]">
                 {space.hero_subtitle || space.description}
               </p>
             </div>
 
             {/* Features inline - 2 columns, no borders */}
-            {space.features && Array.isArray(space.features) && space.features.length > 0 && <div className="grid grid-cols-2 gap-x-16 gap-y-1">
+            {space.features && Array.isArray(space.features) && space.features.length > 0 && <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-[48px]">
                 {(space.features as string[]).map((feature, index) => <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
                     <span className="text-primary">•</span>
                     {feature}
                   </p>)}
               </div>}
-            {space.discount_text && <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 rounded-lg">
+            {space.discount_text && <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 rounded-none">
                 <Sparkles className="h-5 w-5 text-primary" />
-                <span className="font-heading font-bold text-primary">{space.discount_text}</span>
+                <span className="font-heading font-bold text-primary text-xl">{space.discount_text}</span>
               </div>}
 
             {/* CTA Button */}
