@@ -205,7 +205,7 @@ export const ServicesSection = () => {
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
       <div className="sticky top-0 z-30 bg-background border-b border-border">
         <div className="container px-0 mx-0">
-          <div className="py-2 sm:py-3 mx-0 border-0">
+          <div className="py-2 mx-0 border-0 sm:py-0 pt-[48px]">
             {/* Mobile: vertical stack, full width */}
             <div className="flex flex-col gap-1 sm:hidden">
               {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full px-3 py-2 font-heading text-xs uppercase transition-all text-left", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
