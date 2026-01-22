@@ -116,12 +116,12 @@ const ServiceSlide = ({
 
         {/* Contenido con blur */}
         <div className="absolute inset-0 p-6 flex items-center justify-center">
-          <div className="backdrop-blur-md p-6 w-full bg-primary-dark">
-            <span className="text-xs font-heading text-background/60 uppercase tracking-wider mb-1 block">
+          <div className="backdrop-blur-md p-6 w-full bg-background text-foreground">
+            <span className="text-xs font-heading uppercase tracking-wider mb-1 block text-destructive">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
-            <h3 className="font-heading text-2xl text-background uppercase leading-tight mb-2">{service.title}</h3>
-            {service.description && <p className="text-sm text-background/80 mb-4 leading-relaxed line-clamp-3">{service.description}</p>}
+            <h3 className="font-heading text-2xl uppercase leading-tight mb-2 text-foreground">{service.title}</h3>
+            {service.description && <p className="text-sm mb-4 leading-relaxed line-clamp-3 text-foreground">{service.description}</p>}
             {service.button_text && service.button_link && <Button asChild variant="default" size="sm">
                 <Link to={service.button_link}>
                   {service.button_text}
