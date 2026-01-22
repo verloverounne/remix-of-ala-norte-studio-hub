@@ -397,7 +397,7 @@ export const EquipmentModal = ({
         </Carousel>
         {/* Badge y botón agregar */}
         {onAddToCart && (
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center justify-between gap-2 w-full">
             <div
               className={cn(
                 "rounded-none px-2 py-0.5 font-heading text-xs",
