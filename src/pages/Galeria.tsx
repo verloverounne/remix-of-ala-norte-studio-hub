@@ -160,10 +160,8 @@ const Galeria = () => {
       {/* CTA Section */}
       <section className="py-12 sm:py-16 bg-background">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4">¿Querés reservar la galería?</h2>
-          <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading leading-tight">
-            CONTACTANOS PARA CONOCER DISPONIBILIDAD Y COORDINAR TU PRODUCCIÓN.
-          </p>
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4 text-center">¿Querés reservar la galería?</h2>
+          <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading leading-tight text-center">Hablemos de tu proyecto. Te contamos disponibilidad, armamos una propuesta a medida y coordinamos todo para que llegues tranquilo al rodaje.</p>
           <Button variant="hero" size="lg" asChild>
             <Link to="/contacto">
               <MapPin className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
