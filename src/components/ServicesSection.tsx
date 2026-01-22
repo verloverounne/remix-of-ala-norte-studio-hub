@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
 import { useParallax } from "@/hooks/useParallax";
 import type { Json } from "@/integrations/supabase/types";
-
 const parseBullets = (bullets: Json | null): string[] => {
   if (!bullets) return [];
   if (Array.isArray(bullets)) {
@@ -15,7 +14,6 @@ const parseBullets = (bullets: Json | null): string[] => {
   }
   return [];
 };
-
 interface HomeService {
   id: string;
   title: string;
@@ -83,30 +81,22 @@ const ServiceSlide = ({
               </h3>
             </div>
 
-            {service.description && (
-              <p className="text-sm sm:text-base text-muted-foreground leading-tight">
+            {service.description && <p className="text-sm sm:text-base text-muted-foreground leading-tight">
                 {service.description}
-              </p>
-            )}
+              </p>}
 
-            {service.bullets && service.bullets.length > 0 && (
-              <ul className="space-y-3">
-                {service.bullets.map((bullet, i) => (
-                  <li key={i} className="flex items-start gap-3">
+            {service.bullets && service.bullets.length > 0 && <ul className="space-y-3">
+                {service.bullets.map((bullet, i) => <li key={i} className="flex items-start gap-3">
                     <Check className="h-5 w-5 mt-0.5 text-primary flex-shrink-0" />
                     <span className="text-sm sm:text-base text-foreground">{bullet}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
+                  </li>)}
+              </ul>}
 
-            {service.cta_label && service.cta_url && (
-              <div className="pt-4">
+            {service.cta_label && service.cta_url && <div className="pt-4">
                 <Button asChild size="lg" className="font-heading uppercase">
                   <Link to={service.cta_url}>{service.cta_label}</Link>
                 </Button>
-              </div>
-            )}
+              </div>}
           </div>
         </div>
       </div>
@@ -226,7 +216,7 @@ export const ServicesSection = () => {
                 </button>)}
             </div>
             {/* Desktop: horizontal row */}
-            <div className="hidden gap-2 sm:flex items-center justify-start">
+            <div className="hidden gap-2 sm:flex items-center justify-start mx-[24px]">
               {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs uppercase transition-all", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground border border-border hover:bg-muted")}>
                   {service.title}
                 </button>)}
@@ -266,7 +256,7 @@ export const ServicesSection = () => {
           <ChevronRight className="h-6 w-6" />
          </button>
          {/* Dots indicator */}
-        <div className="flex justify-center gap-2 py-6 bg-foreground">
+        <div className="flex justify-center gap-2 py-6 bg-background">
           {services.map((_, index) => <button key={index} onClick={() => handleTabClick(index)} className={cn("w-3 h-3 border transition-all rounded-full border-primary", activeIndex === index ? "bg-primary" : "bg-transparent hover:bg-muted")} aria-label={`Ir al slide ${index + 1}`} />)}
         </div>
       </div>
