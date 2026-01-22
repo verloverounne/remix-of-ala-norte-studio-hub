@@ -203,7 +203,7 @@ export const ServicesSection = () => {
         <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">NUESTROS SERVICIOS</h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
-      <div className="sticky top-0 z-30 bg-background border-b border-border">
+      <div className=" bg-background border-b border-border">
         <div className="container px-0 mx-0">
           <div className="py-2 sm:py-3 mx-0 border-0">
             {/* Mobile: vertical stack, full width */}
