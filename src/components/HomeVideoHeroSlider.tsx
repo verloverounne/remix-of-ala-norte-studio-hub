@@ -6,7 +6,6 @@ import { Volume2, VolumeX } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useParallax } from "@/hooks/useParallax";
 import heroLogo from "@/assets/hero-logo.png";
-
 interface HeroSlide {
   id: string;
   media_url: string;
@@ -162,7 +161,7 @@ const HeroSlideComponent = ({
 
         <div className="absolute inset-0 flex items-center justify-center">
           <div ref={contentParallax.ref as any} style={contentParallax.style} className="text-center text-background/40 px-8">
-            <h1 className="text-background text-5xl md:text-6xl font-bold mb-2">{slide.title}</h1>
+            <h1 className="text-background md:text-6xl font-bold mb-2 text-4xl">{slide.title}</h1>
             <p className="text-background text-lg mb-4">{slide.subtitle}</p>
             {slide.cta_label && slide.cta_link && <Link to={slide.cta_link}>
                 <Button variant="default">{slide.cta_label}</Button>
@@ -255,12 +254,8 @@ export const HomeVideoHeroSlider = () => {
         </button>}
 
       {/* Logo centrado en la parte superior */}
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 z-20">
-        <img 
-          src={heroLogo} 
-          alt="Ala Norte Logo" 
-          className="h-16 md:h-24 w-auto object-contain"
-        />
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 z-20 my-[32px]">
+        <img src={heroLogo} alt="Ala Norte Logo" className="h-48 md:h-32 w-auto object-contain" />
       </div>
 
       {/* Navigation dots */}

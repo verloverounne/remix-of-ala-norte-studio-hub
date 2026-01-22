@@ -109,9 +109,9 @@ const CTASection = () => {
 
       {/* Content overlay */}
       <div className="relative z-10 container mx-auto px-4 flex">
-        <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 rounded-lg backdrop-blur-lg ">
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6 text-background">¿Estás por encarar un rodaje?</h2>
-          <p className="text-sm sm:text-base mb-6 sm:mb-8 font-heading leading-tight text-background">
+        <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 rounded-lg backdrop-blur-lg py-[68px] px-[40px] mx-[24px]">
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6 text-background my-0 px-0">¿Estás por encarar un rodaje?</h2>
+          <p className="text-sm sm:text-base mb-6 font-heading leading-tight text-background my-[6px] sm:mb-[57px] px-0">
             Contanos qué querés filmar y armamos una propuesta de equipamiento a medida.
           </p>
           <Button asChild variant="default" size="lg">
@@ -169,7 +169,7 @@ const CartoniSection = () => {
         {/* Contenido - superpuesto, abajo izquierda */}
         <div className="absolute inset-0 z-10 flex items-end">
           <div className="container mx-auto px-4 pb-16">
-            <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl text-left p-6 backdrop-blur-md bg-background/40 rounded-lg">
+            <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl text-left p-6 backdrop-blur-md bg-background/40 rounded-lg mx-[24px]">
               <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mb-4">
                 SELLER & SERVICE <span className="text-primary">OFICIAL CARTONI</span>
               </h2>
@@ -220,7 +220,7 @@ const Home = () => {
       <HomeVideoHeroSlider />
 
       {/* Services Section */}
-      <ServicesSection />
+      
 
       {/* Featured Equipment Section - Full Width Slider */}
       {featuredEquipment.length > 0 && <FeaturedEquipmentSection featuredEquipment={featuredEquipment} equipmentApi={equipmentApi} setEquipmentApi={setEquipmentApi} currentEquipmentSlide={currentEquipmentSlide} setCurrentEquipmentSlide={setCurrentEquipmentSlide} />}
