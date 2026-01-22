@@ -117,7 +117,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
             <h2 className="font-heading text-sm sm:text-lg md:text-xl uppercase truncate bg-[#d9d8da]">
               {category.name}
             </h2>
-            <Badge variant="secondary" className="text-[10px] sm:text-xs px-1.5 py-0 flex-shrink-0 text-primary-dark">
+            <Badge variant="secondary" className="text-[10px] sm:text-xs px-1.5 py-0 flex-shrink-0 text-primary-dark bg-background">
               {filteredEquipment.length}
             </Badge>
           </button>
