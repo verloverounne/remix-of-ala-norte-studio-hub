@@ -96,7 +96,7 @@ const Galeria = () => {
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">El espacio</h2>
-                <p className="text-muted-foreground font-heading text-lg">
+                <p className="text-muted-foreground font-heading text-base font-medium">
                   {space.detailed_description || space.description}
                 </p>
               </div>
