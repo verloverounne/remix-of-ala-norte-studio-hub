@@ -91,7 +91,7 @@ export const GalleryHero = ({
           <CarouselContent className="-ml-0 h-full flex">
             {/* Slide 1: Text Content - Same as desktop left column */}
             <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center">
-              <div className="container mx-auto space-y-4 my-[60px] px-[32px] py-[64px]">
+              <div className="container mx-auto space-y-4 my-[60px] px-[32px] py-[64px] rounded-none">
                 {/* Price Badge */}
                 <div className="flex items-center justify-center gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-card-foreground">
                   <span className="sm:text-2xl font-bold font-heading text-background text-lg">
@@ -105,7 +105,7 @@ export const GalleryHero = ({
                   <h1 className="sm:text-3xl font-heading font-bold text-foreground text-4xl my-0 mt-[32px]">
                     {space.hero_title || space.name}
                   </h1>
-                  {space.location && <div className="flex items-left gap-2 px-3 rounded-lg border-2 bg-background border-foreground border-solid py-[64px]">
+                  {space.location && <div className="flex items-left gap-2 rounded-lg border-2 bg-background border-foreground border-solid py-[6px] px-[6px]">
                       <MapPin className="h-4 w-4 text-input" />
                       <span className="font-heading text-foreground text-sm">{space.location}</span>
                     </div>}
