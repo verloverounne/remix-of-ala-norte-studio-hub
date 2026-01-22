@@ -76,8 +76,9 @@ const ServiceSlide = ({
               </Button>}
           </div>
         </div>
-      </div> */}
-   <div className={`space-y-6 pb-8 flex flex-col justify-center ${isEven ? "" : "md:col-start-2"}`}>
+      </div>
+            {/* Text content */}
+            <div className={`space-y-6 pb-8 flex flex-col justify-center ${isEven ? "" : "md:col-start-2"}`}>
               <div className="space-y-4">
                 <span className="font-heading text-sm text-muted-foreground uppercase tracking-wider">
                   Servicio {String(index + 1).padStart(2, "0")}
@@ -204,7 +205,7 @@ export const ServicesSection = () => {
     return null;
   }
   return <section className="relative bg-background">
-    {/* Section Header */}
+      Section Header
       <div className="py-6 sm:py-8 mx-4 sm:mx-8">
         <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">NUESTROS SERVICIOS</h2>
       </div>
