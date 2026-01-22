@@ -40,7 +40,7 @@ export const GalleryHero = ({
                   <MapPin className="h-5 w-5 text-input" />
                   <span className="font-heading text-foreground">{space.location}</span>
                 </div>}
-              <p className="text-sm sm:text-base max-w-2xl font-heading leading-tight font-bold my-[64px] md:text-3xl text-foreground">
+              <p className="text-sm sm:text-base max-w-2xl font-heading leading-tight font-bold my-[64px] text-foreground md:text-2xl">
                 {space.hero_subtitle || space.description}
               </p>
             </div>
