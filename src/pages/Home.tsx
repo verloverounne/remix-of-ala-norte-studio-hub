@@ -144,7 +144,7 @@ const CTASection = () => {
       </div>
 
       {/* Content overlay */}
-      <div className="relative z-10 container mx-auto px-4 flex justify-end">
+      <div className="relative z-10 container mx-auto px-4 flex">
         <div
           ref={contentParallax.ref as any}
           style={contentParallax.style}
