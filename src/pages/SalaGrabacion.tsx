@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { Eye, MapPin, Clock, Check, Calendar, Mic, Headphones, Monitor } from "lucide-react";
+import { Eye, Clock, Check, Calendar, Mic, Headphones, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { Space } from "@/types/supabase";
 import Viewer360 from "@/components/Viewer360";
-import { VideoHeroSlider } from "@/components/VideoHeroSlider";
+import { GalleryHero } from "@/components/GalleryHero";
 const SalaGrabacion = () => {
   const [space, setSpace] = useState<Space | null>(null);
   const [loading, setLoading] = useState(true);
@@ -54,8 +54,8 @@ const SalaGrabacion = () => {
       </div>;
   }
   return <div className="min-h-screen">
-      {/* Hero Section with Video Slider */}
-      <VideoHeroSlider pageType="sala_grabacion_hero" space={space} />
+      {/* Hero Section - Same as Galería */}
+      <GalleryHero space={space} />
 
       {/* Quick Features Section */}
       <section className="py-8 sm:py-12 bg-secondary">
