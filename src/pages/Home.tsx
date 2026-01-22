@@ -104,12 +104,12 @@ const CTASection = () => {
   return <section className="relative border-y border-border overflow-hidden min-h-[90vh] flex items-center duotone-hover-group">
       {/* Background image with duotone treatment */}
       <div className="absolute inset-0 w-full h-full border-0">
-        <img alt="" className="w-full h-full image-duotone border-0 object-fill" src="/lovable-uploads/fb5916aa-2049-4f18-aa32-4bfb53fbdc4f.png" />
+        <img alt="" className="w-full h-full image-duotone border-0 object-cover" src="/lovable-uploads/fb5916aa-2049-4f18-aa32-4bfb53fbdc4f.png" />
       </div>
 
       {/* Content overlay */}
       <div className="relative z-10 container mx-auto px-4 flex">
-        <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 rounded-lg backdrop-blur-lg py-[68px] px-[40px] mx-[16px]">
+        <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 rounded-lg backdrop-blur-lg py-[68px] mx-[16px] px-[24px]">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6 text-background my-0 px-0 font-extrabold">
             ¿Tenés un rodaje en mente?
           </h2>
@@ -171,7 +171,7 @@ const CartoniSection = () => {
         {/* Contenido - superpuesto, abajo izquierda */}
         <div className="absolute inset-0 z-10 flex items-end">
           <div className="container mx-auto px-4 pb-16">
-            <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 rounded-lg backdrop-blur-lg py-[68px] px-[40px] max-w-2xl mx-[16px]">
+            <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 rounded-lg backdrop-blur-lg py-[68px] max-w-2xl mx-[16px] px-[24px]">
               <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mb-4">
                 SELLER & SERVICE <span className="text-primary">OFICIAL CARTONI</span>
               </h2>
