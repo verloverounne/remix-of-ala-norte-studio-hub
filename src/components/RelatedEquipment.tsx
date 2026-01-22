@@ -161,7 +161,7 @@ export const RelatedEquipment = ({
               <CardContent className="p-2 sm:p-3 flex flex-col space-y-2">
                 {/* 1. Nombre del equipo - formateado sin uppercase */}
                 <h3 
-                  className="font-heading text-xs sm:text-sm leading-tight pt-2 line-clamp-2 cursor-pointer hover:text-primary transition-colors h-[5em]"
+                  className="font-heading normal-case text-xs sm:text-sm leading-tight pt-2 line-clamp-2 cursor-pointer hover:text-primary transition-colors h-[5em]"
                   onClick={() => onViewDetails?.(item)}
                 >
                   {formatEquipmentName(item.name)}
