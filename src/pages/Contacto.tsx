@@ -67,10 +67,9 @@ const Contacto = () => {
       {/* Hero Section */}
       <section className="py-20">
         <div className="container mx-auto px-4 max-w-6xl text-left">
-          <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">Hablemos de tu próximo rodaje</h1>
+          <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6 my-[64px]">Hablemos de tu proyecto</h1>
           <p className="md:text-2xl max-w-3xl text-left font-medium text-base">
-            Completá el formulario con algunos datos de tu proyecto y te respondemos con una propuesta de equipamiento y
-            presupuesto.
+            Contanos tu idea, tus fechas y qué necesitás. Armamos juntos una propuesta de equipamiento y espacios a medida. Nuestro equipo te responde con asesoramiento técnico dedicado.
           </p>
         </div>
       </section>
