@@ -93,7 +93,7 @@ export const GalleryHero = ({
             {/* Slide 1: Text Content */}
             <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center">
               <div className="container mx-auto px-4 py-12 space-y-6">
-                <Badge variant="secondary" className="text-lg px-4 py-2 text-[#9d1402]">
+                <Badge variant="secondary" className="text-lg px-4 py-2 text-[#9d1402] bg-background">
                   <Clock className="mr-2 h-4 w-4" />
                   BLOQUES DE {space.block_hours || 4}HS
                 </Badge>
@@ -111,11 +111,11 @@ export const GalleryHero = ({
                     </span>
                     <span className="text-sm opacity-80">/ bloque {space.block_hours || 4}hs</span>
                   </div>
-                  {space.surface_area && <div className="flex items-center gap-2 bg-secondary px-4 py-2 rounded-lg">
+                  {space.surface_area && <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-background">
                       <Ruler className="h-5 w-5" />
                       <span className="font-heading font-bold">{space.surface_area}</span>
                     </div>}
-                  {space.location && <div className="flex items-center gap-2 bg-secondary px-4 py-2 rounded-lg">
+                  {space.location && <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-background">
                       <MapPin className="h-5 w-5" />
                       <span className="font-heading">{space.location}</span>
                     </div>}
