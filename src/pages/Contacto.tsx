@@ -8,42 +8,37 @@ import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter } from "lucide
 import { useToast } from "@/hooks/use-toast";
 import Map from "@/components/Map.tsx";
 import { supabase } from "@/integrations/supabase/client";
-
 const Contacto = () => {
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    message: "",
+    message: ""
   });
   const [contactVideo, setContactVideo] = useState<string | null>(null);
-
   useEffect(() => {
     const fetchContactVideo = async () => {
-      const { data } = await supabase
-        .from("gallery_images")
-        .select("image_url, media_type")
-        .eq("page_type", "contacto")
-        .order("order_index", { ascending: true })
-        .limit(1)
-        .single();
-
+      const {
+        data
+      } = await supabase.from("gallery_images").select("image_url, media_type").eq("page_type", "contacto").order("order_index", {
+        ascending: true
+      }).limit(1).single();
       if (data && data.media_type === "video") {
         setContactVideo(data.image_url);
       }
     };
     fetchContactVideo();
   }, []);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!formData.name || !formData.email || !formData.message) {
       toast({
         title: "Ups",
         description: "Algo no funcionó. Verificá los datos e intentá de nuevo.",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
@@ -51,7 +46,7 @@ const Contacto = () => {
     // Here you would typically send the form data to a backend
     toast({
       title: "¡Listo!",
-      description: "Tu consulta fue enviada. Te vamos a responder lo antes posible.",
+      description: "Tu consulta fue enviada. Te vamos a responder lo antes posible."
     });
 
     // Reset form
@@ -59,24 +54,21 @@ const Contacto = () => {
       name: "",
       email: "",
       phone: "",
-      message: "",
+      message: ""
     });
   };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
-
-  return (
-    <div className="min-h-screen pt-16">
+  return <div className="min-h-screen pt-16">
       {/* Hero Section */}
       <section className="py-20">
         <div className="container mx-auto px-4 max-w-6xl text-left">
           <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">Hablemos de tu próximo rodaje</h1>
-          <p className="text-xl md:text-2xl max-w-3xl text-left">
+          <p className="md:text-2xl max-w-3xl text-left font-medium text-base">
             Completá el formulario con algunos datos de tu proyecto y te respondemos con una propuesta de equipamiento y
             presupuesto.
           </p>
@@ -99,56 +91,26 @@ const Contacto = () => {
                     <Label htmlFor="name">
                       Tu nombre <span className="text-destructive">*</span>
                     </Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="Tu nombre"
-                      required
-                    />
+                    <Input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Tu nombre" required />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="email">
                       Tu mail de contacto <span className="text-destructive">*</span>
                     </Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="tu@email.com"
-                      required
-                    />
+                    <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="tu@email.com" required />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="phone">Teléfono</Label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="+54 11 1234-5678"
-                    />
+                    <Input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="+54 11 1234-5678" />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="message">
                       ¿Qué equipo tenés en mente o qué necesitás? <span className="text-destructive">*</span>
                     </Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Contanos brevemente de qué se trata tu proyecto..."
-                      rows={6}
-                      required
-                    />
+                    <Textarea id="message" name="message" value={formData.message} onChange={handleChange} placeholder="Contanos brevemente de qué se trata tu proyecto..." rows={6} required />
                   </div>
 
                   <Button type="submit" variant="hero" size="lg" className="w-full">
@@ -159,11 +121,7 @@ const Contacto = () => {
               {/* Map */}
               <Card className="flex gap-4 overflow-hidden">
                 <div className="h-150">
-                  <Map
-                    address="V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina"
-                    latitude={-34.527}
-                    longitude={-58.475}
-                  />
+                  <Map address="V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina" latitude={-34.527} longitude={-58.475} />
                 </div>
               </Card>
             </Card>
@@ -171,11 +129,9 @@ const Contacto = () => {
             {/* Contact Info */}
             <div className="space-y-6">
               {/* Vertical Video */}
-              {contactVideo && (
-                <div className="aspect-[9/16] w-full rounded-lg overflow-hidden bg-muted">
+              {contactVideo && <div className="aspect-[9/16] w-full rounded-lg overflow-hidden bg-muted">
                   <video src={contactVideo} autoPlay loop muted playsInline className="w-full h-full object-cover" />
-                </div>
-              )}
+                </div>}
 
               <Card>
                 <CardHeader>
@@ -229,31 +185,13 @@ const Contacto = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="flex gap-4">
-                    <a
-                      href="https://www.facebook.com/alanortecinedigital"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-12 h-12 rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale"
-                      aria-label="Facebook"
-                    >
+                    <a href="https://www.facebook.com/alanortecinedigital" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale" aria-label="Facebook">
                       <Facebook className="h-5 w-5" />
                     </a>
-                    <a
-                      href="https://www.instagram.com/alanortecinedigital/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-12 h-12 rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale"
-                      aria-label="Instagram"
-                    >
+                    <a href="https://www.instagram.com/alanortecinedigital/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale" aria-label="Instagram">
                       <Instagram className="h-5 w-5" />
                     </a>
-                    <a
-                      href="https://twitter.com/alanorte"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-12 h-12 rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale"
-                      aria-label="Twitter X"
-                    >
+                    <a href="https://twitter.com/alanorte" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale" aria-label="Twitter X">
                       <Twitter className="h-5 w-5" />
                     </a>
                   </div>
@@ -263,8 +201,6 @@ const Contacto = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default Contacto;
