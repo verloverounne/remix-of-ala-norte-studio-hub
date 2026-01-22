@@ -94,10 +94,10 @@ export const GalleryHero = ({
               <div className="container mx-auto space-y-4 my-[60px] px-[32px] py-[64px] rounded-none">
                 {/* Price Badge */}
                 <div className="flex items-center justify-center gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-card-foreground">
-                  <span className="sm:text-2xl font-bold font-heading text-background text-lg">
+                  <span className="sm:text-2xl font-bold font-heading text-background text-base">
                     ${(space.block_price || space.price)?.toLocaleString()}
                   </span>
-                  <span className="text-sm opacity-100 text-background font-extralight">/ bloque {space.block_hours || 4}hs</span>
+                  <span className="opacity-100 text-background font-extralight text-xs">/ bloque {space.block_hours || 4}hs</span>
                 </div>
 
                 {/* Title + Location + Subtitle */}
