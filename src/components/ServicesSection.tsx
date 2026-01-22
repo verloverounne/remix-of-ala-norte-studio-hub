@@ -58,7 +58,7 @@ const ServiceSlide = ({
       <div className="hidden lg:grid lg:grid-cols-2">
         {/* Columna izquierda: Media con parallax y duotono */}
         <div ref={mediaParallax.ref as any} className="min-h-[900px] max-h-[1200px] overflow-hidden relative duotone-hover-group bg-muted">
-          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone absolute left-0 top-0 w-full h-full object-cover bg-background" style={{
+          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone absolute left-0 top-0 w-full h-full object-cover bg-background border-0" style={{
           ...mediaParallax.style
         }} autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone absolute left-0 top-0 w-full h-full object-cover" style={{
           ...mediaParallax.style
