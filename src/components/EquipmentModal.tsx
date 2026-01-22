@@ -87,8 +87,8 @@ export const EquipmentModal = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl w-[90vw] md:w-[50vw] max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="flex flex-row items-start justify-between gap-4">
-          <DialogTitle className="flex items-center justify-between gap-2 w-full">
+          <DialogHeader className="flex flex-row items-start justify-between gap-4">
+          <DialogTitle className="flex items-center justify-between gap-2 w-full normal-case">
             {formatEquipmentName(equipment.name)}
           </DialogTitle>
         </DialogHeader>
