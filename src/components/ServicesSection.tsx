@@ -132,17 +132,17 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
         </div>
 
         {/* Overlay oscuro */}
-        <div className="absolute inset-0 bg-foreground/40" />
+        <div className="absolute inset-0 bg-background/40" />
 
         {/* Contenido con blur */}
         <div className="absolute inset-0 p-6 flex items-center justify-center">
-          <div className="backdrop-blur-md p-6 w-full bg-primary-dark">
-            <span className="text-xs font-heading text-background/60 uppercase tracking-wider mb-1 block">
+          <div className="backdrop-blur-md p-6 w-full bg-background">
+            <span className="text-xs font-heading text-foreground uppercase mb-1 block">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
-            <h3 className="font-heading text-2xl text-background uppercase leading-tight mb-2">{service.title}</h3>
+            <h3 className="font-heading text-2xl text-foreground uppercase leading-tight mb-2">{service.title}</h3>
             {service.description && (
-              <p className="text-sm text-background/80 mb-4 leading-relaxed line-clamp-3">{service.description}</p>
+              <p className="text-sm text-foreground/80 mb-4 leading-relaxed line-clamp-3">{service.description}</p>
             )}
             {service.button_text && service.button_link && (
               <Button asChild variant="default" size="sm">
@@ -234,10 +234,9 @@ export const ServicesSection = () => {
   }
   return (
     <section className="relative bg-background">
+      Section Header
       <div className="py-6 sm:py-8 mx-4 sm:mx-8">
-        <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">
-          Equipamiento, espacios y técnicos para tu producción
-        </h2>
+        <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">NUESTROS SERVICIOS</h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
       <div className="sticky top-0 z-30 bg-foreground">
