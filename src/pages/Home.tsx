@@ -109,7 +109,7 @@ const CTASection = () => {
 
       {/* Content overlay */}
       <div className="relative z-10 container mx-auto px-4 flex">
-        <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 rounded-lg backdrop-blur-lg py-[68px] mx-[16px] px-[24px]">
+        <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl p-6 backdrop-blur-lg rounded-lg backdrop-blur-lg py-[68px] mx-[16px] px-[24px]">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6 text-background my-0 px-0 font-extrabold">
             ¿Tenés un rodaje en mente?
           </h2>

@@ -159,8 +159,8 @@ const HeroSlideComponent = ({
           {hasMedia ? slide.media_type === "video" ? <video ref={videoRef} src={mediaUrl} className="video-duotone absolute inset-0 w-full h-full object-cover" style={getMobileVideoStyles()} autoPlay loop muted={muted} playsInline onLoadedMetadata={handleLoadedMetadata} /> : <img src={mediaUrl} alt={slide.title} className="image-duotone absolute inset-0 w-full h-full object-cover" /> : null}
         </div>
 
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div ref={contentParallax.ref as any} style={contentParallax.style} className="text-center text-background/40 px-8">
+        <div className="absolute inset-0 flex items-end justify-center mb-[64px]">
+          <div ref={contentParallax.ref as any} style={contentParallax.style} className="backdrop-blur-lg text-center text-background/40 px-8">
             <h1 className="text-background md:text-6xl font-bold mb-2 text-4xl">{slide.title}</h1>
             <p className="text-background text-lg mb-4">{slide.subtitle}</p>
             {slide.cta_label && slide.cta_link && <Link to={slide.cta_link}>
