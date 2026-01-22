@@ -162,7 +162,7 @@ Contactar cliente para coordinar entrega/retiro.
   };
   return <div className="min-h-screen pt-14 sm:pt-16 bg-background">
       {/* Hero Section */}
-      <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20 border-b border-border">
+      <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20 border-b border-border bg-foreground">
         <div className="container mx-auto px-4 text-left ">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-4 sm:mb-6 px-[32px] lg:text-7xl">PRESUPUESTO</h1>
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto">
@@ -340,7 +340,7 @@ Contactar cliente para coordinar entrega/retiro.
                 <CardHeader className="bg-primary text-primary-foreground">
                   <CardTitle className="text-3xl text-center">TOTAL APROXIMADO</CardTitle>
                 </CardHeader>
-                <CardContent className="p-6">
+                <CardContent className="p-6 shadow-none">
                   <div className="text-center space-y-2">
                     <p className="font-heading text-5xl text-primary">
                       ${totalAmount.toLocaleString()}
