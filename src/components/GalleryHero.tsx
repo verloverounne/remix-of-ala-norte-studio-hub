@@ -105,11 +105,11 @@ export const GalleryHero = ({
                   <h1 className="sm:text-3xl font-heading font-bold text-foreground text-4xl my-0 mt-[32px]">
                     {space.hero_title || space.name}
                   </h1>
-                  {space.location && <div className="flex items-left gap-2 rounded-lg border-2 bg-background border-foreground border-solid py-[6px] px-[6px]">
+                  {space.location && <div className="flex items-left gap-2 rounded-lg border-2 bg-background border-foreground border-solid py-[6px] px-[6px] my-0 mb-[64px]">
                       <MapPin className="h-4 w-4 text-input" />
                       <span className="font-heading text-foreground text-sm">{space.location}</span>
                     </div>}
-                  <p className="text-sm max-w-2xl font-heading text-muted-foreground leading-tight font-thin">
+                  <p className="text-sm max-w-2xl font-heading text-muted-foreground leading-tight font-thin px-0 py-0">
                     {space.hero_subtitle || space.description}
                   </p>
                 </div>
@@ -123,7 +123,7 @@ export const GalleryHero = ({
                   </div>}
 
                 {/* Discount Text */}
-                {space.discount_text && <div className="inline-flex items-center gap-2 border-2 border-primary px-3 py-1.5 rounded-lg">
+                {space.discount_text && <div className="inline-flex items-end gap-2 border-2 border-primary px-3 py-1.5 rounded-lg">
                     <Sparkles className="h-4 w-4 text-primary" />
                     <span className="font-heading font-bold text-primary text-sm">{space.discount_text}</span>
                   </div>}
