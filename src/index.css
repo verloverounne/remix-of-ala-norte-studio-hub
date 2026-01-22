@@ -96,64 +96,6 @@ All colors MUST be HSL.
       "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
   }
 
-  .dark {
-    /* BRUTALISMO 2026 - Modo Oscuro */
-    --background: 0 0% 8%; /* #141414 Negro brutal */
-    --foreground: 0 0% 98%; /* #FAFAFA */
-
-    --card: 0 0% 12%; /* #1F1F1F */
-    --card-foreground: 0 0% 98%;
-
-    --popover: 0 0% 12%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 348 83% 47%; /* #DC143C */
-    --primary-foreground: 0 0% 98%;
-    --primary-hover: 343 100% 33%;
-    --primary-light: 355 82% 60%;
-    --primary-dark: 343 100% 22%;
-
-    --secondary: 0 0% 20%; /* Gris oscuro */
-    --secondary-foreground: 0 0% 98%;
-    --secondary-hover: 0 0% 15%;
-
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 70%;
-
-    --accent: 348 83% 47%; /* Rojo para acentos */
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 348 83% 47%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 98%; /* Bordes blancos en oscuro */
-    --input: 0 0% 98%;
-    --ring: 348 83% 47%;
-
-    --gray-dark: 0 0% 15%;
-    --gray-medium: 0 0% 40%;
-    --gray-light: 0 0% 70%;
-    --gray-lighter: 0 0% 90%;
-
-    /* Tritone Filter Colors */
-    --tritone-high: 0 0% 98%; /* Color para tonos altos (áreas claras) */
-    --tritone-mid: 0 0% 45%; /* Color para tonos medios (áreas medias) */
-    --tritone-low: 0 0% 8%; /* Color para tonos bajos (áreas oscuras) */
-
-    --shadow-brutal: 4px 4px 0 hsl(0 0% 98%);
-    --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 98%);
-    --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 98%);
-    --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
-
-    /* Degradado Plateado Sutil para Bordes - Modo Oscuro */
-    --border-gradient-silver: linear-gradient(135deg, #4b5563, #6b7280);
-    --border-gradient-silver-vertical: linear-gradient(180deg, #4b5563, #6b7280);
-    --radius: 0rem;
-    --shadow-sm: 0px 6px 1.5px 0px hsla(0, 0%, 0%, 0.1);
-    --shadow: 0px 6px 3px 0px hsla(0, 0%, 0%, 0.1);
-    --shadow-md: 0px 6px 4.5px 0px hsla(0, 0%, 0%, 0.1);
-    --shadow-lg: 0px 6px 7.5px 0px hsla(0, 0%, 0%, 0.1);
-  }
 }
 
 @layer base {
