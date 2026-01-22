@@ -7,25 +7,19 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Space } from "@/types/supabase";
 import Viewer360 from "@/components/Viewer360";
 import { VideoHeroSlider } from "@/components/VideoHeroSlider";
-
 const SalaGrabacion = () => {
   const [space, setSpace] = useState<Space | null>(null);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     fetchData();
   }, []);
-
   const fetchData = async () => {
     setLoading(true);
-    
+
     // Fetch space data
-    const { data: spaceData } = await supabase
-      .from('spaces')
-      .select('*')
-      .eq('slug', 'sala-grabacion')
-      .single();
-    
+    const {
+      data: spaceData
+    } = await supabase.from('spaces').select('*').eq('slug', 'sala-grabacion').single();
     if (spaceData) {
       setSpace({
         ...spaceData,
@@ -37,27 +31,29 @@ const SalaGrabacion = () => {
         specs: spaceData.specs || {}
       } as Space);
     }
-    
     setLoading(false);
   };
 
   // Default features for recording studio
-  const defaultFeatures = [
-    { icon: Mic, title: "GRABACIÓN", description: "Estudio profesional de grabación de audio" },
-    { icon: Headphones, title: "MEZCLA", description: "Espacio acústicamente tratado para mezcla" },
-    { icon: Monitor, title: "POSTPRODUCCIÓN", description: "Suite completa para edición y postproducción" },
-  ];
-
+  const defaultFeatures = [{
+    icon: Mic,
+    title: "GRABACIÓN",
+    description: "Estudio profesional de grabación de audio"
+  }, {
+    icon: Headphones,
+    title: "MEZCLA",
+    description: "Espacio acústicamente tratado para mezcla"
+  }, {
+    icon: Monitor,
+    title: "POSTPRODUCCIÓN",
+    description: "Suite completa para edición y postproducción"
+  }];
   if (loading || !space) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
+    return <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b border-primary"></div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       {/* Hero Section with Video Slider */}
       <VideoHeroSlider pageType="sala_grabacion_hero" space={space} />
 
@@ -65,38 +61,29 @@ const SalaGrabacion = () => {
       <section className="py-8 sm:py-12 bg-secondary">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {defaultFeatures.map((feature, index) => (
-              <div key={index} className="bg-background border border-foreground p-6 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform">
+            {defaultFeatures.map((feature, index) => <div key={index} className="bg-background border border-foreground p-6 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform">
                 <feature.icon className="h-12 w-12 text-primary mb-4" />
                 <h3 className="text-xl font-heading font-bold mb-2">{feature.title}</h3>
                 <p className="text-muted-foreground font-heading">{feature.description}</p>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      {space.features && space.features.length > 0 && (
-        <section className="py-12 sm:py-16 bg-background">
+      {space.features && space.features.length > 0 && <section className="py-12 sm:py-16 bg-background">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-8 text-center">
               CARACTERÍSTICAS DEL ESPACIO
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {space.features.map((feature, index) => (
-                <div 
-                  key={index} 
-                  className="flex items-start gap-3 bg-secondary border border-foreground p-4 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform"
-                >
+              {space.features.map((feature, index) => <div key={index} className="flex items-start gap-3 bg-secondary border border-foreground p-4 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform">
                   <Check className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
                   <span className="font-heading">{feature}</span>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
-        </section>
-      )}
+        </section>}
 
       {/* Details Section with Featured Image */}
       <section className="py-12 sm:py-16 bg-background">
@@ -104,38 +91,30 @@ const SalaGrabacion = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
             {/* Featured Image */}
             <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border border-foreground shadow-brutal">
-              <img
-                src={space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
-                alt={space.name}
-                className="w-full h-full object-cover"
-              />
+              <img src={space.featured_image || space.images && space.images[0] || "/placeholder.svg"} alt={space.name} className="w-full h-full object-cover" />
             </div>
 
             {/* Details */}
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">DETALLES DEL ESPACIO</h2>
+                <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">Qué incluye tu reserva</h2>
                 <p className="text-muted-foreground font-heading text-lg">
                   {space.detailed_description || space.description}
                 </p>
               </div>
 
               {/* Included Items */}
-              {space.included_items && space.included_items.length > 0 && (
-                <div>
+              {space.included_items && space.included_items.length > 0 && <div>
                   <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
-                    <Check className="h-5 w-5 text-primary" /> INCLUIDO EN EL BLOQUE
+                    <Check className="h-5 w-5 text-primary" /> Incluido sin cargo adicional
                   </h3>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {space.included_items.map((item, index) => (
-                      <li key={index} className="flex items-center gap-2 text-muted-foreground">
+                    {space.included_items.map((item, index) => <li key={index} className="flex items-center gap-2 text-muted-foreground">
                         <span className="text-primary">•</span>
                         <span className="font-heading">{item}</span>
-                      </li>
-                    ))}
+                      </li>)}
                   </ul>
-                </div>
-              )}
+                </div>}
 
               {/* Schedule Info */}
               <div className="bg-secondary border border-foreground p-4 rounded-lg">
@@ -151,26 +130,20 @@ const SalaGrabacion = () => {
               </div>
 
               {/* Optional Services */}
-              {space.optional_services && space.optional_services.length > 0 && (
-                <div>
-                  <h3 className="text-xl font-heading font-bold mb-3">SERVICIOS OPCIONALES</h3>
+              {space.optional_services && space.optional_services.length > 0 && <div>
+                  <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
                   <div className="flex flex-wrap gap-2">
-                    {space.optional_services.map((service, index) => (
-                      <Badge key={index} variant="outline" className="font-heading">
+                    {space.optional_services.map((service, index) => <Badge key={index} variant="outline" className="font-heading">
                         {service}
-                      </Badge>
-                    ))}
+                      </Badge>)}
                   </div>
-                </div>
-              )}
+                </div>}
 
               {/* Layout Description */}
-              {space.layout_description && (
-                <div className="bg-muted p-4 rounded-lg border-l border-primary">
+              {space.layout_description && <div className="bg-muted p-4 rounded-lg border-l border-primary">
                   <h3 className="font-heading font-bold mb-2">LAYOUT DEL ESTUDIO</h3>
                   <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
-                </div>
-              )}
+                </div>}
 
               <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
                 <Link to="/contacto">
@@ -184,8 +157,7 @@ const SalaGrabacion = () => {
       </section>
 
       {/* 360° Virtual Tour Section */}
-      {space.tour_360_url && (
-        <section className="py-12 sm:py-16 bg-secondary">
+      {space.tour_360_url && <section className="py-12 sm:py-16 bg-secondary">
           <div className="container mx-auto px-4">
             <div className="text-center mb-8">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
@@ -197,14 +169,10 @@ const SalaGrabacion = () => {
               </p>
             </div>
             <div className="max-w-5xl mx-auto">
-              <Viewer360 
-                imageSrc={space.tour_360_url} 
-                height="500px" 
-              />
+              <Viewer360 imageSrc={space.tour_360_url} height="500px" />
             </div>
           </div>
-        </section>
-      )}
+        </section>}
 
       {/* CTA Section */}
       <section className="py-12 sm:py-16 bg-background">
@@ -223,8 +191,6 @@ const SalaGrabacion = () => {
           </Button>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default SalaGrabacion;
