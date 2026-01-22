@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Eye, MapPin, Clock, Check, Ruler, Calendar } from "lucide-react";
+import { Eye, MapPin, Clock, Ruler, Calendar } from "lucide-react";
 import planoIlustrativo from "@/assets/plano-ilustrativo.png";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -95,7 +95,7 @@ const Galeria = () => {
             {/* Right Column: Details */}
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">DETALLES DEL ESPACIO</h2>
+                <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">El espacio</h2>
                 <p className="text-muted-foreground font-heading text-lg">
                   {space.detailed_description || space.description}
                 </p>
@@ -103,7 +103,7 @@ const Galeria = () => {
 
               {/* Layout Description */}
               {space.layout_description && <div className="bg-muted p-4 rounded-lg border-l border-primary border-0">
-                  <h3 className="font-heading font-bold mb-2">LAYOUT DEL ESTUDIO</h3>
+                  <h3 className="font-heading font-bold mb-2">Plano de la galería </h3>
                   <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
                 </div>}
 
@@ -114,8 +114,7 @@ const Galeria = () => {
 
               {/* Included Items */}
               {space.included_items && space.included_items.length > 0 && <div>
-                  <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
-                    <Check className="h-5 w-5 text-primary" /> INCLUIDO EN EL BLOQUE
+                  <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">INCLUIDO EN EL BLOQUE Incluido sin cargo adicional
                   </h3>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {space.included_items.map((item, index) => <li key={index} className="flex items-center gap-2 text-muted-foreground">
@@ -136,7 +135,7 @@ const Galeria = () => {
 
               {/* Optional Services */}
               {space.optional_services && space.optional_services.length > 0 && <div>
-                  <h3 className="text-xl font-heading font-bold mb-3">SERVICIOS OPCIONALES</h3>
+                  <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
                   <div className="flex flex-wrap gap-2">
                     {space.optional_services.map((service, index) => <Badge key={index} variant="outline" className="font-heading">
                         {service}
