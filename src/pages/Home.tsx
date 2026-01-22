@@ -285,9 +285,6 @@ const Home = () => {
       {/* Hero Section - Video Slider with CTAs */}
       <HomeVideoHeroSlider />
 
-      {/* Services Section */}
-      <ServicesSection />
-
       {/* Featured Equipment Section - Full Width Slider */}
       {featuredEquipment.length > 0 && (
         <FeaturedEquipmentSection
@@ -304,6 +301,9 @@ const Home = () => {
 
       {/* CTA Section */}
       <CTASection />
+
+      {/* Services Section */}
+      <ServicesSection />
 
       {/* Cartoni Official Dealer Section */}
       <CartoniSection />
