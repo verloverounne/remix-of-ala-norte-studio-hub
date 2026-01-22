@@ -90,7 +90,7 @@ export const GalleryHero = ({
       }}>
           <CarouselContent className="-ml-0 h-full flex">
             {/* Slide 1: Text Content - Same as desktop left column */}
-            <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center">
+            <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center justify-center">
               <div className="container mx-auto space-y-4 my-[60px] px-[32px] py-[64px] rounded-none">
                 {/* Price Badge */}
                 <div className="gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-card-foreground flex-row flex items-center justify-center">
