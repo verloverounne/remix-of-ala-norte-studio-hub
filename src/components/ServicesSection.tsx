@@ -203,7 +203,7 @@ export const ServicesSection = () => {
         <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase mx-[32px] pt-[36px]">PROFESIONALES, EQUIPAMIENTO Y ESPACIOS.</h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
-      <div className="sticky top-0 z-30 bg-background border-b border-border">
+      <div className="sticky top-0 z-30 bg-background border-b border-border my-0 py-[48px]">
         <div className="container px-0 mx-0">
           <div className="py-2 mx-0 border-0 sm:py-0 pt-[48px]">
             {/* Mobile: vertical stack, full width */}
