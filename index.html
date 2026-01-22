@@ -29,6 +29,19 @@
   </head>
 
   <body>
+    <script>
+      // Aplicar tema antes de que React se monte para evitar parpadeo
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = savedTheme || (prefersDark ? 'dark' : 'dark'); // Default dark
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
     <!-- Filtro SVG para tritone que mapea luminosidad a tres colores -->
     <svg style="position: absolute; width: 0; height: 0;">
       <defs>
