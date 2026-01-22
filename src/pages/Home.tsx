@@ -104,14 +104,14 @@ const CTASection = () => {
   return <section className="relative border-y border-border overflow-hidden min-h-[90vh] flex items-center duotone-hover-group">
       {/* Background image with duotone treatment */}
       <div className="absolute inset-0 w-full h-full border-0">
-        <img alt="" className="w-full h-full object-cover image-duotone border-0" src="/lovable-uploads/fb5916aa-2049-4f18-aa32-4bfb53fbdc4f.png" />
+        <img alt="" className="w-full h-full image-duotone border-0 object-fill" src="/lovable-uploads/fb5916aa-2049-4f18-aa32-4bfb53fbdc4f.png" />
       </div>
 
       {/* Content overlay */}
       <div className="relative z-10 container mx-auto px-4 flex">
         <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 rounded-lg backdrop-blur-lg py-[68px] px-[40px] mx-[24px]">
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6 text-background my-0 px-0">¿Estás por encarar un rodaje?</h2>
-          <p className="text-sm sm:text-base mb-6 font-heading leading-tight text-background my-[6px] sm:mb-[57px] px-0">
+          <p className="text-sm mb-6 font-heading leading-tight my-[6px] sm:mb-[57px] px-0 text-background font-normal sm:text-lg">
             Contanos qué querés filmar y armamos una propuesta de equipamiento a medida.
           </p>
           <Button asChild variant="default" size="lg">
