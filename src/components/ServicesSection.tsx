@@ -113,7 +113,7 @@ const ServiceSlide = ({
         <div className="absolute inset-0 bg-foreground/40" />
 
         {/* Contenido con blur */}
-        <div className="absolute inset-0 p-6 flex items-center justify-center">
+        <div className="absolute inset-0 p-6 flex items-center justify-center my-[32px]">
           <div className="backdrop-blur-md p-6 w-full bg-background text-foreground">
             <span className="text-xs font-heading uppercase tracking-wider mb-1 block text-destructive">
               Servicio {String(index + 1).padStart(2, "0")}
