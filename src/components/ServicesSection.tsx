@@ -200,7 +200,7 @@ export const ServicesSection = () => {
   }
   return <section className="relative bg-background">
       <div className="py-6 mx-4 pt-[60px] pb-[24px] sm:py-[54px] px-0 sm:mx-[2px] bg-background text-foreground">
-        <h2 className="font-heading text-3xl sm:text-4xl lg:text-body pt-[36px] bg-inherit text-foreground mx-[32px]">Equipamiento, espacios y equipo técnico para que tu producción salga adelante</h2>
+        <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal pt-[36px] bg-inherit text-foreground mx-[32px]">Equipamiento, espacios y equipo técnico para que tu producción salga adelante</h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
       <div className="sticky top-0 z-30 bg-background border-b border-border my-0 py-[48px] pb-0 px-[32px] mx-0">
