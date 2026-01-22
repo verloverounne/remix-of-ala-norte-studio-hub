@@ -80,10 +80,6 @@ const HeroSlideComponent = ({
     speed: 0.4,
     direction: "down"
   });
-  const logoParallax = useParallax({
-    speed: 0.2,
-    direction: "up"
-  });
   const handleLoadedMetadata = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const video = e.currentTarget;
     setVideoOrientation(video.videoWidth > video.videoHeight ? "horizontal" : "vertical");
@@ -119,21 +115,8 @@ const HeroSlideComponent = ({
   return <CarouselItem className="h-screen pl-0">
       {/* Desktop: 2 columnas - contenedor 100vh */}
       <div className="hidden md:grid md:grid-cols-2 h-screen bg-foreground">
-        {/* Columna izquierda: Logo + Texto posicionado al 90% del alto de pantalla */}
+        {/* Columna izquierda: Texto posicionado al 90% del alto de pantalla */}
         <div className="flex flex-col justify-end h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[10vh]">
-          {/* Logo con parallax diferente */}
-          <div 
-            ref={logoParallax.ref as any}
-            style={logoParallax.style}
-            className="flex justify-center mb-8"
-          >
-            <img 
-              src={heroLogo} 
-              alt="Ala Norte Logo" 
-              className="w-[30%] h-auto object-contain"
-            />
-          </div>
-          
           <h1 className="text-background font-bold mb-4 leading-tight border-0 font-sans" style={{
           fontSize: "clamp(2rem, 5vw, 4rem)",
           wordBreak: "break-word",
@@ -270,6 +253,15 @@ export const HomeVideoHeroSlider = () => {
     }} className="absolute top-4 right-4 z-20 p-3 bg-background/20 backdrop-blur-sm hover:bg-background/40 transition-colors" aria-label={muted ? "Activar sonido" : "Silenciar"}>
           {muted ? <VolumeX className="h-5 w-5 text-background" /> : <Volume2 className="h-5 w-5 text-background" />}
         </button>}
+
+      {/* Logo centrado en la parte superior */}
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 z-20">
+        <img 
+          src={heroLogo} 
+          alt="Ala Norte Logo" 
+          className="h-16 md:h-24 w-auto object-contain"
+        />
+      </div>
 
       {/* Navigation dots */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
