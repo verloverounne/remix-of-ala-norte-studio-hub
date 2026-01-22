@@ -53,11 +53,11 @@ const ServiceSlide = ({
   const isVideo = service.section_media_type === "video" && service.section_video_url;
   const mediaUrl = isVideo ? service.section_video_url : service.image_url;
   const hasMedia = mediaUrl && mediaUrl.trim() !== "";
-  return <div className="flex-[0_0_100%] min-w-0">
+  return <div className="flex-[0_0_100%] min-w-0 h-screen">
       {/* Desktop: 2 columnas - imagen izquierda, texto derecha con blur */}
-      <div className="hidden lg:grid lg:grid-cols-2">
+      <div className="hidden lg:grid lg:grid-cols-2 h-full">
         {/* Columna izquierda: Media con parallax y duotono */}
-        <div ref={mediaParallax.ref as any} className="min-h-[900px] max-h-[1200px] overflow-hidden relative duotone-hover-group bg-muted">
+        <div ref={mediaParallax.ref as any} className="h-full overflow-hidden relative duotone-hover-group bg-muted">
           {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone absolute left-0 top-0 w-full h-full object-cover bg-background border-0" style={{
           ...mediaParallax.style
         }} autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone absolute left-0 top-0 w-full h-full object-cover" style={{
@@ -70,7 +70,7 @@ const ServiceSlide = ({
         </div>
 
         {/* Columna derecha: Texto con fondo y parallax lento - mismo contenido que ServiceSection */}
-        <div className="flex-col h-full p-8 lg:p-12 xl:p-16 bg-background overflow-hidden flex items-start justify-center">
+        <div className="flex flex-col h-full p-8 lg:p-12 xl:p-16 bg-background overflow-hidden items-start justify-center">
           <div ref={textParallax.ref as any} className="max-w-xl text-foreground space-y-6" style={textParallax.style}>
             <div className="space-y-4">
               <span className="font-heading text-sm text-muted-foreground uppercase tracking-wider">
@@ -101,7 +101,7 @@ const ServiceSlide = ({
         </div>
       </div>
       {/* Mobile: Media de fondo con texto superpuesto */}
-      <div className="lg:hidden h-[70vh] relative">
+      <div className="lg:hidden h-screen relative">
         {/* Media de fondo */}
         <div className="absolute inset-0 duotone-hover-group">
           {hasMedia ? isVideo ? <video src={mediaUrl!} className="video-duotone w-full h-full object-cover" autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" /> : <div className="w-full h-full bg-muted flex items-center justify-center">
