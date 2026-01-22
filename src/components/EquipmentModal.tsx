@@ -282,7 +282,7 @@ const formatEquipmentName = (name: string): string => {
   ];
 
   return name
-    .split(" ")
+    .split(" .toLowerCase()")
     .map((word, index) => {
       const upperWord = word.toUpperCase();
       if (acronyms.includes(upperWord)) return upperWord;
@@ -372,7 +372,7 @@ export const EquipmentModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl w-[90vw] md:w-[50vw] max-h-[90vh] overflow-y-auto">
         <DialogHeader className="flex flex-row items-start justify-between gap-4">
-          <DialogTitle className="font-heading text-xl sm:text-2xl flex-1  lowercase">
+          <DialogTitle className="flex items-center justify-between gap-2 w-full">
             {formatEquipmentName(equipment.name)}
           </DialogTitle>
         </DialogHeader>
