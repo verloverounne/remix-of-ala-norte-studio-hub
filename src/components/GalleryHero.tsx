@@ -125,7 +125,7 @@ export const GalleryHero = ({
                 {/* Discount Text */}
                 {space.discount_text && <div className="inline-flex items-center gap-2 border-2 border-primary px-3 py-1.5 rounded-lg my-[32px]">
                     <Sparkles className="h-4 w-4 text-primary" />
-                    <span className="font-heading font-bold text-primary text-2xl my-0">{space.discount_text}</span>
+                    <span className="font-heading font-bold text-primary my-0 text-xl">{space.discount_text}</span>
                   </div>}
 
                 {/* CTA Button */}
