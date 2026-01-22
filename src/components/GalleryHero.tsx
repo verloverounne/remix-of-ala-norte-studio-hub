@@ -93,7 +93,7 @@ export const GalleryHero = ({
             <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center">
               <div className="container mx-auto space-y-4 my-[60px] px-[32px] py-[64px] rounded-none">
                 {/* Price Badge */}
-                <div className="gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-card-foreground flex items-center justify-end">
+                <div className="gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-card-foreground flex-row flex items-center justify-center">
                   <span className="sm:text-2xl font-bold font-heading text-background text-base">
                     ${(space.block_price || space.price)?.toLocaleString()}
                   </span>
@@ -101,21 +101,21 @@ export const GalleryHero = ({
                 </div>
 
                 {/* Title + Location + Subtitle */}
-                <div className="flex-wrap gap-3 flex-col flex items-start justify-center py-[64px] pb-[24px]">
-                  <h1 className="sm:text-6xl font-heading font-bold text-foreground my-0 mt-[32px] text-6xl">
+                <div className="flex-wrap gap-3 flex-col py-[64px] pb-[24px] flex items-center justify-center">
+                  <h1 className="sm:text-6xl font-heading font-bold text-foreground my-0 mt-[32px] text-6xl text-center">
                     {space.hero_title || space.name}
                   </h1>
-                  {space.location && <div className="flex items-left gap-2 rounded-lg border-2 bg-background border-foreground border-solid py-[6px] px-[6px] my-0 mb-[64px]">
+                  {space.location && <div className="items-left gap-2 rounded-lg border-2 bg-background border-foreground border-solid py-[6px] px-[6px] my-0 mb-[64px] flex items-start justify-start">
                       <MapPin className="h-4 w-4 text-input" />
                       <span className="font-heading text-foreground text-sm">{space.location}</span>
                     </div>}
-                  <p className="max-w-2xl font-heading text-muted-foreground leading-tight px-0 py-0 font-bold text-xl">
+                  <p className="max-w-2xl font-heading text-muted-foreground leading-tight px-0 py-0 font-bold text-center text-3xl mb-[24px]">
                     {space.hero_subtitle || space.description}
                   </p>
                 </div>
 
                 {/* Features - 2 columns */}
-                {space.features && Array.isArray(space.features) && space.features.length > 0 && <div className="grid grid-cols-2 gap-x-8 gap-y-1">
+                {space.features && Array.isArray(space.features) && space.features.length > 0 && <div className="grid grid-cols-2 gap-x-8 gap-y-1 mb-[24px]">
                     {(space.features as string[]).map((feature, index) => <p key={index} className="text-xs text-muted-foreground font-heading flex items-start gap-2">
                         <span className="text-primary">•</span>
                         {feature}
@@ -123,7 +123,7 @@ export const GalleryHero = ({
                   </div>}
 
                 {/* Discount Text */}
-                {space.discount_text && <div className="inline-flex items-end gap-2 border-2 border-primary px-3 py-1.5 rounded-lg">
+                {space.discount_text && <div className="inline-flex items-center gap-2 border-2 border-primary px-3 py-1.5 rounded-lg">
                     <Sparkles className="h-4 w-4 text-primary" />
                     <span className="font-heading font-bold text-primary text-sm">{space.discount_text}</span>
                   </div>}
