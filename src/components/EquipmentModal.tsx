@@ -369,7 +369,7 @@ export const EquipmentModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl w-[90vw] w-[80vw] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl w-[90vw] md:w-[50vw] max-h-[90vh] overflow-y-auto">
         <DialogHeader className="flex flex-row items-start justify-between gap-4">
           <DialogTitle className="font-heading text-xl sm:text-2xl flex-1">
             {formatEquipmentName(equipment.name)}
@@ -449,8 +449,7 @@ export const EquipmentModal = ({
             )}
             {equipment.categories && (
               <div>
-                <p className="text-sm text-muted-foreground font-heading">CATEGORÍA</p>
-                <p className="font-heading text-lg">{equipment.categories.name}</p>
+                <Badge>{equipment.categories.name}</Badge>
               </div>
             )}
           </div>
