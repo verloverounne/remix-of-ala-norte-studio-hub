@@ -376,6 +376,24 @@ export const EquipmentModal = ({
             {formatEquipmentName(equipment.name)}
           </DialogTitle>
 
+          {/* Carrusel de imágenes */}
+          <Carousel className="w-full">
+            <CarouselContent>
+              {images.map((img, index) => (
+                <CarouselItem key={index}>
+                  <div className="aspect-video bg-muted overflow-hidden border-2 border-foreground">
+                    <img src={img} alt={`${equipment.name} - ${index + 1}`} className="w-full h-full object-cover" />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {images.length > 1 && (
+              <>
+                <CarouselPrevious />
+                <CarouselNext />
+              </>
+            )}
+          </Carousel>
           {/* Badge y botón agregar */}
           {onAddToCart && (
             <div className="flex items-center gap-2 flex-shrink-0">
@@ -415,25 +433,6 @@ export const EquipmentModal = ({
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Carrusel de imágenes */}
-          <Carousel className="w-full">
-            <CarouselContent>
-              {images.map((img, index) => (
-                <CarouselItem key={index}>
-                  <div className="aspect-video bg-muted overflow-hidden border-2 border-foreground">
-                    <img src={img} alt={`${equipment.name} - ${index + 1}`} className="w-full h-full object-cover" />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            {images.length > 1 && (
-              <>
-                <CarouselPrevious />
-                <CarouselNext />
-              </>
-            )}
-          </Carousel>
-
           {/* Información básica */}
           <div className="grid grid-cols-2 gap-4">
             {equipment.brand && (
