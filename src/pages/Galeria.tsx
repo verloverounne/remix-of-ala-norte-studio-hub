@@ -160,7 +160,7 @@ const Galeria = () => {
       {/* CTA Section */}
       <section className="py-12 sm:py-16 bg-background">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4">¿LISTO PARA RESERVAR TU BLOQUE?</h2>
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4">¿Querés reservar la galería?</h2>
           <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading leading-tight">
             CONTACTANOS PARA CONOCER DISPONIBILIDAD Y COORDINAR TU PRODUCCIÓN.
           </p>
