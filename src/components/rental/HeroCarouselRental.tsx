@@ -183,7 +183,7 @@ export const HeroCarouselRental = ({
   return <div ref={heroRef} className="relative">
       {/* Fixed Navigation Bar - always visible at top, z-30 to always be above category headers */}
       <div ref={navBarRef} className="fixed top-0 left-0 right-0 z-30 bg-background border-b border-foreground/10">
-        <div className="container mx-auto px-2 sm:px-4">
+        <div className="container mx-auto px-2 sm:px-4 my-0 mr-0 py-[62px] pb-0 pt-[62px]">
           <div className="flex items-center justify-center gap-1 sm:gap-2 py-1.5 sm:py-2 h-[40px] sm:h-[52px]">
             {/* Category chips - always show all 5 categories */}
             <div className="flex items-center overflow-x-auto scrollbar-hide gap-1 sm:gap-2">
@@ -271,9 +271,9 @@ export const HeroCarouselRental = ({
                     {bg?.media_type === "video" && bg.image_url ? <video src={bg.image_url} className="w-full h-full object-cover video-duotone" autoPlay loop muted playsInline /> : bg?.image_url ? <img src={bg.image_url} alt={category.name} className="w-full h-full object-cover image-duotone" loading="lazy" /> : <div className="w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />}
 
                     {/* Text overlay */}
-                    <div className="absolute inset-0 flex items-end justify-center">
+                    <div className="absolute inset-0 flex items-start justify-center">
                       <div className="text-center z-10 p-4 sm:p-8 max-w-4xl">
-                        <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl mb-2 uppercase text-background drop-shadow-lg font-bold lg:text-9xl mx-0 px-[85px] py-[36px]">
+                        <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl mb-2 uppercase text-background drop-shadow-lg font-bold mx-0 px-[85px] py-[36px] lg:text-2xl">
                           {bg?.title || category.name.toUpperCase()}
                         </h1>
                         {bg?.description && <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading drop-shadow-md max-w-2xl mx-auto">
