@@ -1,11 +1,21 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
 import { useParallax } from "@/hooks/useParallax";
+import type { Json } from "@/integrations/supabase/types";
+
+const parseBullets = (bullets: Json | null): string[] => {
+  if (!bullets) return [];
+  if (Array.isArray(bullets)) {
+    return bullets.filter((b): b is string => typeof b === 'string');
+  }
+  return [];
+};
+
 interface HomeService {
   id: string;
   title: string;
@@ -15,6 +25,9 @@ interface HomeService {
   section_video_url: string | null;
   button_text: string | null;
   button_link: string | null;
+  bullets: string[];
+  cta_label: string | null;
+  cta_url: string | null;
   order_index: number;
   is_active: boolean;
 }
@@ -58,22 +71,42 @@ const ServiceSlide = ({
             </div>}
         </div>
 
-        {/* Columna derecha: Texto con fondo y parallax lento */}
+        {/* Columna derecha: Texto con fondo y parallax lento - mismo contenido que ServiceSection */}
         <div className="flex-col h-full p-8 lg:p-12 xl:p-16 bg-background overflow-hidden flex items-start justify-center">
-          <div ref={textParallax.ref as any} className="max-w-xl text-foreground" style={textParallax.style}>
-            <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-foreground">
-              Servicio {String(index + 1).padStart(2, "0")}
-            </span>
-            <h3 className="font-heading text-3xl uppercase leading-tight mb-4 text-foreground xl:text-6xl">
-              {service.title}
-            </h3>
-            {service.description && <p className="text-sm mb-6 leading-relaxed text-foreground">{service.description}</p>}
-            {service.button_text && service.button_link && <Button asChild variant="default" size="lg">
-                <Link to={service.button_link}>
-                  {service.button_text}
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>}
+          <div ref={textParallax.ref as any} className="max-w-xl text-foreground space-y-6" style={textParallax.style}>
+            <div className="space-y-4">
+              <span className="font-heading text-sm text-muted-foreground uppercase tracking-wider">
+                Servicio {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase text-foreground">
+                {service.title}
+              </h3>
+            </div>
+
+            {service.description && (
+              <p className="text-sm sm:text-base text-muted-foreground leading-tight">
+                {service.description}
+              </p>
+            )}
+
+            {service.bullets && service.bullets.length > 0 && (
+              <ul className="space-y-3">
+                {service.bullets.map((bullet, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <Check className="h-5 w-5 mt-0.5 text-primary flex-shrink-0" />
+                    <span className="text-sm sm:text-base text-foreground">{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {service.cta_label && service.cta_url && (
+              <div className="pt-4">
+                <Button asChild size="lg" className="font-heading uppercase">
+                  <Link to={service.cta_url}>{service.cta_label}</Link>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -124,13 +157,16 @@ export const ServicesSection = () => {
       const {
         data,
         error
-      } = await supabase.from("home_services").select("id, title, description, image_url, section_media_type, section_video_url, button_text, button_link, order_index, is_active").eq("is_active", true).order("order_index");
+      } = await supabase.from("home_services").select("id, title, description, image_url, section_media_type, section_video_url, button_text, button_link, bullets, cta_label, cta_url, order_index, is_active").eq("is_active", true).order("order_index");
       if (!error && data) {
         setServices(data.map(s => ({
           ...s,
           order_index: s.order_index ?? 0,
           section_media_type: s.section_media_type ?? null,
-          section_video_url: s.section_video_url ?? null
+          section_video_url: s.section_video_url ?? null,
+          bullets: parseBullets(s.bullets),
+          cta_label: s.cta_label ?? null,
+          cta_url: s.cta_url ?? null
         })));
       }
       setLoading(false);
@@ -180,18 +216,18 @@ export const ServicesSection = () => {
         <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">NUESTROS SERVICIOS</h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
-      <div className="sticky top-0 z-30 bg-foreground">
-        <div className="container mx-auto px-4 border-foreground bg-background">
-          <div className="py-2 sm:py-3 bg-background">
+      <div className="sticky top-0 z-30 bg-background border-b border-border">
+        <div className="container mx-auto px-4">
+          <div className="py-2 sm:py-3">
             {/* Mobile: vertical stack, full width */}
             <div className="flex flex-col gap-1 sm:hidden">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full px-3 py-2 font-heading text-xs uppercase transition-all text-left", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-foreground text-background hover:bg-primary-dark")}>
+              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full px-3 py-2 font-heading text-xs uppercase transition-all text-left", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
                   {service.title}
                 </button>)}
             </div>
-            {/* Desktop: horizontal row, centered */}
-            <div className="hidden gap-2 sm:flex items-center justify-start bg-background">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs uppercase transition-all bg-background text-foreground", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-foreground text-background hover:bg-primary-dark")}>
+            {/* Desktop: horizontal row */}
+            <div className="hidden gap-2 sm:flex items-center justify-start">
+              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs uppercase transition-all", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground border border-border hover:bg-muted")}>
                   {service.title}
                 </button>)}
             </div>
