@@ -58,7 +58,7 @@ const ServiceSlide = ({
             </div>}
         </div>
 
-        {/* Columna derecha: Texto con fondo y parallax lento 
+        {/* Columna derecha: Texto con fondo y parallax lento */}
         <div className="flex-col h-full p-8 lg:p-12 xl:p-16 bg-background overflow-hidden flex items-start justify-center">
           <div ref={textParallax.ref as any} className="max-w-xl text-foreground" style={textParallax.style}>
             <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-foreground">
@@ -77,36 +77,6 @@ const ServiceSlide = ({
           </div>
         </div>
       </div>
-            {/* Text content */}
-            <div className={`space-y-6 pb-8 flex flex-col justify-center ${isEven ? "" : "md:col-start-2"}`}>
-              <div className="space-y-4">
-                <span className="font-heading text-sm text-muted-foreground uppercase tracking-wider">
-                  Servicio {String(index + 1).padStart(2, "0")}
-                </span>
-                <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase">{title}</h2>
-              </div>
-
-              {description && <p className="text-sm sm:text-base text-muted-foreground leading-tight">{description}</p>}
-
-              {bullets && bullets.length > 0 && (
-                <ul className="space-y-3">
-                  {bullets.map((bullet, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <Check className="h-5 w-5 mt-0.5 text-primary flex-shrink-0" />
-                      <span className="text-sm sm:text-base">{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {ctaLabel && ctaUrl && (
-                <div className="pt-4">
-                  <Button asChild size="lg" className="font-heading uppercase">
-                    <Link to={ctaUrl}>{ctaLabel}</Link>
-                  </Button>
-                </div>
-              )}
-            </div>
       {/* Mobile: Media de fondo con texto superpuesto */}
       <div className="lg:hidden h-[70vh] relative">
         {/* Media de fondo */}
