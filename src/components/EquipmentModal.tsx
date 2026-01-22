@@ -375,62 +375,62 @@ export const EquipmentModal = ({
           <DialogTitle className="font-heading text-xl sm:text-2xl flex-1">
             {formatEquipmentName(equipment.name)}
           </DialogTitle>
-
-          {/* Carrusel de imágenes */}
-          <Carousel className="w-full">
-            <CarouselContent>
-              {images.map((img, index) => (
-                <CarouselItem key={index}>
-                  <div className="aspect-video bg-muted overflow-hidden border-2 border-foreground">
-                    <img src={img} alt={`${equipment.name} - ${index + 1}`} className="w-full h-full object-cover" />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            {images.length > 1 && (
-              <>
-                <CarouselPrevious />
-                <CarouselNext />
-              </>
-            )}
-          </Carousel>
-          {/* Badge y botón agregar */}
-          {onAddToCart && (
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <div
-                className={cn(
-                  "rounded-none px-2 py-0.5 font-heading text-xs",
-                  cartQty > 0 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
-                )}
-              >
-                {cartQty}/{equipment.stock_quantity}
-              </div>
-
-              {equipment.status === "available" ? (
-                <Button
-                  size="sm"
-                  className="h-8 px-3 font-black"
-                  onClick={() => onAddToCart(equipment)}
-                  disabled={!canAdd}
-                >
-                  {canAdd ? (
-                    <>
-                      <Plus className="h-4 w-4 mr-1" />
-                      AGREGAR
-                    </>
-                  ) : (
-                    <span className="text-xs">MÁXIMO</span>
-                  )}
-                </Button>
-              ) : (
-                <Button size="sm" className="h-8 px-3" disabled>
-                  <X className="h-4 w-4 mr-1" />
-                  NO DISP.
-                </Button>
-              )}
-            </div>
-          )}
         </DialogHeader>
+
+        {/* Carrusel de imágenes */}
+        <Carousel className="w-full">
+          <CarouselContent>
+            {images.map((img, index) => (
+              <CarouselItem key={index}>
+                <div className="aspect-video bg-muted overflow-hidden border-2 border-foreground">
+                  <img src={img} alt={`${equipment.name} - ${index + 1}`} className="w-full h-full object-cover" />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          {images.length > 1 && (
+            <>
+              <CarouselPrevious />
+              <CarouselNext />
+            </>
+          )}
+        </Carousel>
+        {/* Badge y botón agregar */}
+        {onAddToCart && (
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <div
+              className={cn(
+                "rounded-none px-2 py-0.5 font-heading text-xs",
+                cartQty > 0 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+              )}
+            >
+              {cartQty}/{equipment.stock_quantity}
+            </div>
+
+            {equipment.status === "available" ? (
+              <Button
+                size="sm"
+                className="h-8 px-3 font-black"
+                onClick={() => onAddToCart(equipment)}
+                disabled={!canAdd}
+              >
+                {canAdd ? (
+                  <>
+                    <Plus className="h-4 w-4 mr-1" />
+                    AGREGAR
+                  </>
+                ) : (
+                  <span className="text-xs">MÁXIMO</span>
+                )}
+              </Button>
+            ) : (
+              <Button size="sm" className="h-8 px-3" disabled>
+                <X className="h-4 w-4 mr-1" />
+                NO DISP.
+              </Button>
+            )}
+          </div>
+        )}
 
         <div className="space-y-6">
           {/* Información básica */}
