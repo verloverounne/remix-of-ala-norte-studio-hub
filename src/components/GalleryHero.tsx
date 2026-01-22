@@ -101,7 +101,7 @@ export const GalleryHero = ({
                 </div>
 
                 {/* Title + Location + Subtitle */}
-                <div className="flex-wrap gap-3 flex-col flex items-start justify-center py-[64px]">
+                <div className="flex-wrap gap-3 flex-col flex items-start justify-center py-[64px] pb-[24px]">
                   <h1 className="sm:text-6xl font-heading font-bold text-foreground my-0 mt-[32px] text-6xl">
                     {space.hero_title || space.name}
                   </h1>
@@ -109,7 +109,7 @@ export const GalleryHero = ({
                       <MapPin className="h-4 w-4 text-input" />
                       <span className="font-heading text-foreground text-sm">{space.location}</span>
                     </div>}
-                  <p className="max-w-2xl font-heading text-muted-foreground leading-tight px-0 py-0 text-2xl font-bold">
+                  <p className="max-w-2xl font-heading text-muted-foreground leading-tight px-0 py-0 font-bold text-xl">
                     {space.hero_subtitle || space.description}
                   </p>
                 </div>
