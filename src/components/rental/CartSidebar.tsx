@@ -91,7 +91,7 @@ export const CartSidebar = ({
           </div>
 
           <Button className="w-full" size="lg" onClick={() => window.location.href = "/cotizador"}>
-            ENVIAR COTIZACIÓN
+            Pedí tu presupuesto
           </Button>
         </div>}
     </>;
