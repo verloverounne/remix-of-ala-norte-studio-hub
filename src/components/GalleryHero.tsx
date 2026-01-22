@@ -115,7 +115,7 @@ export const GalleryHero = ({
                 </div>
 
                 {/* Features - 2 columns */}
-                {space.features && Array.isArray(space.features) && space.features.length > 0 && <div className="grid grid-cols-2 gap-x-8 gap-y-1 mb-[24px]">
+                {space.features && Array.isArray(space.features) && space.features.length > 0 && <div className="grid grid-cols-2 gap-x-8 gap-y-1 mb-[24px] my-[24px]">
                     {(space.features as string[]).map((feature, index) => <p key={index} className="text-xs text-muted-foreground font-heading flex items-start gap-2">
                         <span className="text-primary">•</span>
                         {feature}
