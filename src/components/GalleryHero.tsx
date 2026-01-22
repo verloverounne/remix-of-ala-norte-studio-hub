@@ -93,7 +93,7 @@ export const GalleryHero = ({
             <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center">
               <div className="container mx-auto space-y-4 my-[60px] px-[32px] py-[64px] rounded-none">
                 {/* Price Badge */}
-                <div className="gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-card-foreground flex items-center justify-rig">
+                <div className="gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-card-foreground flex items-center justify-end">
                   <span className="sm:text-2xl font-bold font-heading text-background text-base">
                     ${(space.block_price || space.price)?.toLocaleString()}
                   </span>
