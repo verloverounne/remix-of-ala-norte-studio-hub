@@ -102,7 +102,7 @@ export const GalleryHero = ({
 
                 {/* Title + Location + Subtitle */}
                 <div className="flex-wrap gap-3 flex-col flex items-start justify-center py-[64px]">
-                  <h1 className="sm:text-6xl font-heading font-bold text-foreground text-4xl my-0 mt-[32px]">
+                  <h1 className="sm:text-6xl font-heading font-bold text-foreground my-0 mt-[32px] text-6xl">
                     {space.hero_title || space.name}
                   </h1>
                   {space.location && <div className="flex items-left gap-2 rounded-lg border-2 bg-background border-foreground border-solid py-[6px] px-[6px] my-0 mb-[64px]">
