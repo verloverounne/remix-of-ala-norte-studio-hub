@@ -24,38 +24,61 @@ interface ServiceSlideProps {
   service: HomeService;
   index: number;
 }
-const ServiceSlide = ({
-  service,
-  index
-}: ServiceSlideProps) => {
+const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaParallax = useParallax({
     speed: 0.6,
-    direction: "up"
+    direction: "up",
   });
   // Parallax más lento para el texto - permanece visible más tiempo
   const textParallax = useParallax({
     speed: 0.15,
     direction: "up",
-    offset: 100 // Offset inicial para que empiece más arriba
+    offset: 100, // Offset inicial para que empiece más arriba
   });
   const isVideo = service.section_media_type === "video" && service.section_video_url;
   const mediaUrl = isVideo ? service.section_video_url : service.image_url;
   const hasMedia = mediaUrl && mediaUrl.trim() !== "";
-  return <div className="flex-[0_0_100%] min-w-0">
+  return (
+    <div className="flex-[0_0_100%] min-w-0">
       {/* Desktop: 2 columnas - imagen izquierda, texto derecha con blur */}
       <div className="hidden lg:grid lg:grid-cols-2">
         {/* Columna izquierda: Media con parallax y duotono */}
-        <div ref={mediaParallax.ref as any} className="min-h-[900px] max-h-[1200px] overflow-hidden relative duotone-hover-group bg-muted">
-          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone absolute left-0 top-0 w-full h-full object-cover bg-background" style={{
-          ...mediaParallax.style
-        }} autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone absolute left-0 top-0 w-full h-full object-cover" style={{
-          ...mediaParallax.style
-        }} /> : <div className="w-full h-full bg-muted flex items-center justify-center">
+        <div
+          ref={mediaParallax.ref as any}
+          className="min-h-[900px] max-h-[1200px] overflow-hidden relative duotone-hover-group bg-muted"
+        >
+          {hasMedia ? (
+            isVideo ? (
+              <video
+                ref={videoRef}
+                src={mediaUrl!}
+                className="video-duotone absolute left-0 top-0 w-full h-full object-cover bg-background"
+                style={{
+                  ...mediaParallax.style,
+                }}
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <img
+                src={mediaUrl!}
+                alt={service.title}
+                className="image-duotone absolute left-0 top-0 w-full h-full object-cover"
+                style={{
+                  ...mediaParallax.style,
+                }}
+              />
+            )
+          ) : (
+            <div className="w-full h-full bg-muted flex items-center justify-center">
               <span className="font-heading text-6xl text-muted-foreground/30">
                 {String(index + 1).padStart(2, "0")}
               </span>
-            </div>}
+            </div>
+          )}
         </div>
 
         {/* Columna derecha: Texto con fondo y parallax lento */}
@@ -67,13 +90,17 @@ const ServiceSlide = ({
             <h3 className="font-heading text-3xl uppercase leading-tight mb-4 text-foreground xl:text-6xl">
               {service.title}
             </h3>
-            {service.description && <p className="text-sm mb-6 leading-relaxed text-foreground">{service.description}</p>}
-            {service.button_text && service.button_link && <Button asChild variant="default" size="lg">
+            {service.description && (
+              <p className="text-sm mb-6 leading-relaxed text-foreground">{service.description}</p>
+            )}
+            {service.button_text && service.button_link && (
+              <Button asChild variant="default" size="lg">
                 <Link to={service.button_link}>
                   {service.button_text}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
-              </Button>}
+              </Button>
+            )}
           </div>
         </div>
       </div>
@@ -82,11 +109,26 @@ const ServiceSlide = ({
       <div className="lg:hidden h-[70vh] relative">
         {/* Media de fondo */}
         <div className="absolute inset-0 duotone-hover-group">
-          {hasMedia ? isVideo ? <video src={mediaUrl!} className="video-duotone w-full h-full object-cover" autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" /> : <div className="w-full h-full bg-muted flex items-center justify-center">
+          {hasMedia ? (
+            isVideo ? (
+              <video
+                src={mediaUrl!}
+                className="video-duotone w-full h-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" />
+            )
+          ) : (
+            <div className="w-full h-full bg-muted flex items-center justify-center">
               <span className="font-heading text-6xl text-muted-foreground/30">
                 {String(index + 1).padStart(2, "0")}
               </span>
-            </div>}
+            </div>
+          )}
         </div>
 
         {/* Overlay oscuro */}
@@ -99,17 +141,22 @@ const ServiceSlide = ({
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
             <h3 className="font-heading text-2xl text-background uppercase leading-tight mb-2">{service.title}</h3>
-            {service.description && <p className="text-sm text-background/80 mb-4 leading-relaxed line-clamp-3">{service.description}</p>}
-            {service.button_text && service.button_link && <Button asChild variant="default" size="sm">
+            {service.description && (
+              <p className="text-sm text-background/80 mb-4 leading-relaxed line-clamp-3">{service.description}</p>
+            )}
+            {service.button_text && service.button_link && (
+              <Button asChild variant="default" size="sm">
                 <Link to={service.button_link}>
                   {service.button_text}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
-              </Button>}
+              </Button>
+            )}
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 export const ServicesSection = () => {
   const [services, setServices] = useState<HomeService[]>([]);
@@ -118,31 +165,39 @@ export const ServicesSection = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     align: "start",
-    skipSnaps: false
+    skipSnaps: false,
   });
   useEffect(() => {
     const fetchServices = async () => {
-      const {
-        data,
-        error
-      } = await supabase.from("home_services").select("id, title, description, image_url, section_media_type, section_video_url, button_text, button_link, order_index, is_active").eq("is_active", true).order("order_index");
+      const { data, error } = await supabase
+        .from("home_services")
+        .select(
+          "id, title, description, image_url, section_media_type, section_video_url, button_text, button_link, order_index, is_active",
+        )
+        .eq("is_active", true)
+        .order("order_index");
       if (!error && data) {
-        setServices(data.map(s => ({
-          ...s,
-          order_index: s.order_index ?? 0,
-          section_media_type: s.section_media_type ?? null,
-          section_video_url: s.section_video_url ?? null
-        })));
+        setServices(
+          data.map((s) => ({
+            ...s,
+            order_index: s.order_index ?? 0,
+            section_media_type: s.section_media_type ?? null,
+            section_video_url: s.section_video_url ?? null,
+          })),
+        );
       }
       setLoading(false);
     };
     fetchServices();
   }, []);
-  const scrollTo = useCallback((index: number) => {
-    if (emblaApi) {
-      emblaApi.scrollTo(index);
-    }
-  }, [emblaApi]);
+  const scrollTo = useCallback(
+    (index: number) => {
+      if (emblaApi) {
+        emblaApi.scrollTo(index);
+      }
+    },
+    [emblaApi],
+  );
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
   }, [emblaApi]);
@@ -168,33 +223,59 @@ export const ServicesSection = () => {
     scrollTo(index);
   };
   if (loading) {
-    return <section className="min-h-[500px] lg:min-h-[700px] bg-background flex items-center justify-center">
+    return (
+      <section className="min-h-[500px] lg:min-h-[700px] bg-background flex items-center justify-center">
         <div className="animate-pulse font-heading text-xl">Cargando servicios...</div>
-      </section>;
+      </section>
+    );
   }
   if (services.length === 0) {
     return null;
   }
-  return <section className="relative bg-background">
-      Section Header
+  return (
+    <section className="relative bg-background">
       <div className="py-6 sm:py-8 mx-4 sm:mx-8">
-        <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">NUESTROS SERVICIOS</h2>
+        <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">
+          Equipamiento, espacios y técnicos para tu producción
+        </h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
       <div className="sticky top-0 z-30 bg-foreground">
-        <div className="container mx-auto px-4 border-foreground bg-background">
-          <div className="py-2 sm:py-3 bg-background">
+        <div className="container mx-auto px-4 bg-foreground border-foreground">
+          <div className="py-2 sm:py-3">
             {/* Mobile: vertical stack, full width */}
             <div className="flex flex-col gap-1 sm:hidden">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full px-3 py-2 font-heading text-xs uppercase transition-all text-left", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-foreground text-background hover:bg-primary-dark")}>
+              {services.map((service, index) => (
+                <button
+                  key={service.id}
+                  onClick={() => handleTabClick(index)}
+                  className={cn(
+                    "w-full px-3 py-2 font-heading text-xs uppercase transition-all text-left",
+                    activeIndex === index
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-foreground text-background hover:bg-primary-dark",
+                  )}
+                >
                   {service.title}
-                </button>)}
+                </button>
+              ))}
             </div>
             {/* Desktop: horizontal row, centered */}
-            <div className="hidden gap-2 sm:flex items-center justify-start bg-background">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs uppercase transition-all bg-background", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-foreground text-background hover:bg-primary-dark")}>
+            <div className="hidden sm:flex items-center justify-center gap-2">
+              {services.map((service, index) => (
+                <button
+                  key={service.id}
+                  onClick={() => handleTabClick(index)}
+                  className={cn(
+                    "px-3 py-1.5 font-heading text-xs uppercase transition-all bg-[#1b1b18]",
+                    activeIndex === index
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-foreground text-background hover:bg-primary-dark",
+                  )}
+                >
                   {service.title}
-                </button>)}
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -203,7 +284,9 @@ export const ServicesSection = () => {
       <div className="relative">
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex bg-foreground">
-            {services.map((service, index) => <ServiceSlide key={service.id} service={service} index={index} />)}
+            {services.map((service, index) => (
+              <ServiceSlide key={service.id} service={service} index={index} />
+            ))}
           </div>
         </div>
 
@@ -232,9 +315,20 @@ export const ServicesSection = () => {
          </button>
          {/* Dots indicator */}
         <div className="flex justify-center gap-2 py-6 bg-foreground">
-          {services.map((_, index) => <button key={index} onClick={() => handleTabClick(index)} className={cn("w-3 h-3 border transition-all rounded-full border-primary", activeIndex === index ? "bg-primary" : "bg-transparent hover:bg-muted")} aria-label={`Ir al slide ${index + 1}`} />)}
+          {services.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handleTabClick(index)}
+              className={cn(
+                "w-3 h-3 border transition-all rounded-full border-primary",
+                activeIndex === index ? "bg-primary" : "bg-transparent hover:bg-muted",
+              )}
+              aria-label={`Ir al slide ${index + 1}`}
+            />
+          ))}
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
 export default ServicesSection;
