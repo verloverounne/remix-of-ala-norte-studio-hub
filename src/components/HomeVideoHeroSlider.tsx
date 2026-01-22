@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Volume2, VolumeX } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useParallax } from "@/hooks/useParallax";
+import heroLogo from "@/assets/hero-logo.png";
+
 interface HeroSlide {
   id: string;
   media_url: string;
@@ -78,6 +80,10 @@ const HeroSlideComponent = ({
     speed: 0.4,
     direction: "down"
   });
+  const logoParallax = useParallax({
+    speed: 0.2,
+    direction: "up"
+  });
   const handleLoadedMetadata = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const video = e.currentTarget;
     setVideoOrientation(video.videoWidth > video.videoHeight ? "horizontal" : "vertical");
@@ -113,8 +119,21 @@ const HeroSlideComponent = ({
   return <CarouselItem className="h-screen pl-0">
       {/* Desktop: 2 columnas - contenedor 100vh */}
       <div className="hidden md:grid md:grid-cols-2 h-screen bg-foreground">
-        {/* Columna izquierda: Texto posicionado al 90% del alto de pantalla */}
+        {/* Columna izquierda: Logo + Texto posicionado al 90% del alto de pantalla */}
         <div className="flex flex-col justify-end h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[10vh]">
+          {/* Logo con parallax diferente */}
+          <div 
+            ref={logoParallax.ref as any}
+            style={logoParallax.style}
+            className="flex justify-center mb-8"
+          >
+            <img 
+              src={heroLogo} 
+              alt="Ala Norte Logo" 
+              className="w-[30%] h-auto object-contain"
+            />
+          </div>
+          
           <h1 className="text-background font-bold mb-4 leading-tight border-0 font-sans" style={{
           fontSize: "clamp(2rem, 5vw, 4rem)",
           wordBreak: "break-word",
