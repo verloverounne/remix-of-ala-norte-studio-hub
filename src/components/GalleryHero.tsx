@@ -94,7 +94,7 @@ export const GalleryHero = ({
               <div className="container mx-auto space-y-4 my-[60px] px-[32px] py-[64px] rounded-none">
                 {/* Price Badge */}
                 <div className="gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-card-foreground flex-row flex items-center justify-center">
-                  <span className="sm:text-2xl font-bold font-heading text-background text-base">
+                  <span className="font-bold font-heading text-background text-base sm:text-lg">
                     ${(space.block_price || space.price)?.toLocaleString()}
                   </span>
                   <span className="opacity-100 text-background font-extralight text-xs">/ bloque {space.block_hours || 4}hs</span>
@@ -102,7 +102,7 @@ export const GalleryHero = ({
 
                 {/* Title + Location + Subtitle */}
                 <div className="flex-wrap gap-3 flex-col py-[64px] pb-[24px] flex items-center justify-center">
-                  <h1 className="sm:text-6xl font-heading font-bold text-foreground my-0 mt-[32px] text-6xl text-center">
+                  <h1 className="font-heading font-bold text-foreground my-0 mt-[32px] text-6xl text-center sm:text-7xl">
                     {space.hero_title || space.name}
                   </h1>
                   {space.location && <div className="items-left gap-2 rounded-lg border-2 bg-background border-foreground border-solid py-[6px] px-[6px] my-0 mb-[64px] flex items-start justify-start">
@@ -123,9 +123,9 @@ export const GalleryHero = ({
                   </div>}
 
                 {/* Discount Text */}
-                {space.discount_text && <div className="inline-flex items-center gap-2 border-2 border-primary px-3 py-1.5 rounded-lg">
+                {space.discount_text && <div className="inline-flex items-center gap-2 border-2 border-primary px-3 py-1.5 rounded-lg my-[32px]">
                     <Sparkles className="h-4 w-4 text-primary" />
-                    <span className="font-heading font-bold text-primary text-sm">{space.discount_text}</span>
+                    <span className="font-heading font-bold text-primary text-2xl my-0">{space.discount_text}</span>
                   </div>}
 
                 {/* CTA Button */}
