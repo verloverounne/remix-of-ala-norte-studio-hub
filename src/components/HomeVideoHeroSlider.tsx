@@ -349,7 +349,7 @@ export const HomeVideoHeroSlider = () => {
         <img
           src={heroLogo}
           alt="Ala Norte Logo"
-          className="sticky top-20 h-100% md:100% w-[15%] md:w-[25%] lg:w-[30%] object-contain"
+          className="sticky top-20 h-20 md:h-50 w-[50%] md:w-[75%] lg:w-[100%] object-contain"
         />
       </div>
 
