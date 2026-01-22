@@ -24,23 +24,23 @@ export const GalleryHero = ({
               <Clock className="mr-2 h-4 w-4" />
               BLOQUES DE {space.block_hours || 4}HS
              </Badge>*/}
-            <div className="flex flex-col gap-3 items-start">
+            <div className="flex flex-col items-start gap-[24px] my-0 mb-[64px]">
               <div className="flex items-center justify-center gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-foreground">
-                <span className="text-2xl sm:text-3xl font-bold font-heading text-background">
+                <span className="text-2xl font-bold font-heading text-background sm:text-xl">
                   ${(space.block_price || space.price)?.toLocaleString()}
                 </span>
-                <span className="text-2x1 opacity-100 text-background">/ bloque {space.block_hours || 4}hs</span>
+                <span className="text-2x1 opacity-100 text-background text-sm">/ bloque {space.block_hours || 4}hs</span>
               </div>
             </div>
             <div className="flex flex-wrap gap-4 items-center">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold lg:text-6xl text-foreground">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-foreground lg:text-8xl">
                 {space.hero_title || space.name}
               </h1>
               {space.location && <div className="flex items-left gap-2 px-4 py-2 rounded-lg border-2 bg-background border-foreground border-solid">
                   <MapPin className="h-5 w-5 text-input" />
                   <span className="font-heading text-foreground">{space.location}</span>
                 </div>}
-              <p className="text-sm sm:text-base max-w-2xl font-heading text-muted-foreground leading-tight font-bold md:text-2xl">
+              <p className="text-sm sm:text-base max-w-2xl font-heading leading-tight font-bold my-[64px] md:text-3xl text-foreground">
                 {space.hero_subtitle || space.description}
               </p>
             </div>
