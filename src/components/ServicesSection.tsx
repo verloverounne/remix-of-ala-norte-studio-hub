@@ -199,7 +199,7 @@ export const ServicesSection = () => {
     return null;
   }
   return <section className="relative bg-background">
-      <div className="py-6 sm:py-8 mx-4 sm:mx-8">
+      <div className="sticky top-0 z-30 py-6 sm:py-8 mx-4 sm:mx-8">
         <h2 className="font-heading text-3xl sm:text-4xl lg:text-brutal uppercase">NUESTROS SERVICIOS</h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
