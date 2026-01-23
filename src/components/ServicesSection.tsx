@@ -70,7 +70,7 @@ const ServiceSlide = ({
         </div>
 
         {/* Columna derecha: Texto con fondo y parallax lento - mismo contenido que ServiceSection */}
-        <div className="flex flex-col h-full p-8 lg:p-12 xl:p-16 bg-background overflow-hidden items-start justify-center">
+        <div className="flex-col h-full p-8 lg:p-12 xl:p-16 overflow-hidden bg-destructive flex items-start justify-start">
           <div ref={textParallax.ref as any} className="max-w-xl text-foreground space-y-6" style={textParallax.style}>
             <div className="space-y-4">
               <span className="font-heading text-sm text-muted-foreground uppercase tracking-wider">
@@ -81,7 +81,7 @@ const ServiceSlide = ({
               </h3>
             </div>
 
-            {service.description && <p className="text-sm sm:text-base text-muted-foreground leading-tight">{service.description}</p>}
+            {service.description && <p className="text-sm sm:text-base leading-tight text-foreground">{service.description}</p>}
 
             {service.bullets && service.bullets.length > 0 && <ul className="space-y-3">
                 {service.bullets.map((bullet, i) => <li key={i} className="flex items-start gap-3">
@@ -234,10 +234,10 @@ export const ServicesSection = () => {
         </div>
 
         {/* Navigation Arrows */}
-        <button onClick={scrollPrev} className={cn("absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 bg-background border border-border shadow-brutal transition-all hover:bg-muted py-[4px] px-[4px]", activeIndex === 0 && "opacity-50 cursor-not-allowed")} disabled={activeIndex === 0} aria-label="Anterior">
+        <button onClick={scrollPrev} className={cn("absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all py-[4px] px-[4px] text-foreground bg-primary border-foreground", activeIndex === 0 && "opacity-50 cursor-not-allowed")} disabled={activeIndex === 0} aria-label="Anterior">
           <ChevronLeft className="h-[16px] w-[16px]" />
         </button>
-        <button onClick={scrollNext} className={cn("absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 bg-background border border-border shadow-brutal transition-all hover:bg-muted px-[4px] py-[4px]", activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed")} disabled={activeIndex === services.length - 1} aria-label="Siguiente">
+        <button onClick={scrollNext} className={cn("absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all px-[4px] py-[4px] text-background bg-primary border-foreground", activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed")} disabled={activeIndex === services.length - 1} aria-label="Siguiente">
           <ChevronRight className="w-[16px] h-[16px]" />
         </button>
         {/* Dots indicator */}
