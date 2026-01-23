@@ -13,6 +13,23 @@ export const GalleryHero = ({
   const [muted, setMuted] = useState(true);
   const [api, setApi] = useState<CarouselApi>();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+useEffect(() => {
+  if (!api) return;
+  
+  const onSelect = () => {
+    setCurrentSlide(api.selectedScrollSnap());
+  };
+  
+  api.on("select", onSelect);
+  onSelect(); // Estado inicial
+  
+  return () => {
+    api.off("select", onSelect);
+  };
+}, [api]);
+
   return <section className="relative min-h-screen pt-0 flex items-center bg-background">
       {" "}
       {/* Desktop: 2 Column Layout */}
@@ -156,10 +173,24 @@ export const GalleryHero = ({
         </Carousel>
 
         {/* Navigation dots for mobile */}
-        {space.video_url && <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-            <button onClick={() => api?.scrollTo(0)} className="h-2 w-2 rounded-full bg-primary transition-all" aria-label="Ir a texto" />
-            <button onClick={() => api?.scrollTo(1)} className="h-2 w-2 rounded-full bg-background/40 transition-all" aria-label="Ir a video" />
-          </div>}
-      </div>
+{space.video_url && (
+  <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+    <button 
+      onClick={() => api?.scrollTo(0)} 
+      className={`h-2 rounded-full transition-all ${
+        currentSlide === 0 ? "w-8 bg-primary" : "w-2 bg-background/40"
+      }`}
+      aria-label="Ir a información" 
+    />
+    <button 
+      onClick={() => api?.scrollTo(1)} 
+      className={`h-2 rounded-full transition-all ${
+        currentSlide === 1 ? "w-8 bg-primary" : "w-2 bg-background/40"
+      }`}
+      aria-label="Ir a video" 
+    />
+  </div>
+)}
+
     </section>;
 };
