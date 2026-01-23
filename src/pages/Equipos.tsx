@@ -290,7 +290,7 @@ const Equipos = () => {
       <div className="container mx-auto px-4 py-4">
         {/* Row 1: Category chips + Filter button */}
         <div className="flex items-center gap-2 mb-2">
-          <div className="flex items-center overflow-x-auto scrollbar-hide gap-2 flex-1">
+          <div className="flex items-center flex-wrap gap-2 flex-1">
             {categories.map((category) => {
               const count = equipmentCounts[category.id] || 0;
               const isActive = activeCategory === category.id;
