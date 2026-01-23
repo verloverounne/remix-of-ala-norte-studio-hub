@@ -70,7 +70,7 @@ const ServiceSlide = ({
         </div>
 
         {/* Columna derecha: Texto con fondo y parallax lento - mismo contenido que ServiceSection */}
-        <div className="flex-col h-full p-8 lg:p-12 xl:p-16 overflow-hidden bg-destructive flex items-start justify-start">
+        <div className="flex-col h-full p-8 lg:p-12 xl:p-16 overflow-hidden flex items-start justify-start bg-background">
           <div ref={textParallax.ref as any} className="max-w-xl text-foreground space-y-6" style={textParallax.style}>
             <div className="space-y-4">
               <span className="font-heading text-sm text-muted-foreground uppercase tracking-wider">
