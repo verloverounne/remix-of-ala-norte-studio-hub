@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
@@ -45,7 +45,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
   const textParallax = useParallax({
     speed: 0.15,
     direction: "up",
-    offset: 80, // Offset inicial para que empiece más arriba
+    offset: 100, // Offset inicial para que empiece más arriba
   });
   const isVideo = service.section_media_type === "video" && service.section_video_url;
   const mediaUrl = isVideo ? service.section_video_url : service.image_url;
@@ -266,7 +266,7 @@ export const ServicesSection = () => {
         </h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
-      <div className="z-30  my-0 pb-0 px-[32px] mx-0 py-[12px] bg-transparent border-0">
+      <div className="sticky top-16 z-30  my-0 pb-0 px-[32px] mx-0 py-[12px] bg-transparent border-0">
         <div className="container px-0 mx-0">
           <div className="mx-0 border-0 sm:py-0 pt-[48px] py-[16px]">
             {/* Mobile: vertical stack, full width */}
@@ -315,7 +315,8 @@ export const ServicesSection = () => {
             ))}
           </div>
         </div>
-        Navigation Arrows
+
+        {/* Navigation Arrows */}
         <button
           onClick={scrollPrev}
           className={cn(
