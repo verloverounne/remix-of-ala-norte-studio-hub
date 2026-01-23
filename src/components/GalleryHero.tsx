@@ -84,13 +84,13 @@ export const GalleryHero = ({
       <div className="lg:hidden w-full h-screen overflow-hidden">
         <Carousel className="w-full h-full" setApi={setApi} opts={{
         loop: false,
-        align: "start",
-         {/* dragFree: true,
-        containScroll: "trimSnaps"*/}
+        align: "start"
       }}>
-          <CarouselContent className="-ml-0 h-full flex items-center justify-center">
+          <CarouselContent className="-ml-0 h-full">
             {/* Slide 1: Text Content - Same as desktop left column */}
-            <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center justify-center">
+     <CarouselItem className="pl-0 basis-full h-full">
+        <div className="h-full w-full flex items-center justify-center overflow-y-auto px-4 sm:px-6">
+    <div className="w-full max-w-lg mx-auto py-8">
               <div className="container mx-auto space-y-4 px-[32px] rounded-none my-[24px] py-[32px]">
                 {/* Price Badge */}
                 <div className="gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-card-foreground flex-row flex items-center justify-center">
@@ -139,6 +139,8 @@ export const GalleryHero = ({
                   </Button>
                 </div>
               </div>
+          </div>
+  </div>
             </CarouselItem>
 
             {/* Slide 2: Video */}
