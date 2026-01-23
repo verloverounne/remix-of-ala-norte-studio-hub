@@ -77,14 +77,14 @@ const EquipmentSlide = ({
             </div>}
           <div ref={contentParallax.ref as any} style={contentParallax.style} className="absolute inset-0 flex items-center justify-center">
             <div className="text-center z-10 p-8 max-w-4xl">
-              <h3 className="font-heading text-6xl md:text-8xl mb-6 uppercase text-background">{equipment.name}</h3>
+              <h3 className="font-heading text-6xl mb-6 uppercase text-background text-center md:text-7xl">{equipment.name}</h3>
               {equipment.featured_copy && <p className="text-xl md:text-2xl text-background/80 mb-8 font-heading">{equipment.featured_copy}</p>}
               <div className="flex items-center justify-center gap-6 mb-6">
                 <span className="font-heading px-8 py-4 shadow-brutal bg-foreground text-background text-sm">
                   ${equipment.price_per_day}/día
                 </span>
               </div>
-              <Button variant="hero" size="lg" className="group-hover:shadow-brutal-lg transition-shadow">
+              <Button variant="hero" size="lg" className="group-hover:shadow-brutal-lg transition-shadow my-[78px]">
                 VER DETALLES <ArrowRight className="ml-2" />
               </Button>
             </div>
