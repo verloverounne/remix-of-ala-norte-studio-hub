@@ -205,7 +205,7 @@ export const ServicesSection = () => {
         </h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
-      <div className="sticky top-32 z-30 border-b border-border my-0 pb-0 px-[32px] mx-0 py-[12px] bg-transparent border-0">
+      <div className="sticky top-16 z-30 border-b border-border my-0 pb-0 px-[32px] mx-0 py-[12px] bg-transparent border-0">
         <div className="container px-0 mx-0">
           <div className="py-2 mx-0 border-0 sm:py-0 pt-[48px]">
             {/* Mobile: vertical stack, full width */}
