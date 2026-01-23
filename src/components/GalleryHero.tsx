@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Carousel, CarouselContent, CarouselItem, CarouselApi } from "@/components/ui/carousel";
 import type { Space } from "@/types/supabase";
+import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
+
 interface GalleryHeroProps {
   space: Space;
 }
