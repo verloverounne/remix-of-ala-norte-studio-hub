@@ -101,7 +101,7 @@ export const CartSidebar = ({
     return <>
         {/* Floating button */}
         <div className="fixed bottom-4 center z-40">
-          <button onClick={() => setDrawerOpen(true)} className="relative bg-primary text-primary-foreground p-4 rounded-full shadow-brutal-sm hover:scale-105 transition-transform">
+          <button onClick={() => setDrawerOpen(true)} className="relative bg-primary text-primary-foreground p-4 shadow-brutal-sm hover:scale-105 transition-transform">
             <ShoppingCart className="w-6 h-6" />
             {totalItems > 0 && <span className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
                 {totalItems}
