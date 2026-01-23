@@ -30,10 +30,10 @@ const FeaturedEquipmentSection = ({
     direction: "down"
   });
   return <section className="relative border-y border-border bg-background overflow-hidden">
-      <div className="py-12 lg:py-20 sm:py-0 bg-foreground">
-        <div ref={headerParallax.ref as any} style={headerParallax.style} className="container mx-auto mb-8 sm:mb-12 px-[32px] border-background bg-foreground">
+      <div className="py-12 sm:py-0 bg-foreground lg:py-[64px]">
+        <div ref={headerParallax.ref as any} style={headerParallax.style} className="container mx-auto mb-8 sm:mb-12 border-background bg-foreground px-0">
           <div>
-            <h2 className="font-heading text-3xl lg:text-brutal mb-2 sm:mb-4 text-center text-destructive bg-foreground py-[32px] sm:text-6xl my-0">RENTAL DESTACADO</h2>
+            <h2 className="font-heading text-3xl lg:text-brutal mb-2 sm:mb-4 text-center text-destructive bg-foreground my-0 py-0 sm:text-5xl">RENTAL DESTACADO</h2>
             {/*          <p className="text-sm sm:text-base lg:text-sm text-muted-foreground font-heading leading-tight">
               TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
              </p> */}
