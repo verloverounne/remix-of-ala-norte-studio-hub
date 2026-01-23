@@ -345,8 +345,8 @@ export const HomeVideoHeroSlider = () => {
       )}
 
       {/* Logo centrado en la parte superior */}
-      <div className="absolute top-8 left-1/2 z-20 my-[0px]6">
-        <img src={heroLogo} alt="Ala Norte Logo" className="sticky top-20 h-20 md:h-100 w-auto object-cover" />
+      <div className="sticky top-8 z-20 flex justify-center">
+        <img src={heroLogo} alt="Ala Norte Logo" className="w-1/5 md:w-1/6 object-contain" />
       </div>
 
       {/* Navigation dots */}
