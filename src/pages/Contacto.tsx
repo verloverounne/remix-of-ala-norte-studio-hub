@@ -67,21 +67,21 @@ const Contacto = () => {
       {/* Hero Section */}
       <section className="py-20 bg-foreground text-background">
         <div className="container mx-auto px-4 max-w-6xl text-left">
-          <h1 className="text-5xl md:text-6xl font-heading font-bold my-[64px] mb-[2px]">Hablemos de tu proyecto</h1>
-          <p className="max-w-3xl text-left font-medium text-base md:text-lg bg-primary-light">
+          <h1 className="text-5xl md:text-6xl font-heading font-bold my-[64px] mb-[2px] mx-[64px]">HABLEMOS</h1>
+          <p className="max-w-3xl text-left font-medium text-base md:text-lg mx-[64px] bg-transparent">
             Contanos tu idea, tus fechas y qué necesitás. Armamos juntos una propuesta de equipamiento y espacios a medida. Nuestro equipo te responde con asesoramiento técnico dedicado.
           </p>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 flex gap-4 bg-foreground">
+      <section className="py-16 flex gap-4 mx-[32px] bg-background">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Form */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-2xl">Envíanos un mensaje</CardTitle>
+                <CardTitle className="text-2xl px-0 py-[16px]">ENVIANOS UN MENSAJE</CardTitle>
                 <CardDescription>Completá el formulario y te respondemos a la brevedad</CardDescription>
               </CardHeader>
               <CardContent>
