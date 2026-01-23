@@ -186,6 +186,10 @@ export default {
   			'slide-in': 'slide-in 0.4s ease-out',
   			'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
   			shimmer: 'shimmer 1.5s infinite'
+			"bounce-x": {
+  "0%, 100%": { transform: "translateX(0)" },
+  "50%": { transform: "translateX(25%)" }
+}
   		}
   	}
   },
