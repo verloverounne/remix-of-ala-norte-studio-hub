@@ -317,27 +317,7 @@ const Equipos = () => {
         </div>
 
         {/* Row 2: Equipment count + Search button on right */}
-        <div className="flex items-center gap-4 mb-4">
-          <span className="text-sm font-heading text-foreground font-bold">
-            Mostrando {filteredEquipment.length} equipo{filteredEquipment.length !== 1 ? 's' : ''}
-            {hasActiveFilters && ' (filtrados)'}
-          </span>
-
-          <div className="flex items-center gap-2">
-            {/* Search button - right margin */}
-            <Button variant="ghost" size="sm" onClick={() => {
-              setIsSearchOpen(!isSearchOpen);
-              if (isFilterOpen) setIsFilterOpen(false);
-            }} className={cn("h-8 w-8 p-0 border", isSearchOpen && "bg-primary text-primary-foreground")}>
-              {isSearchOpen ? <X className="h-4 w-4" /> : <Search className="h-4 w-4" />}
-            </Button>
-
-            {/* Clear filters */}
-            {hasActiveFilters && <Button variant="ghost" size="sm" onClick={clearFilters} className="h-8 px-2">
-                <X className="h-4 w-4" />
-              </Button>}
-          </div>
-        </div>
+        
 
         {/* Expandable search bar */}
         <Collapsible open={isSearchOpen}>
