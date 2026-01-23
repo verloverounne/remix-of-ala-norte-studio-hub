@@ -7,12 +7,13 @@ import type { Space } from "@/types/supabase";
 interface GalleryHeroProps {
   space: Space;
 }
-export const GalleryHero = ({ space }: GalleryHeroProps) => {
+export const GalleryHero = ({
+  space
+}: GalleryHeroProps) => {
   const [muted, setMuted] = useState(true);
   const [api, setApi] = useState<CarouselApi>();
   const videoRef = useRef<HTMLVideoElement>(null);
-  return (
-    <section className="relative min-h-screen pt-0 flex items-center bg-background">
+  return <section className="relative min-h-screen pt-0 flex items-center bg-background">
       {" "}
       {/* Desktop: 2 Column Layout */}
       <div className="hidden lg:grid lg:grid-cols-2 lg:gap-8 w-full h-screen">
@@ -28,43 +29,33 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                 <span className="text-2xl font-bold font-heading text-background sm:text-xl">
                   ${(space.block_price || space.price)?.toLocaleString()}
                 </span>
-                <span className="text-2x1 opacity-100 text-background text-sm">
-                  / bloque {space.block_hours || 4}hs
-                </span>
+                <span className="text-2x1 opacity-100 text-background text-sm">/ bloque {space.block_hours || 4}hs</span>
               </div>
             </div>
             <div className="flex flex-wrap gap-4 items-center">
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-foreground lg:text-8xl">
                 {space.hero_title || space.name}
               </h1>
-              {space.location && (
-                <div className="flex items-left gap-2 px-4 py-2 rounded-lg border-2 bg-background border-foreground border-solid">
+              {space.location && <div className="flex items-left gap-2 px-4 py-2 rounded-lg border-2 bg-background border-foreground border-solid">
                   <MapPin className="h-5 w-5 text-input" />
                   <span className="font-heading text-foreground">{space.location}</span>
-                </div>
-              )}
+                </div>}
               <p className="text-sm sm:text-base max-w-2xl font-heading leading-tight font-bold my-[64px] text-foreground md:text-2xl mb-[32px]">
                 {space.hero_subtitle || space.description}
               </p>
             </div>
 
             {/* Features inline - 2 columns, no borders */}
-            {space.features && Array.isArray(space.features) && space.features.length > 0 && (
-              <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-[48px]">
-                {(space.features as string[]).map((feature, index) => (
-                  <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
+            {space.features && Array.isArray(space.features) && space.features.length > 0 && <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-[48px]">
+                {(space.features as string[]).map((feature, index) => <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
                     <span className="text-primary">•</span>
                     {feature}
-                  </p>
-                ))}
-              </div>
-            )}
-            {space.discount_text && (
-              <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 rounded-none">
+                  </p>)}
+              </div>}
+            {space.discount_text && <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 rounded-none">
                 <Sparkles className="h-5 w-5 text-primary" />
                 <span className="font-heading font-bold text-primary text-xl">{space.discount_text}</span>
-              </div>
-            )}
+              </div>}
 
             {/* CTA Button */}
             <div>
@@ -80,44 +71,23 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
         </div>
 
         {/* Right Column: Vertical Video - Full Width and Height */}
-        {space.video_url ? (
-          <div className="relative w-full h-full overflow-hidden duotone-hover-group">
-            <video
-              src={space.video_url}
-              className="w-full h-full object-cover video-duotone"
-              autoPlay
-              loop
-              muted={muted}
-              playsInline
-            />
-            <button
-              onClick={() => setMuted(!muted)}
-              className="absolute top-4 right-4 z-20 p-3 backdrop-blur-sm rounded-full transition-colors my-[64px] bg-transparent border-0 text-background"
-              aria-label={muted ? "Activar sonido" : "Silenciar"}
-            >
-              {muted ? (
-                <VolumeX className="h-5 w-5 text-foreground" />
-              ) : (
-                <Volume2 className="h-5 w-5 text-foreground" />
-              )}
+        {space.video_url ? <div className="relative w-full h-full overflow-hidden duotone-hover-group">
+            <video src={space.video_url} className="w-full h-full object-cover video-duotone" autoPlay loop muted={muted} playsInline />
+            <button onClick={() => setMuted(!muted)} className="absolute top-4 right-4 z-20 p-3 backdrop-blur-sm rounded-full transition-colors my-[64px] bg-transparent border-0 text-background" aria-label={muted ? "Activar sonido" : "Silenciar"}>
+              {muted ? <VolumeX className="h-5 w-5 text-foreground" /> : <Volume2 className="h-5 w-5 text-foreground" />}
             </button>
-          </div>
-        ) : (
-          <div className="relative w-full h-full bg-muted flex items-center justify-center">
+          </div> : <div className="relative w-full h-full bg-muted flex items-center justify-center">
             <p className="text-muted-foreground font-heading">Video no disponible</p>
-          </div>
-        )}
+          </div>}
       </div>
       {/* Mobile: Horizontal Slider */}
       <div className="lg:hidden w-full h-screen overflow-hidden">
-        <Carousel
-          className="w-full h-full"
-          setApi={setApi}
-          opts={{
-            loop: false,
-            align: "start",
-          }}
-        >
+        <Carousel className="w-full h-full" setApi={setApi} opts={{
+        loop: false,
+        align: "start",
+         {/* dragFree: true,
+        containScroll: "trimSnaps"*/}
+      }}>
           <CarouselContent className="-ml-0 h-full flex items-center justify-center">
             {/* Slide 1: Text Content - Same as desktop left column */}
             <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center justify-center">
@@ -127,9 +97,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                   <span className="font-bold font-heading text-background text-base sm:text-lg">
                     ${(space.block_price || space.price)?.toLocaleString()}
                   </span>
-                  <span className="opacity-100 text-background font-extralight text-xs">
-                    / bloque {space.block_hours || 4}hs
-                  </span>
+                  <span className="opacity-100 text-background font-extralight text-xs">/ bloque {space.block_hours || 4}hs</span>
                 </div>
 
                 {/* Title + Location + Subtitle */}
@@ -137,36 +105,28 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                   <h1 className="font-heading font-bold text-foreground my-0 mt-[32px] text-6xl text-center sm:text-7xl">
                     {space.hero_title || space.name}
                   </h1>
-                  {space.location && (
-                    <div className="items-left gap-2 rounded-lg border-2 bg-background border-foreground border-solid py-[6px] px-[6px] my-0 mb-[64px] flex items-start justify-start">
+                  {space.location && <div className="items-left gap-2 rounded-lg border-2 bg-background border-foreground border-solid py-[6px] px-[6px] my-0 mb-[64px] flex items-start justify-start">
                       <MapPin className="h-4 w-4 text-input" />
                       <span className="font-heading text-foreground text-sm">{space.location}</span>
-                    </div>
-                  )}
+                    </div>}
                   <p className="max-w-2xl font-heading text-muted-foreground leading-tight px-0 py-0 font-bold mb-[24px] text-xl text-left">
                     {space.hero_subtitle || space.description}
                   </p>
                 </div>
 
                 {/* Features - 2 columns */}
-                {space.features && Array.isArray(space.features) && space.features.length > 0 && (
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-1 mb-[24px] my-[24px]">
-                    {(space.features as string[]).map((feature, index) => (
-                      <p key={index} className="text-xs text-muted-foreground font-heading flex items-start gap-2">
+                {space.features && Array.isArray(space.features) && space.features.length > 0 && <div className="grid grid-cols-2 gap-x-8 gap-y-1 mb-[24px] my-[24px]">
+                    {(space.features as string[]).map((feature, index) => <p key={index} className="text-xs text-muted-foreground font-heading flex items-start gap-2">
                         <span className="text-primary">•</span>
                         {feature}
-                      </p>
-                    ))}
-                  </div>
-                )}
+                      </p>)}
+                  </div>}
 
                 {/* Discount Text */}
-                {space.discount_text && (
-                  <div className="inline-flex items-center gap-2 border-2 border-primary px-3 py-1.5 rounded-lg my-[32px]">
+                {space.discount_text && <div className="inline-flex items-center gap-2 border-2 border-primary px-3 py-1.5 rounded-lg my-[32px]">
                     <Sparkles className="h-4 w-4 text-primary" />
                     <span className="font-heading font-bold text-primary my-0 text-xl">{space.discount_text}</span>
-                  </div>
-                )}
+                  </div>}
 
                 {/* CTA Button */}
                 <div>
@@ -182,51 +142,22 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
             </CarouselItem>
 
             {/* Slide 2: Video */}
-            {space.video_url && (
-              <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center justify-center">
+            {space.video_url && <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center justify-center">
                 <div className="relative w-full h-full duotone-hover-group">
-                  <video
-                    src={space.video_url}
-                    className="w-auto h-full object-fill"
-                    autoPlay
-                    loop
-                    muted={muted}
-                    playsInline
-                    ref={videoRef}
-                  />
-                  <button
-                    onClick={() => setMuted(!muted)}
-                    className="absolute top-4 right-4 z-20 p-3 bg-background/80 backdrop-blur-sm rounded-full hover:bg-background/90 transition-colors"
-                    aria-label={muted ? "Activar sonido" : "Silenciar"}
-                  >
-                    {muted ? (
-                      <VolumeX className="h-5 w-5 text-foreground" />
-                    ) : (
-                      <Volume2 className="h-5 w-5 text-foreground" />
-                    )}
+                  <video src={space.video_url} className="w-auto h-full object-fill" autoPlay loop muted={muted} playsInline ref={videoRef} />
+                  <button onClick={() => setMuted(!muted)} className="absolute top-4 right-4 z-20 p-3 bg-background/80 backdrop-blur-sm rounded-full hover:bg-background/90 transition-colors" aria-label={muted ? "Activar sonido" : "Silenciar"}>
+                    {muted ? <VolumeX className="h-5 w-5 text-foreground" /> : <Volume2 className="h-5 w-5 text-foreground" />}
                   </button>
                 </div>
-              </CarouselItem>
-            )}
+              </CarouselItem>}
           </CarouselContent>
         </Carousel>
 
         {/* Navigation dots for mobile */}
-        {space.video_url && (
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-            <button
-              onClick={() => api?.scrollTo(0)}
-              className="h-2 w-2 rounded-full bg-primary transition-all"
-              aria-label="Ir a texto"
-            />
-            <button
-              onClick={() => api?.scrollTo(1)}
-              className="h-2 w-2 rounded-full bg-background/40 transition-all"
-              aria-label="Ir a video"
-            />
-          </div>
-        )}
+        {space.video_url && <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+            <button onClick={() => api?.scrollTo(0)} className="h-2 w-2 rounded-full bg-primary transition-all" aria-label="Ir a texto" />
+            <button onClick={() => api?.scrollTo(1)} className="h-2 w-2 rounded-full bg-background/40 transition-all" aria-label="Ir a video" />
+          </div>}
       </div>
-    </section>
-  );
+    </section>;
 };
