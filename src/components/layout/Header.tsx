@@ -274,9 +274,10 @@ export const Header = () => {
                 </Button>
               )}
             </div>
-          )}
+          </div>
         </nav>
-              {/* Mobile menu button - hidden, using floating button instead */}
+
+        {/* Mobile menu - full width */}
 
           {/* Mobile Navigation Brutal */}
           {mobileMenuOpen && (
@@ -376,7 +377,6 @@ export const Header = () => {
               </div>
             </div>
           )}
-        </nav>
       </header>
     </>
   );
