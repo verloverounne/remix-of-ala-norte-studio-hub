@@ -162,9 +162,9 @@ Contactar cliente para coordinar entrega/retiro.
   };
   return <div className="min-h-screen pt-14 sm:pt-16 bg-background">
       {/* Hero Section */}
-      <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20 border-b border-border bg-foreground">
-        <div className="container mx-auto px-4 text-left ">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-4 sm:mb-6 px-[32px] lg:text-7xl">ARMÁ TU PRESUPUESTO</h1>
+      <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20 border-b border-border bg-foreground px-[32px]">
+        <div className="container mx-auto text-left px-0">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-4 sm:mb-6 lg:text-7xl px-0 my-0 mt-0 mx-0">ARMÁ TU PRESUPUESTO</h1>
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto">
             {totalItems > 0 ? `Tienes ${totalItems} ${totalItems === 1 ? 'equipo' : 'equipos'} en tu carrito` : 'Agrega equipos desde el catálogo para comenzar'}
           </p>
