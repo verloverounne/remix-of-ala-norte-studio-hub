@@ -110,7 +110,7 @@ export const HeroCarouselRental = ({
                     {/* Text overlay */}
                     <div className="absolute inset-0 flex items-end justify-center py-[22px]">
                       <div className="text-center z-10 p-4 sm:p-8 max-w-4xl my-[93px]">
-                        <h1 className="font-heading sm:text-3xl mb-2 uppercase drop-shadow-lg mx-0 px-[85px] py-[36px] font-extrabold lg:text-7xl md:text-7xl text-primary text-3xl">
+                        <h1 className="font-heading sm:text-3xl mb-2 uppercase drop-shadow-lg mx-0 font-extrabold lg:text-7xl md:text-7xl text-primary px-[24px] py-[12px] text-5xl">
                           {bg?.title || category.name.toUpperCase()}
                         </h1>
                         {bg?.description && <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading drop-shadow-md max-w-2xl mx-auto">
