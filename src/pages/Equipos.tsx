@@ -328,7 +328,7 @@ const Equipos = () => {
             <Button variant="ghost" size="sm" onClick={() => {
               setIsSearchOpen(!isSearchOpen);
               if (isFilterOpen) setIsFilterOpen(false);
-            }} className={cn("h-8 w-8 p-0", isSearchOpen && "bg-primary text-primary-foreground")}>
+            }} className={cn("h-8 w-8 p-0 border", isSearchOpen && "bg-primary text-primary-foreground")}>
               {isSearchOpen ? <X className="h-4 w-4" /> : <Search className="h-4 w-4" />}
             </Button>
 
