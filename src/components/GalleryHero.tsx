@@ -144,7 +144,7 @@ export const GalleryHero = ({
             {/* Slide 2: Video */}
             {space.video_url && <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center justify-center">
                 <div className="relative w-full h-full duotone-hover-group">
-                  <video src={space.video_url} className="w-full h-full object-cover video-duotone" autoPlay loop muted={muted} playsInline ref={videoRef} />
+                  <video src={space.video_url} className="w-auto h-full object-cover video-duotone" autoPlay loop muted={muted} playsInline ref={videoRef} />
                   <button onClick={() => setMuted(!muted)} className="absolute top-4 right-4 z-20 p-3 bg-background/80 backdrop-blur-sm rounded-full hover:bg-background/90 transition-colors" aria-label={muted ? "Activar sonido" : "Silenciar"}>
                     {muted ? <VolumeX className="h-5 w-5 text-foreground" /> : <Volume2 className="h-5 w-5 text-foreground" />}
                   </button>
