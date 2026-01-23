@@ -175,8 +175,12 @@ export default {
   			shimmer: {
   				'100%': {
   					transform: 'translateX(100%)'
-  				}
-  			}
+				}
+  			},
+			'bounce-x': {
+				'0%, 100%': { transform: 'translateX(0)' },
+				'50%': { transform: 'translateX(25%)' }
+			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.3s ease-out',
@@ -184,12 +188,9 @@ export default {
   			'fade-in': 'fade-in 0.5s ease-out',
   			'fade-in-up': 'fade-in-up 0.6s ease-out',
   			'slide-in': 'slide-in 0.4s ease-out',
-  			'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
-  			shimmer: 'shimmer 1.5s infinite'
-			"bounce-x": {
-  "0%, 100%": { transform: "translateX(0)" },
-  "50%": { transform: "translateX(25%)" }
-}
+			'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
+			shimmer: 'shimmer 1.5s infinite',
+			'bounce-x': 'bounce-x 1s ease-in-out infinite'
   		}
   	}
   },
