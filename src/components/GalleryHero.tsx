@@ -163,7 +163,7 @@ useEffect(() => {
             </CarouselItem>
 
             {/* Slide 2: Video */}
-            {s<CarouselItem className="pl-0 basis-full h-full">
+           <CarouselItem className="pl-0 basis-full h-full">
   <div className="relative w-full h-full duotone-hover-group">
     <video 
       src={space.video_url} 
