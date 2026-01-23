@@ -234,11 +234,11 @@ export const ServicesSection = () => {
         </div>
 
         {/* Navigation Arrows */}
-        <button onClick={scrollPrev} className={cn("absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all py-[4px] px-[4px] text-foreground bg-primary border-foreground", activeIndex === 0 && "opacity-50 cursor-not-allowed")} disabled={activeIndex === 0} aria-label="Anterior">
+        <button onClick={scrollPrev} className={cn("absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all py-[4px] px-[4px] text-foreground bg-primary border-foreground my-px mx-[16px]", activeIndex === 0 && "opacity-50 cursor-not-allowed")} disabled={activeIndex === 0} aria-label="Anterior">
           <ChevronLeft className="h-[16px] w-[16px]" />
         </button>
-        <button onClick={scrollNext} className={cn("absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all px-[4px] py-[4px] text-background bg-primary border-foreground", activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed")} disabled={activeIndex === services.length - 1} aria-label="Siguiente">
-          <ChevronRight className="w-[16px] h-[16px] text-foreground" />
+        <button onClick={scrollNext} className={cn("absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all px-[4px] py-[4px] text-background bg-primary border-foreground mx-[16px]", activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed")} disabled={activeIndex === services.length - 1} aria-label="Siguiente">
+          <ChevronRight className="w-[16px] h-[16px] text-foreground mx-px" />
         </button>
         {/* Dots indicator */}
       </div>
