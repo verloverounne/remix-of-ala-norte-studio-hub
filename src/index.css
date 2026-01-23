@@ -63,9 +63,9 @@ All colors MUST be HSL.
     --gray-lighter: 0 0% 90%; /* #E5E5E5 */
 
     /* Tritone Filter Colors */
-    --tritone-high: 0 0% 98%; /* Color para tonos altos (áreas claras) */
-    --tritone-mid: 0 0% 15%; /* Color para tonos medios (áreas medias) */
-    --tritone-low: 0 0% 8%; /* Color para tonos bajos (áreas oscuras) */
+    --tritone-high: 0 0% 98%; /* Color para tonos altos (areas claras) */
+    --tritone-mid: 0 0% 15%; /* Color para tonos medios (areas medias) */
+    --tritone-low: 0 0% 8%; /* Color para tonos bajos (areas oscuras) */
 
     /* Sombras Brutales - Duras y sin blur pero sutiles */
     --shadow-brutal: 2px 2px 0 hsl(0 0% 8%);
@@ -81,19 +81,16 @@ All colors MUST be HSL.
     --border-gradient-silver: linear-gradient(135deg, #e5e7eb, #9ca3af);
     --border-gradient-silver-vertical: linear-gradient(180deg, #e5e7eb, #9ca3af);
 
-    /* Transiciones Brutales - Instantáneas o mecánicas */
+    /* Transiciones Brutales - Instantaneas o mecanicas */
     --transition-brutal: all 0.1s linear;
     --transition-none: none;
-    --shadow-sm: 1px 1px 2px -1px hsl(240, 4%, 46%);
-    --shadow: 1px 1px 3px -1px hsl(240, 4%, 46%);
-    --shadow-md: 1px 1px 5px -1px hsl(240, 4%, 46%);
-    --shadow-lg: 1px 1px 3px -1px hsl(240, 4%, 46%);
-    --font-sans:
-      Poppins, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol,
-      Noto Color Emoji;
+    --shadow-sm: 1px 1px 2px -1px hsl(240 4% 46%);
+    --shadow: 1px 1px 3px -1px hsl(240 4% 46%);
+    --shadow-md: 1px 1px 5px -1px hsl(240 4% 46%);
+    --shadow-lg: 1px 1px 3px -1px hsl(240 4% 46%);
+    --font-sans: Poppins, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     --font-serif: Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
-    --font-mono:
-      "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+    --font-mono: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
   }
 
   .dark {
@@ -136,9 +133,9 @@ All colors MUST be HSL.
     --gray-lighter: 0 0% 90%;
 
     /* Tritone Filter Colors */
-    --tritone-high: 0 0% 98%; /* Color para tonos altos (áreas claras) */
-    --tritone-mid: 0 0% 45%; /* Color para tonos medios (áreas medias) */
-    --tritone-low: 0 0% 8%; /* Color para tonos bajos (áreas oscuras) */
+    --tritone-high: 0 0% 98%; /* Color para tonos altos (areas claras) */
+    --tritone-mid: 0 0% 45%; /* Color para tonos medios (areas medias) */
+    --tritone-low: 0 0% 8%; /* Color para tonos bajos (areas oscuras) */
 
     --shadow-brutal: 4px 4px 0 hsl(0 0% 98%);
     --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 98%);
@@ -149,10 +146,10 @@ All colors MUST be HSL.
     --border-gradient-silver: linear-gradient(135deg, #4b5563, #6b7280);
     --border-gradient-silver-vertical: linear-gradient(180deg, #4b5563, #6b7280);
     --radius: 0rem;
-    --shadow-sm: 0px 6px 1.5px 0px hsla(0, 0%, 0%, 0.1);
-    --shadow: 0px 6px 3px 0px hsla(0, 0%, 0%, 0.1);
-    --shadow-md: 0px 6px 4.5px 0px hsla(0, 0%, 0%, 0.1);
-    --shadow-lg: 0px 6px 7.5px 0px hsla(0, 0%, 0%, 0.1);
+    --shadow-sm: 0px 6px 1.5px 0px hsl(0 0% 0% / 0.1);
+    --shadow: 0px 6px 3px 0px hsl(0 0% 0% / 0.1);
+    --shadow-md: 0px 6px 4.5px 0px hsl(0 0% 0% / 0.1);
+    --shadow-lg: 0px 6px 7.5px 0px hsl(0 0% 0% / 0.1);
   }
 }
 
@@ -232,7 +229,7 @@ All colors MUST be HSL.
     transition: var(--transition-none);
   }
 
-  /* Hover Brutales - Instantáneos */
+  /* Hover Brutales - Instantaneos */
   .hover-brutal {
     @apply transition-none hover:shadow-brutal;
   }
@@ -254,7 +251,7 @@ All colors MUST be HSL.
     background: var(--gradient-green);
   }
 
-  /* Tipografía Brutal */
+  /* Tipografia Brutal */
   .text-brutal {
     @apply font-heading uppercase tracking-wider;
   }
@@ -403,7 +400,7 @@ All colors MUST be HSL.
   filter: none !important;
 }
 
-/* Mobile tap override (via JS): cuando está activo, mostrar colores originales */
+/* Mobile tap override (via JS): cuando esta activo, mostrar colores originales */
 .duotone-hover-group.duotone-tap-active .video-duotone,
 .duotone-hover-group.duotone-tap-active .image-duotone,
 .video-duotone.duotone-tap-active,
