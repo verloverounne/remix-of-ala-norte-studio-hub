@@ -30,8 +30,8 @@ const FeaturedEquipmentSection = ({
     direction: "down"
   });
   return <section className="relative border-y border-border bg-background overflow-hidden">
-      <div className="py-12 lg:py-20 sm:py-0">
-        <div ref={headerParallax.ref as any} style={headerParallax.style} className="container mx-auto mb-8 sm:mb-12 px-[32px] border-background">
+      <div className="py-12 lg:py-20 sm:py-0 bg-foreground">
+        <div ref={headerParallax.ref as any} style={headerParallax.style} className="container mx-auto mb-8 sm:mb-12 px-[32px] border-background bg-foreground">
           <div>
             <h2 className="font-heading text-3xl lg:text-brutal mb-2 sm:mb-4 my-[64px] text-center sm:text-5xl text-primary">RENTAL DESTACADO</h2>
             {/*          <p className="text-sm sm:text-base lg:text-sm text-muted-foreground font-heading leading-tight">
@@ -80,7 +80,7 @@ const EquipmentSlide = ({
               <h3 className="font-heading text-6xl md:text-8xl mb-6 uppercase text-background">{equipment.name}</h3>
               {equipment.featured_copy && <p className="text-xl md:text-2xl text-background/80 mb-8 font-heading">{equipment.featured_copy}</p>}
               <div className="flex items-center justify-center gap-6 mb-6">
-                <span className="font-heading text-4xl text-primary bg-background/90 px-8 py-4 border border-background shadow-brutal">
+                <span className="font-heading text-primary px-8 py-4 border border-background shadow-brutal text-base bg-foreground">
                   ${equipment.price_per_day}/día
                 </span>
               </div>
@@ -172,10 +172,10 @@ const CartoniSection = () => {
         <div className="absolute inset-0 z-10 flex items-end">
           <div className="container mx-auto px-4 pb-16">
             <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 rounded-lg backdrop-blur-lg py-[68px] max-w-2xl mx-[16px] px-[24px]">
-              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mb-4">
-                SELLER & SERVICE <span className="text-primary">OFICIAL CARTONI</span>
+              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mb-4 text-foreground">
+                SELLER & SERVICE <span className="text-foreground">OFICIAL CARTONI</span>
               </h2>
-              <p className="text-2x1-foreground mb-6 leading-tight text-lg font-normal">
+              <p className="text-2x1-foreground mb-6 leading-tight text-sm font-medium">
                 Ala Norte es representante oficial de Cartoni en Argentina. Venta, reparación y mantenimiento de
                 trípodes y cabezales profesionales con garantía y repuestos originales.
               </p>
