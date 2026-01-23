@@ -165,11 +165,11 @@ export const Header = () => {
         onMouseEnter={!isMobile ? handleMouseEnter : undefined}
         onMouseLeave={!isMobile ? handleMouseLeave : undefined}
       >
-        <nav className="container mx-auto px-3 sm:px-6 lg:px-8 z-49">
+        <nav className="container mx-auto px-3 sm:px-6 lg:px-8 z-65">
           <div className="flex h-10 lg:h-14 items-center justify-between">
             {/* Logo Brutal - hidden on mobile */}
             <Link to="/" className="hidden lg:flex items-center">
-              <img src={logo} alt="Ala Norte" width={48} height={51} className="h-12 lg:h-16 w-auto object-contain" />
+              <img src={logo} alt="Ala Norte" width={48} height={51} className="h-6 lg:h-8 w-auto object-contain" />
             </Link>
 
             {/* Desktop Navigation Brutal */}
