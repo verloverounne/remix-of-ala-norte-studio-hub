@@ -217,7 +217,7 @@ export const ServicesSection = () => {
                 </button>)}
             </div>
             {/* Desktop: horizontal row */}
-            <div className="hidden gap-2 sm:flex items-center justify-start mb-[32px] mx-0">
+            <div className="hidden gap-2 mb-[32px] mx-0 sm:flex items-center justify-center">
               {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs transition-all rounded-none shadow-none", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground border border-border hover:bg-muted")}>
                   {service.title}
                 </button>)}
