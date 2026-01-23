@@ -91,7 +91,7 @@ export const GalleryHero = ({
           <CarouselContent className="-ml-0 h-full flex">
             {/* Slide 1: Text Content - Same as desktop left column */}
             <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center justify-center">
-              <div className="container mx-auto space-y-4 my-[60px] px-[32px] py-[64px] rounded-none">
+              <div className="container mx-auto space-y-4 px-[32px] rounded-none my-[24px] py-[32px]">
                 {/* Price Badge */}
                 <div className="gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-card-foreground flex-row flex items-center justify-center">
                   <span className="font-bold font-heading text-background text-base sm:text-lg">
@@ -101,7 +101,7 @@ export const GalleryHero = ({
                 </div>
 
                 {/* Title + Location + Subtitle */}
-                <div className="flex-wrap gap-3 flex-col py-[64px] pb-[24px] flex items-center justify-center">
+                <div className="flex-wrap gap-3 flex-col pb-[24px] flex items-center justify-center py-[32px]">
                   <h1 className="font-heading font-bold text-foreground my-0 mt-[32px] text-6xl text-center sm:text-7xl">
                     {space.hero_title || space.name}
                   </h1>
