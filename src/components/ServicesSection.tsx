@@ -118,7 +118,7 @@ const ServiceSlide = ({
             <span className="text-xs font-heading uppercase tracking-wider mb-1 block text-destructive">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
-            <h3 className="font-heading text-2xl uppercase leading-tight mb-2 text-foreground">{service.title}</h3>
+            <h3 className="font-heading uppercase leading-tight mb-2 text-foreground text-3xl">{service.title}</h3>
             {service.description && <p className="text-sm mb-4 leading-relaxed line-clamp-3 text-foreground font-medium py-[8px]">
                 {service.description}
               </p>}
