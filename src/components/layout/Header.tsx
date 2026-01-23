@@ -278,7 +278,7 @@ export const Header = () => {
           {mobileMenuOpen && (
             <div
               ref={menuRef}
-              className="lg:hidden pb-4 mt-2 relative z-[56]"
+              className="lg:hidden pb-4 mt-2 relative z-[56] px-4"
               onTouchStart={resetAutoCloseTimer}
               onMouseMove={resetAutoCloseTimer}
             >
@@ -288,7 +288,7 @@ export const Header = () => {
                     key={item.name}
                     to={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`block px-2 py-3 font-heading text-sm touch-manipulation ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground active:bg-foreground active:text-background"}`}
+                    className={`block px-0 py-3 font-heading text-sm touch-manipulation ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground active:bg-foreground active:text-background"}`}
                     style={{
                       WebkitTapHighlightColor: "rgba(0,0,0,0.1)",
                     }}
@@ -303,7 +303,7 @@ export const Header = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 font-heading text-sm bg-green-500 text-white active:bg-green-600 touch-manipulation"
+                  className="flex items-center gap-3 px-0 py-3 font-heading text-sm bg-green-500 text-white active:bg-green-600 touch-manipulation"
                   style={{
                     WebkitTapHighlightColor: "rgba(0,0,0,0.1)",
                   }}
@@ -312,7 +312,7 @@ export const Header = () => {
                   WHATSAPP
                 </a>
 
-                <div className="flex items-center justify-between px-4 py-3 bg-background">
+                <div className="flex items-center justify-between px-0 py-3 bg-background">
                   <span className="font-heading text-sm text-foreground">MODO</span>
                   <button
                     type="button"
@@ -334,7 +334,7 @@ export const Header = () => {
                   <Link
                     to="/admin"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block px-4 py-3 font-heading text-sm bg-primary text-primary-foreground text-center touch-manipulation"
+                    className="block px-0 py-3 font-heading text-sm bg-primary text-primary-foreground text-center touch-manipulation"
                     style={{
                       WebkitTapHighlightColor: "rgba(0,0,0,0.1)",
                     }}
@@ -350,7 +350,7 @@ export const Header = () => {
                       signOut();
                       navigate("/");
                     }}
-                    className="block w-full px-4 py-3 font-heading text-sm border border-foreground bg-background text-foreground text-center touch-manipulation"
+                    className="block w-full px-0 py-3 font-heading text-sm border border-foreground bg-background text-foreground text-center touch-manipulation"
                     style={{
                       WebkitTapHighlightColor: "rgba(0,0,0,0.1)",
                     }}
@@ -361,7 +361,7 @@ export const Header = () => {
                   <Link
                     to="/auth"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block px-4 py-3 font-heading text-sm bg-primary text-primary-foreground text-center touch-manipulation"
+                    className="block px-0 py-3 font-heading text-sm bg-primary text-primary-foreground text-center touch-manipulation"
                     style={{
                       WebkitTapHighlightColor: "rgba(0,0,0,0.1)",
                     }}
