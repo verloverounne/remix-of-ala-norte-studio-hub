@@ -8,41 +8,63 @@ import { EquipmentModal } from "@/components/EquipmentModal";
 import { HeroCarouselRental } from "@/components/rental/HeroCarouselRental";
 import { CategorySection, CategorySectionRef } from "@/components/rental/CategorySection";
 import { CartSidebar } from "@/components/rental/CartSidebar";
+import { cn } from "@/lib/utils";
+import { Search, Filter, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
+
 type EquipmentWithStock = EquipmentWithCategory;
+
 interface Category {
   id: string;
   name: string;
   slug: string;
   order_index?: number;
 }
+
+interface Subcategory {
+  id: string;
+  name: string;
+  category_id: string;
+}
+
 const Equipos = () => {
   const [equipment, setEquipment] = useState<EquipmentWithStock[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEquipment, setSelectedEquipment] = useState<EquipmentWithStock | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [navBarHeight, setNavBarHeight] = useState(0);
-  const {
-    addItem,
-    items,
-    calculateSubtotal,
-    updateQuantity,
-    removeItem
-  } = useCart();
-  const {
-    toast
-  } = useToast();
-  const {
-    isVisible: headerVisible,
-    isMobile
-  } = useHeaderVisibility();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  
+  const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
+  const { toast } = useToast();
+  const { isMobile } = useHeaderVisibility();
   const categoryRefs = useRef<Map<string, CategorySectionRef>>(new Map());
-  const navBarRef = useRef<HTMLDivElement>(null);
+  const filterRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     fetchData();
+  }, []);
+
+  // Fetch subcategories
+  useEffect(() => {
+    const fetchSubcategories = async () => {
+      const { data } = await supabase
+        .from("subcategories")
+        .select("*")
+        .order("order_index");
+      if (data) {
+        setSubcategories(data);
+      }
+    };
+    fetchSubcategories();
   }, []);
 
   // Set active category when categories load
@@ -52,28 +74,29 @@ const Equipos = () => {
     }
   }, [categories, activeCategory]);
 
-  // Calculate nav bar height for sticky positioning
+  // Close filter when clicking outside
   useEffect(() => {
-    const updateNavBarHeight = () => {
-      if (navBarRef.current) {
-        setNavBarHeight(navBarRef.current.getBoundingClientRect().height);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+        setIsFilterOpen(false);
       }
     };
-    updateNavBarHeight();
-    window.addEventListener('resize', updateNavBarHeight);
-
-    // Also update after a small delay to ensure content has rendered
-    const timeout = setTimeout(updateNavBarHeight, 500);
+    if (isFilterOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
     return () => {
-      window.removeEventListener('resize', updateNavBarHeight);
-      clearTimeout(timeout);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [loading]);
+  }, [isFilterOpen]);
+
   const fetchData = async () => {
     setLoading(true);
 
-    // Fetch categories and equipment in parallel
-    const [categoriesResult, equipmentResult] = await Promise.all([supabase.from('categories').select('*').order('order_index'), supabase.from('equipment').select(`*, categories (*), subcategories (*)`).order('order_index')]);
+    const [categoriesResult, equipmentResult] = await Promise.all([
+      supabase.from('categories').select('*').order('order_index'),
+      supabase.from('equipment').select(`*, categories (*), subcategories (*)`).order('order_index')
+    ]);
+
     if (!categoriesResult.error && categoriesResult.data) {
       setCategories(categoriesResult.data);
     }
@@ -88,20 +111,17 @@ const Equipos = () => {
     setLoading(false);
   };
 
-  // Get quantity of item already in cart
   const getCartQuantity = useCallback((id: string) => {
     const cartItem = items.find(item => item.id === id);
     return cartItem?.quantity || 0;
   }, [items]);
 
-  // Check if can add more items
   const canAddMore = useCallback((item: EquipmentWithStock) => {
     const inCart = getCartQuantity(item.id);
     const stock = item.stock_quantity ?? 1;
     return inCart < stock;
   }, [getCartQuantity]);
 
-  // Fuzzy search helper
   const fuzzyMatch = (text: string, search: string): boolean => {
     if (!search) return true;
     text = text.toLowerCase();
@@ -122,6 +142,7 @@ const Equipos = () => {
     }
     return false;
   };
+
   const levenshteinDistance = (str1: string, str2: string): number => {
     const len1 = str1.length;
     const len2 = str2.length;
@@ -140,15 +161,18 @@ const Equipos = () => {
     }
     return matrix[len1][len2];
   };
+
   const filteredEquipment = useMemo(() => {
     return equipment.filter(item => {
-      const matchesSearch = fuzzyMatch(item.name, searchTerm) || fuzzyMatch(item.brand || '', searchTerm) || fuzzyMatch(item.model || '', searchTerm);
-      const matchesSubcategory = selectedSubcategories.length === 0 || item.subcategory_id && selectedSubcategories.includes(item.subcategory_id);
+      const matchesSearch = fuzzyMatch(item.name, searchTerm) ||
+        fuzzyMatch(item.brand || '', searchTerm) ||
+        fuzzyMatch(item.model || '', searchTerm);
+      const matchesSubcategory = selectedSubcategories.length === 0 ||
+        (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
       return matchesSearch && matchesSubcategory;
     });
   }, [equipment, searchTerm, selectedSubcategories]);
 
-  // Group equipment by category
   const equipmentByCategory = useMemo(() => {
     const grouped: Record<string, EquipmentWithStock[]> = {};
     categories.forEach(cat => {
@@ -157,7 +181,6 @@ const Equipos = () => {
     return grouped;
   }, [filteredEquipment, categories]);
 
-  // Reorder categories so the active one is first
   const orderedCategories = useMemo(() => {
     if (!activeCategory) return categories;
     const active = categories.find(c => c.id === activeCategory);
@@ -165,7 +188,6 @@ const Equipos = () => {
     return active ? [active, ...rest] : categories;
   }, [categories, activeCategory]);
 
-  // Equipment counts by category
   const equipmentCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     categories.forEach(cat => {
@@ -173,6 +195,22 @@ const Equipos = () => {
     });
     return counts;
   }, [equipmentByCategory, categories]);
+
+  // Subcategories filtered by active category
+  const filteredSubcategories = useMemo(() => {
+    return activeCategory
+      ? subcategories.filter(sub => sub.category_id === activeCategory)
+      : subcategories;
+  }, [subcategories, activeCategory]);
+
+  const toggleSubcategory = (id: string) => {
+    if (selectedSubcategories.includes(id)) {
+      setSelectedSubcategories(selectedSubcategories.filter(s => s !== id));
+    } else {
+      setSelectedSubcategories([...selectedSubcategories, id]);
+    }
+  };
+
   const handleAddToCart = (item: EquipmentWithStock) => {
     if (!canAddMore(item)) {
       toast({
@@ -195,14 +233,17 @@ const Equipos = () => {
       description: `${item.name} agregado`
     });
   };
+
   const handleViewDetails = (item: EquipmentWithStock) => {
     setSelectedEquipment(item);
     setModalOpen(true);
   };
+
   const handleCategoryClick = (categoryId: string) => {
     setActiveCategory(categoryId);
+    // Clear subcategory filters when changing category
+    setSelectedSubcategories([]);
 
-    // Expand selected category and collapse others
     categoryRefs.current.forEach((ref, id) => {
       if (id === categoryId) {
         ref.expand();
@@ -212,71 +253,265 @@ const Equipos = () => {
     });
   };
 
-  // Handler for when a category header is clicked (activates tab without scrolling to top)
   const handleCategoryActivate = (categoryId: string) => {
     setActiveCategory(categoryId);
+    setSelectedSubcategories([]);
 
-    // Collapse other categories
     categoryRefs.current.forEach((ref, id) => {
       if (id !== categoryId) {
         ref.collapse();
       }
     });
   };
+
   const clearFilters = () => {
     setSearchTerm("");
     setSelectedSubcategories([]);
+    setIsSearchOpen(false);
+    setIsFilterOpen(false);
   };
+
   const hasActiveFilters = searchTerm.length > 0 || selectedSubcategories.length > 0;
 
-  // Calculate sticky top for category headers (below fixed nav bar)
-  // Nav bar is always fixed at top with height 40px on mobile, 52px on desktop
-  // navBarHeight is calculated from ref, or use fallback values
-  const categoryTitleTop = navBarHeight || (isMobile ? 40 : 52);
-  const cartStickyTop = categoryTitleTop + 16;
-  return <div className="min-h-screen bg-background">
-      {/* Hero Carousel with integrated sticky nav bar */}
-      <HeroCarouselRental categories={categories} onCategoryChange={handleCategoryClick} activeCategory={activeCategory} equipmentCounts={equipmentCounts} searchTerm={searchTerm} onSearchChange={setSearchTerm} selectedSubcategories={selectedSubcategories} onSubcategoriesChange={setSelectedSubcategories} onClearFilters={clearFilters} hasActiveFilters={hasActiveFilters} navBarRef={navBarRef} />
+  // Sticky top for category headers
+  const categoryTitleTop = isMobile ? 0 : 0;
+  const cartStickyTop = 80;
 
-      <div className="container mx-auto px-4 py-4 sm:py-6">
-        {/* Results count */}
-        <div className="mb-4 text-sm font-heading text-foreground">
-          Mostrando {filteredEquipment.length} equipo{filteredEquipment.length !== 1 ? 's' : ''}
-          {hasActiveFilters && ' (filtrados)'}
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Hero Carousel - Now simplified, only shows slides */}
+      <HeroCarouselRental
+        categories={categories}
+        onCategoryChange={handleCategoryClick}
+        activeCategory={activeCategory}
+      />
+
+      {/* Navigation Section - Below Hero */}
+      <div className="container mx-auto px-4 py-4">
+        {/* Category chips */}
+        <div className="flex items-center overflow-x-auto scrollbar-hide gap-2 mb-4">
+          {categories.map((category) => {
+            const count = equipmentCounts[category.id] || 0;
+            const isActive = activeCategory === category.id;
+            return (
+              <button
+                key={category.id}
+                onClick={() => handleCategoryClick(category.id)}
+                className={cn(
+                  "flex-shrink-0 px-3 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap border",
+                  isActive
+                    ? "bg-primary text-primary-foreground shadow-brutal-sm border-primary"
+                    : "bg-background text-foreground hover:bg-muted border-foreground/20"
+                )}
+              >
+                <span>{category.name}</span>
+                {count > 0 && (
+                  <span className={cn(
+                    "ml-1.5 text-[10px]",
+                    isActive ? "text-primary-foreground/80" : "text-muted-foreground"
+                  )}>
+                    ({count})
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
 
+        {/* Filter bar with count and controls */}
+        <div className="flex items-center justify-between gap-4 mb-4">
+          <span className="text-sm font-heading text-foreground">
+            Mostrando {filteredEquipment.length} equipo{filteredEquipment.length !== 1 ? 's' : ''}
+            {hasActiveFilters && ' (filtrados)'}
+          </span>
+
+          <div className="flex items-center gap-2">
+            {/* Search button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setIsSearchOpen(!isSearchOpen);
+                if (isFilterOpen) setIsFilterOpen(false);
+              }}
+              className={cn(
+                "h-8 w-8 p-0",
+                isSearchOpen && "bg-primary text-primary-foreground"
+              )}
+            >
+              {isSearchOpen ? <X className="h-4 w-4" /> : <Search className="h-4 w-4" />}
+            </Button>
+
+            {/* Filter button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setIsFilterOpen(!isFilterOpen);
+                if (isSearchOpen) setIsSearchOpen(false);
+              }}
+              className={cn(
+                "h-8 px-2",
+                isFilterOpen && "bg-primary text-primary-foreground"
+              )}
+            >
+              <Filter className="h-4 w-4" />
+              {selectedSubcategories.length > 0 && (
+                <Badge variant="secondary" className="ml-1 text-[9px] h-4 px-1">
+                  {selectedSubcategories.length}
+                </Badge>
+              )}
+            </Button>
+
+            {/* Clear filters */}
+            {hasActiveFilters && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
+                className="h-8 px-2"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+        </div>
+
+        {/* Expandable search bar */}
+        <Collapsible open={isSearchOpen}>
+          <CollapsibleContent>
+            <div className="pb-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Buscar equipos..."
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                  className="pl-10 font-heading uppercase text-sm"
+                  autoFocus
+                />
+                {searchTerm && (
+                  <button
+                    onClick={() => setSearchTerm("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2"
+                  >
+                    <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
+                  </button>
+                )}
+              </div>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+
+        {/* Expandable subcategory filters */}
+        <div ref={filterRef}>
+          <Collapsible open={isFilterOpen}>
+            <CollapsibleContent>
+              <div className="pb-4">
+                <h4 className="font-heading text-xs mb-2 uppercase text-muted-foreground">
+                  Subcategorías
+                </h4>
+                {filteredSubcategories.length === 0 ? (
+                  <p className="text-xs text-muted-foreground">
+                    No hay subcategorías para esta categoría
+                  </p>
+                ) : (
+                  <div className="flex flex-wrap gap-2">
+                    {filteredSubcategories.map(sub => (
+                      <button
+                        key={sub.id}
+                        onClick={() => toggleSubcategory(sub.id)}
+                        className={cn(
+                          "px-2 py-1 text-xs font-heading uppercase transition-all border",
+                          selectedSubcategories.includes(sub.id)
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : "bg-background text-foreground hover:bg-muted border-foreground/20"
+                        )}
+                      >
+                        {sub.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 pb-4 sm:pb-6">
         <div className="grid lg:grid-cols-4 gap-4 lg:gap-6">
           {/* Main Content - Category Sections */}
           <main className="lg:col-span-3">
-            {loading ? <div className="text-center py-12 sm:py-16 border border-foreground p-8 sm:p-12">
+            {loading ? (
+              <div className="text-center py-12 sm:py-16 border border-foreground p-8 sm:p-12">
                 <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>
-              </div> : <div className="space-y-4 sm:space-y-6">
-                {orderedCategories.map((category, index) => <CategorySection key={category.id} ref={ref => {
-              if (ref) {
-                categoryRefs.current.set(category.id, ref);
-              } else {
-                categoryRefs.current.delete(category.id);
-              }
-            }} category={category} equipment={equipmentByCategory[category.id] || []} onAddToCart={handleAddToCart} onViewDetails={handleViewDetails} getCartQuantity={getCartQuantity} canAddMore={canAddMore} stickyTop={categoryTitleTop} defaultExpanded={index === 0} onCategoryActivate={handleCategoryActivate} />)}
-              </div>}
+              </div>
+            ) : (
+              <div className="space-y-4 sm:space-y-6">
+                {orderedCategories.map((category, index) => (
+                  <CategorySection
+                    key={category.id}
+                    ref={ref => {
+                      if (ref) {
+                        categoryRefs.current.set(category.id, ref);
+                      } else {
+                        categoryRefs.current.delete(category.id);
+                      }
+                    }}
+                    category={category}
+                    equipment={equipmentByCategory[category.id] || []}
+                    onAddToCart={handleAddToCart}
+                    onViewDetails={handleViewDetails}
+                    getCartQuantity={getCartQuantity}
+                    canAddMore={canAddMore}
+                    stickyTop={categoryTitleTop}
+                    defaultExpanded={index === 0}
+                    onCategoryActivate={handleCategoryActivate}
+                  />
+                ))}
+              </div>
+            )}
           </main>
 
           {/* Cart Sidebar - Sticky on desktop, drawer on mobile */}
           <aside className="hidden lg:block lg:col-span-1 shadow-none">
-            <CartSidebar items={items} calculateSubtotal={calculateSubtotal} updateQuantity={updateQuantity} removeItem={removeItem} stickyTop={cartStickyTop} />
+            <CartSidebar
+              items={items}
+              calculateSubtotal={calculateSubtotal}
+              updateQuantity={updateQuantity}
+              removeItem={removeItem}
+              stickyTop={cartStickyTop}
+            />
           </aside>
-          
+
           {/* Mobile cart button/drawer */}
           <div className="lg:hidden">
-            <CartSidebar items={items} calculateSubtotal={calculateSubtotal} updateQuantity={updateQuantity} removeItem={removeItem} />
+            <CartSidebar
+              items={items}
+              calculateSubtotal={calculateSubtotal}
+              updateQuantity={updateQuantity}
+              removeItem={removeItem}
+            />
           </div>
         </div>
       </div>
-      
+
       {/* Equipment Modal */}
-      <EquipmentModal equipment={selectedEquipment} open={modalOpen} onOpenChange={setModalOpen} onAddToCart={handleAddToCart} getCartQuantity={getCartQuantity} canAddMore={canAddMore} onViewDetails={item => {
-      setSelectedEquipment(item);
-    }} />
-    </div>;
+      <EquipmentModal
+        equipment={selectedEquipment}
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        onAddToCart={handleAddToCart}
+        getCartQuantity={getCartQuantity}
+        canAddMore={canAddMore}
+        onViewDetails={item => {
+          setSelectedEquipment(item);
+        }}
+      />
+    </div>
+  );
 };
+
 export default Equipos;
