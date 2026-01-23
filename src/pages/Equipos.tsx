@@ -288,37 +288,95 @@ const Equipos = () => {
 
       {/* Navigation Section - Below Hero */}
       <div className="container mx-auto px-4 py-4">
-        {/* Category chips */}
-        <div className="flex items-center overflow-x-auto scrollbar-hide gap-2 mb-4">
-          {categories.map((category) => {
-            const count = equipmentCounts[category.id] || 0;
-            const isActive = activeCategory === category.id;
-            return (
-              <button
-                key={category.id}
-                onClick={() => handleCategoryClick(category.id)}
-                className={cn(
-                  "flex-shrink-0 px-3 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap border",
-                  isActive
-                    ? "bg-primary text-primary-foreground shadow-brutal-sm border-primary"
-                    : "bg-background text-foreground hover:bg-muted border-foreground/20"
-                )}
-              >
-                <span>{category.name}</span>
-                {count > 0 && (
-                  <span className={cn(
-                    "ml-1.5 text-[10px]",
-                    isActive ? "text-primary-foreground/80" : "text-muted-foreground"
-                  )}>
-                    ({count})
-                  </span>
-                )}
-              </button>
-            );
-          })}
+        {/* Row 1: Category chips + Filter button */}
+        <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center overflow-x-auto scrollbar-hide gap-2 flex-1">
+            {categories.map((category) => {
+              const count = equipmentCounts[category.id] || 0;
+              const isActive = activeCategory === category.id;
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => handleCategoryClick(category.id)}
+                  className={cn(
+                    "flex-shrink-0 px-3 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap border",
+                    isActive
+                      ? "bg-primary text-primary-foreground shadow-brutal-sm border-primary"
+                      : "bg-background text-foreground hover:bg-muted border-foreground/20"
+                  )}
+                >
+                  <span>{category.name}</span>
+                  {count > 0 && (
+                    <span className={cn(
+                      "ml-1.5 text-[10px]",
+                      isActive ? "text-primary-foreground/80" : "text-muted-foreground"
+                    )}>
+                      ({count})
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Filter button - next to chips */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              setIsFilterOpen(!isFilterOpen);
+              if (isSearchOpen) setIsSearchOpen(false);
+            }}
+            className={cn(
+              "h-8 px-2 flex-shrink-0",
+              isFilterOpen && "bg-primary text-primary-foreground"
+            )}
+          >
+            <Filter className="h-4 w-4" />
+            {selectedSubcategories.length > 0 && (
+              <Badge variant="secondary" className="ml-1 text-[9px] h-4 px-1">
+                {selectedSubcategories.length}
+              </Badge>
+            )}
+          </Button>
         </div>
 
-        {/* Filter bar with count and controls */}
+        {/* Expandable subcategory filters - immediately below chips */}
+        <div ref={filterRef}>
+          <Collapsible open={isFilterOpen}>
+            <CollapsibleContent>
+              <div className="pb-4">
+                <h4 className="font-heading text-xs mb-2 uppercase text-muted-foreground">
+                  Subcategorías
+                </h4>
+                {filteredSubcategories.length === 0 ? (
+                  <p className="text-xs text-muted-foreground">
+                    No hay subcategorías para esta categoría
+                  </p>
+                ) : (
+                  <div className="flex flex-wrap gap-2">
+                    {filteredSubcategories.map(sub => (
+                      <button
+                        key={sub.id}
+                        onClick={() => toggleSubcategory(sub.id)}
+                        className={cn(
+                          "px-2 py-1 text-xs font-heading uppercase transition-all border",
+                          selectedSubcategories.includes(sub.id)
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : "bg-background text-foreground hover:bg-muted border-foreground/20"
+                        )}
+                      >
+                        {sub.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
+
+        {/* Row 2: Equipment count + Search button on right */}
         <div className="flex items-center justify-between gap-4 mb-4">
           <span className="text-sm font-heading text-foreground">
             Mostrando {filteredEquipment.length} equipo{filteredEquipment.length !== 1 ? 's' : ''}
@@ -326,7 +384,7 @@ const Equipos = () => {
           </span>
 
           <div className="flex items-center gap-2">
-            {/* Search button */}
+            {/* Search button - right margin */}
             <Button
               variant="ghost"
               size="sm"
@@ -340,27 +398,6 @@ const Equipos = () => {
               )}
             >
               {isSearchOpen ? <X className="h-4 w-4" /> : <Search className="h-4 w-4" />}
-            </Button>
-
-            {/* Filter button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                setIsFilterOpen(!isFilterOpen);
-                if (isSearchOpen) setIsSearchOpen(false);
-              }}
-              className={cn(
-                "h-8 px-2",
-                isFilterOpen && "bg-primary text-primary-foreground"
-              )}
-            >
-              <Filter className="h-4 w-4" />
-              {selectedSubcategories.length > 0 && (
-                <Badge variant="secondary" className="ml-1 text-[9px] h-4 px-1">
-                  {selectedSubcategories.length}
-                </Badge>
-              )}
             </Button>
 
             {/* Clear filters */}
@@ -403,41 +440,6 @@ const Equipos = () => {
             </div>
           </CollapsibleContent>
         </Collapsible>
-
-        {/* Expandable subcategory filters */}
-        <div ref={filterRef}>
-          <Collapsible open={isFilterOpen}>
-            <CollapsibleContent>
-              <div className="pb-4">
-                <h4 className="font-heading text-xs mb-2 uppercase text-muted-foreground">
-                  Subcategorías
-                </h4>
-                {filteredSubcategories.length === 0 ? (
-                  <p className="text-xs text-muted-foreground">
-                    No hay subcategorías para esta categoría
-                  </p>
-                ) : (
-                  <div className="flex flex-wrap gap-2">
-                    {filteredSubcategories.map(sub => (
-                      <button
-                        key={sub.id}
-                        onClick={() => toggleSubcategory(sub.id)}
-                        className={cn(
-                          "px-2 py-1 text-xs font-heading uppercase transition-all border",
-                          selectedSubcategories.includes(sub.id)
-                            ? "bg-primary text-primary-foreground border-primary"
-                            : "bg-background text-foreground hover:bg-muted border-foreground/20"
-                        )}
-                      >
-                        {sub.name}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </CollapsibleContent>
-          </Collapsible>
-        </div>
       </div>
 
       <div className="container mx-auto px-4 pb-4 sm:pb-6">
