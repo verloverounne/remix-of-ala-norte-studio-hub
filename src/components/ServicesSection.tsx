@@ -119,7 +119,7 @@ const ServiceSlide = ({
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
             <h3 className="font-heading text-2xl uppercase leading-tight mb-2 text-foreground">{service.title}</h3>
-            {service.description && <p className="text-sm mb-4 leading-relaxed line-clamp-3 text-foreground font-medium py-[8px]">{service.description}</p>}
+            {service.description}
             {service.button_text && service.button_link && <Button asChild variant="default" size="sm">
                 <Link to={service.button_link}>
                   {service.button_text}
@@ -199,30 +199,13 @@ export const ServicesSection = () => {
     return null;
   }
   return <section className="relative bg-background">
-      <div className="pt-[60px] pb-[24px] px-0 bg-background text-foreground sm:py-[32px] sm:mx-0 mx-0 py-[16px]">
+      <div className="pt-[60px] pb-[24px] px-0 bg-background text-foreground sm:mx-0 mx-0 py-[16px] sm:py-[24px]">
         <h2 className="sm:text-4xl pt-[36px] bg-inherit text-foreground mx-[32px] normal-case font-sans font-bold text-lg py-[12px]">
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
-      <div className="sticky top-16 z-30  my-0 pb-0 px-[32px] mx-0 py-[12px] bg-transparent border-0">
-        <div className="container px-0 mx-0">
-          <div className="mx-0 border-0 sm:py-0 pt-[48px] py-[16px]">
-            {/* Mobile: vertical stack, full width */}
-            <div className="flex flex-col gap-1 sm:hidden">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full px-3 py-2 font-heading text-xs uppercase transition-all text-left", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
-                  {service.title}
-                </button>)}
-            </div>
-            {/* Desktop: horizontal row */}
-            <div className="hidden gap-2 sm:flex items-center justify-start mb-[32px] mx-0">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs transition-all rounded-none shadow-none", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground border border-border hover:bg-muted")}>
-                  {service.title}
-                </button>)}
-            </div>
-          </div>
-        </div>
-      </div>
+      
       {/* Carousel Container */}
       <div className="relative">
         <div className="overflow-hidden" ref={emblaRef}>
