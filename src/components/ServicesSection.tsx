@@ -201,15 +201,15 @@ export const ServicesSection = () => {
     return null;
   }
   return <section className="relative bg-background">
-      <div className="pt-[60px] pb-[24px] px-0 bg-background text-foreground sm:mx-0 mx-0 py-[16px] sm:py-[24px]">
+      <div className="pt-[60px] pb-[24px] px-0 bg-background text-foreground sm:mx-0 mx-0 sm:py-[24px] py-[12px]">
         <h2 className="pt-[36px] bg-inherit text-foreground mx-[32px] normal-case font-sans font-bold text-center sm:text-3xl text-base py-[12px]">
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
-      <div className=" z-30  my-0 pb-0 px-[32px] mx-0 py-[12px] bg-transparent border-0">
+      <div className="z-30 my-0 pb-0 px-[32px] mx-0 py-[12px] border-0 bg-transparent">
         <div className="container px-0 mx-0">
-          <div className="mx-0 border-0 sm:py-0 pt-[48px] py-[16px]">
+          <div className="mx-0 border-0 sm:py-0 pt-[48px] bg-transparent py-0">
             {/* Mobile: vertical stack, full width */}
             <div className="flex flex-col gap-1 sm:hidden">
               {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full px-3 py-2 font-heading text-xs uppercase transition-all text-left", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
