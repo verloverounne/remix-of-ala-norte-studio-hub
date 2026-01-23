@@ -159,11 +159,11 @@ export const Header = () => {
         </button>}
 
       <header className={`fixed top-0 left-0 right-0 z-[65] bg-background border-b border-foreground transition-transform duration-300 ${isMobile ? mobileMenuOpen ? "translate-y-0" : "-translate-y-full" : isVisible || isHovering ? "translate-y-0" : "-translate-y-full"}`} onMouseEnter={!isMobile ? handleMouseEnter : undefined} onMouseLeave={!isMobile ? handleMouseLeave : undefined}>
-        <nav className="w-full px-[4px] py-[4px] flex items-start justify-center border-0">
+        <nav className="w-full px-[4px] py-[4px] border-0 flex items-start justify-center shadow-brutal-sm">
           <div className="flex h-10 lg:h-16 items-center justify-center gap-4">
             {/* Logo Brutal - hidden on mobile */}
             <Link to="/" className="hidden lg:flex items-center">
-              <img src={logo} alt="Ala Norte" className="h-full w-auto mx-12 object-scale-down" />
+              <img src={logo} alt="Ala Norte" className="h-full w-auto mx-12 object-fill" />
             </Link>
 
             {/* Desktop Navigation Brutal */}
