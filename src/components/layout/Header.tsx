@@ -165,8 +165,9 @@ export const Header = () => {
       <header
         className={`fixed top-0 left-0 right-0 z-[65] bg-background border-b border-foreground transition-transform duration-300 ${isMobile ? (mobileMenuOpen ? "translate-y-0" : "-translate-y-full") : isVisible || isHovering ? "translate-y-0" : "-translate-y-full"}`}
         onMouseEnter={!isMobile ? handleMouseEnter : undefined}
-        onMouseLeave={!isMobile ? handleMouseLeave : undefined}
-      >
+        onMouseLeave={!isMobile ? handleMouseLeave : undefined} >
+      
+        
         <nav className="w-full flex items-center justify-center px-4 py-3">
           <div className="flex h-10 lg:h-14 items-center justify-center gap-4">
             {/* Logo Brutal - hidden on mobile */}
@@ -189,6 +190,7 @@ export const Header = () => {
 
             {/* Actions Brutales */}
             <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+              
               {/* Search - hidden on mobile */}
               <div className="hidden lg:block">
                 <SearchBar />
@@ -275,8 +277,6 @@ export const Header = () => {
           )}
         </nav>
               {/* Mobile menu button - hidden, using floating button instead */}
-            </div>
-          </div>
 
           {/* Mobile Navigation Brutal */}
           {mobileMenuOpen && (
