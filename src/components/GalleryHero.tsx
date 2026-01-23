@@ -116,9 +116,11 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
           opts={{
             loop: false,
             align: "start",
+            dragFree: true,
+            containScroll: "trimSnaps",
           }}
         >
-          <CarouselContent className="-ml-0 h-full flex items-center justify-center">
+          <CarouselContent className="-ml-0 h-full">
             {/* Slide 1: Text Content - Same as desktop left column */}
             <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center justify-center">
               <div className="container mx-auto space-y-4 px-[32px] rounded-none my-[24px] py-[32px]">
