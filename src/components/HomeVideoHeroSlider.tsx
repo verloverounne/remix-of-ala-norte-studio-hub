@@ -349,8 +349,7 @@ export const HomeVideoHeroSlider = () => {
         <img 
           src={heroLogo} 
           alt="Ala Norte Logo" 
-          className="object-contain"
-          style={{ height: "clamp(2rem, 5vw, 4rem)" }}
+          className="object-contain w-[20vw]"
         />
       </div>
       {/* Navigation dots */}
