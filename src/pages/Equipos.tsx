@@ -318,7 +318,7 @@ const Equipos = () => {
 
         {/* Row 2: Equipment count + Search button on right */}
         <div className="flex items-center gap-4 mb-4">
-          <span className="text-sm font-heading text-foreground">
+          <span className="text-sm font-heading text-foreground font-bold">
             Mostrando {filteredEquipment.length} equipo{filteredEquipment.length !== 1 ? 's' : ''}
             {hasActiveFilters && ' (filtrados)'}
           </span>
