@@ -118,9 +118,9 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
             align: "start",
           }}
         >
-          <CarouselContent className="-ml-0 h-full">
+          <CarouselContent className="-ml-0 h-full flex items-center justify-center">
             {/* Slide 1: Text Content - Same as desktop left column */}
-            <CarouselItem className="pl-0 basis-full h-full">
+            <CarouselItem className="pl-0 basis-full shrink-0 grow-0 w-screen h-full flex items-center justify-center">
               <div className="container mx-auto space-y-4 px-[32px] rounded-none my-[24px] py-[32px]">
                 {/* Price Badge */}
                 <div className="gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-card-foreground flex-row flex items-center justify-center">
