@@ -271,7 +271,9 @@ export const Header = () => {
                   <Link to="/auth">LOGIN</Link>
                 </Button>
               )}
-
+            </div>
+          )}
+        </nav>
               {/* Mobile menu button - hidden, using floating button instead */}
             </div>
           </div>
