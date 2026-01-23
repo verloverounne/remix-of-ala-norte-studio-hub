@@ -288,7 +288,7 @@ export const Header = () => {
                     key={item.name}
                     to={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`block px-0 py-3 font-heading text-sm touch-manipulation ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground active:bg-foreground active:text-background"}`}
+                    className={`block w-full px-0 py-3 font-heading text-sm text-center touch-manipulation ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground active:bg-foreground active:text-background"}`}
                     style={{
                       WebkitTapHighlightColor: "rgba(0,0,0,0.1)",
                     }}
@@ -303,7 +303,7 @@ export const Header = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-0 py-3 font-heading text-sm bg-green-500 text-white active:bg-green-600 touch-manipulation"
+                  className="flex items-center justify-center gap-3 w-full px-0 py-3 font-heading text-sm bg-green-500 text-white active:bg-green-600 touch-manipulation"
                   style={{
                     WebkitTapHighlightColor: "rgba(0,0,0,0.1)",
                   }}
