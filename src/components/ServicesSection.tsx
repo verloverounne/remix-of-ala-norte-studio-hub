@@ -114,12 +114,12 @@ const ServiceSlide = ({
 
         {/* Contenido con blur */}
         <div className="absolute inset-0 p-6 flex items-center justify-center my-[32px] px-[32px]">
-          <div className="backdrop-blur-md p-6 w-full bg-background/50 text-foreground px-[24px] py-[40px]">
+          <div className="backdrop-blur-md p-6 w-full bg-background/30 text-foreground px-[24px] py-[40px]">
             <span className="text-xs font-heading uppercase tracking-wider mb-1 block text-destructive">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
             <h3 className="font-heading text-2xl uppercase leading-tight mb-2 text-foreground">{service.title}</h3>
-            {service.description && <p className="text-sm mb-4 leading-relaxed line-clamp-3 text-foreground">{service.description}</p>}
+            {service.description && <p className="text-sm mb-4 leading-relaxed line-clamp-3 text-foreground font-medium py-[8px]">{service.description}</p>}
             {service.button_text && service.button_link && <Button asChild variant="default" size="sm">
                 <Link to={service.button_link}>
                   {service.button_text}
@@ -199,15 +199,15 @@ export const ServicesSection = () => {
     return null;
   }
   return <section className="relative bg-background">
-      <div className="py-6 mx-4 pt-[60px] pb-[24px] px-0 bg-background text-foreground sm:py-[32px] sm:mx-0">
-        <h2 className="text-3xl sm:text-4xl pt-[36px] bg-inherit text-foreground mx-[32px] normal-case font-sans font-bold py-0">
+      <div className="pt-[60px] pb-[24px] px-0 bg-background text-foreground sm:py-[32px] sm:mx-0 mx-0 py-[16px]">
+        <h2 className="sm:text-4xl pt-[36px] bg-inherit text-foreground mx-[32px] normal-case font-sans font-bold text-lg py-[12px]">
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
       <div className="sticky top-16 z-30  my-0 pb-0 px-[32px] mx-0 py-[12px] bg-transparent border-0">
         <div className="container px-0 mx-0">
-          <div className="py-2 mx-0 border-0 sm:py-0 pt-[48px]">
+          <div className="mx-0 border-0 sm:py-0 pt-[48px] py-[16px]">
             {/* Mobile: vertical stack, full width */}
             <div className="flex flex-col gap-1 sm:hidden">
               {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full px-3 py-2 font-heading text-xs uppercase transition-all text-left", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
