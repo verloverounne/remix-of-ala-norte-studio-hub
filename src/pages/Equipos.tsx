@@ -45,7 +45,15 @@ const Equipos = () => {
   
   const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
   const { toast } = useToast();
-  const { isMobile } = useHeaderVisibility();
+  const { isMobile, isVisible } = useHeaderVisibility();
+  
+  // Calcular top dinámico basado en visibilidad del header
+  const stickyTop = useMemo(() => {
+    if (isMobile) {
+      return 0; // En mobile el header está oculto
+    }
+    return isVisible ? 64 : 0; // 64px = altura del header desktop
+  }, [isMobile, isVisible]);
   const categoryRefs = useRef<Map<string, CategorySectionRef>>(new Map());
   const filterRef = useRef<HTMLDivElement>(null);
 
@@ -286,9 +294,13 @@ const Equipos = () => {
         activeCategory={activeCategory}
       />
 
-      {/* Navigation Section - Below Hero */}
-      <div className="container mx-auto px-4 py-4">
-        {/* Row 1: Category chips + Filter button */}
+      {/* Sticky navigation bar - Below Hero */}
+      <div 
+        className="sticky z-[50] bg-background/95 backdrop-blur-sm border-b border-foreground/10 transition-all duration-300"
+        style={{ top: `${stickyTop}px` }}
+      >
+        <div className="container mx-auto px-4 py-4">
+          {/* Row 1: Category chips + Filter button */}
         <div className="flex items-center gap-2 mb-2">
           <div className="flex items-center flex-wrap gap-2 flex-1">
             {categories.map((category) => {
@@ -440,6 +452,7 @@ const Equipos = () => {
             </div>
           </CollapsibleContent>
         </Collapsible>
+        </div>
       </div>
 
       <div className="container mx-auto px-4 pb-4 sm:pb-6">
