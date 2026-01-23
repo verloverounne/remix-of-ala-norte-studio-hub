@@ -159,7 +159,7 @@ export const Header = () => {
         </button>}
 
       <header className={`fixed top-0 left-0 right-0 z-[65] bg-background border-b border-foreground transition-transform duration-300 ${isMobile ? mobileMenuOpen ? "translate-y-0" : "-translate-y-full" : isVisible || isHovering ? "translate-y-0" : "-translate-y-full"}`} onMouseEnter={!isMobile ? handleMouseEnter : undefined} onMouseLeave={!isMobile ? handleMouseLeave : undefined}>
-        <nav className="w-full px-[4px] py-[4px] flex items-start justify-center">
+        <nav className="w-full px-[4px] py-[4px] flex items-start justify-center border-0">
           <div className="flex h-10 lg:h-16 items-center justify-center gap-4">
             {/* Logo Brutal - hidden on mobile */}
             <Link to="/" className="hidden lg:flex items-center">
