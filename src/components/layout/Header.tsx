@@ -23,7 +23,6 @@ const navigation = [
     name: "GALERÍA",
     href: "/galeria",
   },
-  { name: "PRESUPUESTO", href: "/cotizador" },
 
   { name: "SALA", href: "/sala-grabacion" },
   //  { name: "SERVICIOS", href: "/servicios" },
@@ -31,6 +30,7 @@ const navigation = [
     name: "CONTACTO",
     href: "/contacto",
   },
+  { name: "PRESUPUESTO", href: "/cotizador" },
 ];
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
