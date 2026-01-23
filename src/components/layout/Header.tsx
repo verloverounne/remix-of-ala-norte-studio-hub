@@ -163,7 +163,7 @@ export const Header = () => {
           <div className="flex h-10 lg:h-14 items-center justify-center gap-4">
             {/* Logo Brutal - hidden on mobile */}
             <Link to="/" className="hidden lg:flex items-center">
-              <img src={logo} alt="Ala Norte" width={48} height={51} className="h-6 lg:h-8 w-auto object-contain" />
+              <img src={logo} alt="Ala Norte" className="h-full w-auto object-contain" />
             </Link>
 
             {/* Desktop Navigation Brutal */}
