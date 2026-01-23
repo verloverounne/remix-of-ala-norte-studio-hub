@@ -20,154 +20,43 @@ const Galeria = () => {
     setLoading(true);
 
     // Fetch space data
-    const { data: spaceData } = await supabase.from("spaces").select("*").eq("slug", "galeria").single();
+    const {
+      data: spaceData
+    } = await supabase.from("spaces").select("*").eq("slug", "galeria").single();
 
     // Fetch first image from gallery_images with page_type='galeria' ordered by order_index
-    const { data: galleryImages } = await supabase
-      .from("gallery_images")
-      .select("image_url")
-      .eq("page_type", "galeria")
-      .order("order_index", {
-        ascending: true,
-      })
-      .limit(1);
+    const {
+      data: galleryImages
+    } = await supabase.from("gallery_images").select("image_url").eq("page_type", "galeria").order("order_index", {
+      ascending: true
+    }).limit(1);
     if (galleryImages && galleryImages.length > 0) {
       setFeaturedMediaImage(galleryImages[0].image_url);
     }
     if (spaceData) {
       setSpace({
         ...spaceData,
-        images: Array.isArray(spaceData.images) ? (spaceData.images as string[]) : [],
-        features: Array.isArray(spaceData.features) ? (spaceData.features as string[]) : [],
-        included_items: Array.isArray(spaceData.included_items) ? (spaceData.included_items as string[]) : [],
-        optional_services: Array.isArray(spaceData.optional_services) ? (spaceData.optional_services as string[]) : [],
-        amenities: Array.isArray(spaceData.amenities) ? (spaceData.amenities as any[]) : [],
-        specs: spaceData.specs || {},
+        images: Array.isArray(spaceData.images) ? spaceData.images as string[] : [],
+        features: Array.isArray(spaceData.features) ? spaceData.features as string[] : [],
+        included_items: Array.isArray(spaceData.included_items) ? spaceData.included_items as string[] : [],
+        optional_services: Array.isArray(spaceData.optional_services) ? spaceData.optional_services as string[] : [],
+        amenities: Array.isArray(spaceData.amenities) ? spaceData.amenities as any[] : [],
+        specs: spaceData.specs || {}
       } as Space);
     }
     setLoading(false);
   };
   if (loading || !space) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
+    return <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
+      </div>;
   }
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       {/* Hero Section with 2 Column Layout */}
       <GalleryHero space={space} />
 
-      {/* Details Section with Featured Image */}
-      <section className="py-12 sm:py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-            {/* Left Column: Featured Image + Floor Plan */}
-            <div className="space-y-6">
-              {/* Featured Image from Media panel */}
-              <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border border-foreground shadow-brutal">
-                <img
-                  src={
-                    featuredMediaImage ||
-                    space.featured_image ||
-                    (space.images && space.images[0]) ||
-                    "/placeholder.svg"
-                  }
-                  alt={space.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* Floor Plan - Only visible on desktop */}
-              <div className="hidden lg:block relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
-                <img
-                  src={planoIlustrativo}
-                  alt="Plano ilustrativo del estudio"
-                  className="w-full h-auto object-contain bg-background"
-                />
-              </div>
-            </div>
-
-            {/* Right Column: Details */}
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">El espacio</h2>
-                <p className="text-muted-foreground font-heading text-base font-medium">
-                  {space.detailed_description || space.description}
-                </p>
-              </div>
-
-              {/* Layout Description */}
-              {space.layout_description && (
-                <div className="bg-muted p-4 rounded-lg ">
-                  <h3 className="font-heading font-bold mb-2">Plano de la galería </h3>
-                  <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
-                </div>
-              )}
-
-              {/* Floor Plan - Mobile only */}
-              <div className="lg:hidden relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
-                <img
-                  src={planoIlustrativo}
-                  alt="Plano ilustrativo del estudio"
-                  className="w-full h-auto object-contain bg-background"
-                />
-              </div>
-
-              {/* Included Items */}
-              {space.included_items && space.included_items.length > 0 && (
-                <div>
-                  <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
-                    INCLUIDO EN EL BLOQUE Incluido sin cargo adicional
-                  </h3>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {space.included_items.map((item, index) => (
-                      <li key={index} className="flex items-center gap-2 text-muted-foreground">
-                        <span className="text-primary">•</span>
-                        <span className="font-heading">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Schedule Info */}
-              <div className="bg-secondary border border-foreground p-4 rounded-lg">
-                <h3 className="font-heading font-bold mb-2 flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-primary" /> HORARIOS
-                </h3>
-                <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekday}</p>
-                <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekend}</p>
-              </div>
-
-              {/* Optional Services */}
-              {space.optional_services && space.optional_services.length > 0 && (
-                <div>
-                  <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {space.optional_services.map((service, index) => (
-                      <Badge key={index} variant="outline" className="font-heading">
-                        {service}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
-                <Link to="/contacto">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  {space.cta_text || "RESERVAR BLOQUE"}
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
       {/* 360° Virtual Tour Section - Movido debajo de características */}
-      {space.tour_360_url && (
-        <section className="py-12 sm:py-16 bg-background">
+      {space.tour_360_url && <section className="py-12 sm:py-16 bg-background">
           <div className="w-full px-0">
             <div className="container mx-auto px-4 mb-8">
               <div className="text-left">
@@ -184,21 +73,95 @@ const Galeria = () => {
               <Viewer360 imageSrc={space.tour_360_url} height="1000px" />
             </div>
           </div>
-        </section>
-      )}
+        </section>}
+
+      {/* Details Section with Featured Image */}
+      <section className="py-12 sm:py-16">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+            {/* Left Column: Featured Image + Floor Plan */}
+            <div className="space-y-6">
+              {/* Featured Image from Media panel */}
+              <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border border-foreground shadow-brutal">
+                <img src={featuredMediaImage || space.featured_image || space.images && space.images[0] || "/placeholder.svg"} alt={space.name} className="w-full h-full object-cover" />
+              </div>
+
+              {/* Floor Plan - Only visible on desktop */}
+              <div className="hidden lg:block relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
+                <img src={planoIlustrativo} alt="Plano ilustrativo del estudio" className="w-full h-auto object-contain bg-background" />
+              </div>
+            </div>
+
+            {/* Right Column: Details */}
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">El espacio</h2>
+                <p className="text-muted-foreground font-heading text-base font-medium">
+                  {space.detailed_description || space.description}
+                </p>
+              </div>
+
+              {/* Layout Description */}
+              {space.layout_description && <div className="bg-muted p-4 rounded-lg ">
+                  <h3 className="font-heading font-bold mb-2">Plano de la galería </h3>
+                  <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
+                </div>}
+
+              {/* Floor Plan - Mobile only */}
+              <div className="lg:hidden relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
+                <img src={planoIlustrativo} alt="Plano ilustrativo del estudio" className="w-full h-auto object-contain bg-background" />
+              </div>
+
+              {/* Included Items */}
+              {space.included_items && space.included_items.length > 0 && <div>
+                  <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">INCLUIDO EN EL BLOQUE Incluido sin cargo adicional
+                  </h3>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {space.included_items.map((item, index) => <li key={index} className="flex items-center gap-2 text-muted-foreground">
+                        <span className="text-primary">•</span>
+                        <span className="font-heading">{item}</span>
+                      </li>)}
+                  </ul>
+                </div>}
+
+              {/* Schedule Info */}
+              <div className="bg-secondary border border-foreground p-4 rounded-lg">
+                <h3 className="font-heading font-bold mb-2 flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-primary" /> HORARIOS
+                </h3>
+                <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekday}</p>
+                <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekend}</p>
+              </div>
+
+              {/* Optional Services */}
+              {space.optional_services && space.optional_services.length > 0 && <div>
+                  <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {space.optional_services.map((service, index) => <Badge key={index} variant="outline" className="font-heading">
+                        {service}
+                      </Badge>)}
+                  </div>
+                </div>}
+
+              <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
+                <Link to="/contacto">
+                  <Calendar className="mr-2 h-5 w-5" />
+                  {space.cta_text || "RESERVAR BLOQUE"}
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Productions Slider */}
       <ProductionsSlider />
 
       {/* CTA Section */}
       <section className="py-12 sm:py-16 bg-background">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4 text-center">
-            ¿Querés reservar la galería?
-          </h2>
-          <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading leading-tight text-center">
-            Hablemos de tu proyecto. Te contamos disponibilidad, armamos una propuesta a medida y coordinamos todo para
-            que llegues tranquilo al rodaje.
-          </p>
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4 text-center">¿Querés reservar la galería?</h2>
+          <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading leading-tight text-center">Hablemos de tu proyecto. Te contamos disponibilidad, armamos una propuesta a medida y coordinamos todo para que llegues tranquilo al rodaje.</p>
           <Button variant="hero" size="lg" asChild>
             <Link to="/contacto">
               <MapPin className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -207,7 +170,6 @@ const Galeria = () => {
           </Button>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
 export default Galeria;
