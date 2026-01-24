@@ -150,7 +150,6 @@ export type Database = {
           facebook: string | null
           id: string
           instagram: string | null
-          instagram_token: string | null
           phone: string | null
           quote_message: string | null
           updated_at: string
@@ -162,7 +161,6 @@ export type Database = {
           facebook?: string | null
           id?: string
           instagram?: string | null
-          instagram_token?: string | null
           phone?: string | null
           quote_message?: string | null
           updated_at?: string
@@ -174,7 +172,6 @@ export type Database = {
           facebook?: string | null
           id?: string
           instagram?: string | null
-          instagram_token?: string | null
           phone?: string | null
           quote_message?: string | null
           updated_at?: string
