@@ -90,7 +90,7 @@ export const GalleryHero = ({
                   / bloque {space.block_hours || 4}hs
                 </span>
               </div>
-            </div>
+           
 
             {/* Title + Location + Subtitle */}
             <div className="flex flex-wrap gap-4 items-center">
