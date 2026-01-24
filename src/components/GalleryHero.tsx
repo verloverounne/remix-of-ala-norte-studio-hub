@@ -265,7 +265,6 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               </Link>
             </Button>
           </div>
-       </div>       
         </div>
 
         {/* Mute Button for mobile */}
