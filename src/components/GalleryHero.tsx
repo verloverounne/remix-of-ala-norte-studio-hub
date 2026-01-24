@@ -76,7 +76,7 @@ export const GalleryHero = ({
   };
   return <section className="relative h-screen overflow-hidden bg-foreground">
       {/* Desktop: 2 Column Layout */}
-      <div className="hidden lg:grid lg:grid-cols-2 w-full h-screen">
+      <div className="hidden lg:grid lg:grid-cols-2 w-full h-screen px-0 py-[64px]">
         {/* Left Column: Text Content */}
         <div className="flex flex-col justify-end h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[16vh] bg-background">
           <div className="space-y-6 w-full h">
