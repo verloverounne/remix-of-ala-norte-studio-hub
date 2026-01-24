@@ -90,7 +90,7 @@ export const GalleryHero = ({
                   / bloque {space.block_hours || 4}hs
                 </span>
               </div>
-           
+            </div>
 
             {/* Title + Location + Subtitle */}
             <div className="flex flex-wrap gap-4 items-center">
@@ -189,7 +189,7 @@ export const GalleryHero = ({
             <p className="font-heading text-foreground leading-tight font-medium text-base mb-4">
               {space.hero_subtitle || space.description}
             </p>
-
+ </div>
             {/* Features - 2 columns */}
             {space.features && Array.isArray(space.features) && space.features.length > 0 && <div className="grid grid-cols-2 gap-x-4 gap-y-1 mb-4">
                 {(space.features as string[]).map((feature, index) => <p key={index} className="text-xs text-muted-foreground font-heading flex items-start gap-2">
