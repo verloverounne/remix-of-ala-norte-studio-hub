@@ -79,8 +79,8 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
       {/* Desktop: 2 Column Layout */}
       <div className="hidden lg:grid lg:grid-cols-2 w-full h-screen">
         {/* Left Column: Text Content */}
-        <div className="flex flex-col justify-end h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[16vh] bg-background">
-          <div className="space-y-6 w-full h-full py-[61px] my-0">
+          <div className="flex flex-col justify-end h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[16vh] bg-background">
+  
             {/* Price Badge */}
             <div className="flex flex-col items-start gap-[24px] my-0 mb-[64px]">
               <div className="flex items-center justify-center gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-foreground">
@@ -98,6 +98,8 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-foreground lg:text-8xl">
                 {space.hero_title || space.name}
               </h1>
+            </div>
+              
               {space.location && (
                 <div className="flex items-left gap-2 px-4 py-2 rounded-lg border-2 bg-background border-foreground border-solid">
                   <MapPin className="h-5 w-5 text-input" />
@@ -108,7 +110,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                 {space.hero_subtitle || space.description}
               </p>
             </div>
-          </div>
+  
           {/* Features - 2 columns */}
           {space.features && Array.isArray(space.features) && space.features.length > 0 && (
             <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-[48px]">
