@@ -58,33 +58,71 @@ const ChartContainer = React.forwardRef<
 });
 ChartContainer.displayName = "Chart";
 
-const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
-  const colorConfig = Object.entries(config).filter(([_, config]) => config.theme || config.color);
+// Validates that a color string is safe (hex color, CSS color name, or CSS variable)
+const sanitizeColor = (color: string): string | null => {
+  if (!color) return null;
+  // Allow hex colors (#fff, #ffffff), CSS color names (a-z), hsl/rgb functions, and CSS variables
+  const safeColorPattern = /^(#[0-9A-Fa-f]{3,8}|[a-z]+|hsl\([^)]+\)|rgb\([^)]+\)|var\([^)]+\))$/i;
+  return safeColorPattern.test(color.trim()) ? color : null;
+};
 
+// Generates CSS string for chart theming - all inputs are validated
+const generateChartCSS = (id: string, config: ChartConfig): string => {
+  const colorConfig = Object.entries(config).filter(([_, cfg]) => cfg.theme || cfg.color);
+  
   if (!colorConfig.length) {
-    return null;
+    return "";
   }
 
-  return (
-    <style
-      dangerouslySetInnerHTML={{
-        __html: Object.entries(THEMES)
-          .map(
-            ([theme, prefix]) => `
-${prefix} [data-chart=${id}] {
-${colorConfig
-  .map(([key, itemConfig]) => {
-    const color = itemConfig.theme?.[theme as keyof typeof itemConfig.theme] || itemConfig.color;
-    return color ? `  --color-${key}: ${color};` : null;
-  })
-  .join("\n")}
-}
-`,
-          )
-          .join("\n"),
-      }}
-    />
-  );
+  return Object.entries(THEMES)
+    .map(([theme, prefix]) => {
+      const cssVars = colorConfig
+        .map(([key, itemConfig]) => {
+          const color = itemConfig.theme?.[theme as keyof typeof itemConfig.theme] || itemConfig.color;
+          const safeColor = color ? sanitizeColor(color) : null;
+          return safeColor ? `  --color-${key}: ${safeColor};` : null;
+        })
+        .filter(Boolean)
+        .join("\n");
+      
+      return `${prefix} [data-chart=${id}] {\n${cssVars}\n}`;
+    })
+    .join("\n");
+};
+
+const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
+  const styleRef = React.useRef<HTMLStyleElement | null>(null);
+
+  React.useEffect(() => {
+    // Create style element programmatically instead of using dangerouslySetInnerHTML
+    const css = generateChartCSS(id, config);
+    
+    if (!css) {
+      // Clean up if no CSS needed
+      if (styleRef.current) {
+        styleRef.current.remove();
+        styleRef.current = null;
+      }
+      return;
+    }
+
+    if (!styleRef.current) {
+      styleRef.current = document.createElement("style");
+      styleRef.current.setAttribute("data-chart-style", id);
+      document.head.appendChild(styleRef.current);
+    }
+
+    styleRef.current.textContent = css;
+
+    return () => {
+      if (styleRef.current) {
+        styleRef.current.remove();
+        styleRef.current = null;
+      }
+    };
+  }, [id, config]);
+
+  return null;
 };
 
 const ChartTooltip = RechartsPrimitive.Tooltip;
