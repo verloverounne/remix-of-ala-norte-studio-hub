@@ -77,7 +77,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
   return (
     <section className="relative min-h-screen bg-foreground">
       {/* Desktop: 2 Column Layout */}
-      <div className="hidden lg:grid lg:grid-cols-2 w-full min-h-screen">
+      <div className="hidden lg:grid lg:grid-cols-2 w-full max-h-screen">
         {/* Left Column: Text Content */}
         <div className="flex flex-col justify-end h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[16vh] bg-background">
           <div className="space-y-6 w-full h-full py-[61px] my-0">
