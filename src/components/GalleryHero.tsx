@@ -109,8 +109,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               <p className="text-sm sm:text-base max-w-2xl font-heading leading-tight font-bold my-[64px] text-foreground md:text-2xl mb-[32px]">
                 {space.hero_subtitle || space.description}
               </p>
-            </div>
-  
+
           {/* Features - 2 columns */}
           {space.features && Array.isArray(space.features) && space.features.length > 0 && (
             <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-[48px]">
