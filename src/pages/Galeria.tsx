@@ -173,10 +173,10 @@ const Galeria = () => {
               <div className="text-left">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
                   <Eye className="inline-block mr-3 h-8 w-8" />
-                  Recorrido virtual 360°
+                  Ya conocés la galería ALA NORTE?°
                 </h2>
                 <p className="text-muted-foreground font-heading text-lg ">
-                  Explorá la galería antes de tu reserva. Arrastrá para moverte y conocer cada rincón del espacio.
+                  Explorala antes de tu reserva. Arrastrá para moverte y conocer cada rincón del espacio.
                 </p>
               </div>
             </div>
