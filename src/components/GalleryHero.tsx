@@ -76,7 +76,7 @@ export const GalleryHero = ({
   };
   return <section className="relative h-screen justify-between bg-foreground">
       {/* Desktop: 2 Column Layout */}
-      <div className="hidden lg:grid lg:grid-cols-2 w-full h-full ">
+      <div className="hidden lg:grid lg:grid-cols-2 w-full h-screen">
         {/* Left Column: Text Content */}
         <div className="flex-col justify-center h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[16vh] bg-background flex items-center justify-center">
           <div className="space-y-6 w-full h-full py-[61px] my-0">
