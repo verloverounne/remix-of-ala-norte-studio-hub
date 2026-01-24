@@ -107,41 +107,40 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               <p className="text-sm sm:text-base max-w-2xl font-heading leading-tight font-bold my-[64px] text-foreground md:text-2xl mb-[32px]">
                 {space.hero_subtitle || space.description}
               </p>
-            </div>
 
-            {/* Features - 2 columns */}
-            {space.features && Array.isArray(space.features) && space.features.length > 0 && (
-              <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-[48px]">
-                {(space.features as string[]).map((feature, index) => (
-                  <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
-                    <span className="text-primary">•</span>
-                    {feature}
-                  </p>
-                ))}
+              {/* Features - 2 columns */}
+              {space.features && Array.isArray(space.features) && space.features.length > 0 && (
+                <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-[48px]">
+                  {(space.features as string[]).map((feature, index) => (
+                    <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
+                      <span className="text-primary">•</span>
+                      {feature}
+                    </p>
+                  ))}
+                </div>
+              )}
+
+              {/* Discount */}
+              {space.discount_text && (
+                <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 rounded-none">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                  <span className="font-heading font-bold text-primary text-xl">{space.discount_text}</span>¿
+                </div>
+              )}
+
+              {/* CTA Button */}
+              <div>
+                <Button variant="default" size="lg" asChild className="text-lg w-full max-w-fit">
+                  <Link to="/contacto">
+                    <Calendar className="mr-2 h-5 w-5" />
+                    {space.cta_text || "RESERVAR BLOQUE"}
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
               </div>
-            )}
-
-            {/* Discount */}
-            {space.discount_text && (
-              <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 rounded-none">
-                <Sparkles className="h-5 w-5 text-primary" />
-                <span className="font-heading font-bold text-primary text-xl">{space.discount_text}</span>
-              </div>
-            )}
-
-            {/* CTA Button */}
-            <div>
-              <Button variant="default" size="lg" asChild className="text-lg w-full max-w-fit">
-                <Link to="/contacto">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  {space.cta_text || "RESERVAR BLOQUE"}
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
             </div>
           </div>
         </div>
-
         {/* Right Column: Video with Parallax */}
         {space.video_url ? (
           <div ref={videoParallax.ref as any} className="h-screen overflow-hidden relative duotone-hover-group">
