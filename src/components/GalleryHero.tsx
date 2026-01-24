@@ -79,7 +79,7 @@ export const GalleryHero = ({
       <div className="hidden lg:grid lg:grid-cols-2 w-full max-h-screen">
         {/* Left Column: Text Content */}
         <div className="flex flex-col justify-center h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 py-[16vh] bg-background">
-          <div className="space-y-6 w-full h-full py-[61px] my-0">
+          <div className="space-y-6 w-full h-full my-0 py-[24px]">
             {/* Price Badge */}
             <div className="flex flex-col items-start gap-4 my-0" style={{
             marginBottom: "clamp(24px, 4vh, 64px)"
@@ -95,7 +95,7 @@ export const GalleryHero = ({
             </div>
 
             {/* Title + Location + Subtitle */}
-            <div className="flex flex-wrap gap-4 items-center">
+            <div className="flex flex-wrap items-center gap-[12px]">
               <h1 className="font-heading font-bold text-foreground" style={{
               fontSize: "clamp(2.5rem, 6vw, 6rem)",
               lineHeight: 1.1
@@ -123,7 +123,7 @@ export const GalleryHero = ({
             </div>}
 
           {/* Discount */}
-          {space.discount_text && <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 rounded-none">
+          {space.discount_text && <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 rounded-none my-[16px] pb-[9px] mb-[48px] mt-0">
               <Sparkles className="h-5 w-5 text-primary" />
               <span className="font-heading font-bold text-primary text-xl">{space.discount_text}</span>¿
             </div>}
