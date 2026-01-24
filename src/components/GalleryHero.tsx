@@ -79,7 +79,7 @@ export const GalleryHero = ({
       <div className="hidden lg:grid lg:grid-cols-2 w-full h-screen">
         {/* Left Column: Text Content */}
         <div className="flex flex-col justify-end h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[16vh] bg-background">
-          <div className="space-y-6 w-full h-full my-[42px] py-[61px]">
+          <div className="space-y-6 w-full h-full py-[61px] my-0">
             {/* Price Badge */}
             <div className="flex flex-col items-start gap-[24px] my-0 mb-[64px]">
               <div className="flex items-center justify-center gap-2 text-primary px-4 py-2 rounded-lg w-full max-w-fit bg-foreground">
