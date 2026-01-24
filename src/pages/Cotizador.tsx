@@ -13,10 +13,18 @@ import { es } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-
 const Cotizador = () => {
-  const { toast } = useToast();
-  const { items, removeItem, updateQuantity, clearCart, totalItems, calculateSubtotal } = useCart();
+  const {
+    toast
+  } = useToast();
+  const {
+    items,
+    removeItem,
+    updateQuantity,
+    clearCart,
+    totalItems,
+    calculateSubtotal
+  } = useCart();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,17 +44,15 @@ const Cotizador = () => {
       checkEquipmentAvailability();
     }
   }, [formData.startDate, formData.endDate, items]);
-
   const checkEquipmentAvailability = async () => {
     if (!formData.startDate || !formData.endDate) return;
     setCheckingAvailability(true);
     const unavailable = new Set<string>();
     for (const item of items) {
-      const { data, error } = await supabase
-        .from('equipment_unavailability')
-        .select('*')
-        .eq('equipment_id', item.id)
-        .or(`and(start_date.lte.${formData.endDate},end_date.gte.${formData.startDate})`);
+      const {
+        data,
+        error
+      } = await supabase.from('equipment_unavailability').select('*').eq('equipment_id', item.id).or(`and(start_date.lte.${formData.endDate},end_date.gte.${formData.startDate})`);
       if (!error && data && data.length > 0) {
         unavailable.add(item.id);
       }
@@ -54,7 +60,6 @@ const Cotizador = () => {
     setUnavailableEquipment(unavailable);
     setCheckingAvailability(false);
   };
-
   const days = useMemo(() => {
     if (!formData.startDate || !formData.endDate) return 1;
     const start = new Date(formData.startDate);
@@ -62,9 +67,7 @@ const Cotizador = () => {
     const diff = differenceInDays(end, start);
     return Math.max(1, diff);
   }, [formData.startDate, formData.endDate]);
-
   const totalAmount = calculateSubtotal(days);
-
   const handleSubmit = (e: React.FormEvent, sendVia: 'email' | 'whatsapp') => {
     e.preventDefault();
 
@@ -118,8 +121,12 @@ Teléfono: ${formData.phone}
 ${formData.company ? `Empresa: ${formData.company}` : ''}
 
 📅 FECHAS RESERVA:
-Inicio: ${format(new Date(formData.startDate), 'dd/MM/yyyy', { locale: es })}
-Fin: ${format(new Date(formData.endDate), 'dd/MM/yyyy', { locale: es })}
+Inicio: ${format(new Date(formData.startDate), 'dd/MM/yyyy', {
+      locale: es
+    })}
+Fin: ${format(new Date(formData.endDate), 'dd/MM/yyyy', {
+      locale: es
+    })}
 Días totales: ${days}
 
 🎬 EQUIPOS SOLICITADOS:
@@ -133,7 +140,6 @@ ${formData.comments ? `📝 COMENTARIOS:\n${formData.comments}\n` : ''}
 Los precios y disponibilidad deben confirmarse.
 Contactar cliente para coordinar entrega/retiro.
     `.trim();
-
     if (sendVia === 'whatsapp') {
       const whatsappNumber = "541147180732";
       const encodedMessage = encodeURIComponent(message);
@@ -153,18 +159,15 @@ Contactar cliente para coordinar entrega/retiro.
       });
     }
   };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-
-  return (
-    <div className="min-h-screen pt-14 sm:pt-16 bg-background">
+  return <div className="min-h-screen pt-14 sm:pt-16 bg-background">
       {/* Hero Section */}
-      <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20 border-b border-border bg-foreground px-4 sm:px-8">
+      <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20 border-b border-border px-4 sm:px-8 bg-foreground">
         <div className="container mx-auto text-left px-0">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-4 sm:mb-6 lg:text-7xl px-0 my-0 mt-0 mx-0">ARMÁ TU PRESUPUESTO</h1>
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl">
@@ -179,22 +182,14 @@ Contactar cliente para coordinar entrega/retiro.
           
           {/* 1. Sección Cliente Nuevo */}
           <Card className="mb-6 sm:mb-8 border-2 border-primary bg-primary/5">
-            <CardContent className="py-4 sm:py-6">
+            <CardContent className="py-4 sm:py-6 bg-foreground text-background">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <UserPlus className="h-6 w-6 sm:h-8 sm:w-8 text-primary flex-shrink-0" />
                   <h2 className="font-heading text-lg sm:text-xl lg:text-2xl">¿Sos cliente nuevo?</h2>
                 </div>
-                <Button 
-                  asChild 
-                  size="lg" 
-                  className="w-full sm:w-auto"
-                >
-                  <a 
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSf1JuBZQnlUe_-lGfKMzmaNI9386GKhpg32y54IpqBjpQk0hA/viewform" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                  >
+                <Button asChild size="lg" className="w-full sm:w-auto">
+                  <a href="https://docs.google.com/forms/d/e/1FAIpQLSf1JuBZQnlUe_-lGfKMzmaNI9386GKhpg32y54IpqBjpQk0hA/viewform" target="_blank" rel="noopener noreferrer">
                     REGISTRATE
                   </a>
                 </Button>
@@ -213,17 +208,13 @@ Contactar cliente para coordinar entrega/retiro.
                   </div>
                   <CollapsibleTrigger asChild>
                     <Button variant="ghost" size="sm" className="flex items-center gap-2">
-                      {isHowItWorksOpen ? (
-                        <>
+                      {isHowItWorksOpen ? <>
                           <span className="hidden sm:inline">Menos</span>
                           <ChevronUp className="h-5 w-5" />
-                        </>
-                      ) : (
-                        <>
+                        </> : <>
                           <span className="hidden sm:inline">Más</span>
                           <ChevronDown className="h-5 w-5" />
-                        </>
-                      )}
+                        </>}
                     </Button>
                   </CollapsibleTrigger>
                 </div>
@@ -278,88 +269,56 @@ Contactar cliente para coordinar entrega/retiro.
                     {items.length === 0 ? 'Tu carrito está vacío' : `${items.length} ${items.length === 1 ? 'equipo' : 'equipos'} seleccionados`}
                   </CardDescription>
                 </div>
-                {items.length > 0 && (
-                  <Button variant="outline" size="sm" onClick={clearCart} className="w-full sm:w-auto">
+                {items.length > 0 && <Button variant="outline" size="sm" onClick={clearCart} className="w-full sm:w-auto">
                     Vaciar carrito
-                  </Button>
-                )}
+                  </Button>}
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              {items.length === 0 ? (
-                <div className="text-center py-12 border border-dashed border-foreground/20">
+              {items.length === 0 ? <div className="text-center py-12 border border-dashed border-foreground/20">
                   <ShoppingCart className="h-16 w-16 mx-auto mb-4 opacity-20" />
                   <p className="font-heading text-xl mb-2">Todavía no hay equipos en tu lista</p>
                   <p className="text-muted-foreground mb-4">Explorá el catálogo y sumá lo que necesitás.</p>
                   <Button asChild className="w-full sm:w-auto">
                     <a href="/equipos">VER CATÁLOGO</a>
                   </Button>
-                </div>
-              ) : (
-                <>
-                  {unavailableEquipment.size > 0 && (
-                    <Alert variant="destructive" className="mb-4">
+                </div> : <>
+                  {unavailableEquipment.size > 0 && <Alert variant="destructive" className="mb-4">
                       <AlertCircle className="h-4 w-4" />
                       <AlertDescription>
                         Algunos equipos no están disponibles en las fechas seleccionadas. Elimínalos del carrito para continuar.
                       </AlertDescription>
-                    </Alert>
-                  )}
+                    </Alert>}
                   {items.map(item => {
-                    const isUnavailable = unavailableEquipment.has(item.id);
-                    return (
-                      <Card key={item.id} className={`overflow-hidden ${isUnavailable ? 'border-destructive border-2' : ''}`}>
+                const isUnavailable = unavailableEquipment.has(item.id);
+                return <Card key={item.id} className={`overflow-hidden ${isUnavailable ? 'border-destructive border-2' : ''}`}>
                         <div className="grid grid-cols-1 sm:grid-cols-[80px_1fr_auto] gap-4 p-4">
                           {/* Image */}
                           <div className="aspect-square w-20 sm:w-full bg-muted overflow-hidden relative mx-auto sm:mx-0">
-                            {item.imageUrl ? (
-                              <img 
-                                src={item.imageUrl} 
-                                alt={item.name} 
-                                className={`w-full h-full object-cover ${isUnavailable ? 'grayscale opacity-50' : 'grayscale'}`} 
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center bg-muted">
+                            {item.imageUrl ? <img src={item.imageUrl} alt={item.name} className={`w-full h-full object-cover ${isUnavailable ? 'grayscale opacity-50' : 'grayscale'}`} /> : <div className="w-full h-full flex items-center justify-center bg-muted">
                                 <span className="text-xs font-heading opacity-20">IMG</span>
-                              </div>
-                            )}
-                            {isUnavailable && (
-                              <div className="absolute inset-0 flex items-center justify-center bg-destructive/20">
+                              </div>}
+                            {isUnavailable && <div className="absolute inset-0 flex items-center justify-center bg-destructive/20">
                                 <AlertCircle className="h-6 w-6 text-destructive" />
-                              </div>
-                            )}
+                              </div>}
                           </div>
 
                           {/* Info */}
                           <div className="space-y-2 text-center sm:text-left">
                             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2">
                               <h3 className="font-heading text-lg uppercase">{item.name}</h3>
-                              {isUnavailable && (
-                                <Badge variant="destructive" className="text-xs">
+                              {isUnavailable && <Badge variant="destructive" className="text-xs">
                                   NO DISPONIBLE
-                                </Badge>
-                              )}
+                                </Badge>}
                             </div>
                             {item.brand && <p className="text-sm text-muted-foreground font-mono">{item.brand}</p>}
                             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
                               <div className="flex items-center gap-2 border-2 border-foreground">
-                                <Button 
-                                  variant="ghost" 
-                                  size="icon" 
-                                  className="h-8 w-8" 
-                                  onClick={() => updateQuantity(item.id, item.quantity - 1)} 
-                                  disabled={isUnavailable}
-                                >
+                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={isUnavailable}>
                                   -
                                 </Button>
                                 <span className="font-heading w-8 text-center">{item.quantity}</span>
-                                <Button 
-                                  variant="ghost" 
-                                  size="icon" 
-                                  className="h-8 w-8" 
-                                  onClick={() => updateQuantity(item.id, item.quantity + 1)} 
-                                  disabled={isUnavailable}
-                                >
+                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQuantity(item.id, item.quantity + 1)} disabled={isUnavailable}>
                                   +
                                 </Button>
                               </div>
@@ -370,28 +329,19 @@ Contactar cliente para coordinar entrega/retiro.
                             <div className="font-heading text-xl text-primary">
                               ${(item.pricePerDay * item.quantity * days).toLocaleString()}
                             </div>
-                            {isUnavailable && (
-                              <p className="text-xs text-destructive">
+                            {isUnavailable && <p className="text-xs text-destructive">
                                 Este equipo tiene periodos de mantenimiento/reserva en las fechas seleccionadas
-                              </p>
-                            )}
+                              </p>}
                           </div>
 
                           {/* Remove */}
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            onClick={() => removeItem(item.id)} 
-                            className="text-destructive hover:text-destructive mx-auto sm:mx-0"
-                          >
+                          <Button variant="ghost" size="icon" onClick={() => removeItem(item.id)} className="text-destructive hover:text-destructive mx-auto sm:mx-0">
                             <X className="h-5 w-5" />
                           </Button>
                         </div>
-                      </Card>
-                    );
-                  })}
-                </>
-              )}
+                      </Card>;
+              })}
+                </>}
             </CardContent>
           </Card>
 
@@ -418,13 +368,11 @@ Contactar cliente para coordinar entrega/retiro.
                   <Input id="endDate" name="endDate" type="date" value={formData.endDate} onChange={handleChange} min={formData.startDate} required className="w-full" />
                 </div>
               </div>
-              {formData.startDate && formData.endDate && (
-                <div className="p-4 bg-primary/10 border-2 border-primary">
+              {formData.startDate && formData.endDate && <div className="p-4 bg-primary/10 border-2 border-primary">
                   <p className="font-heading text-2xl text-center">
                     {days} {days === 1 ? 'DÍA' : 'DÍAS'}
                   </p>
-                </div>
-              )}
+                </div>}
             </CardContent>
           </Card>
 
@@ -492,23 +440,12 @@ Contactar cliente para coordinar entrega/retiro.
               </div>
               
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <Button 
-                  onClick={e => handleSubmit(e, 'whatsapp')} 
-                  size="lg" 
-                  className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white border-3 border-foreground" 
-                  disabled={items.length === 0}
-                >
+                <Button onClick={e => handleSubmit(e, 'whatsapp')} size="lg" className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white border-3 border-foreground" disabled={items.length === 0}>
                   <Send className="mr-2 h-5 w-5" />
                   ENVIAR POR WHATSAPP
                 </Button>
                 
-                <Button 
-                  onClick={e => handleSubmit(e, 'email')} 
-                  variant="outline" 
-                  size="lg" 
-                  className="w-full" 
-                  disabled={items.length === 0}
-                >
+                <Button onClick={e => handleSubmit(e, 'email')} variant="outline" size="lg" className="w-full" disabled={items.length === 0}>
                   <Mail className="mr-2 h-5 w-5" />
                   ENVIAR POR EMAIL
                 </Button>
@@ -518,8 +455,6 @@ Contactar cliente para coordinar entrega/retiro.
 
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default Cotizador;
