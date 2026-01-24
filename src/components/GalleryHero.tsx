@@ -7,9 +7,7 @@ import { useParallax } from "@/hooks/useParallax";
 interface GalleryHeroProps {
   space: Space;
 }
-export const GalleryHero = ({
-  space
-}: GalleryHeroProps) => {
+export const GalleryHero = ({ space }: GalleryHeroProps) => {
   const [muted, setMuted] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [videoOrientation, setVideoOrientation] = useState<"horizontal" | "vertical" | null>(null);
@@ -18,11 +16,11 @@ export const GalleryHero = ({
   // Parallax para desktop
   const videoParallax = useParallax({
     speed: 0.6,
-    direction: "up"
+    direction: "up",
   });
   const contentParallax = useParallax({
     speed: 0.4,
-    direction: "down"
+    direction: "down",
   });
   useEffect(() => {
     const checkDevice = () => {
@@ -49,7 +47,7 @@ export const GalleryHero = ({
         transform: "translate(-50%, -50%)",
         objectFit: "cover",
         width: "100%",
-        height: "100%"
+        height: "100%",
       };
     }
     const baseStyles: React.CSSProperties = {
@@ -57,24 +55,27 @@ export const GalleryHero = ({
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
-      objectFit: "cover"
+      objectFit: "cover",
     };
 
     // Video vertical: ancho 100%, alto automático
     // Video horizontal: alto 100%, ancho automático
-    return videoOrientation === "vertical" ? {
-      ...baseStyles,
-      width: "100vw",
-      height: "auto",
-      minHeight: "100%"
-    } : {
-      ...baseStyles,
-      height: "100vh",
-      width: "auto",
-      minWidth: "100%"
-    };
+    return videoOrientation === "vertical"
+      ? {
+          ...baseStyles,
+          width: "100vw",
+          height: "auto",
+          minHeight: "100%",
+        }
+      : {
+          ...baseStyles,
+          height: "100vh",
+          width: "auto",
+          minWidth: "100%",
+        };
   };
-  return <section className="relative h-screen justify-between bg-foreground">
+  return (
+    <section className="relative h-screen justify-between bg-foreground">
       {/* Desktop: 2 Column Layout */}
       <div className="hidden lg:grid lg:grid-cols-2 w-full h-screen">
         {/* Left Column: Text Content */}
@@ -97,71 +98,121 @@ export const GalleryHero = ({
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-foreground lg:text-8xl">
                 {space.hero_title || space.name}
               </h1>
-              {space.location && <div className="flex items-left gap-2 px-4 py-2 rounded-lg border-2 bg-background border-foreground border-solid">
+              {space.location && (
+                <div className="flex items-left gap-2 px-4 py-2 rounded-lg border-2 bg-background border-foreground border-solid">
                   <MapPin className="h-5 w-5 text-input" />
                   <span className="font-heading text-foreground">{space.location}</span>
-                </div>}
+                </div>
+              )}
               <p className="text-sm sm:text-base max-w-2xl font-heading leading-tight font-bold my-[64px] text-foreground md:text-2xl mb-[32px]">
                 {space.hero_subtitle || space.description}
               </p>
             </div>
-          </div>
-          {/* Features - 2 columns */}
-          {space.features && Array.isArray(space.features) && space.features.length > 0 && <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-[48px]">
-              {(space.features as string[]).map((feature, index) => <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  {feature}
-                </p>)}
-            </div>}
 
-          {/* Discount */}
-          {space.discount_text && <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 rounded-none">
-              <Sparkles className="h-5 w-5 text-primary" />
-              <span className="font-heading font-bold text-primary text-xl">{space.discount_text}</span>¿
-            </div>}
+            {/* Features - 2 columns */}
+            {space.features && Array.isArray(space.features) && space.features.length > 0 && (
+              <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-[48px]">
+                {(space.features as string[]).map((feature, index) => (
+                  <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
+                    <span className="text-primary">•</span>
+                    {feature}
+                  </p>
+                ))}
+              </div>
+            )}
 
-          {/* CTA Button */}
-          <div>
-            <Button variant="default" size="lg" asChild className="text-lg w-full max-w-fit">
-              <Link to="/contacto">
-                <Calendar className="mr-2 h-5 w-5" />
-                {space.cta_text || "RESERVAR BLOQUE"}
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
+            {/* Discount */}
+            {space.discount_text && (
+              <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 rounded-none">
+                <Sparkles className="h-5 w-5 text-primary" />
+                <span className="font-heading font-bold text-primary text-xl">{space.discount_text}</span>¿
+              </div>
+            )}
+
+            {/* CTA Button */}
+            <div>
+              <Button variant="default" size="lg" asChild className="text-lg w-full max-w-fit">
+                <Link to="/contacto">
+                  <Calendar className="mr-2 h-5 w-5" />
+                  {space.cta_text || "RESERVAR BLOQUE"}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
         {/* Right Column: Video with Parallax */}
-        {space.video_url ? <div ref={videoParallax.ref as any} className="h-screen overflow-hidden relative duotone-hover-group">
-            <video ref={videoRef} src={space.video_url} className="video-duotone w-full object-cover" style={{
-          height: "130%",
-          position: "absolute",
-          top: "0",
-          left: "0",
-          ...videoParallax.style
-        }} autoPlay loop muted={muted} playsInline onLoadedMetadata={handleLoadedMetadata} />
-            <button onClick={() => setMuted(!muted)} className="absolute top-4 right-4 z-20 p-3 backdrop-blur-sm rounded-full transition-colors my-[64px] bg-transparent border-0 text-background" aria-label={muted ? "Activar sonido" : "Silenciar"}>
-              {muted ? <VolumeX className="h-5 w-5 text-foreground" /> : <Volume2 className="h-5 w-5 text-foreground" />}
+        {space.video_url ? (
+          <div ref={videoParallax.ref as any} className="h-screen overflow-hidden relative duotone-hover-group">
+            <video
+              ref={videoRef}
+              src={space.video_url}
+              className="video-duotone w-full object-cover"
+              style={{
+                height: "130%",
+                position: "absolute",
+                top: "0",
+                left: "0",
+                ...videoParallax.style,
+              }}
+              autoPlay
+              loop
+              muted={muted}
+              playsInline
+              onLoadedMetadata={handleLoadedMetadata}
+            />
+            <button
+              onClick={() => setMuted(!muted)}
+              className="absolute top-4 right-4 z-20 p-3 backdrop-blur-sm rounded-full transition-colors my-[64px] bg-transparent border-0 text-background"
+              aria-label={muted ? "Activar sonido" : "Silenciar"}
+            >
+              {muted ? (
+                <VolumeX className="h-5 w-5 text-foreground" />
+              ) : (
+                <Volume2 className="h-5 w-5 text-foreground" />
+              )}
             </button>
-          </div> : <div className="relative w-full h-full bg-muted flex items-center justify-center">
+          </div>
+        ) : (
+          <div className="relative w-full h-full bg-muted flex items-center justify-center">
             <p className="text-muted-foreground font-heading">Video no disponible</p>
-          </div>}
+          </div>
+        )}
       </div>
 
       {/* Mobile: Video background with overlaid content - pattern from HomeVideoHeroSlider */}
       <div className="lg:hidden h-screen relative">
         {/* Video de fondo completo */}
-        {space.video_url && <div className="relative duotone-hover-group" style={{
-        width: "100vw",
-        height: "100vh",
-        overflow: "hidden"
-      }}>
-            <video ref={videoRef} src={space.video_url} className="video-duotone" style={getMobileVideoStyles()} autoPlay loop muted={muted} playsInline onLoadedMetadata={handleLoadedMetadata} />
-          </div>}
+        {space.video_url && (
+          <div
+            className="relative duotone-hover-group"
+            style={{
+              width: "100vw",
+              height: "100vh",
+              overflow: "hidden",
+            }}
+          >
+            <video
+              ref={videoRef}
+              src={space.video_url}
+              className="video-duotone"
+              style={getMobileVideoStyles()}
+              autoPlay
+              loop
+              muted={muted}
+              playsInline
+              onLoadedMetadata={handleLoadedMetadata}
+            />
+          </div>
+        )}
 
         {/* Content overlay with backdrop-blur */}
         <div className="absolute inset-0 flex items-end justify-center pb-[64px]">
-          <div ref={contentParallax.ref as any} style={contentParallax.style} className="backdrop-blur-lg bg-background/40 rounded-lg mx-4 px-6 py-8 max-w-lg">
+          <div
+            ref={contentParallax.ref as any}
+            style={contentParallax.style}
+            className="backdrop-blur-lg bg-background/40 rounded-lg mx-4 px-6 py-8 max-w-lg"
+          >
             {/* Price Badge */}
             <div className="flex items-center gap-2 text-primary px-4 py-2 rounded-lg w-fit bg-foreground mb-4">
               <span className="font-bold font-heading text-background text-base">
@@ -174,10 +225,12 @@ export const GalleryHero = ({
             <h1 className="font-heading font-bold text-foreground text-4xl mb-2">{space.hero_title || space.name}</h1>
 
             {/* Location */}
-            {space.location && <div className="flex items-center gap-2 rounded-lg border-2 bg-background border-foreground px-3 py-1 mb-4 w-fit">
+            {space.location && (
+              <div className="flex items-center gap-2 rounded-lg border-2 bg-background border-foreground px-3 py-1 mb-4 w-fit">
                 <MapPin className="h-4 w-4 text-input" />
                 <span className="font-heading text-foreground text-sm">{space.location}</span>
-              </div>}
+              </div>
+            )}
 
             {/* Subtitle */}
             <p className="font-heading text-foreground leading-tight font-medium text-base mb-4">
@@ -185,18 +238,24 @@ export const GalleryHero = ({
             </p>
 
             {/* Features - 2 columns */}
-            {space.features && Array.isArray(space.features) && space.features.length > 0 && <div className="grid grid-cols-2 gap-x-4 gap-y-1 mb-4">
-                {(space.features as string[]).map((feature, index) => <p key={index} className="text-xs text-muted-foreground font-heading flex items-start gap-2">
+            {space.features && Array.isArray(space.features) && space.features.length > 0 && (
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1 mb-4">
+                {(space.features as string[]).map((feature, index) => (
+                  <p key={index} className="text-xs text-muted-foreground font-heading flex items-start gap-2">
                     <span className="text-primary">•</span>
                     {feature}
-                  </p>)}
-              </div>}
+                  </p>
+                ))}
+              </div>
+            )}
 
             {/* Discount */}
-            {space.discount_text && <div className="inline-flex items-center gap-2 border-2 border-primary px-3 py-1.5 rounded-lg mb-4">
+            {space.discount_text && (
+              <div className="inline-flex items-center gap-2 border-2 border-primary px-3 py-1.5 rounded-lg mb-4">
                 <Sparkles className="h-4 w-4 text-primary" />
                 <span className="font-heading font-bold text-primary text-lg">{space.discount_text}</span>
-              </div>}
+              </div>
+            )}
 
             {/* CTA Button */}
             <Button variant="default" size="lg" asChild className="w-full">
@@ -210,9 +269,16 @@ export const GalleryHero = ({
         </div>
 
         {/* Mute Button for mobile */}
-        {space.video_url && <button onClick={() => setMuted(!muted)} className="absolute top-4 right-4 z-20 p-3 backdrop-blur-sm transition-colors mt-[60px] bg-transparent border-0 rounded-none" aria-label={muted ? "Activar sonido" : "Silenciar"}>
+        {space.video_url && (
+          <button
+            onClick={() => setMuted(!muted)}
+            className="absolute top-4 right-4 z-20 p-3 backdrop-blur-sm transition-colors mt-[60px] bg-transparent border-0 rounded-none"
+            aria-label={muted ? "Activar sonido" : "Silenciar"}
+          >
             {muted ? <VolumeX className="h-5 w-5 text-background" /> : <Volume2 className="h-5 w-5 text-background" />}
-          </button>}
+          </button>
+        )}
       </div>
-    </section>;
+    </section>
+  );
 };
