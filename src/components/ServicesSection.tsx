@@ -40,19 +40,37 @@ const ServiceSlide = ({
   index
 }: ServiceSlideProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const mediaParallax = useParallax({
     speed: 0.6,
     direction: "up"
   });
-  // Parallax más lento para el texto - permanece visible más tiempo
-  const textParallax = useParallax({
-    speed: 0.15,
-    direction: "up",
-    offset: 100 // Offset inicial para que empiece más arriba
-  });
   const isVideo = service.section_media_type === "video" && service.section_video_url;
   const mediaUrl = isVideo ? service.section_video_url : service.image_url;
   const hasMedia = mediaUrl && mediaUrl.trim() !== "";
+
+  // Handle mobile tap to toggle video play/pause and duotone
+  const handleMobileTap = (e: React.MouseEvent) => {
+    const target = e.target as Element;
+    // Don't toggle if tapping on buttons/links
+    if (target.closest('a, button')) return;
+    
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+      }
+    }
+    
+    // Toggle duotone class for images (videos are handled by useDuotoneTap)
+    if (!isVideo && containerRef.current) {
+      const img = containerRef.current.querySelector('.image-duotone');
+      if (img) {
+        img.classList.toggle('duotone-tap-active');
+      }
+    }
+  };
   return <div className="flex-[0_0_100%] min-w-0 h-screen">
       {/* Desktop: 2 columnas - imagen izquierda, texto derecha con blur */}
       <div className="hidden lg:grid lg:grid-cols-2 h-full">
@@ -69,10 +87,10 @@ const ServiceSlide = ({
             </div>}
         </div>
 
-        {/* Columna derecha: Texto con fondo y parallax lento - mismo contenido que ServiceSection */}
-        <div className="flex-col h-full p-8 lg:p-12 xl:p-16 overflow-hidden flex items-start justify-start bg-background">
-          <div ref={textParallax.ref as any} className="max-w-xl text-foreground space-y-6" style={textParallax.style}>
-            <div className="space-y-4">
+        {/* Columna derecha: Texto con fondo - sin parallax para mantener visibilidad */}
+        <div className="flex-col h-full p-8 lg:p-12 xl:p-16 overflow-y-auto flex items-start justify-center bg-background">
+          <div className="max-w-xl text-foreground space-y-4">
+            <div className="space-y-3">
               <span className="font-heading text-sm text-muted-foreground uppercase tracking-wider">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
@@ -83,51 +101,57 @@ const ServiceSlide = ({
 
             {service.description && <p className="text-sm sm:text-base leading-tight text-foreground">{service.description}</p>}
 
-            {service.bullets && service.bullets.length > 0 && <ul className="space-y-3">
+            {service.bullets && service.bullets.length > 0 && <ul className="space-y-2">
                 {service.bullets.map((bullet, i) => <li key={i} className="flex items-start gap-3">
                     <Check className="h-5 w-5 mt-0.5 text-primary flex-shrink-0" />
                     <span className="text-sm sm:text-base text-foreground">{bullet}</span>
                   </li>)}
               </ul>}
 
-            {service.cta_label && service.cta_url && <div className="pt-4">
+            {(service.cta_label || service.button_text) && (service.cta_url || service.button_link) && <div className="pt-2">
                 <Button asChild size="lg" className="font-heading uppercase">
-                  <Link to={service.cta_url}>{service.cta_label}</Link>
+                  <Link to={service.cta_url || service.button_link!}>{service.cta_label || service.button_text}</Link>
                 </Button>
               </div>}
           </div>
         </div>
       </div>
       {/* Mobile: Media de fondo con texto superpuesto */}
-      <div className="lg:hidden h-screen relative">
+      <div 
+        ref={containerRef}
+        className="lg:hidden h-screen relative duotone-hover-group"
+        onClick={handleMobileTap}
+      >
         {/* Media de fondo */}
-        <div className="absolute inset-0 duotone-hover-group">
-          {hasMedia ? isVideo ? <video src={mediaUrl!} className="video-duotone w-full h-full object-cover" autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" /> : <div className="w-full h-full bg-muted flex items-center justify-center">
+        <div className="absolute inset-0">
+          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone w-full h-full object-cover" autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" /> : <div className="w-full h-full bg-muted flex items-center justify-center">
               <span className="font-heading text-6xl text-muted-foreground/30">
                 {String(index + 1).padStart(2, "0")}
               </span>
             </div>}
         </div>
 
-        {/* Overlay oscuro */}
-        <div className="absolute inset-0 bg-foreground/40" />
+        {/* Overlay oscuro - pointer-events-none para permitir toques al video */}
+        <div className="absolute inset-0 bg-foreground/40 pointer-events-none" />
 
-        {/* Contenido con blur */}
-        <div className="absolute inset-0 p-6 flex items-center justify-center my-[32px] px-[32px]">
-          <div className="backdrop-blur-md p-6 w-full bg-background/30 text-foreground py-[40px] px-[32px] mx-[16px]">
-            <span className="text-xs font-heading uppercase tracking-wider mb-1 block text-destructive">
+        {/* Contenido con blur - pointer-events-none excepto en botones */}
+        <div className="absolute inset-0 p-4 flex items-end justify-center pb-[80px] pointer-events-none">
+          <div className="backdrop-blur-md p-4 w-full bg-background/30 text-foreground">
+            <span className="text-xs font-heading uppercase tracking-wider mb-1 block text-primary">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
-            <h3 className="font-heading uppercase leading-tight mb-2 text-foreground text-3xl">{service.title}</h3>
-            {service.description && <p className="text-sm mb-4 leading-relaxed line-clamp-3 text-foreground font-medium py-[8px]">
+            <h3 className="font-heading uppercase leading-tight mb-2 text-foreground text-2xl">{service.title}</h3>
+            {service.description && <p className="text-sm mb-3 leading-relaxed line-clamp-2 text-foreground font-medium">
                 {service.description}
               </p>}
-            {service.button_text && service.button_link && <Button asChild variant="default" size="sm">
-                <Link to={service.button_link}>
-                  {service.button_text}
+            {(service.button_text || service.cta_label) && (service.button_link || service.cta_url) && (
+              <Button asChild variant="default" size="sm" className="pointer-events-auto">
+                <Link to={service.button_link || service.cta_url!}>
+                  {service.button_text || service.cta_label}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
-              </Button>}
+              </Button>
+            )}
           </div>
         </div>
       </div>
