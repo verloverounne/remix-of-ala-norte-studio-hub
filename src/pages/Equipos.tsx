@@ -314,7 +314,7 @@ const Equipos = () => {
 
           {/* Row 2: Equipment count + Search button on right */}
           {/* Row 2: Equipment count + Search button on right */}
-          <div className="flex items-center mb-2">
+          <div className="flex items-center mb-2 pflex flex-wrap gap-2 flex-1">
             <p className="text-xs text-muted-foreground font-heading uppercase">
               Mostrando {filteredEquipment.length} equipos
             </p>
