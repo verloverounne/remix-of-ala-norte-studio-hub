@@ -261,7 +261,7 @@ export const ServicesSection = () => {
   }
   return <section className="relative bg-background">
       <div className="pb-[24px] px-0 text-foreground sm:mx-0 mx-0 sm:py-[24px] py-0 bg-[#423c38] pt-[32px]">
-        <h2 className="pt-[36px] bg-inherit mx-[32px] n font-sans text-center sm:text-3xl text-base font-thin text-background py-0">
+        <h2 className="pt-[36px] bg-inherit mx-[32px] n font-sans text-center sm:text-3xl text-base font-thin text-background GAP-X-4">
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
       </div>
@@ -273,7 +273,7 @@ export const ServicesSection = () => {
             <div className="sm:hidden overflow-hidden" ref={tabsRef}>
               <div className="flex">
                 {services.map((service, index) => <div key={service.id} className="flex-[0_0_auto] min-w-[120px] px-0">
-                    <button onClick={() => handleTabClick(index)} className={cn("w-full font-heading text-xs uppercase transition-all text-center px-4 py-[16px] whitespace-nowrap", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
+                    <button onClick={() => handleTabClick(index)} className={cn("w-full font-heading text-xs uppercase transition-all text-center whitespace-nowrap py-0 px-0", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
                       {service.title}
                     </button>
                   </div>)}
