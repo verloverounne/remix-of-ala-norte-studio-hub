@@ -107,7 +107,7 @@ const ServiceSlide = ({
                   </li>)}
               </ul>}
 
-            {(service.cta_label || service.button_text) && (service.cta_url || service.button_link) && <div className="pt-16">
+            {(service.cta_label || service.button_text) && (service.cta_url || service.button_link) && <div className="pt-16 pb-64 mx-32 ">
                 <Button asChild size="lg" className="font-heading uppercase">
                   <Link to={service.cta_url || service.button_link!}>{service.cta_label || service.button_text}</Link>
                 </Button>
@@ -130,13 +130,13 @@ const ServiceSlide = ({
         <div className="absolute inset-0 bg-foreground/40 pointer-events-none z-[1]" />
 
         {/* Contenido con blur - scrollable container */}
-        <div className="relative z-10 min-h-screen flex items-end justify-center px-4 pb-24 pt-20">
+        <div className="relative z-10 min-h-screen flex items-end justify-center pb-24 pt-20 px-[32px]">
           <div className="backdrop-blur-lg p-6 w-full bg-background/40 text-foreground max-h-[70vh] overflow-y-auto mx-[24px]">
             <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
             <h3 className="font-heading uppercase leading-tight mb-3 text-foreground text-2xl">{service.title}</h3>
-            {service.description && <p className="text-sm mb-4 leading-relaxed text-foreground font-medium">{service.description}</p>}
+            {service.description && <p className="text-sm mb-4 leading-relaxed text-foreground font-sm mb-base lg-medium">{service.description}</p>}
 
             {/* Bullets list - fully visible */}
             {service.bullets && service.bullets.length > 0 && <ul className="space-y-2 mb-4">
