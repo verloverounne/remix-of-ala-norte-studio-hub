@@ -1,98 +1,72 @@
 
-## Plan: Corregir Sección de Servicios - Mobile y Desktop
 
-### Problema 1: Hover/Tap no quita el filtro duotone en mobile
+## Plan: Convertir los Tabs de Servicios en un Slider Sincronizado con Snap-to-Center
 
-**Causa raíz:** Los elementos superpuestos (overlay + contenido con blur) interceptan los toques antes de que lleguen al video.
+### Objetivo
+Transformar los botones de servicios móviles en un slider horizontal donde:
+1. El usuario puede deslizar los tabs horizontalmente
+2. Los tabs hacen "snap" al centro de la pantalla
+3. El tab que queda centrado activa automáticamente el slide correspondiente
 
-**Solución:**
-1. Agregar `pointer-events: none` al overlay oscuro y al contenedor de contenido en mobile
-2. Usar `pointer-events: auto` solo en los elementos interactivos (botones, links)
-3. Mover el `duotone-hover-group` para que cubra toda el área táctil, no solo el media
+### Cambios Técnicos en `src/components/ServicesSection.tsx`
 
-```tsx
-{/* Overlay oscuro - no intercepta toques */}
-<div className="absolute inset-0 bg-foreground/40 pointer-events-none" />
+#### 1. Crear un segundo Embla Carousel para los tabs móviles
+- Usar `useEmblaCarousel` con opciones de centrado:
+  ```typescript
+  const [tabsRef, tabsApi] = useEmblaCarousel({
+    loop: false,
+    align: "center",
+    containScroll: false,
+    dragFree: false
+  });
+  ```
 
-{/* Contenido - no intercepta toques excepto botones */}
-<div className="absolute inset-0 ... pointer-events-none">
-  <div className="...">
-    {/* Buttons need pointer-events-auto */}
-    <Button className="pointer-events-auto" ...>
-```
+#### 2. Sincronizar ambos carruseles bidirecionalmente
+- Cuando el usuario desliza los tabs y uno queda centrado, activar el slide principal:
+  ```typescript
+  useEffect(() => {
+    if (!tabsApi) return;
+    const onTabSelect = () => {
+      const selectedTab = tabsApi.selectedScrollSnap();
+      setActiveIndex(selectedTab);
+      emblaApi?.scrollTo(selectedTab);
+    };
+    tabsApi.on("select", onTabSelect);
+    return () => tabsApi.off("select", onTabSelect);
+  }, [tabsApi, emblaApi]);
+  ```
 
-### Problema 2: Play/Pause no funciona on touch
+- Cuando cambia el slide principal (por flechas o swipe), mover los tabs:
+  ```typescript
+  useEffect(() => {
+    if (!emblaApi || !tabsApi) return;
+    tabsApi.scrollTo(activeIndex);
+  }, [activeIndex, tabsApi]);
+  ```
 
-**Causa raíz:** Mismo que arriba - los toques no llegan al video.
-
-**Solución adicional:**
-1. Modificar el contenedor mobile para que el tap en cualquier parte (excepto CTA) active el video
-2. Agregar un handler manual `onClick` en el contenedor principal que:
-   - Detecte si es touch device
-   - Toggle play/pause del video
-   - Toggle la clase `duotone-tap-active`
-
-```tsx
-const handleMobileTap = (e: React.MouseEvent) => {
-  const target = e.target as Element;
-  // Si es un botón/link, no hacer nada
-  if (target.closest('a, button')) return;
-  
-  // Toggle video play/pause
-  if (videoRef.current) {
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-    } else {
-      videoRef.current.pause();
-    }
-  }
-};
-```
-
-### Problema 3: Contenido derecho no visible completo (desktop + mobile)
-
-**Desktop:**
-1. Cambiar `justify-start` a `justify-center` en la columna derecha
-2. Reducir la velocidad del parallax del texto o eliminarlo
-3. Agregar `overflow-y-auto` si el contenido es muy largo
-
-**Mobile:**
-1. El CTA usa `button_text`/`button_link` pero debería usar también `cta_label`/`cta_url` como fallback
-2. Reducir padding y márgenes para que quepa todo
-3. Posicionar el contenido más arriba (cambiar `items-center justify-center` a `items-end pb-[100px]`)
-
-```tsx
-{/* Desktop - columna derecha */}
-<div className="flex-col h-full p-8 lg:p-12 xl:p-16 overflow-hidden 
-                flex items-start justify-center bg-background">
-  {/* Remover parallax del texto o hacerlo más sutil */}
-  <div className="max-w-xl text-foreground space-y-4">
-    ...
+#### 3. Estilos para el slider de tabs móviles
+- Cada tab como slide individual con ancho fijo:
+  ```jsx
+  <div className="flex-[0_0_auto] min-w-[120px] px-2">
+    <button className="w-full whitespace-nowrap ...">
+      {service.title}
+    </button>
   </div>
-</div>
+  ```
+- CSS scroll-snap para centrado suave:
+  ```css
+  scroll-snap-type: x mandatory;
+  scroll-snap-align: center;
+  ```
 
-{/* Mobile - posicionar contenido visible */}
-<div className="absolute inset-0 p-6 flex items-end justify-center pb-[100px] pointer-events-none">
-  <div className="backdrop-blur-md p-4 w-full bg-background/30 ...">
-    ...
-    {/* Usar cta_label/cta_url como fallback */}
-    {(service.button_text || service.cta_label) && 
-     (service.button_link || service.cta_url) && (
-      <Button asChild className="pointer-events-auto">
-        <Link to={service.button_link || service.cta_url!}>
-          {service.button_text || service.cta_label}
-        </Link>
-      </Button>
-    )}
-  </div>
-</div>
-```
+#### 4. Indicador visual del tab activo/centrado
+- El tab centrado tendrá estilos destacados (bg-primary)
+- Los tabs laterales tendrán estilos secundarios para indicar que se puede seguir deslizando
 
-### Resumen de cambios en `ServicesSection.tsx`:
+### Resultado Esperado
+- En mobile, el usuario desliza los tabs como un carrusel
+- El tab que queda centrado activa automáticamente su slide
+- Tocar un tab también funciona para activar su slide
+- Las flechas del carrusel principal también mueven los tabs
+- Experiencia fluida y sincronizada entre navegación y contenido
 
-1. **Línea 60-70 (desktop):** Ajustar `justify-center` y reducir/eliminar parallax del texto
-2. **Línea 104 (mobile):** Agregar `onClick` handler para toggle video
-3. **Línea 113 (overlay):** Agregar `pointer-events-none`
-4. **Línea 116 (contenido):** Agregar `pointer-events-none` y cambiar posición a `items-end pb-[100px]`
-5. **Línea 125-130 (CTA mobile):** Usar fallback `cta_label`/`cta_url` y agregar `pointer-events-auto`
-6. **Reducir espaciado** en mobile para que todo el contenido sea visible
