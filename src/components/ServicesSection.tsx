@@ -278,8 +278,8 @@ export const ServicesSection = () => {
               </div>
             </div>
             {/* Desktop: horizontal row */}
-            <div className="hidden gap-2 mb-[32px] mx-0 sm:flex flex mb:justify-between lg:justify-between">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs transition-all rounded-none shadow-none", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground border border-border hover:bg-muted")}>
+            <div className="hidden gap-2 mb-[32px] mx-0 sm:flex flex mb:justify-between lg:justify-between object-fill ">
+              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("px-3 py-1.5 font-heading text-xs transition-all rounded-none shadow-none ", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground border border-border hover:bg-muted")}>
                   {service.title}
                 </button>)}
             </div>
