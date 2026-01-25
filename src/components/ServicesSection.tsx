@@ -258,13 +258,13 @@ export const ServicesSection = () => {
     return null;
   }
   return <section className="relative bg-background">
-      <div className="pb-[24px] px-0 text-foreground sm:mx-0 mx-0 sm:py-[24px] py-0 pt-[32px] bg-[#201e1d] border-0">
-        <h2 className="pt-[36px] bg-inherit font-sans text-center text-sm mb:text-2x1 lg:text-3xl font-thin text-background mx-0">
+      <div className="pb-[24px] px-0 text-foreground sm:py-[24px] py-0 pt-[32px] bg-[#201e1d] border-0">
+        <h2 className="pt-[36px] font-sans text-center text-sm mb:text-2x1 lg:text-3xl font-thin text-background mx-0 bg-transparent">
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
-      <div className="z-30 mm my-0 bg-[#d9d1ce]">
+      <div className="z-30 mm my-0 ">
         <div className="container bg-[#201e1d] border-0">
           <div className="mx-0 border-0 sm:py-0 bg-transparent py-0 pt-0">
             {/* Mobile: Embla carousel for tabs with snap-to-center */}
