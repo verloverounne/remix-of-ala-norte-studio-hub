@@ -136,7 +136,7 @@ const ServiceSlide = ({
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
             <h3 className="font-heading uppercase leading-tight mb-3 text-foreground text-2xl">{service.title}</h3>
-            {service.description && <p className="text-sm mb-4 leading-relaxed text-foreground font-sm mb-base lg-medium">{service.description}</p>}
+            {service.description && <p className="mb-4 leading-relaxed text-foreground font-sm mb-base lg-medium text-xs">{service.description}</p>}
 
             {/* Bullets list - fully visible */}
             {service.bullets && service.bullets.length > 0 && <ul className="space-y-2 mb-4">
