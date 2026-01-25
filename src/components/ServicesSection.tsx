@@ -155,7 +155,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
               <video
                 ref={videoRef}
                 src={mediaUrl!}
-                className="video-duotone w-full h-1/9 object-cover"
+                className="video-duotone w-full h-1/8 object-cover"
                 autoPlay
                 loop
                 muted
