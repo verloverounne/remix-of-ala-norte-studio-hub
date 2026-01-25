@@ -130,7 +130,7 @@ const ServiceSlide = ({
         <div className="absolute inset-0 bg-foreground/40 pointer-events-none z-[1]" />
 
         {/* Contenido con blur - scrollable container */}
-        <div className="relative z-10 min-h-screen flex items-end justify-center pb-24 pt-20 px-[32px]">
+        <div className="relative z-10 min-h-screen pb-24 pt-20 px-[32px] flex items-center justify-center">
           <div className="backdrop-blur-lg p-6 w-full bg-background/40 text-foreground max-h-[70vh] overflow-y-auto mx-[24px]">
             <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
               Servicio {String(index + 1).padStart(2, "0")}
