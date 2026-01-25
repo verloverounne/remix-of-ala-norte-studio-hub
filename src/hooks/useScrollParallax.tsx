@@ -2,17 +2,21 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 interface UseScrollParallaxOptions {
   enabled?: boolean;
+  /** Factor de velocidad: >1 = más lento, <1 = más rápido. Default: 1.5 */
+  speedFactor?: number;
 }
 
 /**
  * Hook para calcular el progreso de scroll dentro de un contenedor
- * para crear efectos parallax basados en scroll
+ * para crear efectos parallax basados en scroll.
+ * Optimizado con requestAnimationFrame y throttling.
  */
 export const useScrollParallax = (options: UseScrollParallaxOptions = {}) => {
-  const { enabled = true } = options;
+  const { enabled = true, speedFactor = 1.5 } = options;
   const containerRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const ticking = useRef(false);
+  const lastProgress = useRef(0);
 
   const updateProgress = useCallback(() => {
     if (!containerRef.current || !enabled) return;
@@ -21,29 +25,35 @@ export const useScrollParallax = (options: UseScrollParallaxOptions = {}) => {
     const screenHeight = window.innerHeight;
     
     // scrolled = cuánto ha entrado el contenedor en la pantalla
-    // Cuando rect.top = screenHeight, el contenedor está justo debajo del viewport (scrolled = 0)
-    // Cuando rect.top = 0, el contenedor está en el top del viewport (scrolled = screenHeight)
-    // Cuando rect.top = -screenHeight, hemos scrolleado una pantalla dentro del contenedor
     const scrolled = screenHeight - rect.top;
     
-    // Normalizamos para que progress vaya de 0 a 1 durante el primer 100vh de scroll
-    // Progress = 0: contenedor recién entra
-    // Progress = 1: hemos scrolleado 100vh dentro del contenedor
-    const normalizedProgress = Math.max(0, Math.min(1, scrolled / screenHeight));
+    // Usamos speedFactor para hacer la aparición más lenta
+    // speedFactor > 1 significa que necesitamos más scroll para llegar a progress=1
+    const scrollRange = screenHeight * speedFactor;
+    const rawProgress = scrolled / scrollRange;
     
-    setProgress(normalizedProgress);
-  }, [enabled]);
+    // Aplicamos easing para una aparición más suave (ease-out)
+    const easedProgress = Math.max(0, Math.min(1, rawProgress));
+    
+    // Solo actualizar si el cambio es significativo (>0.5% de diferencia)
+    // Esto evita re-renders innecesarios
+    if (Math.abs(easedProgress - lastProgress.current) > 0.005) {
+      lastProgress.current = easedProgress;
+      setProgress(easedProgress);
+    }
+  }, [enabled, speedFactor]);
 
   useEffect(() => {
     if (!enabled) return;
 
     const handleScroll = () => {
+      // Throttle con RAF: solo un cálculo por frame
       if (!ticking.current) {
+        ticking.current = true;
         window.requestAnimationFrame(() => {
           updateProgress();
           ticking.current = false;
         });
-        ticking.current = true;
       }
     };
 
