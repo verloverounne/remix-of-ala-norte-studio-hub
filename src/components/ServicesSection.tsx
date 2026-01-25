@@ -273,7 +273,7 @@ export const ServicesSection = () => {
             <div className="sm:hidden overflow-hidden" ref={tabsRef}>
               <div className="flex items-center justify-center">
                 {services.map((service, index) => <div key={service.id} className="flex-[0_0_auto] min-w-[120px] px-0 mx-[2px] border-[#bcb5ae]">
-                    <button onClick={() => handleTabClick(index)} className={cn("w-full font-heading text-xs uppercase transition-all text-center px-[8px] py-[8px]", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
+                    <button onClick={() => handleTabClick(index)} className={cn("w-full font-heading text-xs uppercase transition-all text-center px-[8px] py-[8px] border border-destructive", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
                       {service.title}
                     </button>
                   </div>)}
