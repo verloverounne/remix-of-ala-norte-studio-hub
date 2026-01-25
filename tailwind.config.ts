@@ -1,7 +1,8 @@
 import type { Config } from "tailwindcss";
 
 export default {
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+    darkMode: ["class"],
+    content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
   	container: {
@@ -102,12 +103,12 @@ export default {
   			sm: 'var(--radius)',
   			none: '0'
   		},
-		borderWidth: {
-			'2': '1px',
-			'3': '1px',
-			'4': '1px',
-			'8': '1px'
-		},
+  		borderWidth: {
+  			'2': '1px',
+  			'3': '1px',
+  			'4': '1px',
+  			'8': '1px'
+  		},
   		boxShadow: {
   			brutal: 'var(--shadow-brutal)',
   			'brutal-sm': 'var(--shadow-brutal-sm)',
@@ -174,12 +175,16 @@ export default {
   			shimmer: {
   				'100%': {
   					transform: 'translateX(100%)'
-				}
+  				}
   			},
-			'bounce-x': {
-				'0%, 100%': { transform: 'translateX(0)' },
-				'50%': { transform: 'translateX(25%)' }
-			}
+  			'bounce-x': {
+  				'0%, 100%': {
+  					transform: 'translateX(0)'
+  				},
+  				'50%': {
+  					transform: 'translateX(25%)'
+  				}
+  			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.3s ease-out',
@@ -187,9 +192,9 @@ export default {
   			'fade-in': 'fade-in 0.5s ease-out',
   			'fade-in-up': 'fade-in-up 0.6s ease-out',
   			'slide-in': 'slide-in 0.4s ease-out',
-			'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
-			shimmer: 'shimmer 1.5s infinite',
-			'bounce-x': 'bounce-x 1s ease-in-out infinite'
+  			'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
+  			shimmer: 'shimmer 1.5s infinite',
+  			'bounce-x': 'bounce-x 1s ease-in-out infinite'
   		}
   	}
   },
