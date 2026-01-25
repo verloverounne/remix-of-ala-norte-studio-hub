@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
 import { useParallax } from "@/hooks/useParallax";
+import { useScrollParallax } from "@/hooks/useScrollParallax";
 import type { Json } from "@/integrations/supabase/types";
 const parseBullets = (bullets: Json | null): string[] => {
   if (!bullets) return [];
@@ -40,11 +41,14 @@ const ServiceSlide = ({
   index
 }: ServiceSlideProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const mediaParallax = useParallax({
     speed: 0.6,
     direction: "up"
   });
+  
+  // Hook para scroll-driven parallax en mobile
+  const { containerRef, contentStyle } = useScrollParallax();
+  
   const isVideo = service.section_media_type === "video" && service.section_video_url;
   const mediaUrl = isVideo ? service.section_video_url : service.image_url;
   const hasMedia = mediaUrl && mediaUrl.trim() !== "";
@@ -62,7 +66,7 @@ const ServiceSlide = ({
       }
     }
 
-    // Toggle duotone class for images (videos are handled by useDuotoneTap)
+    // Toggle duotone class for images
     if (!isVideo && containerRef.current) {
       const img = containerRef.current.querySelector(".image-duotone");
       if (img) {
@@ -115,10 +119,10 @@ const ServiceSlide = ({
           </div>
         </div>
       </div>
-      {/* Mobile: Media de fondo sticky con contenido que sube por parallax */}
+      {/* Mobile: Media de fondo sticky con contenido que sube por parallax basado en scroll */}
       <div ref={containerRef} className="lg:hidden h-[200vh] relative">
-        {/* Media de fondo - sticky para mantenerse visible */}
-        <div className="sticky top-0 h-screen duotone-hover-group" onClick={handleMobileTap}>
+        {/* Media de fondo - sticky para mantenerse visible (z-0) */}
+        <div className="sticky top-0 h-screen z-0 duotone-hover-group" onClick={handleMobileTap}>
           {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone w-full h-full object-cover" autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" /> : <div className="w-full h-full bg-muted flex items-center justify-center">
               <span className="font-heading text-6xl text-muted-foreground/30">
                 {String(index + 1).padStart(2, "0")}
@@ -129,10 +133,16 @@ const ServiceSlide = ({
           <div className="absolute inset-0 bg-foreground/40 pointer-events-none" />
         </div>
 
-        {/* Contenido con parallax - arranca abajo y sube */}
-        <div className="sticky bottom-0 z-10 pointer-events-none" style={{ marginTop: '-100vh' }}>
+        {/* Contenido con parallax basado en scroll - z-10 para estar encima del video */}
+        <div 
+          className="sticky bottom-0 z-10 pointer-events-none" 
+          style={{ 
+            marginTop: '-100vh',
+            ...contentStyle 
+          }}
+        >
           <div className="h-screen flex items-end justify-center pb-8 px-4">
-            <div className="backdrop-blur-lg p-6 w-full bg-background/40 text-foreground max-h-[70vh] overflow-y-auto mx-4 pointer-events-auto animate-slide-up-parallax">
+            <div className="backdrop-blur-lg p-6 w-full bg-background/40 text-foreground max-h-[70vh] overflow-y-auto mx-4 pointer-events-auto">
               <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
