@@ -163,11 +163,22 @@ export const ServicesSection = () => {
   const [services, setServices] = useState<HomeService[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  
+  // Main content carousel
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     align: "start",
     skipSnaps: false
   });
+  
+  // Mobile tabs carousel with center alignment
+  const [tabsRef, tabsApi] = useEmblaCarousel({
+    loop: false,
+    align: "center",
+    containScroll: false,
+    dragFree: false
+  });
+
   useEffect(() => {
     const fetchServices = async () => {
       const {
@@ -189,21 +200,27 @@ export const ServicesSection = () => {
     };
     fetchServices();
   }, []);
+
   const scrollTo = useCallback((index: number) => {
     if (emblaApi) {
       emblaApi.scrollTo(index);
     }
   }, [emblaApi]);
+
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
   }, [emblaApi]);
+
   const scrollNext = useCallback(() => {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
+
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     setActiveIndex(emblaApi.selectedScrollSnap());
   }, [emblaApi]);
+
+  // Sync main carousel events
   useEffect(() => {
     if (!emblaApi) return;
     onSelect();
@@ -214,9 +231,31 @@ export const ServicesSection = () => {
       emblaApi.off("reInit", onSelect);
     };
   }, [emblaApi, onSelect]);
+
+  // Sync tabs carousel when user swipes tabs (mobile)
+  useEffect(() => {
+    if (!tabsApi) return;
+    const onTabSelect = () => {
+      const selectedTab = tabsApi.selectedScrollSnap();
+      setActiveIndex(selectedTab);
+      emblaApi?.scrollTo(selectedTab);
+    };
+    tabsApi.on("select", onTabSelect);
+    return () => {
+      tabsApi.off("select", onTabSelect);
+    };
+  }, [tabsApi, emblaApi]);
+
+  // Sync tabs position when main carousel changes (arrows, swipe)
+  useEffect(() => {
+    if (!tabsApi) return;
+    tabsApi.scrollTo(activeIndex);
+  }, [activeIndex, tabsApi]);
+
   const handleTabClick = (index: number) => {
     setActiveIndex(index);
     scrollTo(index);
+    tabsApi?.scrollTo(index);
   };
   if (loading) {
     return <section className="min-h-[500px] lg:min-h-[700px] bg-background flex items-center justify-center">
@@ -236,11 +275,25 @@ export const ServicesSection = () => {
       <div className="z-30 my-0 pb-0 px-[32px] mx-0 py-[12px] border-0 bg-transparent">
         <div className="container px-0 mx-0">
           <div className="mx-0 border-0 sm:py-0 bg-transparent py-0 pt-[16px]">
-            {/* Mobile: horizontal scroll, no wrap */}
-            <div className="gap-1 sm:hidden flex flex-row overflow-x-auto scrollbar-hide">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("flex-shrink-0 font-heading text-xs uppercase transition-all text-center px-4 py-[16px] whitespace-nowrap", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
-                  {service.title}
-                </button>)}
+            {/* Mobile: Embla carousel for tabs with snap-to-center */}
+            <div className="sm:hidden overflow-hidden" ref={tabsRef}>
+              <div className="flex">
+                {services.map((service, index) => (
+                  <div key={service.id} className="flex-[0_0_auto] min-w-[120px] px-1">
+                    <button
+                      onClick={() => handleTabClick(index)}
+                      className={cn(
+                        "w-full font-heading text-xs uppercase transition-all text-center px-4 py-[16px] whitespace-nowrap",
+                        activeIndex === index
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-background text-foreground hover:bg-muted"
+                      )}
+                    >
+                      {service.title}
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
             {/* Desktop: horizontal row */}
             <div className="hidden gap-2 mb-[32px] mx-0 sm:flex items-center justify-center">
