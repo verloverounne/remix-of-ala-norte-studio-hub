@@ -45,10 +45,12 @@ const ServiceSlide = ({
     speed: 0.6,
     direction: "up"
   });
-  
+
   // Hook para scroll-driven parallax en mobile
-  const { containerRef, contentStyle } = useScrollParallax();
-  
+  const {
+    containerRef,
+    contentStyle
+  } = useScrollParallax();
   const isVideo = service.section_media_type === "video" && service.section_video_url;
   const mediaUrl = isVideo ? service.section_video_url : service.image_url;
   const hasMedia = mediaUrl && mediaUrl.trim() !== "";
@@ -134,14 +136,11 @@ const ServiceSlide = ({
         </div>
 
         {/* Contenido con parallax basado en scroll - z-10 para estar encima del video */}
-        <div 
-          className="sticky bottom-0 z-10 pointer-events-none" 
-          style={{ 
-            marginTop: '-100vh',
-            ...contentStyle 
-          }}
-        >
-          <div className="h-screen flex items-end justify-center pb-8 px-4">
+        <div className="sticky bottom-0 z-10 pointer-events-none" style={{
+        marginTop: '-100vh',
+        ...contentStyle
+      }}>
+          <div className="h-screen pb-8 px-4 flex items-center justify-center">
             <div className="backdrop-blur-lg p-6 w-full bg-background/40 text-foreground max-h-[70vh] overflow-y-auto mx-4 pointer-events-auto">
               <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
                 Servicio {String(index + 1).padStart(2, "0")}
