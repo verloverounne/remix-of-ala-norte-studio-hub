@@ -260,7 +260,7 @@ export const ServicesSection = () => {
     return null;
   }
   return <section className="relative bg-background">
-      <div className="pb-[24px] px-0 text-foreground sm:mx-0 mx-0 sm:py-[24px] py-0 bg-[#423c38] pt-[32px]">
+      <div className="pb-[24px] px-0 text-foreground sm:mx-0 mx-0 sm:py-[24px] py-0 pt-[32px] bg-[#2e2c29]">
         <h2 className="pt-[36px] bg-inherit mx-[32px] n font-sans text-center sm:text-3xl text-base font-thin text-background GAP-X-4">
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
