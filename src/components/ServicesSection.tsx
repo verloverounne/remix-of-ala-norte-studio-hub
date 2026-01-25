@@ -278,7 +278,7 @@ export const ServicesSection = () => {
               </div>
             </div>
             {/* Desktop: horizontal row */}
-            <div className="hidden my-px mx-px sm:flex flex mb:justify-between lg:justify-between object-fill ">
+            <div className="hidden my-px mx-px flex mb:justify-between object-fill gap-0 sm:flex items-center lg:justify-between">
               {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-screen font-heading text-xs transition-all rounded-none shadow-none px-0 py-[16px]", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground border border-border hover:bg-muted")}>
                   {service.title}
                 </button>)}
