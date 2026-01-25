@@ -162,7 +162,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
                 playsInline
               />
             ) : (
-              <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" />
+              <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-9/1 object-cover" />
             )
           ) : (
             <div className="w-full h-full bg-muted flex items-center justify-center">
@@ -178,20 +178,20 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
 
         {/* Contenido con parallax basado en scroll - z-10 para estar encima del video */}
         <div
-          className="sticky bottom-0 z-10 pointer-events-none"
+          className="sticky bottom-1 z-10 pointer-events-none"
           style={{
-            marginTop: "-150vh",
+            marginTop: "-180vh",
             ...contentStyle,
           }}
         >
           <div className="h-screen pb-8 px-4 flex items-center justify-center">
-            <div className="backdrop-blur-lg p-6 w-full bg-background/40 text-foreground max-h-[70vh] overflow-y-auto mx-4 pointer-events-auto">
+            <div className="backdrop-blur-lg p-6 w-full bg-background/40 text-foreground max-h-[50vh] overflow-y-auto mx-4 pointer-events-auto">
               <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
               <h3 className="font-heading uppercase leading-tight mb-3 text-foreground text-2xl">{service.title}</h3>
               {service.description && (
-                <p className="mb-4 leading-relaxed text-foreground font-sm mb-base lg-medium text-xs">
+                <p className="mb-4 leading-relaxed text-foreground font-sm text-xs mb-sm lg-medium">
                   {service.description}
                 </p>
               )}
