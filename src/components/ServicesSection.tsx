@@ -120,30 +120,52 @@ const ServiceSlide = ({
       <div 
         ref={containerRef}
         className="lg:hidden min-h-screen relative duotone-hover-group"
-        onClick={handleMobileTap}
       >
-        {/* Media de fondo - fixed position */}
-        <div className="fixed inset-0 z-0">
-          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone w-full h-full object-cover" autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" /> : <div className="w-full h-full bg-muted flex items-center justify-center">
+        {/* Media de fondo - absolute para mantener interacción */}
+        <div 
+          className="absolute inset-0 z-0"
+          onClick={handleMobileTap}
+        >
+          {hasMedia ? isVideo ? (
+            <video 
+              ref={videoRef} 
+              src={mediaUrl!} 
+              className="video-duotone w-full h-full object-cover" 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+            />
+          ) : (
+            <img 
+              src={mediaUrl!} 
+              alt={service.title} 
+              className="image-duotone w-full h-full object-cover" 
+            />
+          ) : (
+            <div className="w-full h-full bg-muted flex items-center justify-center">
               <span className="font-heading text-6xl text-muted-foreground/30">
                 {String(index + 1).padStart(2, "0")}
               </span>
-            </div>}
+            </div>
+          )}
         </div>
 
         {/* Overlay oscuro - pointer-events-none */}
-        <div className="fixed inset-0 bg-foreground/40 pointer-events-none z-0" />
+        <div className="absolute inset-0 bg-foreground/40 pointer-events-none z-[1]" />
 
         {/* Contenido con blur - scrollable container */}
-        <div className="relative z-10 min-h-screen flex items-end justify-center px-4 pb-24 pt-20 pointer-events-none">
-          <div className="backdrop-blur-lg p-6 w-full bg-background/40 text-foreground max-h-[70vh] overflow-y-auto pointer-events-auto">
+        <div className="relative z-10 min-h-screen flex items-end justify-center px-4 pb-24 pt-20">
+          <div className="backdrop-blur-lg p-6 w-full bg-background/40 text-foreground max-h-[70vh] overflow-y-auto">
             <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
             <h3 className="font-heading uppercase leading-tight mb-3 text-foreground text-2xl">{service.title}</h3>
-            {service.description && <p className="text-sm mb-4 leading-relaxed text-foreground font-medium">
+            {service.description && (
+              <p className="text-sm mb-4 leading-relaxed text-foreground font-medium">
                 {service.description}
-              </p>}
+              </p>
+            )}
             
             {/* Bullets list - fully visible */}
             {service.bullets && service.bullets.length > 0 && (
@@ -158,7 +180,7 @@ const ServiceSlide = ({
             )}
             
             {(service.button_text || service.cta_label) && (service.button_link || service.cta_url) && (
-              <Button asChild variant="default" size="sm" className="pointer-events-auto">
+              <Button asChild variant="default" size="sm">
                 <Link to={service.button_link || service.cta_url!}>
                   {service.button_text || service.cta_label}
                   <ArrowRight className="ml-2 h-4 w-4" />
