@@ -227,18 +227,18 @@ export const ServicesSection = () => {
     return null;
   }
   return <section className="relative bg-background">
-      <div className="pt-[60px] pb-[24px] px-0 bg-background text-foreground sm:mx-0 mx-0 sm:py-[24px] py-[12px]">
-        <h2 className="pt-[36px] bg-inherit text-foreground mx-[32px] n font-sans text-center sm:text-3xl text-base py-[12px] font-thin">
+      <div className="pb-[24px] px-0 text-foreground sm:mx-0 mx-0 sm:py-[24px] py-0 bg-[#423c38] pt-[32px]">
+        <h2 className="pt-[36px] bg-inherit mx-[32px] n font-sans text-center sm:text-3xl text-base font-thin text-background py-0">
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
       <div className="z-30 my-0 pb-0 px-[32px] mx-0 py-[12px] border-0 bg-transparent">
         <div className="container px-0 mx-0">
-          <div className="mx-0 border-0 sm:py-0 pt-[48px] bg-transparent py-0">
+          <div className="mx-0 border-0 sm:py-0 bg-transparent py-0 pt-[16px]">
             {/* Mobile: vertical stack, full width */}
-            <div className="flex flex-col gap-1 sm:hidden">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full px-3 py-2 font-heading text-xs uppercase transition-all text-center BORDER", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
+            <div className="gap-1 sm:hidden flex flex-row">
+              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full font-heading text-xs uppercase transition-all text-center BORDER px-0 py-[16px]", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
                   {service.title}
                 </button>)}
             </div>
