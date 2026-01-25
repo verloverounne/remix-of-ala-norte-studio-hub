@@ -260,20 +260,20 @@ export const ServicesSection = () => {
     return null;
   }
   return <section className="relative bg-background">
-      <div className="pb-[24px] px-0 text-foreground sm:mx-0 mx-0 sm:py-[24px] py-0 pt-[32px] bg-[#2e2c29]">
+      <div className="pb-[24px] px-0 text-foreground sm:mx-0 mx-0 sm:py-[24px] py-0 pt-[32px] bg-[#201e1d]">
         <h2 className="pt-[36px] bg-inherit mx-[32px] n font-sans text-center sm:text-3xl text-base font-thin text-background GAP-X-4">
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
       <div className="z-30 my-0 pb-0 mx-0 border-0 bg-transparent px-0 py-0">
-        <div className="container bg-[#d9d1ce]">
+        <div className="container bg-[#201e1d]">
           <div className="mx-0 border-0 sm:py-0 bg-transparent py-0 pt-0">
             {/* Mobile: Embla carousel for tabs with snap-to-center */}
             <div className="sm:hidden overflow-hidden" ref={tabsRef}>
               <div className="flex items-center justify-center">
                 {services.map((service, index) => <div key={service.id} className="flex-[0_0_auto] min-w-[120px] px-0 mx-[2px] border-[#bcb5ae]">
-                    <button onClick={() => handleTabClick(index)} className={cn("w-full font-heading text-xs uppercase transition-all text-center px-[8px] py-[8px] border border-destructive", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
+                    <button onClick={() => handleTabClick(index)} className={cn("w-full font-heading text-xs uppercase transition-all text-center py-[8px] border px-[4px] mx-[6px] bg-[#2e2c29] border-[#2e2c29] text-[#fbf2ee]", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
                       {service.title}
                     </button>
                   </div>)}
