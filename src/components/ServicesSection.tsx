@@ -87,7 +87,7 @@ const ServiceSlide = ({
         </div>
 
         {/* Columna derecha: Texto con fondo - sin parallax para mantener visibilidad */}
-        <div className="flex-col h-full p-8 lg:p-12 xl:p-16 overflow-y-auto flex items-start justify-center bg-background">
+        <div className="flex-col h-full p-8 lg:p-12 xl:p-16 overflow-y-auto bg-background flex items-center justify-center">
           <div className="max-w-xl text-foreground space-y-4">
             <div className="space-y-3">
               <span className="font-heading text-sm text-muted-foreground uppercase tracking-wider">
@@ -107,7 +107,7 @@ const ServiceSlide = ({
                   </li>)}
               </ul>}
 
-            {(service.cta_label || service.button_text) && (service.cta_url || service.button_link) && <div className="pt-2">
+            {(service.cta_label || service.button_text) && (service.cta_url || service.button_link) && <div className="pt-16">
                 <Button asChild size="lg" className="font-heading uppercase">
                   <Link to={service.cta_url || service.button_link!}>{service.cta_label || service.button_text}</Link>
                 </Button>
@@ -259,7 +259,7 @@ export const ServicesSection = () => {
   }
   return <section className="relative bg-background">
       <div className="pb-[24px] px-0 text-foreground sm:py-[24px] py-0 pt-[32px] bg-[#201e1d] border-0">
-        <h2 className="pt-[36px] font-sans text-center text-sm mb:text-2x1 lg:text-3xl font-thin text-background mx-0 bg-transparent">
+        <h2 className="pt-[36px] font-sans text-center text-sm mb:text-2x1 lg:text-3xl font-thin text-background bg-transparent mx-[3px] px-[16px]">
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
       </div>
