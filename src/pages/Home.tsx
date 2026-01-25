@@ -109,7 +109,7 @@ const CTASection = () => {
 
       {/* Content overlay */}
       <div className="relative z-10 container mx-auto px-4 flex">
-        <div ref={contentParallax.ref as any} style={contentParallax.style} className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] bg-[#423c38]/50">
+        <div ref={contentParallax.ref as any} style={contentParallax.style} className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] bg-[#423c38]/50 pt-[64px]">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6 my-0 px-0 font-extrabold text-[#fbf2ee]">¿Tenés un rodaje en mente?</h2>
           <p className="text-sm mb-6 font-heading leading-tight my-[6px] sm:mb-[57px] px-0 font-normal sm:text-lg text-[#fbf2ee]">
             Contanos qué querés filmar y armamos una propuesta de equipamiento a medida.
