@@ -115,43 +115,45 @@ const ServiceSlide = ({
           </div>
         </div>
       </div>
-      {/* Mobile: Media de fondo con texto superpuesto - scrollable content */}
-      <div ref={containerRef} className="lg:hidden min-h-screen relative duotone-hover-group">
-        {/* Media de fondo - absolute para mantener interacción */}
-        <div className="absolute inset-0 z-0" onClick={handleMobileTap}>
+      {/* Mobile: Media de fondo sticky con contenido que sube por parallax */}
+      <div ref={containerRef} className="lg:hidden h-[200vh] relative">
+        {/* Media de fondo - sticky para mantenerse visible */}
+        <div className="sticky top-0 h-screen duotone-hover-group" onClick={handleMobileTap}>
           {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone w-full h-full object-cover" autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" /> : <div className="w-full h-full bg-muted flex items-center justify-center">
               <span className="font-heading text-6xl text-muted-foreground/30">
                 {String(index + 1).padStart(2, "0")}
               </span>
             </div>}
+          
+          {/* Overlay oscuro */}
+          <div className="absolute inset-0 bg-foreground/40 pointer-events-none" />
         </div>
 
-        {/* Overlay oscuro - pointer-events-none */}
-        <div className="absolute inset-0 bg-foreground/40 pointer-events-none z-[1]" />
+        {/* Contenido con parallax - arranca abajo y sube */}
+        <div className="sticky bottom-0 z-10 pointer-events-none" style={{ marginTop: '-100vh' }}>
+          <div className="h-screen flex items-end justify-center pb-8 px-4">
+            <div className="backdrop-blur-lg p-6 w-full bg-background/40 text-foreground max-h-[70vh] overflow-y-auto mx-4 pointer-events-auto animate-slide-up-parallax">
+              <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
+                Servicio {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3 className="font-heading uppercase leading-tight mb-3 text-foreground text-2xl">{service.title}</h3>
+              {service.description && <p className="mb-4 leading-relaxed text-foreground font-sm mb-base lg-medium text-xs">{service.description}</p>}
 
-        {/* Contenido con blur - scrollable container */}
-        <div className="relative z-10 min-h-screen pb-24 pt-20 px-[32px] flex items-center justify-center">
-          <div className="backdrop-blur-lg p-6 w-full bg-background/40 text-foreground max-h-[70vh] overflow-y-auto mx-[24px]">
-            <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
-              Servicio {String(index + 1).padStart(2, "0")}
-            </span>
-            <h3 className="font-heading uppercase leading-tight mb-3 text-foreground text-2xl">{service.title}</h3>
-            {service.description && <p className="mb-4 leading-relaxed text-foreground font-sm mb-base lg-medium text-xs">{service.description}</p>}
+              {/* Bullets list - fully visible */}
+              {service.bullets && service.bullets.length > 0 && <ul className="space-y-2 mb-4">
+                  {service.bullets.map((bullet, i) => <li key={i} className="flex items-start gap-2">
+                      <Check className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
+                      <span className="text-sm text-foreground">{bullet}</span>
+                    </li>)}
+                </ul>}
 
-            {/* Bullets list - fully visible */}
-            {service.bullets && service.bullets.length > 0 && <ul className="space-y-2 mb-4">
-                {service.bullets.map((bullet, i) => <li key={i} className="flex items-start gap-2">
-                    <Check className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
-                    <span className="text-sm text-foreground">{bullet}</span>
-                  </li>)}
-              </ul>}
-
-            {(service.button_text || service.cta_label) && (service.button_link || service.cta_url) && <Button asChild variant="default" size="sm">
-                <Link to={service.button_link || service.cta_url!}>
-                  {service.button_text || service.cta_label}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>}
+              {(service.button_text || service.cta_label) && (service.button_link || service.cta_url) && <Button asChild variant="default" size="sm">
+                  <Link to={service.button_link || service.cta_url!}>
+                    {service.button_text || service.cta_label}
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>}
+            </div>
           </div>
         </div>
       </div>
