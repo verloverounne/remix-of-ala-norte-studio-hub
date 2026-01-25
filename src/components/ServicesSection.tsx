@@ -236,9 +236,9 @@ export const ServicesSection = () => {
       <div className="z-30 my-0 pb-0 px-[32px] mx-0 py-[12px] border-0 bg-transparent">
         <div className="container px-0 mx-0">
           <div className="mx-0 border-0 sm:py-0 bg-transparent py-0 pt-[16px]">
-            {/* Mobile: vertical stack, full width */}
-            <div className="gap-1 sm:hidden flex flex-row">
-              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("w-full font-heading text-xs uppercase transition-all text-center BORDER px-0 py-[16px]", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
+            {/* Mobile: horizontal scroll, no wrap */}
+            <div className="gap-1 sm:hidden flex flex-row overflow-x-auto scrollbar-hide">
+              {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("flex-shrink-0 font-heading text-xs uppercase transition-all text-center px-4 py-[16px] whitespace-nowrap", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-muted")}>
                   {service.title}
                 </button>)}
             </div>
