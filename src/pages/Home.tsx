@@ -111,7 +111,7 @@ const CTASection = () => {
       <div className="relative z-10 container mx-auto px-4 flex">
         <div ref={contentParallax.ref as any} style={contentParallax.style} className="max-w-2xl p-6 backdrop-blur-lg rounded-lg backdrop-blur-lg py-[68px] mx-[16px] px-[24px]">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6 my-0 px-0 font-extrabold text-[#fbf2ee]">¿Tenés un rodaje en mente?</h2>
-          <p className="text-sm mb-6 font-heading leading-tight my-[6px] sm:mb-[57px] px-0 text-background font-normal sm:text-lg">
+          <p className="text-sm mb-6 font-heading leading-tight my-[6px] sm:mb-[57px] px-0 font-normal sm:text-lg text-[#fbf2ee]">
             Contanos qué querés filmar y armamos una propuesta de equipamiento a medida.
           </p>
           <Button asChild variant="default" size="lg">
