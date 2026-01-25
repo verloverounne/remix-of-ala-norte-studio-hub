@@ -160,7 +160,7 @@ const HeroSlideComponent = ({
         </div>
 
         <div className="absolute inset-0 flex items-end justify-center mb-[64px]">
-          <div ref={contentParallax.ref as any} style={contentParallax.style} className="backdrop-blur-lg text-center text-background/px-8 pl-[32px] pb-[32px] my-[16px]">
+          <div ref={contentParallax.ref as any} style={contentParallax.style} className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px]">
             <h1 className="text-background md:text-6xl font-bold mb-2 text-4xl py-[32px] pt-[32px]">{slide.title}</h1>
             <p className="text-background mb-4 text-sm font-medium">{slide.subtitle}</p>
             {slide.cta_label && slide.cta_link && <Link to={slide.cta_link}>
@@ -254,7 +254,7 @@ export const HomeVideoHeroSlider = () => {
         </button>}
 
       {/* Logo centrado en la parte superior */}
-      <div className="absolute top-2 left-0 right-0 z-20 flex justify-center">
+      <div className="absolute top-2 left-0 right-0 z-20 flex justify-center mt-24 md:mt-px lg:mt-8 lg:mb-12">
         <img src={heroLogo} alt="Ala Norte Logo" className="object-contain w-[20vw]" />
       </div>
       {/* Navigation dots */}
