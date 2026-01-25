@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Moon, Sun, ShoppingCart, LogOut, MessageCircle } from "lucide-react";
+import { Menu, X, LogOut, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/hooks/useCart";
@@ -34,24 +34,6 @@ const navigation = [
 ];
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    // Detectar tema inicial: localStorage > default light
-    if (typeof window !== "undefined") {
-      const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
-      if (savedTheme) {
-        // Aplicar inmediatamente al detectar
-        if (savedTheme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-        return savedTheme;
-      }
-      // Default: light mode - asegurar que no tenga clase dark
-      document.documentElement.classList.remove("dark");
-    }
-    return "light"; // Default: light mode
-  });
   const { isVisible, setIsVisible, isHovering, setIsHovering, isMobile } = useHeaderVisibility();
   const location = useLocation();
   const navigate = useNavigate();
@@ -60,16 +42,6 @@ export const Header = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const autoCloseTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Sincronizar tema con DOM al montar y cuando cambia
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    localStorage.setItem("theme", theme);
-  }, [theme]);
 
   // Keep visible when mobile menu is open
   useEffect(() => {
@@ -121,16 +93,6 @@ export const Header = () => {
       setMobileMenuOpen(false);
     }, 5000);
   }, []);
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    if (newTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
   const handleMouseEnter = () => {
     setIsHovering(true);
     setIsVisible(true);
@@ -213,19 +175,6 @@ export const Header = () => {
                 </a>
               </Button>
 
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleTheme}
-                className="hidden sm:inline-flex h-10 w-10 xl:h-12 xl:w-12"
-                aria-label={theme === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"}
-              >
-                {theme === "light" ? (
-                  <Moon className="h-4 w-4 sm:h-5 sm:w-5" />
-                ) : (
-                  <Sun className="h-4 w-4 sm:h-5 sm:w-5" />
-                )}
-              </Button>
 
               {user && isAdmin ? (
                 <>
@@ -317,24 +266,6 @@ export const Header = () => {
                   WHATSAPP
                 </a>
 
-                <div className="flex items-center justify-between px-4 py-3 bg-background">
-                  <span className="font-heading text-sm text-foreground">MODO</span>
-                  <button
-                    type="button"
-                    onClick={toggleTheme}
-                    className="h-10 w-10 flex items-center justify-center touch-manipulation bg-muted rounded"
-                    aria-label={theme === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"}
-                    style={{
-                      WebkitTapHighlightColor: "transparent",
-                    }}
-                  >
-                    {theme === "light" ? (
-                      <Moon className="h-5 w-5 text-foreground" />
-                    ) : (
-                      <Sun className="h-5 w-5 text-foreground" />
-                    )}
-                  </button>
-                </div>
                 {user && isAdmin && (
                   <Link
                     to="/admin"
