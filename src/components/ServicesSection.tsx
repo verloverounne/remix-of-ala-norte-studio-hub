@@ -267,7 +267,7 @@ export const ServicesSection = () => {
       </div>
       {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
       <div className="z-30 my-0 pb-0 mx-0 border-0 bg-transparent px-0 py-0">
-        <div className="container ">
+        <div className="container bg-[#d9d1ce]">
           <div className="mx-0 border-0 sm:py-0 bg-transparent py-0 pt-0">
             {/* Mobile: Embla carousel for tabs with snap-to-center */}
             <div className="sm:hidden overflow-hidden" ref={tabsRef}>
