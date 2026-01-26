@@ -173,6 +173,7 @@ export const ServicesSection = () => {
   const [services, setServices] = useState<HomeService[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   // Main content carousel
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -252,7 +253,7 @@ export const ServicesSection = () => {
         <div className="w-full bg-[#201e1d]">
           {/* Mobile: Dropdown select tied to active slide */}
           <div className="sm:hidden py-3 px-4 w-full text-background bg-[#131211]">
-            <Select value={String(activeIndex)} onValueChange={value => handleTabClick(Number(value))}>
+            <Select value={String(activeIndex)} onValueChange={value => handleTabClick(Number(value))} open={dropdownOpen} onOpenChange={setDropdownOpen}>
               <SelectTrigger className="w-full bg-[#201e1d]  font-heading text-sm uppercase">
                 <SelectValue>{services[activeIndex]?.title || "Seleccionar servicio"}</SelectValue>
               </SelectTrigger>
@@ -264,7 +265,7 @@ export const ServicesSection = () => {
             </Select>
           </div>
           {/* Desktop: horizontal row */}
-          <div className="sm:flex items-center justify-between gap-0">
+          <div className={cn("sm:flex items-center justify-between gap-0", dropdownOpen && "hidden")}>
             {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("flex-1 font-heading text-xs transition-all rounded-none shadow-none px-0 py-[16px] my-[16px] bg-[#8c857 d]", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground border border-border hover:bg-muted")}>
                 {service.title}
               </button>)}
