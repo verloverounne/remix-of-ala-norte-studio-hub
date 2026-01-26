@@ -179,7 +179,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
         <div
           className="z-10 pointer-events-none"
           style={{
-            marginTop: "-180vh",
+            marginTop: "-100vh",
             ...contentStyle,
           }}
         >
