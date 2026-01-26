@@ -3,7 +3,6 @@ import { ExternalLink, Wrench, ShoppingBag, Award, Phone, Mail, MapPin, ArrowRig
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import {
   Carousel,
   CarouselContent,
@@ -11,6 +10,7 @@ import {
   CarouselApi,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
+import { useGalleryImages } from "@/hooks/useGalleryImages";
 
 const CARTONI_LOGO = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Cartoni_logo.svg/1200px-Cartoni_logo.svg.png";
 
@@ -23,24 +23,18 @@ interface CartoniSlide {
 }
 
 const Cartoni = () => {
-  const [slides, setSlides] = useState<CartoniSlide[]>([]);
+  const { getByPageType, loading } = useGalleryImages();
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  useEffect(() => {
-    const fetchSlides = async () => {
-      const { data } = await supabase
-        .from('gallery_images')
-        .select('id, title, description, image_url, media_type')
-        .eq('page_type', 'cartoni')
-        .order('order_index');
-      
-      if (data && data.length > 0) {
-        setSlides(data);
-      }
-    };
-    fetchSlides();
-  }, []);
+  const galleryImages = getByPageType("cartoni");
+  const slides: CartoniSlide[] = galleryImages.map((img) => ({
+    id: img.id,
+    title: img.title,
+    description: img.description,
+    image_url: img.vertical_video_url || img.image_url,
+    media_type: img.media_type,
+  }));
 
   useEffect(() => {
     if (!api) return;

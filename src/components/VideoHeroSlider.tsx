@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import {
   Carousel,
   CarouselContent,
@@ -13,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, Calendar, ArrowRight, Ruler, MapPin, Sparkles, Volume2, VolumeX } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Space } from "@/types/supabase";
+import { useGalleryImages } from "@/hooks/useGalleryImages";
 
 interface VideoItem {
   id: string;
@@ -28,29 +28,19 @@ interface VideoHeroSliderProps {
 }
 
 export const VideoHeroSlider = ({ pageType, space }: VideoHeroSliderProps) => {
-  const [videos, setVideos] = useState<VideoItem[]>([]);
+  const { getByPageType, loading } = useGalleryImages();
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [muted, setMuted] = useState(true);
-  // refs no necesarias: el duotono es CSS-only y el playback queda en autoplay/loop
 
-  useEffect(() => {
-    const fetchVideos = async () => {
-      const { data } = await supabase
-        .from("gallery_images")
-        .select("*")
-        .eq("page_type", pageType)
-        .order("order_index");
-
-      if (data) {
-        setVideos(data.map(item => ({
-          ...item,
-          video_url: item.image_url // Reutilizamos image_url para videos
-        })));
-      }
-    };
-    fetchVideos();
-  }, [pageType]);
+  const galleryImages = getByPageType(pageType);
+  const videos: VideoItem[] = galleryImages.map((item) => ({
+    id: item.id,
+    video_url: item.vertical_video_url || item.image_url,
+    title: item.title,
+    description: item.description,
+    order_index: item.order_index || 0,
+  }));
 
   useEffect(() => {
     if (!api) return;
@@ -61,7 +51,7 @@ export const VideoHeroSlider = ({ pageType, space }: VideoHeroSliderProps) => {
   }, [api]);
 
   // Si no hay videos, mostrar fallback con imagen
-  if (videos.length === 0) {
+  if (!loading && videos.length === 0) {
     return (
       <section className="relative h-screen">
         <div className="absolute inset-0 bg-foreground/95 flex items-center justify-center">
@@ -71,11 +61,19 @@ export const VideoHeroSlider = ({ pageType, space }: VideoHeroSliderProps) => {
     );
   }
 
+  if (loading) {
+    return (
+      <section className="relative h-screen bg-foreground flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </section>
+    );
+  }
+
   return (
     <section className="relative h-screen overflow-hidden">
       <Carousel className="w-full h-full" setApi={setApi} opts={{ loop: true }}>
         <CarouselContent className="h-full -ml-0">
-          {videos.map((video, index) => (
+          {videos.map((video) => (
             <CarouselItem key={video.id} className="h-full pl-0">
               <div className="relative h-screen w-full overflow-hidden duotone-hover-group">
                 <video
@@ -91,7 +89,7 @@ export const VideoHeroSlider = ({ pageType, space }: VideoHeroSliderProps) => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        
+
         {videos.length > 1 && (
           <>
             <CarouselPrevious className="left-4 z-20" />
@@ -149,7 +147,7 @@ const HeroContent = ({ space }: { space: Space }) => (
     <p className="text-sm sm:text-base md:text-sm max-w-2xl mb-6 font-heading text-muted-foreground text-left leading-tight">
       {space.hero_subtitle || space.description}
     </p>
-    
+
     <div className="flex flex-wrap gap-4 items-center mb-6">
       <div className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg">
         <span className="text-2xl sm:text-3xl font-bold font-heading">
