@@ -160,7 +160,7 @@ const HeroSlideComponent = ({
         </div>
 
         <div className="absolute inset-0 flex items-end justify-center mb-[64px]">
-          <div ref={contentParallax.ref as any} style={contentParallax.style} className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] bg-[#423c38]/50">
+          <div ref={contentParallax.ref as any} style={contentParallax.style} className="backdrop-blur-lg bg-[#423c38]/50 text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] ">
             <h1 className="text-background md:text-6xl font-bold mb-2 text-4xl py-[32px] pt-[32px]">{slide.title}</h1>
             <p className="text-background mb-16 font-medium text-xs mb:text-sm">{slide.subtitle}</p>
             {slide.cta_label && slide.cta_link && <Link to={slide.cta_link}>
