@@ -148,7 +148,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
         </div>
       </div>
       {/* Mobile: Media de fondo sticky con contenido que sube por parallax basado en scroll */}
-      <div ref={containerRef} className="lg:hidden h-[100vh] relative">
+      <div ref={containerRef} className="lg:hidden h-[150vh] relative">
         {/* Media de fondo - sticky para mantenerse visible (z-0) */}
         <div className=" h-screen z-0 duotone-hover-group" onClick={handleMobileTap}>
           {hasMedia ? (
