@@ -13,7 +13,7 @@ interface UseParallaxOptions {
  * @returns Ref y valor de transformación
  */
 export const useParallax = (options: UseParallaxOptions = {}) => {
-  const { speed = 1, offset = 0, direction = "up", enabled = true } = options;
+  const { speed = 0.5, offset = 0, direction = "up", enabled = true } = options;
 
   const elementRef = useRef<HTMLElement | null>(null);
   const [transform, setTransform] = useState(0);
@@ -57,8 +57,8 @@ export const useParallax = (options: UseParallaxOptions = {}) => {
           // Calcular el desplazamiento parallax con límites
           // Multiplicamos por speed para controlar la intensidad
           // Limitamos el movimiento para que no se salga del viewport
-          const maxMovement = windowHeight * 0.3; // Máximo 30% de la altura de la ventana
-          const parallaxValue = Math.max(-maxMovement, Math.min(maxMovement, distanceFromCenter * speed * 0.3));
+          const maxMovement = windowHeight * 0.5; // Máximo 30% de la altura de la ventana
+          const parallaxValue = Math.max(-maxMovement, Math.min(maxMovement, distanceFromCenter * speed * 0.5));
 
           const finalValue = direction === "up" ? offset - parallaxValue : offset + parallaxValue;
 
