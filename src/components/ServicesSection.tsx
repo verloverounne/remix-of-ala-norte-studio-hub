@@ -148,7 +148,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
         </div>
       </div>
       {/* Mobile: Media de fondo sticky con contenido que sube por parallax basado en scroll */}
-      <div ref={containerRef} className="lg:hidden h-[200vh] relative">
+      <div ref={containerRef} className="lg:hidden h-[130vh] relative">
         {/* Media de fondo - sticky para mantenerse visible (z-0) */}
         <div className=" h-screen z-0 duotone-hover-group" onClick={handleMobileTap}>
           {hasMedia ? (
@@ -172,7 +172,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
           )}
 
           {/* Overlay oscuro */}
-          <div className="absolute inset-0 bg-foreground/40 pointer-events-none" />
+          <div className="absolute inset-0 pointer-events-none" />
         </div>
 
         {/* Contenido con parallax basado en scroll - z-10 para estar encima del video */}
