@@ -254,7 +254,7 @@ export const ServicesSection = () => {
       <div className="container z-30 my-0 bg-[#201e1d]">
         <div className="mx-0 border-0 sm:py-0 bg-transparent py-0 pt-0">
           {/* Mobile: Dropdown select tied to active slide */}
-          <div className="sm:hidden py-3 w-full">
+          <div className="sm:hidden py-3 w-screen">
             <Select value={String(activeIndex)} onValueChange={value => handleTabClick(Number(value))}>
               <SelectTrigger className="w-full bg-background border-border font-heading text-sm uppercase">
                 <SelectValue>
