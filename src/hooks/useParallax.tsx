@@ -57,7 +57,7 @@ export const useParallax = (options: UseParallaxOptions = {}) => {
           // Calcular el desplazamiento parallax con límites
           // Multiplicamos por speed para controlar la intensidad
           // Limitamos el movimiento para que no se salga del viewport
-          const maxMovement = windowHeight * 0.8; // Máximo 30% de la altura de la ventana
+          const maxMovement = windowHeight * 2; // Máximo 30% de la altura de la ventana
           const parallaxValue = Math.max(-maxMovement, Math.min(maxMovement, distanceFromCenter * speed * 0.3));
 
           const finalValue = direction === "up" ? offset - parallaxValue : offset + parallaxValue;
