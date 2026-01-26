@@ -344,7 +344,7 @@ const Equipos = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 pb-4 sm:pb-6">
+      <div className="container w-screen mx-auto px-4 pb-4 sm:pb-6">
         <div className="grid lg:grid-cols-4 gap-4 lg:gap-6">
           {/* Main Content - Category Sections */}
           <main className="lg:col-span-3">
@@ -362,7 +362,7 @@ const Equipos = () => {
           </main>
 
           {/* Cart Sidebar - Sticky on desktop, drawer on mobile */}
-          <aside className="hidden lg:block lg:col-span-1 shadow-none">
+          <aside className="hidden lg:block lg:col-span-1 shadow-none bg-[#2e2c29]">
             <CartSidebar items={items} calculateSubtotal={calculateSubtotal} updateQuantity={updateQuantity} removeItem={removeItem} stickyTop={cartStickyTop} />
           </aside>
 
