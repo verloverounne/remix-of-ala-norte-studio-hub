@@ -265,7 +265,7 @@ export const ServicesSection = () => {
             </Select>
           </div>
           {/* Desktop: horizontal row */}
-          <div className={cn("sm:flex items-center justify-between gap-0", dropdownOpen && "hidden")}>
+          <div className={cn("hi sm:flex items-center justify-between gap-0", dropdownOpen && "hidden")}>
             {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("flex-1 font-heading text-xs transition-all rounded-none shadow-none px-0 py-[16px] my-[16px] bg-[#8c857 d]", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground border border-border hover:bg-muted")}>
                 {service.title}
               </button>)}
