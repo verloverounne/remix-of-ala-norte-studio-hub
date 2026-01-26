@@ -309,7 +309,7 @@ const Equipos = () => {
             <Button variant="ghost" size="sm" onClick={() => {
             setIsFilterOpen(!isFilterOpen);
             if (isSearchOpen) setIsSearchOpen(false);
-          }} className={cn("h-8 px-2 flex-shrink-0", isFilterOpen && "bg-primary text-primary-foreground")}>
+          }} className={cn("h-8 px-2 flex-shrink-0 border", isFilterOpen && "bg-primary text-primary-foreground")}>
               <Filter className="h-4 w-4" />
               {selectedSubcategories.length > 0 && <Badge variant="secondary" className="ml-1 text-[9px] h-4 px-1">
                   {selectedSubcategories.length}
