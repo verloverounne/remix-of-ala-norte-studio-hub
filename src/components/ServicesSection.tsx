@@ -123,7 +123,7 @@ const ServiceSlide = ({
         </div>
       </div>
       {/* Mobile: Media de fondo sticky con contenido que sube por parallax basado en scroll */}
-      <div ref={containerRef} className="lg:hidden h-[200vh] relative">
+      <div ref={containerRef} className="lg:hidden h-[150vh] relative">
         {/* Media de fondo - sticky para mantenerse visible (z-0) */}
         <div className=" h-screen z-0 duotone-hover-group" onClick={handleMobileTap}>
           {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="sticky absolute top-0 video-duotone w-full h-full object-cover " autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-9/1 object-cover" /> : <div className="w-full h-full bg-muted flex items-center justify-center">
@@ -141,8 +141,8 @@ const ServiceSlide = ({
         marginTop: "-100vh",
         ...contentStyle
       }}>
-          <div className="h-screen pb-8 px-4 flex items-start">
-            <div className="backdrop-blur-lg bg-[#423c38] p-6 w-full text-foreground max-h-[80vh] overflow-y-auto mx-4 lg-32 xl-64 pointer-events-auto mb-0">
+          <div className="h-screen pb-8 px-4 flex items-start justify-center">
+            <div className="backdrop-blur-lg bg-[#423c38] p-6 w-full text-foreground max-h-[80vh] overflow-y-auto mx-4 lg-32 xl-64 pointer-events-auto ">
               <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
