@@ -82,9 +82,9 @@ const ServiceSlide = ({
       <div className="hidden lg:grid lg:grid-cols-2 h-full">
         {/* Columna izquierda: Media con parallax y duotono */}
         <div ref={mediaParallax.ref as any} className="h-full  relative duotone-hover-group bg-muted">
-          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone sticky top-0 absolute left-0 top-0 w-full h-full object-cover border-0 bg-[#2e2c29]" style={{
+        {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone absolute inset-0 w-full h-full object-cover border-0 bg-[#2e2c29]" style={{
           ...mediaParallax.style
-        }} autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone absolute left-0 top-0 w-full h-full object-cover" style={{
+        }} autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone absolute inset-0 w-full h-full object-cover" style={{
           ...mediaParallax.style
         }} /> : <div className="w-full h-full bg-muted flex">
               <span className="font-heading text-6xl text-muted-foreground/30">
@@ -125,8 +125,8 @@ const ServiceSlide = ({
       {/* Mobile: Media de fondo sticky con contenido que sube por parallax basado en scroll */}
       <div ref={containerRef} className="lg:hidden h-[130vh] relative">
         {/* Media de fondo - sticky para mantenerse visible (z-0) */}
-        <div className=" h-screen z-0 duotone-hover-group" onClick={handleMobileTap}>
-          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="sticky absolute top-0 video-duotone h-full object-cover" autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" /> : <div className="w-full h-full bg-muted flex items-center justify-center">
+        <div className="sticky top-0 h-screen z-0 duotone-hover-group overflow-hidden" onClick={handleMobileTap}>
+          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="w-full h-full video-duotone object-cover" autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" /> : <div className="w-full h-full bg-muted flex items-center justify-center">
               <span className="font-heading text-6xl text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
             </div>}
 
