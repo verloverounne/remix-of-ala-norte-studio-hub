@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from "react";
 
 interface UseScrollParallaxOptions {
   enabled?: boolean;
@@ -12,7 +12,7 @@ interface UseScrollParallaxOptions {
  * Optimizado con requestAnimationFrame y throttling.
  */
 export const useScrollParallax = (options: UseScrollParallaxOptions = {}) => {
-  const { enabled = true, speedFactor = 1.5 } = options;
+  const { enabled = true, speedFactor = 3 } = options;
   const containerRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const ticking = useRef(false);
@@ -22,15 +22,15 @@ export const useScrollParallax = (options: UseScrollParallaxOptions = {}) => {
 
     const rect = containerRef.current.getBoundingClientRect();
     const screenHeight = window.innerHeight;
-    
+
     // scrolled = cuánto ha entrado el contenedor en la pantalla
     const scrolled = screenHeight - rect.top;
-    
+
     // Usamos speedFactor para hacer la aparición más lenta
     const scrollRange = screenHeight * speedFactor;
     const rawProgress = scrolled / scrollRange;
     const clampedProgress = Math.max(0, Math.min(1, rawProgress));
-    
+
     setProgress(clampedProgress);
   }, [enabled, speedFactor]);
 
@@ -49,20 +49,20 @@ export const useScrollParallax = (options: UseScrollParallaxOptions = {}) => {
 
     updateProgress();
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
     };
   }, [enabled, updateProgress]);
 
   const contentStyle = {
     transform: `translateY(${(1 - progress) * 100}%)`,
     opacity: progress,
-    transition: 'none',
-    willChange: 'transform, opacity',
+    transition: "none",
+    willChange: "transform, opacity",
   };
 
   return {
