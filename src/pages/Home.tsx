@@ -292,11 +292,11 @@ const Home = () => {
       {/* Services Section */}
       <ServicesSection />
 
-      {/* CTA Section */}
-      <CTASection />
-
       {/* Cartoni Official Dealer Section */}
       <CartoniSection />
+
+      {/* CTA Section */}
+      <CTASection />
 
       {/* Featured Equipment Section - Full Width Slider */}
       {featuredEquipment.length > 0 && (
