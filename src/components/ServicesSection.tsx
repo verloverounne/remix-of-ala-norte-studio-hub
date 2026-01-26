@@ -155,7 +155,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
               <video
                 ref={videoRef}
                 src={mediaUrl!}
-                className="sticky absolute top-0 video-duotone h-full object-cover "
+                className="sticky absolute top-4 video-duotone h-full object-cover "
                 autoPlay
                 loop
                 muted
@@ -180,7 +180,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
         <div
           className="sticky bottom-1 z-10 pointer-events-none"
           style={{
-            marginTop: "-100vh",
+            marginTop: "-180vh",
             ...contentStyle,
           }}
         >
