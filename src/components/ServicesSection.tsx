@@ -166,7 +166,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
               <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" />
             )
           ) : (
-            <div className="w-full h-full bg-muted flex items-center justify-center">
+            <div className="w-full h-full bg-muted flex">
               <span className="font-heading text-6xl text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
             </div>
           )}
@@ -179,7 +179,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
         <div
           className="z-10 pointer-events-none"
           style={{
-            marginTop: "-50vh",
+            marginTop: "-200vh",
             ...contentStyle,
           }}
         >
