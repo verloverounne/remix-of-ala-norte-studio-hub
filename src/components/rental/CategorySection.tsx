@@ -152,7 +152,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
           const cartQty = getCartQuantity(item.id);
           const canAdd = canAddMore(item);
           return <Card key={item.id} className="overflow-hidden group relative border-0 shadow-none hover:shadow-sm bg-[#2e2c29]">
-                    <CardContent className="p-2 sm:p-3 flex flex-col space-y-2 px-[4px] border-0 border-transparent shadow-none bg-[#201e1d] text-[#fbf2ee]">
+                    <CardContent className="p-2 sm:p-3 flex flex-col space-y-2 px-[4px] border-0 border-transparent shadow-none text-[#fbf2ee] bg-[#d9d1ce]">
                       {/* 1. Nombre del equipo - formateado */}
                       <h3 className="font-heading normal-case text-xs leading-tight pt-2 line-clamp-2 cursor-pointer hover:text-primary transition-colors h-[5em] sm:text-xs text-left font-medium" onClick={() => onViewDetails(item)}>
                         {formatEquipmentName(item.name)}
