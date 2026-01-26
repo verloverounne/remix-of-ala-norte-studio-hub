@@ -1,36 +1,47 @@
 
 
-## Plan: Acelerar el Parallax para Mostrar Contenido sobre 80% del Video
+## Plan: Corregir Sincronización de Tabs de Servicios
 
-### Diagnóstico
-El `speedFactor` actual es **3**, lo que significa que el usuario debe scrollear 3 veces la altura de la pantalla para que el contenido aparezca completamente. Esto es demasiado lento.
+### Problema Identificado
 
-### Solución
-Reducir el `speedFactor` a **0.8** para que el contenido complete su animación después de scrollear solo el 80% de la altura de la pantalla.
+Hay errores de sintaxis en las clases CSS que causan que los tabs no se muestren/sincronicen correctamente:
 
-### Cambios a realizar
+1. **Línea 268**: `"hi sm:flex"` - la clase `"hi"` es un error tipográfico
+2. **Línea 269**: `bg-[#8c857 d]` - hay un espacio incorrecto en el color hex
 
-**Archivo: `src/hooks/useScrollParallax.tsx`**
+### Cambios a Realizar
 
-Cambiar línea 15:
+**Archivo: `src/components/ServicesSection.tsx`**
+
+#### Corrección 1 - Línea 268
 ```typescript
-// ANTES
-const { enabled = true, speedFactor = 3 } = options;
+// ANTES (error)
+<div className={cn("hi sm:flex items-center justify-between gap-0", dropdownOpen && "hidden")}>
 
-// DESPUÉS  
-const { enabled = true, speedFactor = 0.8 } = options;
+// DESPUÉS (correcto)
+<div className={cn("hidden sm:flex items-center justify-between gap-0", dropdownOpen && "hidden")}>
 ```
 
-### Comportamiento resultante
+#### Corrección 2 - Línea 269
+```typescript
+// ANTES (error - espacio en el color)
+className={cn("flex-1 font-heading text-xs transition-all rounded-none shadow-none px-0 py-[16px] my-[16px] bg-[#8c857 d]", ...)}
 
-| speedFactor | Scroll necesario para 100% contenido |
-|-------------|--------------------------------------|
-| 3 (actual)  | 300% de la pantalla                 |
-| 1.0         | 100% de la pantalla                 |
-| **0.8**     | **80% de la pantalla** ✓            |
+// DESPUÉS (correcto)
+className={cn("flex-1 font-heading text-xs transition-all rounded-none shadow-none px-0 py-[16px] my-[16px]", ...)}
+```
+(Remover el color inválido ya que el estado activo/inactivo ya define los colores correctos)
 
-### Resultado esperado
-- El contenido empezará a aparecer inmediatamente cuando el usuario comience a scrollear
-- Al scrollear el 80% de la altura de la pantalla, el contenido estará completamente visible sobre el video
-- La experiencia será más rápida y el usuario verá el contenido superpuesto mucho antes
+### Resultado Esperado
+
+| Dispositivo | Antes | Después |
+|------------|-------|---------|
+| Mobile | Dropdown visible, tabs ocultos | Sin cambios (correcto) |
+| Desktop | Tabs posiblemente mal renderizados | Tabs visibles y sincronizados con el carrusel |
+
+Los tabs de desktop ahora:
+- Se mostrarán correctamente con `hidden sm:flex`
+- Estarán sincronizados con el índice del carrusel
+- El tab activo tendrá el estilo correcto (`bg-primary text-primary-foreground`)
+- Los tabs inactivos tendrán el estilo de fondo (`bg-background text-foreground`)
 
