@@ -275,7 +275,7 @@ export const ServicesSection = () => {
       {/* Carousel Container */}
       <div className="relative">
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="bg-foreground flex items-start justify-center">
+          <div className="flex">
             {services.map((service, index) => <ServiceSlide key={service.id} service={service} index={index} />)}
           </div>
         </div>
