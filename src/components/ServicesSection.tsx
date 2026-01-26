@@ -149,7 +149,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
       {/* Mobile: Media de fondo sticky con contenido que sube por parallax basado en scroll */}
       <div ref={containerRef} className="lg:hidden h-[200vh] relative">
         {/* Media de fondo - sticky para mantenerse visible (z-0) */}
-        <div className=" h-screen z-0 duotone-hover-group" onClick={handleMobileTap}>
+        <div className="sticky top-0  z-0  h-screen duotone-hover-group" onClick={handleMobileTap}>
           {hasMedia ? (
             isVideo ? (
               <video
@@ -344,10 +344,10 @@ export const ServicesSection = () => {
       <div className="container z-30 my-0 bg-[#201e1d]">
         <div className="mx-0 border-0 sm:py-0 bg-transparent py-0 pt-0">
           {/* Mobile: Embla carousel for tabs with snap-to-center */}
-          <div className="sm:hidden overflow-hidden" ref={tabsRef}>
+          <div className="overflow-hidden" ref={tabsRef}>
             <div className="flex items-center justify-center">
               {services.map((service, index) => (
-                <div key={service.id} className="flex-[0_0_auto] min-w-[120px] border-[#bcb5ae]">
+                <div key={service.id} className="flex-[0_0_auto] min-w-[640px] border-[#bcb5ae]">
                   <button
                     onClick={() => handleTabClick(index)}
                     className={cn(
