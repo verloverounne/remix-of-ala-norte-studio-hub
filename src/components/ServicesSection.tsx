@@ -142,7 +142,7 @@ const ServiceSlide = ({
         ...contentStyle
       }}>
           <div className="h-screen pb-8 px-4 flex items-end justify-center">
-            <div className="backdrop-blur-lg bg-[#423c38]/50 p-6 w-full bg-background/60 text-foreground max-h-[80vh] overflow-y-auto mx-4 mb-16 lg-32 xl-64 pointer-events-auto">
+            <div className="backdrop-blur-lg bg-[#423c38] p-6 w-full text-foreground max-h-[80vh] overflow-y-auto mx-4 mb-16 lg-32 xl-64 pointer-events-auto">
               <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
@@ -283,10 +283,10 @@ export const ServicesSection = () => {
 
         {/* Navigation Arrows */}
         <button onClick={scrollPrev} className={cn("absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all py-[4px] px-[4px] text-foreground bg-primary border-foreground my-px mx-[16px]", activeIndex === 0 && "opacity-50 cursor-not-allowed")} disabled={activeIndex === 0} aria-label="Anterior">
-          <ChevronLeft className="h-[16px] w-[16px]" />
+          <ChevronLeft className="h-[24px] w-[24px]" />
         </button>
         <button onClick={scrollNext} className={cn("absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all px-[4px] py-[4px] text-background bg-primary border-foreground mx-[16px]", activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed")} disabled={activeIndex === services.length - 1} aria-label="Siguiente">
-          <ChevronRight className="w-[16px] h-[16px] text-foreground mx-px" />
+          <ChevronRight className="text-foreground mx-px h-[24px] w-[24px]" />
         </button>
         {/* Dots indicator */}
       </div>
