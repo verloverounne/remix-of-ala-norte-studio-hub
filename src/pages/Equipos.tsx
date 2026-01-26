@@ -347,24 +347,26 @@ const Equipos = () => {
               </CollapsibleContent>
             </Collapsible>
           </div>
-          {/* View mode toggle */}
-          <ViewModeToggle viewMode={viewMode} onViewModeChange={setViewMode} />
 
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              setIsSearchOpen(!isSearchOpen);
-              if (isFilterOpen) setIsFilterOpen(false);
-            }}
-            className={cn("h-8 px-2 flex-shrink-0", isSearchOpen && "bg-primary text-primary-foreground")}
-          >
-            <Search className="h-4 w-4" />
-            <span className="ml-1 text-xs hidden sm:inline">Buscar</span>
-          </Button>
-        </div>
-        {/* Row 2: Equipment count + View toggle + Search button on right */}
-        <div className="flex items-center mb-2 flex-wrap gap-2 flex-1">
+          {/* Row 2: Equipment count + View toggle + Search button on right */}
+          <div className="flex items-center mb-2 flex-wrap gap-2 flex-1">
+            {/* View mode toggle */}
+            <ViewModeToggle viewMode={viewMode} onViewModeChange={setViewMode} />
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setIsSearchOpen(!isSearchOpen);
+                if (isFilterOpen) setIsFilterOpen(false);
+              }}
+              className={cn("h-8 px-2 flex-shrink-0", isSearchOpen && "bg-primary text-primary-foreground")}
+            >
+              <Search className="h-4 w-4" />
+              <span className="ml-1 text-xs hidden sm:inline">Buscar</span>
+            </Button>
+          </div>
+
           {/* Filter button - next to chips */}
           <Button
             variant="ghost"
