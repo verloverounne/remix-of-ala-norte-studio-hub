@@ -251,10 +251,9 @@ export const ServicesSection = () => {
         </h2>
 
         {/* Tab Navigation - Dropdown on mobile, horizontal tabs on desktop */}
-        <div className="container bg-[#201e1d]">
-          <div className="bg-transparent">
-            {/* Mobile: Dropdown select tied to active slide */}
-            <div className="sm:hidden py-3 w-screen">
+        <div className="w-full bg-[#201e1d]">
+          {/* Mobile: Dropdown select tied to active slide */}
+          <div className="sm:hidden py-3 px-4 w-full">
               <Select value={String(activeIndex)} onValueChange={value => handleTabClick(Number(value))}>
                 <SelectTrigger className="w-full bg-background border-border font-heading text-sm uppercase">
                   <SelectValue>{services[activeIndex]?.title || "Seleccionar servicio"}</SelectValue>
@@ -265,7 +264,6 @@ export const ServicesSection = () => {
                     </SelectItem>)}
                 </SelectContent>
               </Select>
-            </div>
           </div>
           {/* Desktop: horizontal row */}
           <div className="hidden sm:flex items-center justify-between gap-0">
