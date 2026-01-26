@@ -140,7 +140,7 @@ const ServiceSlide = ({
         marginTop: "-180vh",
         ...contentStyle
       }}>
-          <div className="h-screen pb-8 px-4 flex items-center justify-center">
+          <div className="h-screen pb-8 px-4 flex items-end justify-center">
             <div className="backdrop-blur-lg p-6 w-full bg-background/40 text-foreground max-h-[70vh] overflow-y-auto mx-4 pointer-events-auto">
               <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
                 Servicio {String(index + 1).padStart(2, "0")}
@@ -154,7 +154,7 @@ const ServiceSlide = ({
               {service.bullets && service.bullets.length > 0 && <ul className="space-y-2 mb-4">
                   {service.bullets.map((bullet, i) => <li key={i} className="flex items-start gap-2">
                       <Check className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
-                      <span className="text-sm text-foreground">{bullet}</span>
+                      <span className="mb-4 leading-tight text-foreground font-sm text-xs mb-sm lg-medium">{bullet}</span>
                     </li>)}
                 </ul>}
 
