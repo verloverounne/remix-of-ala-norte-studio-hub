@@ -351,10 +351,10 @@ const Equipos = () => {
       <div className="container w-screen mx-auto px-4 pb-4 sm:pb-6 bg-[#131211]">
         <div className="grid lg:grid-cols-4 gap-4 lg:gap-6">
           {/* Main Content - Category Sections */}
-          <main className="lg:col-span-3">
+          <main className="lg:col-span-3 bg-background">
             {loading ? <div className="text-center py-12 sm:py-16 border border-foreground p-8 sm:p-12">
                 <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>
-              </div> : <div className="space-y-4 sm:space-y-6 bg-[#131211]">
+              </div> : <div className="space-y-4 sm:space-y-6 bg-background">
                 {orderedCategories.map((category, index) => <CategorySection key={category.id} ref={ref => {
               if (ref) {
                 categoryRefs.current.set(category.id, ref);
