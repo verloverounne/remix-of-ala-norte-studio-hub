@@ -156,20 +156,18 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
               <video
                 ref={videoRef}
                 src={mediaUrl!}
-                className="sticky absolute top-0 video-duotone w-full h-full object-cover "
+                className="sticky absolute top-0 video-duotone w-full h-full"
                 autoPlay
                 loop
                 muted
                 playsInline
               />
             ) : (
-              <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-9/1 object-cover" />
+              <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" />
             )
           ) : (
             <div className="w-full h-full bg-muted flex items-center justify-center">
-              <span className="font-heading text-6xl text-muted-foreground/30">
-                {String(index + 1).padStart(2, "0")}
-              </span>
+              <span className="font-heading text-6xl text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
             </div>
           )}
 
