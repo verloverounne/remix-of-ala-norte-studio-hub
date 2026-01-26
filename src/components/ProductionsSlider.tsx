@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import {
   Carousel,
   CarouselContent,
@@ -8,35 +7,14 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
-
-interface ProductionImage {
-  id: string;
-  image_url: string;
-  media_type: string | null;
-  title: string | null;
-  description: string | null;
-  order_index: number;
-}
+import { useGalleryImages } from "@/hooks/useGalleryImages";
 
 export const ProductionsSlider = () => {
-  const [images, setImages] = useState<ProductionImage[]>([]);
+  const { getByPageType, loading } = useGalleryImages();
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      const { data } = await supabase
-        .from("gallery_images")
-        .select("*")
-        .eq("page_type", "producciones")
-        .order("order_index");
-
-      if (data) setImages(data);
-      setLoading(false);
-    };
-    fetchImages();
-  }, []);
+  const images = getByPageType("producciones");
 
   useEffect(() => {
     if (!api) return;
@@ -65,9 +43,9 @@ export const ProductionsSlider = () => {
           {images.map((image) => (
             <CarouselItem key={image.id} className="pl-0 basis-full md:basis-1/2 lg:basis-1/3">
               <div className="relative aspect-[4/3] overflow-hidden mx-2 group duotone-hover-group">
-                {image.media_type === 'video' ? (
+                {image.media_type === "video" ? (
                   <video
-                    src={image.image_url}
+                    src={image.vertical_video_url || image.image_url}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 video-duotone"
                     autoPlay
                     loop
@@ -90,9 +68,7 @@ export const ProductionsSlider = () => {
                       </h3>
                     )}
                     {image.description && (
-                      <p className="text-sm text-background/80 font-heading">
-                        {image.description}
-                      </p>
+                      <p className="text-sm text-background/80 font-heading">{image.description}</p>
                     )}
                   </div>
                 )}

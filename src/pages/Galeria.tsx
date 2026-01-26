@@ -9,47 +9,53 @@ import type { Space } from "@/types/supabase";
 import Viewer360 from "@/components/Viewer360";
 import { GalleryHero } from "@/components/GalleryHero";
 import { ProductionsSlider } from "@/components/ProductionsSlider";
+import { useGalleryImages } from "@/hooks/useGalleryImages";
+
 const Galeria = () => {
   const [space, setSpace] = useState<Space | null>(null);
   const [loading, setLoading] = useState(true);
-  const [featuredMediaImage, setFeaturedMediaImage] = useState<string | null>(null);
+  const { getByPageType, loading: galleryLoading } = useGalleryImages();
+
   useEffect(() => {
     fetchData();
   }, []);
+
   const fetchData = async () => {
     setLoading(true);
 
     // Fetch space data
-    const {
-      data: spaceData
-    } = await supabase.from("spaces").select("*").eq("slug", "galeria").single();
+    const { data: spaceData } = await supabase
+      .from("spaces")
+      .select("*")
+      .eq("slug", "galeria")
+      .single();
 
-    // Fetch first image from gallery_images with page_type='galeria' ordered by order_index
-    const {
-      data: galleryImages
-    } = await supabase.from("gallery_images").select("image_url").eq("page_type", "galeria").order("order_index", {
-      ascending: true
-    }).limit(1);
-    if (galleryImages && galleryImages.length > 0) {
-      setFeaturedMediaImage(galleryImages[0].image_url);
-    }
     if (spaceData) {
       setSpace({
         ...spaceData,
-        images: Array.isArray(spaceData.images) ? spaceData.images as string[] : [],
-        features: Array.isArray(spaceData.features) ? spaceData.features as string[] : [],
-        included_items: Array.isArray(spaceData.included_items) ? spaceData.included_items as string[] : [],
-        optional_services: Array.isArray(spaceData.optional_services) ? spaceData.optional_services as string[] : [],
-        amenities: Array.isArray(spaceData.amenities) ? spaceData.amenities as any[] : [],
-        specs: spaceData.specs || {}
+        images: Array.isArray(spaceData.images) ? (spaceData.images as string[]) : [],
+        features: Array.isArray(spaceData.features) ? (spaceData.features as string[]) : [],
+        included_items: Array.isArray(spaceData.included_items) ? (spaceData.included_items as string[]) : [],
+        optional_services: Array.isArray(spaceData.optional_services)
+          ? (spaceData.optional_services as string[])
+          : [],
+        amenities: Array.isArray(spaceData.amenities) ? (spaceData.amenities as any[]) : [],
+        specs: spaceData.specs || {},
       } as Space);
     }
     setLoading(false);
   };
+
+  // Get featured image from gallery images
+  const galeriaImages = getByPageType("galeria");
+  const featuredMediaImage = galeriaImages[0]?.image_url || null;
+
   if (loading || !space) {
-    return <div className="min-h-screen flex items-center justify-center">
+    return (
+      <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>;
+      </div>
+    );
   }
   return <div className="min-h-screen">
       {/* Hero Section with 2 Column Layout */}

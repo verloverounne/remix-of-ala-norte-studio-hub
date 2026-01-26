@@ -9,6 +9,7 @@ import { ProductionsSlider } from "@/components/ProductionsSlider";
 import { HomeVideoHeroSlider } from "@/components/HomeVideoHeroSlider";
 import { ServicesSection } from "@/components/ServicesSection";
 import { useParallax } from "@/hooks/useParallax";
+import { useGalleryImages } from "@/hooks/useGalleryImages";
 
 // Componente para la sección de equipos destacados con parallax
 interface FeaturedEquipmentSectionProps {
@@ -171,36 +172,17 @@ const CTASection = () => {
 
 // Componente para la sección Cartoni con parallax y video de fondo
 const CartoniSection = () => {
-  const [backgroundVideo, setBackgroundVideo] = useState<string | null>(null);
+  const { getByPageType } = useGalleryImages();
   const [videoStatus, setVideoStatus] = useState<"idle" | "loaded" | "error">("idle");
-  const logoParallax = useParallax({
-    speed: 0.6,
-    direction: "up",
-  });
   const contentParallax = useParallax({
     speed: 0.5,
     direction: "down",
   });
-  useEffect(() => {
-    const fetchBackgroundVideo = async () => {
-      const { data, error } = await supabase
-        .from("gallery_images")
-        .select("image_url, media_type")
-        .eq("page_type", "cartoni_home" as string)
-        .order("order_index")
-        .limit(1);
-      if (error) {
-        console.warn("[CartoniSection] Error trayendo video de fondo:", error.message);
-        return;
-      }
-      const row = data?.[0];
-      if (row?.image_url) {
-        // Si subieron algo por error como imagen, igual lo intentamos usar como src
-        setBackgroundVideo(row.image_url);
-      }
-    };
-    fetchBackgroundVideo();
-  }, []);
+
+  // Get cartoni_home video from consolidated gallery images
+  const cartoniImages = getByPageType("cartoni_home");
+  const backgroundVideo = cartoniImages[0]?.image_url || null;
+
   return (
     <section className="relative border-y border-border">
       {/* Contenedor del video - el video define el alto */}

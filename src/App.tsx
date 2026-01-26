@@ -14,7 +14,10 @@ import { HeaderVisibilityProvider } from "./hooks/useHeaderVisibility";
 import { MainContent } from "./components/layout/MainContent";
 import { useVideoDuotone } from "./hooks/useVideoDuotone";
 import { useDuotoneTap } from "./hooks/useDuotoneTap";
-import { useDesignTokensApply } from "./hooks/useDesignTokensApply";
+import { preloadGalleryImages } from "./hooks/useGalleryImages";
+
+// Preload gallery images early
+preloadGalleryImages();
 
 // Lazy load pages for code splitting
 const Home = lazy(() => import("./pages/Home"));
@@ -35,7 +38,6 @@ const Cartoni = lazy(() => import("./pages/Cartoni"));
 const MergeEquipment = lazy(() => import("./pages/MergeEquipment"));
 const Galeria = lazy(() => import("./pages/Galeria"));
 const SalaGrabacion = lazy(() => import("./pages/SalaGrabacion"));
-const AdminDesignTokens = lazy(() => import("./pages/AdminDesignTokens"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -46,11 +48,6 @@ const VideoDuotoneProvider = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-const DesignTokensProvider = ({ children }: { children: React.ReactNode }) => {
-  useDesignTokensApply();
-  return <>{children}</>;
-};
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -58,64 +55,54 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <DesignTokensProvider>
-            <HeaderVisibilityProvider>
-              <VideoDuotoneProvider>
+          <HeaderVisibilityProvider>
+            <VideoDuotoneProvider>
               <ScrollToTop />
               <Header />
-            <MainContent>
-              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
-                <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/equipos" element={<Equipos />} />
-                <Route path="/espacios" element={<Galeria />} />
-                <Route path="/servicios" element={<Servicios />} />
-                <Route path="/comunidad" element={<Comunidad />} />
-                <Route path="/nosotros" element={<Nosotros />} />
-                <Route path="/soporte" element={<Soporte />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:slug" element={<BlogPost />} />
-                <Route path="/cotizador" element={<Cotizador />} />
-                <Route path="/contacto" element={<Contacto />} />
-                <Route path="/cartoni" element={<Cartoni />} />
-                <Route path="/merge-equipment" element={<MergeEquipment />} />
-                <Route path="/galeria" element={<Galeria />} />
-                <Route path="/sala-grabacion" element={<SalaGrabacion />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route 
-                  path="/admin" 
-                  element={
-                    <ProtectedRoute requireAdmin>
-                      <Admin />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/admin/blog" 
-                  element={
-                    <ProtectedRoute requireAdmin>
-                      <AdminBlog />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/admin/design-tokens" 
-                  element={
-                    <ProtectedRoute requireAdmin>
-                      <AdminDesignTokens />
-                    </ProtectedRoute>
-                  } 
-                />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-            </MainContent>
-            <Footer />
-            <WhatsAppButton />
+              <MainContent>
+                <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/equipos" element={<Equipos />} />
+                    <Route path="/espacios" element={<Galeria />} />
+                    <Route path="/servicios" element={<Servicios />} />
+                    <Route path="/comunidad" element={<Comunidad />} />
+                    <Route path="/nosotros" element={<Nosotros />} />
+                    <Route path="/soporte" element={<Soporte />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/blog/:slug" element={<BlogPost />} />
+                    <Route path="/cotizador" element={<Cotizador />} />
+                    <Route path="/contacto" element={<Contacto />} />
+                    <Route path="/cartoni" element={<Cartoni />} />
+                    <Route path="/merge-equipment" element={<MergeEquipment />} />
+                    <Route path="/galeria" element={<Galeria />} />
+                    <Route path="/sala-grabacion" element={<SalaGrabacion />} />
+                    <Route path="/auth" element={<Auth />} />
+                    <Route 
+                      path="/admin" 
+                      element={
+                        <ProtectedRoute requireAdmin>
+                          <Admin />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/admin/blog" 
+                      element={
+                        <ProtectedRoute requireAdmin>
+                          <AdminBlog />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Suspense>
+              </MainContent>
+              <Footer />
+              <WhatsAppButton />
             </VideoDuotoneProvider>
           </HeaderVisibilityProvider>
-          </DesignTokensProvider>
         </BrowserRouter>
       </CartProvider>
     </TooltipProvider>
