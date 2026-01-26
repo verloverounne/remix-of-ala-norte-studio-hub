@@ -142,7 +142,7 @@ const ServiceSlide = ({
         ...contentStyle
       }}>
           <div className="h-screen pb-8 px-4 flex items-start">
-            <div className="backdrop-blur-lg bg-[#423c38] p-6 w-full text-foreground max-h-[80vh] overflow-y-auto mx-4 lg-32 xl-64 mb-32 pointer-events-auto ">
+            <div className="backdrop-blur-lg bg-[#423c38] p-6 w-full text-foreground max-h-[80vh] overflow-y-auto mx-4 lg-32 xl-64 pointer-events-auto mb-0">
               <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
