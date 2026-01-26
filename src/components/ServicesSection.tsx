@@ -142,12 +142,12 @@ const ServiceSlide = ({
         ...contentStyle
       }}>
           <div className="h-screen pb-8 px-4 flex items-end justify-center">
-            <div className="backdrop-blur-lg bg-[#423c38] p-6 w-full text-foreground max-h-[80vh] overflow-y-auto mx-4 mb-16 lg-32 xl-64 pointer-events-auto">
+            <div className="backdrop-blur-lg bg-[#423c38]/50 p-6 w-full text-foreground max-h-[80vh] overflow-y-auto mx-4 mb-16 lg-32 xl-64 pointer-events-auto">
               <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
-              <h3 className="font-heading uppercase leading-tight mb-3 text-foreground text-2xl">{service.title}</h3>
-              {service.description && <p className="mb-4 leading-relaxed text-foreground font-sm text-xs mb-sm lg-medium">
+              <h3 className="font-heading uppercase leading-tight mb-3 text-2xl text-[#fbf2ee]">{service.title}</h3>
+              {service.description && <p className="mb-4 leading-relaxed font-sm text-xs mb-sm lg-medium text-[#fbf2ee]">
                   {service.description}
                 </p>}
 
@@ -155,7 +155,7 @@ const ServiceSlide = ({
               {service.bullets && service.bullets.length > 0 && <ul className="space-y-2 mb-4">
                   {service.bullets.map((bullet, i) => <li key={i} className="flex items-start gap-2">
                       <Check className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
-                      <span className="text-foreground font-sm text-xs mb-sm lg-medium">{bullet}</span>
+                      <span className="font-sm text-xs mb-sm lg-medium text-[#fbf2ee]">{bullet}</span>
                     </li>)}
                 </ul>}
 
