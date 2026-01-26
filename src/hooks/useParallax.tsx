@@ -13,7 +13,7 @@ interface UseParallaxOptions {
  * @returns Ref y valor de transformación
  */
 export const useParallax = (options: UseParallaxOptions = {}) => {
-  const { speed = 0.5, offset = 0, direction = "up", enabled = true } = options;
+  const { speed = 1, offset = 0, direction = "up", enabled = true } = options;
 
   const elementRef = useRef<HTMLElement | null>(null);
   const [transform, setTransform] = useState(0);
@@ -94,13 +94,13 @@ export const useParallax = (options: UseParallaxOptions = {}) => {
 /**
  * Hook simplificado para parallax en elementos de fondo
  */
-export const useParallaxBackground = (speed: number = 0.3) => {
+export const useParallaxBackground = (speed: number = 1) => {
   return useParallax({ speed, direction: "up" });
 };
 
 /**
  * Hook para parallax en elementos que se mueven hacia abajo
  */
-export const useParallaxDown = (speed: number = 0.3) => {
+export const useParallaxDown = (speed: number = 1) => {
   return useParallax({ speed, direction: "down" });
 };
