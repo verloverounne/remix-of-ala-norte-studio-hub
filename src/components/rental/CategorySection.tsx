@@ -111,13 +111,13 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
       <div className="sticky z-20 bg-background mb-0 -mt-px" style={{
       top: `${stickyTop - 1}px`
     }}>
-        <div className="flex items-center justify-between px-2 sm:px-4 py-2 sm:py-3 h-[40px] sm:h-[52px]">
+        <div className="flex items-center justify-between px-2 sm:px-4 py-2 sm:py-3 h-[40px] sm:h-[52px] bg-[#201e1d]">
           <button onClick={handleHeaderClick} className="flex items-center gap-1 sm:gap-3 cursor-pointer hover:text-primary transition-colors">
             {isExpanded ? <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5 transition-transform flex-shrink-0" /> : <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform flex-shrink-0" />}
-            <h2 className="font-heading text-sm sm:text-lg md:text-xl uppercase truncate bg-background">
+            <h2 className="font-heading text-sm sm:text-lg md:text-xl uppercase truncate bg-transparent text-[#fbf2ee]">
               {category.name}
             </h2>
-            <Badge variant="secondary" className="text-[10px] sm:text-xs px-1.5 py-0 flex-shrink-0 text-primary-dark bg-background">
+            <Badge variant="secondary" className="text-[10px] sm:text-xs px-1.5 py-0 flex-shrink-0 bg-[#131211] text-[#fbf2ee]">
               {filteredEquipment.length}
             </Badge>
           </button>

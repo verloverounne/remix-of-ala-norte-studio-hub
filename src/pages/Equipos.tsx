@@ -344,13 +344,13 @@ const Equipos = () => {
         </div>
       </div>
 
-      <div className="container w-screen mx-auto px-4 pb-4 sm:pb-6">
+      <div className="container w-screen mx-auto px-4 pb-4 sm:pb-6 bg-[#131211]">
         <div className="grid lg:grid-cols-4 gap-4 lg:gap-6">
           {/* Main Content - Category Sections */}
           <main className="lg:col-span-3">
             {loading ? <div className="text-center py-12 sm:py-16 border border-foreground p-8 sm:p-12">
                 <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>
-              </div> : <div className="space-y-4 sm:space-y-6">
+              </div> : <div className="space-y-4 sm:space-y-6 bg-[#131211]">
                 {orderedCategories.map((category, index) => <CategorySection key={category.id} ref={ref => {
               if (ref) {
                 categoryRefs.current.set(category.id, ref);
@@ -362,7 +362,7 @@ const Equipos = () => {
           </main>
 
           {/* Cart Sidebar - Sticky on desktop, drawer on mobile */}
-          <aside className="hidden lg:block lg:col-span-1 shadow-none bg-[#2e2c29]">
+          <aside className="hidden lg:block lg:col-span-1 shadow-none bg-[#131211]">
             <CartSidebar items={items} calculateSubtotal={calculateSubtotal} updateQuantity={updateQuantity} removeItem={removeItem} stickyTop={cartStickyTop} />
           </aside>
 
