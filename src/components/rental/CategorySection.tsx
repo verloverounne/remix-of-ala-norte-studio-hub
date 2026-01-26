@@ -171,7 +171,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                       <div className="mt-auto flex items-center gap-2">
                         {/* Precio - mitad izquierda */}
                         <div className="flex-1 flex items-baseline gap-1">
-                          <span className="text-primary font-heading text-lg sm:text-xl">
+                          <span className="font-heading text-lg sm:text-xl text-[#f82020]">
                             ${item.price_per_day > 0 ? (item.price_per_day / 1000).toFixed(0) + 'K' : '—'}
                           </span>
                           <span className="text-muted-foreground font-mono text-[10px]">/día</span>
