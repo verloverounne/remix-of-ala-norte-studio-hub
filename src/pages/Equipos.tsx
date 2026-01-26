@@ -348,7 +348,7 @@ const Equipos = () => {
         </div>
       </div>
 
-      <div className="container w-screen mx-auto px-4 pb-4 sm:pb-6 bg-[#131211]">
+      <div className="container w-screen mx-auto px-4 pb-4 sm:pb-6 bg-background">
         <div className="grid lg:grid-cols-4 gap-4 lg:gap-6">
           {/* Main Content - Category Sections */}
           <main className="lg:col-span-3 bg-background">
