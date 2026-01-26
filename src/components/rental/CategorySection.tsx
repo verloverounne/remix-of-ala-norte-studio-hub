@@ -144,19 +144,10 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
       </div>
 
       {/* Equipment Grid - Collapsible */}
-      {isExpanded && <div ref={gridRef} className="p-3 sm:p-4 border-[#201e1d] border-0 bg-[#201e1d] px-0">
+      {isExpanded && <div ref={gridRef} className="p-3 sm:p-4 border-[#201e1d] border-0 px-0 bg-background">
           {filteredEquipment.length === 0 ? <div className="text-center py-8 sm:py-12 text-muted-foreground">
               <p className="font-heading text-lg">No hay equipos en esta categoría</p>
-            </div> : viewMode === "list" ? (
-              <EquipmentListView
-                equipment={filteredEquipment}
-                onAddToCart={onAddToCart}
-                onViewDetails={onViewDetails}
-                getCartQuantity={getCartQuantity}
-                canAddMore={canAddMore}
-              />
-            ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+            </div> : viewMode === "list" ? <EquipmentListView equipment={filteredEquipment} onAddToCart={onAddToCart} onViewDetails={onViewDetails} getCartQuantity={getCartQuantity} canAddMore={canAddMore} /> : <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
               {filteredEquipment.map(item => {
           const cartQty = getCartQuantity(item.id);
           const canAdd = canAddMore(item);
@@ -205,8 +196,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                     </CardContent>
                   </Card>;
         })}
-            </div>
-            )}
+            </div>}
         </div>}
     </section>;
 });
