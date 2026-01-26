@@ -47,7 +47,7 @@ export const CartSidebar = ({
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <p className="font-heading text-sm truncate">{item.name}</p>
+                    <p className="font-heading text-sm truncate">{item.name}</p><p className="font-heading text-sm truncate">{item.name}</p>
                     {item.brand && <p className="text-xs text-muted-foreground">{item.brand}</p>}
                     <p className="text-xs text-muted-foreground mt-1">${item.pricePerDay.toLocaleString()}/día</p>
                   </div>
