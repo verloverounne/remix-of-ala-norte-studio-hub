@@ -137,11 +137,11 @@ const ServiceSlide = ({
         </div>
 
         {/* Contenido con parallax basado en scroll - z-10 para estar encima del video */}
-        <div className="sticky bottom-1 z-10 pointer-events-none" style={{
+        <div className="z-10 pointer-events-none" style={{
         marginTop: "-100vh",
         ...contentStyle
       }}>
-          <div className="h-screen pb-8 px-4 flex items-start justify-center">
+          <div className="h-screen pb-8 px-4 flex items-start justify-start">
             <div className="backdrop-blur-lg bg-[#423c38] p-6 w-full text-foreground max-h-[80vh] overflow-y-auto mx-4 lg-32 xl-64 pointer-events-auto ">
               <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
                 Servicio {String(index + 1).padStart(2, "0")}
