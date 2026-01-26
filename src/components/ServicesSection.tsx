@@ -1,12 +1,19 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Check, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
 import { useParallax } from "@/hooks/useParallax";
 import { useScrollParallax } from "@/hooks/useScrollParallax";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { Json } from "@/integrations/supabase/types";
 const parseBullets = (bullets: Json | null): string[] => {
   if (!bullets) return [];
@@ -235,13 +242,7 @@ export const ServicesSection = () => {
     skipSnaps: false,
   });
 
-  // Mobile tabs carousel with center alignment
-  const [tabsRef, tabsApi] = useEmblaCarousel({
-    loop: false,
-    align: "center",
-    containScroll: false,
-    dragFree: false,
-  });
+  // Note: Mobile tabs carousel removed - now using dropdown
   useEffect(() => {
     const fetchServices = async () => {
       const { data, error } = await supabase
@@ -299,29 +300,9 @@ export const ServicesSection = () => {
     };
   }, [emblaApi, onSelect]);
 
-  // Sync tabs carousel when user swipes tabs (mobile)
-  useEffect(() => {
-    if (!tabsApi) return;
-    const onTabSelect = () => {
-      const selectedTab = tabsApi.selectedScrollSnap();
-      setActiveIndex(selectedTab);
-      emblaApi?.scrollTo(selectedTab);
-    };
-    tabsApi.on("select", onTabSelect);
-    return () => {
-      tabsApi.off("select", onTabSelect);
-    };
-  }, [tabsApi, emblaApi]);
-
-  // Sync tabs position when main carousel changes (arrows, swipe)
-  useEffect(() => {
-    if (!tabsApi) return;
-    tabsApi.scrollTo(activeIndex);
-  }, [activeIndex, tabsApi]);
   const handleTabClick = (index: number) => {
     setActiveIndex(index);
     scrollTo(index);
-    tabsApi?.scrollTo(index);
   };
   if (loading) {
     return (
@@ -340,45 +321,50 @@ export const ServicesSection = () => {
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
       </div>
-      {/* Tab Navigation - Label/Tag Style - Full width on mobile */}
+      {/* Tab Navigation - Dropdown on mobile, horizontal tabs on desktop */}
       <div className="container z-30 my-0 bg-[#201e1d]">
         <div className="mx-0 border-0 sm:py-0 bg-transparent py-0 pt-0">
-          {/* Mobile: Embla carousel for tabs with snap-to-center */}
-          <div className="sm:hidden overflow-hidden" ref={tabsRef}>
-            <div className="flex items-center justify-center">
-              {services.map((service, index) => (
-                <div key={service.id} className="flex-[0_0_auto] min-w-[120px] border-[#bcb5ae]">
-                  <button
-                    onClick={() => handleTabClick(index)}
-                    className={cn(
-                      "w-full font-heading text-xs uppercase transition-all text-center py-[8px] border px-[4px] bg-[#2e2c29] border-[#2e2c29] text-[#fbf2ee]",
-                      activeIndex === index
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-background text-foreground hover:bg-muted",
-                    )}
+          {/* Mobile: Dropdown select tied to active slide */}
+          <div className="sm:hidden px-4 py-3">
+            <Select
+              value={String(activeIndex)}
+              onValueChange={(value) => handleTabClick(Number(value))}
+            >
+              <SelectTrigger className="w-full bg-background border-border font-heading text-sm uppercase">
+                <SelectValue>
+                  {services[activeIndex]?.title || "Seleccionar servicio"}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent className="bg-background border-border z-50">
+                {services.map((service, index) => (
+                  <SelectItem
+                    key={service.id}
+                    value={String(index)}
+                    className="font-heading text-sm uppercase cursor-pointer"
                   >
                     {service.title}
-                  </button>
-                </div>
-              ))}
-            </div>
-            {/* Desktop: horizontal row */}
-            <div className="hidden my-px mx-px flex mb:justify-between object-fill gap-0 sm:flex items-center lg:justify-between">
-              {services.map((service, index) => (
-                <button
-                  key={service.id}
-                  onClick={() => handleTabClick(index)}
-                  className={cn(
-                    "w-screen font-heading text-xs transition-all rounded-none shadow-none px-0 py-[16px]",
-                    activeIndex === index
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-background text-foreground border border-border hover:bg-muted",
-                  )}
-                >
-                  {service.title}
-                </button>
-              ))}
-            </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          {/* Desktop: horizontal row */}
+          <div className="hidden sm:flex items-center justify-between gap-0">
+            {services.map((service, index) => (
+              <button
+                key={service.id}
+                onClick={() => handleTabClick(index)}
+                className={cn(
+                  "flex-1 font-heading text-xs transition-all rounded-none shadow-none px-0 py-[16px]",
+                  activeIndex === index
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-background text-foreground border border-border hover:bg-muted",
+                )}
+              >
+                {service.title}
+              </button>
+            ))}
           </div>
         </div>
       </div>
