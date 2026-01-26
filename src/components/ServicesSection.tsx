@@ -148,7 +148,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
         </div>
       </div>
       {/* Mobile: Media de fondo sticky con contenido que sube por parallax basado en scroll */}
-      <div ref={containerRef} className="lg:hidden h-[150vh] relative">
+      <div ref={containerRef} className="lg:hidden h-[100vh] relative">
         {/* Media de fondo - sticky para mantenerse visible (z-0) */}
         <div className=" h-screen z-0 duotone-hover-group" onClick={handleMobileTap}>
           {hasMedia ? (
@@ -163,13 +163,11 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
                 playsInline
               />
             ) : (
-              <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-9/1 object-cover" />
+              <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" />
             )
           ) : (
             <div className="w-full h-full bg-muted flex items-center justify-center">
-              <span className="font-heading text-6xl text-muted-foreground/30">
-                {String(index + 1).padStart(2, "0")}
-              </span>
+              <span className="font-heading text-6xl text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
             </div>
           )}
 
@@ -181,7 +179,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
         <div
           className="z-10 pointer-events-none"
           style={{
-            marginTop: "-80vh",
+            marginTop: "-50vh",
             ...contentStyle,
           }}
         >
