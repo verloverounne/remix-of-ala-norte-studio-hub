@@ -178,7 +178,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                         </div>
                         
                         {/* Botón agregar - cuadrado que se expande en hover */}
-                        {item.status === 'available' ? <Button size="sm" className="h-8 sm:h-9 w-8 sm:w-9 p-0 overflow-hidden transition-all duration-300 hover:w-[100px] sm:hover:w-[120px] hover:px-2 sm:hover:px-3 font-black flex-shrink-0 group relative flex items-center justify-center gap-0" onClick={() => onAddToCart(item)} disabled={!canAdd}>
+                        {item.status === 'available' ? <Button size="sm" className="h-8 sm:h-9 w-8 sm:w-9 p-0 overflow-hidden transition-all duration-300 hover:w-[100px] sm:hover:w-[120px] hover:px-2 sm:hover:px-3 font-black flex-shrink-0 group relative flex items-center justify-center gap-0 bg-[#fbf2ee]" onClick={() => onAddToCart(item)} disabled={!canAdd}>
                             {canAdd ? <>
                                 <Plus className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0 m-0" />
                                 <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:opacity-100 group-hover:w-auto group-hover:ml-2 font-black">
