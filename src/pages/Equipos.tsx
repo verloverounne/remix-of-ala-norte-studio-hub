@@ -8,6 +8,7 @@ import { EquipmentModal } from "@/components/EquipmentModal";
 import { HeroCarouselRental } from "@/components/rental/HeroCarouselRental";
 import { CategorySection, CategorySectionRef } from "@/components/rental/CategorySection";
 import { CartSidebar } from "@/components/rental/CartSidebar";
+import { ViewModeToggle, ViewMode } from "@/components/rental/ViewModeToggle";
 import { cn } from "@/lib/utils";
 import { Search, Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -38,6 +39,7 @@ const Equipos = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>("cards");
   const {
     addItem,
     items,
@@ -301,9 +303,8 @@ const Equipos = () => {
             </Collapsible>
           </div>
 
-          {/* Row 2: Equipment count + Search button on right */}
-          {/* Row 2: Equipment count + Search button on right */}
-          <div className="flex items-center mb-2 pflex flex-wrap gap-2 flex-1">
+          {/* Row 2: Equipment count + View toggle + Search button on right */}
+          <div className="flex items-center mb-2 flex-wrap gap-2 flex-1">
             {/* Filter button - next to chips */}
             <Button variant="ghost" size="sm" onClick={() => {
             setIsFilterOpen(!isFilterOpen);
@@ -317,6 +318,10 @@ const Equipos = () => {
             <p className="text-xs text-muted-foreground font-heading uppercase mx-[44px] ml-0 mr-[6px]">
               Mostrando {filteredEquipment.length} equipos
             </p>
+            
+            {/* View mode toggle */}
+            <ViewModeToggle viewMode={viewMode} onViewModeChange={setViewMode} />
+            
             <Button variant="ghost" size="sm" onClick={() => {
             setIsSearchOpen(!isSearchOpen);
             if (isFilterOpen) setIsFilterOpen(false);
@@ -356,7 +361,7 @@ const Equipos = () => {
               } else {
                 categoryRefs.current.delete(category.id);
               }
-            }} category={category} equipment={equipmentByCategory[category.id] || []} onAddToCart={handleAddToCart} onViewDetails={handleViewDetails} getCartQuantity={getCartQuantity} canAddMore={canAddMore} stickyTop={categoryTitleTop} defaultExpanded={index === 0} onCategoryActivate={handleCategoryActivate} />)}
+            }} category={category} equipment={equipmentByCategory[category.id] || []} onAddToCart={handleAddToCart} onViewDetails={handleViewDetails} getCartQuantity={getCartQuantity} canAddMore={canAddMore} stickyTop={categoryTitleTop} defaultExpanded={index === 0} onCategoryActivate={handleCategoryActivate} viewMode={viewMode} />)}
               </div>}
           </main>
 

@@ -8,6 +8,8 @@ import { cn, formatEquipmentName } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import type { EquipmentWithCategory } from "@/types/supabase";
+import { EquipmentListView } from "./EquipmentListView";
+import type { ViewMode } from "./ViewModeToggle";
 type EquipmentWithStock = EquipmentWithCategory;
 interface Category {
   id: string;
@@ -29,6 +31,7 @@ interface CategorySectionProps {
   stickyTop: number;
   defaultExpanded?: boolean;
   onCategoryActivate?: (categoryId: string) => void;
+  viewMode?: ViewMode;
 }
 export interface CategorySectionRef {
   scrollIntoView: () => void;
@@ -44,7 +47,8 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
   canAddMore,
   stickyTop,
   defaultExpanded = false,
-  onCategoryActivate
+  onCategoryActivate,
+  viewMode = "cards"
 }, ref) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -143,7 +147,16 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
       {isExpanded && <div ref={gridRef} className="p-3 sm:p-4 border-[#201e1d] border-0 bg-[#201e1d] px-0">
           {filteredEquipment.length === 0 ? <div className="text-center py-8 sm:py-12 text-muted-foreground">
               <p className="font-heading text-lg">No hay equipos en esta categoría</p>
-            </div> : <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+            </div> : viewMode === "list" ? (
+              <EquipmentListView
+                equipment={filteredEquipment}
+                onAddToCart={onAddToCart}
+                onViewDetails={onViewDetails}
+                getCartQuantity={getCartQuantity}
+                canAddMore={canAddMore}
+              />
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
               {filteredEquipment.map(item => {
           const cartQty = getCartQuantity(item.id);
           const canAdd = canAddMore(item);
@@ -192,7 +205,8 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                     </CardContent>
                   </Card>;
         })}
-            </div>}
+            </div>
+            )}
         </div>}
     </section>;
 });
