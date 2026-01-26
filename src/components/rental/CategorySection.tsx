@@ -140,15 +140,15 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
       </div>
 
       {/* Equipment Grid - Collapsible */}
-      {isExpanded && <div ref={gridRef} className="p-3 sm:p-4 bg-background">
+      {isExpanded && <div ref={gridRef} className="p-3 sm:p-4 border-[#201e1d] border-0 bg-[#201e1d]">
           {filteredEquipment.length === 0 ? <div className="text-center py-8 sm:py-12 text-muted-foreground">
               <p className="font-heading text-lg">No hay equipos en esta categoría</p>
             </div> : <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
               {filteredEquipment.map(item => {
           const cartQty = getCartQuantity(item.id);
           const canAdd = canAddMore(item);
-          return <Card key={item.id} className="overflow-hidden group relative border-0 shadow-none hover:shadow-none [box-shadow:none!important] hover:[box-shadow:none!important]">
-                    <CardContent className="p-2 sm:p-3 flex flex-col space-y-2 shadow-md border">
+          return <Card key={item.id} className="overflow-hidden group relative border-0 shadow-none hover:shadow-sm">
+                    <CardContent className="p-2 sm:p-3 flex flex-col space-y-2 shadow-md border bg-destructive px-[4px]">
                       {/* 1. Nombre del equipo - formateado */}
                       <h3 className="font-heading normal-case text-xs leading-tight pt-2 line-clamp-2 cursor-pointer hover:text-primary transition-colors h-[5em] sm:text-xs text-left font-extralight" onClick={() => onViewDetails(item)}>
                         {formatEquipmentName(item.name)}
