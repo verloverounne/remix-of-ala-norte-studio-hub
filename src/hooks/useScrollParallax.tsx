@@ -12,7 +12,7 @@ interface UseScrollParallaxOptions {
  * Optimizado con requestAnimationFrame y throttling.
  */
 export const useScrollParallax = (options: UseScrollParallaxOptions = {}) => {
-  const { enabled = true, speedFactor = 3 } = options;
+  const { enabled = true, speedFactor = 0.8 } = options;
   const containerRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const ticking = useRef(false);
