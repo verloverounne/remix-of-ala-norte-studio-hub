@@ -30,7 +30,7 @@ export const EquipmentListView = ({
       const canAdd = canAddMore(item);
       return <div key={item.id} className="flex items-center max-w-screen-lg gap-3 py-3 transition-colors border-[#2e2c29] bg-background mx-2">
             {/* Thumbnail */}
-            <div className="w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0 cursor-pointer overflow-hidden bg-muted" onClick={() => onViewDetails(item)}>
+            <div className="w-8 h-8 sm:w-16 sm:h-16 flex-shrink-0 cursor-pointer overflow-hidden bg-muted" onClick={() => onViewDetails(item)}>
               {item.image_url ? <LazyImage src={item.image_url} alt={item.name} className="w-full h-full object-cover" placeholderClassName="w-full h-full" aspectRatio="square" /> : <div className="w-full h-full flex items-center justify-center">
                   <span className="text-lg opacity-20 font-heading">?</span>
                 </div>}
@@ -55,7 +55,7 @@ export const EquipmentListView = ({
             </div>
 
             {/* Badge - reserved/total */}
-            <Badge variant="secondary" className={cn("flex-shrink-0 text-[10px] px-2 py-0.5 font-heading", cartQty > 0 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
+            <Badge variant="secondary" className={cn("flex-shrink-0 text-[10px] px-2 py-0.5 font-heading border-0", cartQty > 0 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
               {cartQty}/{item.stock_quantity}
             </Badge>
 
