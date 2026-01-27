@@ -108,9 +108,9 @@ export const HeroCarouselRental = ({
                     {bg?.media_type === "video" && bg.image_url ? <video src={bg.image_url} className="w-full h-full object-cover video-duotone" autoPlay loop muted playsInline /> : bg?.image_url ? <img src={bg.image_url} alt={category.name} className="w-full h-full object-cover image-duotone" loading="lazy" /> : <div className="w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />}
 
                     {/* Text overlay */}
-                    <div className="absolute inset-0 flex items-end justify-center py-[22px] bg-popover-foreground">
+                    <div className="absolute inset-0 py-[22px] bg-popover-foreground flex items-center justify-center">
                       <div className="text-center z-10 p-4 sm:p-8 max-w-4xl my-[93px]">
-                        <h1 className="font-heading sm:text-3xl mb-2 uppercase drop-shadow-lg mx-0 font-extrabold lg:text-7xl md:text-7xl text-primary text-3xl px-[24px] py-[2px]">
+                        <h1 className="font-heading sm:text-3xl mb-2 uppercase drop-shadow-lg mx-0 font-extrabold lg:text-6xl md:text-7xl text-primary text-3xl px-[24px] py-[2px]">
                           {bg?.title || category.name.toUpperCase()}
                         </h1>
                         {bg?.description && <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading drop-shadow-md max-w-2xl mx-auto">
