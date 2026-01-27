@@ -16,8 +16,8 @@ All colors MUST be HSL.
     --background: 0 0% 98%; /* #FAFAFA Blanco brutal */
     --foreground: 0 0% 8%; /* #141414 Negro */
 
-    --card: 16 13% 83%;
-    --card-foreground: 0 0% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 36 6% 17%;
 
     --popover: 0 0% 89.8039%;
     --popover-foreground: 30 6.25% 25.098%;
