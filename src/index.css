@@ -13,8 +13,8 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* BRUTALISMO 2026 - Modo Claro */
-    --background: 0 0% 98%; /* #FAFAFA Blanco brutal */
-    --foreground: 0 0% 8%; /* #141414 Negro */
+    --background: 18 62% 96%; /* #FAFAFA Blanco brutal */
+    --foreground: 30 5% 7%; /* #141414 Negro */
 
     --card: 0 0% 100%;
     --card-foreground: 0 0% 8%;
@@ -24,13 +24,13 @@ All colors MUST be HSL.
 
     /* Primario - Rojo Brutal */
     --primary: 3 78% 43%; /* #DC143C Rojo Ala Norte */
-    --primary-foreground: 30 5% 7%;
+    --primary-foreground: 0 0% 98%;
     --primary-hover: 343 100% 33%; /* #A7002F */
     --primary-light: 355 82% 60%; /* #EF4350 */
     --primary-dark: 343 100% 22%; /* #6E0022 */
 
     /* Secundario - Gris Brutal */
-    --secondary: 0 0% 20%; /* #333333 Gris oscuro */
+    --secondary: 20 5% 12%; /* #333333 Gris oscuro */
     --secondary-foreground: 0 0% 98%;
     --secondary-hover: 0 0% 15%;
 
@@ -38,8 +38,8 @@ All colors MUST be HSL.
     --muted: 0 0% 90%; /* #E5E5E5 */
     --muted-foreground: 0 0% 30%; /* #4D4D4D */
 
-    --accent: 356 91% 59%; /* Rojo para acentos */
-    --accent-foreground: 0 0% 98%;
+    --accent: 0 94% 55%; /* Rojo para acentos */
+    --accent-foreground: 20 5% 12%;
 
     --destructive: 348 83% 47%;
     --destructive-foreground: 0 0% 98%;
