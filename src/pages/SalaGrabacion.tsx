@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Eye, Clock, Check, Calendar, Mic, Headphones, Monitor } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button.tsx";
+import { Badge } from "@/components/ui/badge.tsx";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { Space } from "@/types/supabase";
-import Viewer360 from "@/components/Viewer360";
-import { GalleryHero } from "@/components/GalleryHero";
+import Viewer360 from "@/components/Viewer360.tsx";
+import { GalleryHero } from "@/components/GalleryHero.tsx";
+
 const SalaGrabacion = () => {
   const [space, setSpace] = useState<Space | null>(null);
   const [loading, setLoading] = useState(true);
