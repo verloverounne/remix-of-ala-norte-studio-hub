@@ -161,7 +161,7 @@ export const GalleryHero = ({
           </div>}
 
         {/* Content overlay with backdrop-blur */}
-        <div className="absolute inset-0 pb-[64px] flex items-center justify-center">
+        <div className="absolute inset-0 pb-[64px] flex items-end justify-center">
           <div ref={contentParallax.ref as any} style={contentParallax.style} className="backdrop-blur-lg bg-[#423c38]/50 text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px]">
             {/* Price Badge */}
             <div className="flex items-center gap-2 text-primary px-4 py-2 rounded-lg w-fit bg-foreground mb-4">
