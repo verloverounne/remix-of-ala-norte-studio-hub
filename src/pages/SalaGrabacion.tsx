@@ -71,12 +71,12 @@ const SalaGrabacion = () => {
       </section>
 
       {/* Features Section */}
-      {space.features && space.features.length > 0 && <section className="py-12 sm:py-16 bg-background">
+      {space.features && space.features.length > 0 && <section className="py-12 sm:py-16 bg-foreground">
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-8 text-center">
+            <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-8 text-center text-background">
               CARACTERÍSTICAS DEL ESPACIO
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-background">
               {space.features.map((feature, index) => <div key={index} className="flex items-start gap-3 bg-secondary border border-foreground p-4 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform">
                   <Check className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
                   <span className="font-heading">{feature}</span>
