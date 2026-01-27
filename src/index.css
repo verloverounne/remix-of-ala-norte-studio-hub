@@ -2,6 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Lora&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,13 +18,13 @@ All colors MUST be HSL.
     --foreground: 0 0% 8%; /* #141414 Negro */
 
     --card: 0 0% 100%;
-    --card-foreground: 36 6% 17%;
+    --card-foreground: 0 0% 8%;
 
-    --popover: 0 0% 89.8039%;
-    --popover-foreground: 30 6.25% 25.098%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
 
     /* Primario - Rojo Brutal */
-    --primary: 3 78% 43%; /* #DC143C Rojo Ala Norte */
+    --primary: 348 83% 47%; /* #DC143C Rojo Ala Norte */
     --primary-foreground: 0 0% 98%;
     --primary-hover: 343 100% 33%; /* #A7002F */
     --primary-light: 355 82% 60%; /* #EF4350 */
@@ -38,13 +39,13 @@ All colors MUST be HSL.
     --muted: 0 0% 90%; /* #E5E5E5 */
     --muted-foreground: 0 0% 30%; /* #4D4D4D */
 
-    --accent: 356 91% 59%; /* Rojo para acentos */
+    --accent: 348 83% 47%; /* Rojo para acentos */
     --accent-foreground: 0 0% 98%;
 
     --destructive: 348 83% 47%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 0% / 0%; /* Bordes eliminados - transparente */
+    --border: 0 0% 8%; /* Bordes eliminados - transparente */
     --input: 0 0% 8%;
     --ring: 348 83% 47%;
 
@@ -69,10 +70,10 @@ All colors MUST be HSL.
     --tritone-low: 0 0% 8%; /* Color para tonos bajos (areas oscuras) */
 
     /* Sombras Brutales - Duras y sin blur pero sutiles */
-    --shadow-brutal: 2px 2px 0 hsl(0 0% 8%);
-    --shadow-brutal-sm: 1px 1px 0 hsl(0 0% 8%);
-    --shadow-brutal-lg: 3px 3px 0 hsl(0 0% 8%);
-    --shadow-brutal-red: 2px 2px 0 hsl(348 83% 47%);
+    --shadow-brutal: 4px 4px 0 hsl(0 0% 8%);
+    --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 8%);
+    --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 8%);
+    --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
 
     /* Gradientes Brutales */
     --gradient-primary: linear-gradient(135deg, hsl(348 83% 47%), hsl(343 100% 33%));
@@ -85,13 +86,47 @@ All colors MUST be HSL.
     /* Transiciones Brutales - Instantaneas o mecanicas */
     --transition-brutal: all 0.1s linear;
     --transition-none: none;
-    --shadow-sm: 1px 1px 2px -1px hsl(240 4% 46%);
-    --shadow: 1px 1px 3px -1px hsl(240 4% 46%);
-    --shadow-md: 1px 1px 5px -1px hsl(240 4% 46%);
-    --shadow-lg: 1px 1px 3px -1px hsl(240 4% 46%);
-    --font-sans: Poppins, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    --shadow-sm: 3px 5px 7.5px -1px hsl(240, 4%, 46%);
+    --shadow: 3px 5px 15px -1px hsl(240, 4%, 46%);
+    --shadow-md: 3px 5px 22.5px -1px hsl(240, 4%, 46%);
+    --shadow-lg: 3px 5px 37.5px -1px hsl(240, 4%, 46%);
+    --font-sans: Roboto, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     --font-serif: Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
     --font-mono: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+  }
+  .dark {
+    --background: 0 0% 8%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 348 83% 47%;
+    --primary-foreground: 0 0% 98%;
+    --primary-hover: 343 100% 33%;
+    --primary-light: 355 82% 60%;
+    --primary-dark: 343 100% 22%;
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 98%;
+    --secondary-hover: 0 0% 15%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 348 83% 47%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 348 83% 47%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 98%;
+    --input: 0 0% 98%;
+    --ring: 348 83% 47%;
+    --gray-dark: 0 0% 15%;
+    --gray-medium: 0 0% 40%;
+    --gray-light: 0 0% 70%;
+    --gray-lighter: 0 0% 90%;
+    --shadow-brutal: 4px 4px 0 hsl(0 0% 98%);
+    --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 98%);
+    --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 98%);
+    --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
+
   }
 
 }
