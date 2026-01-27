@@ -61,18 +61,14 @@ const SalaGrabacion = () => {
       <section className="py-8 sm:py-12 bg-stone-900">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {defaultFeatures.map((feature, index) => <div key={index} className="border border-foreground p-6 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform bg-stone-900">
-                <feature.icon className="h-12 w-12 mb-4 text-stone-700" />
-                <h3 className="text-xl font-heading font-bold mb-2 text-stone-50">{feature.title}</h3>
-                <p className="text-muted-foreground font-heading">{feature.description}</p>
-              </div>)}
+            {defaultFeatures.map((feature, index) => {})}
           </div>
         </div>
       </section>
 
       {/* Features Section */}
       {space.features && space.features.length > 0 && <section className="py-12 sm:py-16 bg-foreground border-stone-800">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 text-2x1 mb:text-2x1 lg:text-5xl font-thin">
             <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-8 text-center text-background">
               CARACTERÍSTICAS DEL ESPACIO
             </h2>
