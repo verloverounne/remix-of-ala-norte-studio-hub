@@ -164,15 +164,10 @@ export const GalleryHero = ({
         <div className="absolute inset-0 pb-[64px] flex items-end justify-center">
           <div ref={contentParallax.ref as any} style={contentParallax.style} className="backdrop-blur-lg bg-[#423c38]/50 text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px]">
             {/* Price Badge */}
-            <div className="flex items-center gap-2 text-primary px-4 py-2 rounded-lg w-fit bg-foreground mb-4">
-              <span className="font-bold font-heading text-background text-base">
-                ${(space.block_price || space.price)?.toLocaleString()}
-              </span>
-              <span className="text-background font-extralight text-xs">/ bloque {space.block_hours || 4}hs</span>
-            </div>
+            
 
             {/* Title */}
-            <h1 className="font-heading font-bold text-4xl mb-2 text-background">{space.hero_title || space.name}</h1>
+            <h1 className="font-heading font-bold text-4xl mb-2 mt-8 text-background ">{space.hero_title || space.name}</h1>
 
             {/* Location */}
             {space.location && <div className="flex items-center gap-2 rounded-lg border-2 border-foreground px-3 py-1 mb-4 w-fit bg-foreground text-background">
