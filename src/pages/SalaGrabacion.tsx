@@ -7,7 +7,6 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Space } from "@/types/supabase";
 import Viewer360 from "@/components/Viewer360.tsx";
 import { GalleryHero } from "@/components/GalleryHero.tsx";
-
 const SalaGrabacion = () => {
   const [space, setSpace] = useState<Space | null>(null);
   const [loading, setLoading] = useState(true);
@@ -59,12 +58,12 @@ const SalaGrabacion = () => {
       <GalleryHero space={space} />
 
       {/* Quick Features Section */}
-      <section className="py-8 sm:py-12 bg-secondary">
+      <section className="py-8 sm:py-12 bg-stone-900">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {defaultFeatures.map((feature, index) => <div key={index} className="bg-background border border-foreground p-6 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform">
-                <feature.icon className="h-12 w-12 text-primary mb-4" />
-                <h3 className="text-xl font-heading font-bold mb-2">{feature.title}</h3>
+            {defaultFeatures.map((feature, index) => <div key={index} className="border border-foreground p-6 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform bg-stone-900">
+                <feature.icon className="h-12 w-12 mb-4 text-stone-700" />
+                <h3 className="text-xl font-heading font-bold mb-2 text-stone-50">{feature.title}</h3>
                 <p className="text-muted-foreground font-heading">{feature.description}</p>
               </div>)}
           </div>
@@ -72,14 +71,14 @@ const SalaGrabacion = () => {
       </section>
 
       {/* Features Section */}
-      {space.features && space.features.length > 0 && <section className="py-12 sm:py-16 bg-foreground">
+      {space.features && space.features.length > 0 && <section className="py-12 sm:py-16 bg-foreground border-stone-800">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-8 text-center text-background">
               CARACTERÍSTICAS DEL ESPACIO
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-background">
-              {space.features.map((feature, index) => <div key={index} className="flex items-start gap-3 bg-secondary border border-foreground p-4 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform">
-                  <Check className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
+              {space.features.map((feature, index) => <div key={index} className="flex items-start gap-3 border border-foreground p-4 shadow-brutal hover:translate-x-1 hover:-translate-y-1 transition-transform bg-stone-900">
+                  <Check className="h-6 w-6 flex-shrink-0 mt-0.5 text-stone-50" />
                   <span className="font-heading">{feature}</span>
                 </div>)}
             </div>
