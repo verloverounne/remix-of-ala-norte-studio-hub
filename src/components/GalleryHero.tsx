@@ -169,7 +169,7 @@ export const GalleryHero = ({
 
         {/* Content overlay with backdrop-blur */}
         <div className="absolute inset-0 flex items-end justify-center pb-[64px]">
-          <div ref={contentParallax.ref as any} style={contentParallax.style} className="backdrop-blur-lg bg-background/40 rounded-lg px-6 py-8 mx-4 md:mx-6">
+          <div ref={contentParallax.ref as any} style={contentParallax.style} className="backdrop-blur-lg bg-[#423c38]/50 text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px]">
             {/* Price Badge */}
             <div className="flex items-center gap-2 text-primary px-4 py-2 rounded-lg w-fit bg-foreground mb-4">
               <span className="font-bold font-heading text-background text-base">
@@ -179,16 +179,16 @@ export const GalleryHero = ({
             </div>
 
             {/* Title */}
-            <h1 className="font-heading font-bold text-foreground text-4xl mb-2">{space.hero_title || space.name}</h1>
+            <h1 className="font-heading font-bold text-4xl mb-2 text-background">{space.hero_title || space.name}</h1>
 
             {/* Location */}
-            {space.location && <div className="flex items-center gap-2 rounded-lg border-2 bg-background border-foreground px-3 py-1 mb-4 w-fit">
-                <MapPin className="h-4 w-4 text-input" />
-                <span className="font-heading text-foreground text-sm">{space.location}</span>
+            {space.location && <div className="flex items-center gap-2 rounded-lg border-2 border-foreground px-3 py-1 mb-4 w-fit bg-foreground text-background">
+                <MapPin className="h-4 w-4 text-background" />
+                <span className="font-heading text-sm text-background">{space.location}</span>
               </div>}
 
             {/* Subtitle */}
-            <p className="font-heading text-foreground leading-tight font-medium text-base mb-4">
+            <p className="font-heading leading-tight font-medium text-base mb-4 text-background">
               {space.hero_subtitle || space.description}
             </p>
 

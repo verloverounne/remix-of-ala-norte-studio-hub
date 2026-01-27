@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MapPin, Clock, Ruler, Calendar } from "lucide-react";
+import { MapPin, Ruler, Calendar } from "lucide-react";
 import planoIlustrativo from "@/assets/plano-ilustrativo.png";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,37 +10,32 @@ import Viewer360 from "@/components/Viewer360";
 import { GalleryHero } from "@/components/GalleryHero";
 import { ProductionsSlider } from "@/components/ProductionsSlider";
 import { useGalleryImages } from "@/hooks/useGalleryImages";
-
 const Galeria = () => {
   const [space, setSpace] = useState<Space | null>(null);
   const [loading, setLoading] = useState(true);
-  const { getByPageType, loading: galleryLoading } = useGalleryImages();
-
+  const {
+    getByPageType,
+    loading: galleryLoading
+  } = useGalleryImages();
   useEffect(() => {
     fetchData();
   }, []);
-
   const fetchData = async () => {
     setLoading(true);
 
     // Fetch space data
-    const { data: spaceData } = await supabase
-      .from("spaces")
-      .select("*")
-      .eq("slug", "galeria")
-      .single();
-
+    const {
+      data: spaceData
+    } = await supabase.from("spaces").select("*").eq("slug", "galeria").single();
     if (spaceData) {
       setSpace({
         ...spaceData,
-        images: Array.isArray(spaceData.images) ? (spaceData.images as string[]) : [],
-        features: Array.isArray(spaceData.features) ? (spaceData.features as string[]) : [],
-        included_items: Array.isArray(spaceData.included_items) ? (spaceData.included_items as string[]) : [],
-        optional_services: Array.isArray(spaceData.optional_services)
-          ? (spaceData.optional_services as string[])
-          : [],
-        amenities: Array.isArray(spaceData.amenities) ? (spaceData.amenities as any[]) : [],
-        specs: spaceData.specs || {},
+        images: Array.isArray(spaceData.images) ? spaceData.images as string[] : [],
+        features: Array.isArray(spaceData.features) ? spaceData.features as string[] : [],
+        included_items: Array.isArray(spaceData.included_items) ? spaceData.included_items as string[] : [],
+        optional_services: Array.isArray(spaceData.optional_services) ? spaceData.optional_services as string[] : [],
+        amenities: Array.isArray(spaceData.amenities) ? spaceData.amenities as any[] : [],
+        specs: spaceData.specs || {}
       } as Space);
     }
     setLoading(false);
@@ -49,13 +44,10 @@ const Galeria = () => {
   // Get featured image from gallery images
   const galeriaImages = getByPageType("galeria");
   const featuredMediaImage = galeriaImages[0]?.image_url || null;
-
   if (loading || !space) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
+    return <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
+      </div>;
   }
   return <div className="min-h-screen">
       {/* Hero Section with 2 Column Layout */}
@@ -112,9 +104,9 @@ const Galeria = () => {
                 </div>}
 
               {/* Schedule Info */}
-              <div className="bg-secondary border border-foreground p-4 rounded-lg">
+              <div className="border-foreground p-4 rounded-lg bg-stone-200 border-0">
                 <h3 className="font-heading font-bold mb-2 flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-primary" /> HORARIOS
+                   HORARIOS
                 </h3>
                 <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekday}</p>
                 <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekend}</p>
