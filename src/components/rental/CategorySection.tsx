@@ -154,7 +154,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
           return <Card key={item.id} className="overflow-hidden group relative border-0 shadow-none hover:shadow-sm bg-transparent">
                     <CardContent className="p-2 sm:p-3 flex flex-col space-y-2 px-[4px] bg-muted text-stone-200">
                       {/* 1. Nombre del equipo - formateado */}
-                      <h3 className="font-heading normal-case text-xs leading-tight pt-2 line-clamp-2 cursor-pointer transition-colors h-[5em] sm:text-xs text-left font-medium text-foreground" onClick={() => onViewDetails(item)}>
+                      <h3 className="font-heading normal-case text-xs leading-tight pt-2 line-clamp-2 cursor-pointer transition-colors h-[5em] sm:text-xs text-left font-medium text-foreground mx-[4px]" onClick={() => onViewDetails(item)}>
                         {formatEquipmentName(item.name)}
                       </h3>
                       
@@ -166,7 +166,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                           {cartQty}/{item.stock_quantity}
                         </div>
                         
-                        {item.image_url ? <LazyImage src={item.image_url} alt={item.name} className="w-full h-full group-hover:scale-105 transition-all duration-300 rounded-none text-foreground bg-stone-50" placeholderClassName="w-full h-full" aspectRatio="square" /> : <div className="w-full h-full flex items-center justify-center bg-muted">
+                        {item.image_url ? <LazyImage src={item.image_url} alt={item.name} className="w-full h-full group-hover:scale-105 transition-all duration-300 rounded-none text-foreground bg-stone-50 px-[8px]" placeholderClassName="w-full h-full" aspectRatio="square" /> : <div className="w-full h-full flex items-center justify-center bg-muted">
                             <span className="text-2xl sm:text-3xl opacity-20 font-heading">?</span>
                           </div>}
                       </div>
