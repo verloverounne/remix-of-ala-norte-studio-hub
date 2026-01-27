@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
+import { ArrowRight, Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel from "embla-carousel-react";
 import { useParallax } from "@/hooks/useParallax";
 import { useScrollParallax } from "@/hooks/useScrollParallax";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { getCache, setCache, CACHE_KEYS } from "@/lib/cache";
 import type { Json } from "@/integrations/supabase/types";
 const parseBullets = (bullets: Json | null): string[] => {
   if (!bullets) return [];
@@ -185,12 +186,22 @@ export const ServicesSection = () => {
   // Note: Mobile tabs carousel removed - now using dropdown
   useEffect(() => {
     const fetchServices = async () => {
-      const {
-        data,
-        error
-      } = await supabase.from("home_services").select("id, title, description, image_url, section_media_type, section_video_url, button_text, button_link, bullets, cta_label, cta_url, order_index, is_active").eq("is_active", true).order("order_index");
+      // Check cache first
+      const cached = getCache<HomeService[]>(CACHE_KEYS.HOME_SERVICES);
+      if (cached) {
+        setServices(cached);
+        setLoading(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("home_services")
+        .select("id, title, description, image_url, section_media_type, section_video_url, button_text, button_link, bullets, cta_label, cta_url, order_index, is_active")
+        .eq("is_active", true)
+        .order("order_index");
+      
       if (!error && data) {
-        setServices(data.map(s => ({
+        const transformed = data.map(s => ({
           ...s,
           order_index: s.order_index ?? 0,
           section_media_type: s.section_media_type ?? null,
@@ -198,7 +209,9 @@ export const ServicesSection = () => {
           bullets: parseBullets(s.bullets),
           cta_label: s.cta_label ?? null,
           cta_url: s.cta_url ?? null
-        })));
+        }));
+        setServices(transformed);
+        setCache(CACHE_KEYS.HOME_SERVICES, transformed);
       }
       setLoading(false);
     };
