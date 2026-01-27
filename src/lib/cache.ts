@@ -70,3 +70,8 @@ export const CACHE_KEYS = {
   HOME_SERVICES: 'home_services',
   GALLERY_IMAGES: 'gallery_images_consolidated',
 } as const;
+
+// Helper to clear specific cache when admin updates data
+export function invalidateCache(key: keyof typeof CACHE_KEYS): void {
+  clearCache(CACHE_KEYS[key]);
+}
