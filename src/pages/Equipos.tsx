@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useState, useRef, useCallback, useMemo, useEffect } from "react";
 import type { EquipmentWithCategory } from "@/types/supabase";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
 import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
+import { useEquipmentData } from "@/hooks/useEquipmentData";
 import { EquipmentModal } from "@/components/EquipmentModal";
 import { HeroCarouselRental } from "@/components/rental/HeroCarouselRental";
 import { CategorySection, CategorySectionRef } from "@/components/rental/CategorySection";
@@ -15,45 +15,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
+
 type EquipmentWithStock = EquipmentWithCategory;
-interface Category {
-  id: string;
-  name: string;
-  slug: string;
-  order_index?: number;
-}
-interface Subcategory {
-  id: string;
-  name: string;
-  category_id: string;
-}
+
 const Equipos = () => {
-  const [equipment, setEquipment] = useState<EquipmentWithStock[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
+  const { equipment, categories, subcategories, loading } = useEquipmentData();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedEquipment, setSelectedEquipment] = useState<EquipmentWithStock | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("cards");
-  const {
-    addItem,
-    items,
-    calculateSubtotal,
-    updateQuantity,
-    removeItem
-  } = useCart();
-  const {
-    toast
-  } = useToast();
-  const {
-    isMobile,
-    isVisible
-  } = useHeaderVisibility();
+  
+  const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
+  const { toast } = useToast();
+  const { isMobile, isVisible } = useHeaderVisibility();
 
   // Calcular top dinámico basado en visibilidad del header
   const stickyTop = useMemo(() => {
@@ -62,24 +40,9 @@ const Equipos = () => {
     }
     return isVisible ? 64 : 0; // 64px = altura del header desktop
   }, [isMobile, isVisible]);
+
   const categoryRefs = useRef<Map<string, CategorySectionRef>>(new Map());
   const filterRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  // Fetch subcategories
-  useEffect(() => {
-    const fetchSubcategories = async () => {
-      const {
-        data
-      } = await supabase.from("subcategories").select("*").order("order_index");
-      if (data) {
-        setSubcategories(data);
-      }
-    };
-    fetchSubcategories();
-  }, []);
 
   // Set active category when categories load
   useEffect(() => {
@@ -102,26 +65,12 @@ const Equipos = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isFilterOpen]);
-  const fetchData = async () => {
-    setLoading(true);
-    const [categoriesResult, equipmentResult] = await Promise.all([supabase.from("categories").select("*").order("order_index"), supabase.from("equipment").select(`*, categories (*), subcategories (*)`).order("order_index")]);
-    if (!categoriesResult.error && categoriesResult.data) {
-      setCategories(categoriesResult.data);
-    }
-    if (!equipmentResult.error && equipmentResult.data) {
-      const transformedData = equipmentResult.data.map((item: any) => ({
-        ...item,
-        images: Array.isArray(item.images) ? item.images : [],
-        stock_quantity: item.stock_quantity ?? 1
-      }));
-      setEquipment(transformedData);
-    }
-    setLoading(false);
-  };
+
   const getCartQuantity = useCallback((id: string) => {
     const cartItem = items.find(item => item.id === id);
     return cartItem?.quantity || 0;
   }, [items]);
+
   const canAddMore = useCallback((item: EquipmentWithStock) => {
     const inCart = getCartQuantity(item.id);
     const stock = item.stock_quantity ?? 1;
