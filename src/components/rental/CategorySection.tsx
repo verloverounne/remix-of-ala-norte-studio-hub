@@ -189,7 +189,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                                   AGREGAR
                                 </span>
                               </> : <span className="text-[10px] font-black">MÁX</span>}
-                          </Button> : <Button size="sm" className="h-8 sm:h-9 w-8 sm:w-9 p-0 font-black flex-shrink-0 flex items-center justify-center bg-primary-dark text-stone-50" disabled>
+                          </Button> : <Button size="sm" className="h-8 sm:h-9 w-8 sm:w-9 p-0 font-black flex-shrink-0 flex items-center justify-center bg-secondary text-accent" disabled>
                             <X className="h-3 w-3 sm:h-4 sm:w-4" />
                           </Button>}
                       </div>
