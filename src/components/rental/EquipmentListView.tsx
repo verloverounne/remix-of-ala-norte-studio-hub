@@ -28,7 +28,7 @@ export const EquipmentListView = ({
       {equipment.map(item => {
       const cartQty = getCartQuantity(item.id);
       const canAdd = canAddMore(item);
-      return <div key={item.id} className="flex items-center w-screen gap-3 py-3 transition-colors border-[#2e2c29] bg-background mx-2">
+      return <div key={item.id} className="flex items-center max-w-screen-lg gap-3 py-3 transition-colors border-[#2e2c29] bg-background mx-2">
             {/* Thumbnail */}
             <div className="w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0 cursor-pointer overflow-hidden bg-muted" onClick={() => onViewDetails(item)}>
               {item.image_url ? <LazyImage src={item.image_url} alt={item.name} className="w-full h-full object-cover" placeholderClassName="w-full h-full" aspectRatio="square" /> : <div className="w-full h-full flex items-center justify-center">
