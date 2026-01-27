@@ -61,7 +61,16 @@ const SalaGrabacion = () => {
       <section className="py-8 sm:py-12 bg-stone-900">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {defaultFeatures.map((feature, index) => {})}
+            {defaultFeatures.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <div key={index} className="text-center p-6 bg-stone-800 rounded-lg">
+                  <Icon className="h-8 w-8 mx-auto mb-3 text-primary" />
+                  <h3 className="text-background font-heading font-bold mb-2">{feature.title}</h3>
+                  <p className="text-muted-foreground font-heading text-sm">{feature.description}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

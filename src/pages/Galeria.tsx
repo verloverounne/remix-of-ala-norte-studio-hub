@@ -138,23 +138,28 @@ const Galeria = () => {
         </div>
       </section>
       {/* 360° Virtual Tour Section - Movido debajo de características */}
-      {space.tour_360_url && <section className="py-12 sm:py-16 bg-foreground">
-          <div className="w-full px-0">
-            <div className="container mx-auto px-4 mb-8">
-              <div className="text-left">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
-                  Ya conocés la galería ALA NORTE?
-                </h2>
-                <p className="text-muted-foreground font-heading text-lg ">
-                  Explorá la galería antes de tu reserva. Arrastrá para moverte y conocer cada rincón del espacio.
-                </p>
-              </div>
-            </div>
-            <div className="w-full">
-              <Viewer360 imageSrc={space.tour_360_url} height="1000px" />
+      <section className="py-12 sm:py-16 bg-foreground">
+        <div className="w-full px-0">
+          <div className="container mx-auto px-4 mb-8">
+            <div className="text-left">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
+                Ya conocés la galería ALA NORTE?
+              </h2>
+              <p className="text-muted-foreground font-heading text-lg ">
+                Explorá la galería antes de tu reserva. Arrastrá para moverte y conocer cada rincón del espacio.
+              </p>
             </div>
           </div>
-        </section>}
+          <div className="w-full">
+            <Viewer360 
+              imageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//360.jpg"
+              secondImageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//361.jpg"
+              height="1000px"
+              mobileHeight="80vh"
+            />
+          </div>
+        </div>
+      </section>
       {/* Productions Slider */}
       <ProductionsSlider />
 
