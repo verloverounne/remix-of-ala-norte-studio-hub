@@ -10,6 +10,8 @@ import { HomeVideoHeroSlider } from "@/components/HomeVideoHeroSlider";
 import { ServicesSection } from "@/components/ServicesSection";
 import { useParallax } from "@/hooks/useParallax";
 import { useGalleryImages } from "@/hooks/useGalleryImages";
+import { HomePreloader } from "@/components/HomePreloader";
+import { useVideoPreloader } from "@/hooks/useVideoPreloader";
 
 // Componente para la sección de equipos destacados con parallax
 interface FeaturedEquipmentSectionProps {
@@ -250,6 +252,8 @@ const Home = () => {
   const [featuredEquipment, setFeaturedEquipment] = useState<any[]>([]);
   const [equipmentApi, setEquipmentApi] = useState<CarouselApi>();
   const [currentEquipmentSlide, setCurrentEquipmentSlide] = useState(0);
+  const { progress, isComplete, isLoading } = useVideoPreloader();
+
   useEffect(() => {
     const fetchFeaturedEquipment = async () => {
       const { data } = await supabase.from("equipment").select("*").eq("featured", true).limit(6);
@@ -257,12 +261,19 @@ const Home = () => {
     };
     fetchFeaturedEquipment();
   }, []);
+
   useEffect(() => {
     if (!equipmentApi) return;
     equipmentApi.on("select", () => {
       setCurrentEquipmentSlide(equipmentApi.selectedScrollSnap());
     });
   }, [equipmentApi]);
+
+  // Show preloader while videos are loading
+  if (isLoading) {
+    return <HomePreloader progress={progress} isComplete={isComplete} />;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Institutional Slider - Before Hero */}
