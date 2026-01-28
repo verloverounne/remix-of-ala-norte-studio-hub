@@ -22,7 +22,7 @@ export const HomePreloader = ({ progress, isComplete }: HomePreloaderProps) => {
 
     // Random interval between 800-1200ms for natural feel
     const getRandomInterval = () => Math.random() * 400 + 800;
-    
+
     let timeoutId: NodeJS.Timeout;
     const scheduleNext = () => {
       timeoutId = setTimeout(() => {
@@ -30,7 +30,7 @@ export const HomePreloader = ({ progress, isComplete }: HomePreloaderProps) => {
         scheduleNext();
       }, getRandomInterval());
     };
-    
+
     scheduleNext();
 
     return () => clearTimeout(timeoutId);
@@ -44,7 +44,7 @@ export const HomePreloader = ({ progress, isComplete }: HomePreloaderProps) => {
   }, [isComplete]);
 
   // SVG circle progress calculations
-  const size = 400;
+  const size = 50;
   const strokeWidth = 2;
   const radius = (size - strokeWidth) / 1;
   const circumference = 2 * Math.PI * radius;
@@ -52,25 +52,21 @@ export const HomePreloader = ({ progress, isComplete }: HomePreloaderProps) => {
 
   if (isExiting) {
     return (
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-foreground transition-opacity duration-500 opacity-0 pointer-events-none">
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background transition-opacity duration-500 opacity-0 pointer-events-none">
         {/* Empty during exit */}
       </div>
     );
   }
 
   return (
-    <div 
+    <div
       className={`fixed inset-0 z-[9999] flex items-center justify-center bg-background transition-opacity duration-500 ${
         isExiting ? "opacity-0" : "opacity-100"
       }`}
     >
       <div className="relative flex items-center justify-center">
         {/* SVG Progress Circle */}
-        <svg
-          width={size}
-          height={size}
-          className="absolute transform -rotate-90"
-        >
+        <svg width={size} height={size} className="absolute transform -rotate-90">
           {/* Background circle */}
           <circle
             cx={size / 2}
@@ -117,9 +113,7 @@ export const HomePreloader = ({ progress, isComplete }: HomePreloaderProps) => {
 
       {/* Progress percentage */}
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
-        <span className="font-heading text-sm text-muted-foreground tracking-widest">
-          {Math.round(progress)}%
-        </span>
+        <span className="font-heading text-sm text-muted-foreground tracking-widest">{Math.round(progress)}%</span>
       </div>
     </div>
   );
