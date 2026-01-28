@@ -44,15 +44,15 @@ export const HomePreloader = ({ progress, isComplete }: HomePreloaderProps) => {
   }, [isComplete]);
 
   // SVG circle progress calculations
-  const size = 200;
-  const strokeWidth = 4;
-  const radius = (size - strokeWidth) / 2;
+  const size = 400;
+  const strokeWidth = 2;
+  const radius = (size - strokeWidth) / 1;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference * (1 - progress / 100);
 
   if (isExiting) {
     return (
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background transition-opacity duration-500 opacity-0 pointer-events-none">
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-foreground transition-opacity duration-500 opacity-0 pointer-events-none">
         {/* Empty during exit */}
       </div>
     );
