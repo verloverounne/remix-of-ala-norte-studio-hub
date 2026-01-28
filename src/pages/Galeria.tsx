@@ -60,12 +60,12 @@ const Galeria = () => {
             {/* Left Column: Featured Image + Floor Plan */}
             <div className="space-y-6">
               {/* Featured Image from Media panel */}
-              <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border border-foreground shadow-brutal">
-                <img src={featuredMediaImage || space.featured_image || space.images && space.images[0] || "/placeholder.svg"} alt={space.name} className="w-full h-full object-cover " />
+              <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg">
+                <img src={featuredMediaImage || space.featured_image || space.images && space.images[0] || "/placeholder.svg"} alt={space.name} className="w-full h-full object-cover" />
               </div>
 
               {/* Floor Plan - Only visible on desktop */}
-              <div className="hidden lg:block relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
+              <div className="hidden lg:block relative overflow-hidden rounded-lg">
                 <img src={planoIlustrativo} alt="Plano ilustrativo del estudio" className="w-full h-auto object-contain bg-background" />
               </div>
             </div>
@@ -86,7 +86,7 @@ const Galeria = () => {
                 </div>}
 
               {/* Floor Plan - Mobile only */}
-              <div className="lg:hidden relative overflow-hidden rounded-lg border border-foreground shadow-brutal">
+              <div className="lg:hidden relative overflow-hidden rounded-lg">
                 <img src={planoIlustrativo} alt="Plano ilustrativo del estudio" className="w-full h-auto object-contain bg-background" />
               </div>
               {/* Features - 2 columns */}
