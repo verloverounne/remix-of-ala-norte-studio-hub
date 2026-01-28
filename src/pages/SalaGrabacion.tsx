@@ -64,7 +64,7 @@ const SalaGrabacion = () => {
             {/* Left Column: Featured Image */}
             <div className="space-y-6">
               {/* Featured Image from Media panel */}
-              <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg border border-foreground shadow-brutal">
+              <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg">
                 <img
                   src={featuredMediaImage || space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
                   alt={space.name}

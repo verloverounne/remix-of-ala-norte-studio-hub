@@ -85,8 +85,10 @@ export const useParallax = (options: UseParallaxOptions = {}) => {
   return {
     ref: elementRef,
     style: {
-      transform: `translateY(${transform}px)`,
+      transform: `translate3d(0, ${transform}px, 0)`,
       willChange: "transform",
+      backfaceVisibility: "hidden" as const,
+      WebkitBackfaceVisibility: "hidden" as const,
     },
   };
 };
