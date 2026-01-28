@@ -1,119 +1,70 @@
 
-# Plan: Preloader con Logo Animado y Círculo de Progreso
+# Plan: Hero de Rental Estático con URLs Fijas
 
 ## Resumen
 
-Crear un preloader para la página Home que muestre el logo de Ala Norte con una animación de brújula (rotación aleatoria entre -15° y +15° en el eje Y) y un círculo de progreso rojo que se completa mientras cargan los videos del hero.
+Convertir el componente `HeroCarouselRental` para que use datos estáticos en lugar de consultar la base de datos. Se tomarán los datos actuales del panel por última vez y se guardarán como constantes en el código.
 
-## Arquitectura de la Solución
+## Datos Actuales del Panel (Snapshot Final)
 
+| Categoría | ID | Video URL |
+|-----------|-----|-----------|
+| Cámara | `4d52bbca-3bcb-4c73-ac1b-5b6d437e9163` | `...equipment-images/1768951104500_camara_fondo_blanco_gonzalo.mp4` |
+| Iluminación | `f0edceff-b3b4-4735-ab37-b9e3f4bb905a` | `...equipment-images/1768951451525_luces.mp4` |
+| Audio | `bdaa1e73-8532-4b85-8495-6ef8bba5be31` | `...equipment-images/1768951063587_sonido.mp4` |
+| Grip | `d9e6fca2-0d23-41c8-b782-8216d97e86a5` | `...equipment-images/1768951477713_grips.mp4` |
+| Energía | `efc708dd-ad95-4094-9ea6-fde7b74fe4ed` | *(sin video configurado)* |
+
+## Cambios a Realizar
+
+### Archivo: `src/components/rental/HeroCarouselRental.tsx`
+
+1. **Eliminar importación de Supabase** - Ya no se necesita consultar la base de datos
+
+2. **Crear constante estática `STATIC_HERO_BACKGROUNDS`** con el mapeo fijo:
 ```text
-┌─────────────────────────────────────────────────┐
-│                   App.tsx                        │
-│  ┌───────────────────────────────────────────┐  │
-│  │           HomePreloader                    │  │
-│  │  ┌─────────────────────────────────────┐  │  │
-│  │  │  Logo (navBarLogo.png)              │  │  │
-│  │  │  - Animación rotateY(-15° a +15°)   │  │  │
-│  │  │  - Transición suave tipo brújula    │  │  │
-│  │  └─────────────────────────────────────┘  │  │
-│  │  ┌─────────────────────────────────────┐  │  │
-│  │  │  SVG Circle Progress (rojo)         │  │  │
-│  │  │  - stroke-dasharray animado         │  │  │
-│  │  │  - Circunda el logo                 │  │  │
-│  │  └─────────────────────────────────────┘  │  │
-│  └───────────────────────────────────────────┘  │
-│                                                  │
-│  ┌───────────────────────────────────────────┐  │
-│  │        Home (visible cuando ready)         │  │
-│  └───────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────┘
+{
+  "4d52bbca-3bcb-4c73-ac1b-5b6d437e9163": {  // Cámara
+    id: "static-camara",
+    image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951104500_camara_fondo_blanco_gonzalo.mp4",
+    media_type: "video",
+    title: null,
+    description: null,
+    order_index: 1
+  },
+  "f0edceff-b3b4-4735-ab37-b9e3f4bb905a": {  // Iluminación
+    image_url: "...1768951451525_luces.mp4",
+    media_type: "video",
+    ...
+  },
+  "bdaa1e73-8532-4b85-8495-6ef8bba5be31": {  // Audio
+    image_url: "...1768951063587_sonido.mp4",
+    media_type: "video",
+    ...
+  },
+  "d9e6fca2-0d23-41c8-b782-8216d97e86a5": {  // Grip
+    image_url: "...1768951477713_grips.mp4",
+    media_type: "video",
+    ...
+  }
+}
 ```
 
-## Archivos a Crear/Modificar
+3. **Eliminar estado `categoryBackgrounds` y el useEffect que hace fetch** - Reemplazar con la constante estática
 
-### 1. Crear componente HomePreloader
-**Archivo:** `src/components/HomePreloader.tsx`
+4. **Eliminar estado `loading`** - Ya no hay fetch asíncrono, los datos están disponibles inmediatamente
 
-- Recibe `progress` (0-100) y `onComplete` como props
-- Logo centrado usando `navBarLogo.png`
-- Animación de brújula con `useEffect` + `setInterval`:
-  - Genera ángulo aleatorio entre -15° y +15°
-  - Aplica `transform: rotateY(${angle}deg)` con transición suave
-  - Intervalo de 800-1200ms para efecto mecánico
-- Círculo SVG de progreso:
-  - Radio apropiado para circundar el logo
-  - `stroke` color primario (rojo)
-  - `stroke-dasharray` y `stroke-dashoffset` calculados según `progress`
-  - Animación fluida con CSS transition
-- Fade-out cuando progress = 100
+5. **Actualizar función `getBackgroundForCategory`** - Leer directamente de la constante estática
 
-### 2. Modificar Home.tsx
-**Archivo:** `src/pages/Home.tsx`
+6. **Simplificar el render** - Sin estado de carga, renderizar directamente el carousel
 
-- Agregar estado `videosLoaded` y `loadingProgress`
-- Implementar lógica de precarga de videos del hero:
-  - Obtener URLs de videos desde `useGalleryImages`
-  - Crear elementos `<video>` ocultos para precargar
-  - Trackear progreso con eventos `loadeddata` o `canplaythrough`
-  - Calcular porcentaje de completado
-- Mostrar `HomePreloader` mientras `!videosLoaded`
-- Renderizar contenido de Home cuando `videosLoaded = true`
+## Beneficios
 
-### 3. Agregar animaciones a Tailwind
-**Archivo:** `tailwind.config.ts`
+- **Sin consultas a la base de datos** - Carga instantánea
+- **Menor uso de Cloud** - Reduce costos operativos
+- **Rendimiento mejorado** - No hay latencia de red
+- **Base de datos intacta** - Los datos del panel permanecen sin cambios
 
-- Agregar keyframe `compass-wobble` para la animación de brújula
-- Agregar keyframe `progress-spin` para efecto de carga inicial
+## Consideración para Energía
 
-### 4. Agregar estilos CSS
-**Archivo:** `src/index.css`
-
-- Estilos para el círculo SVG de progreso
-- Clase para animación de fade-out del preloader
-
-## Detalles Técnicos
-
-### Animación de Brújula (Logo)
-```text
-- Rotación en eje Y (perspectiva 3D)
-- Ángulo aleatorio: Math.random() * 30 - 15 (rango -15° a +15°)
-- Transición: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)
-- Intervalo: 800-1200ms (aleatorizado para naturalidad)
-```
-
-### Círculo de Progreso SVG
-```text
-- Círculo SVG con stroke-dasharray
-- Circunferencia: 2 * π * radio
-- stroke-dashoffset: circunferencia * (1 - progress/100)
-- Color: hsl(348 83% 47%) (--primary)
-- Stroke-width: 4px
-- Transición suave del dashoffset
-```
-
-### Lógica de Precarga de Videos
-```text
-1. Obtener gallery_images con page_type = "home_hero"
-2. Filtrar solo media_type = "video"
-3. Para cada video URL, crear elemento <video> oculto
-4. Escuchar evento "canplaythrough" 
-5. Incrementar contador de videos cargados
-6. progress = (videosLoaded / totalVideos) * 100
-7. Cuando todos carguen, esperar 500ms y hacer fade-out
-```
-
-## Flujo de Usuario
-
-1. Usuario accede a la Home
-2. Se muestra preloader con logo oscilando como brújula
-3. Círculo rojo se va completando según cargan los videos
-4. Al completar la carga, preloader hace fade-out suave
-5. Se muestra el contenido de Home con videos listos para reproducir
-
-## Consideraciones
-
-- Si no hay videos (error o vacío), mostrar preloader por 1.5s mínimo y continuar
-- Timeout máximo de 8 segundos para evitar bloqueo indefinido
-- El preloader solo se muestra en la Home, no en otras páginas
-- Mantener la animación de brújula constante hasta que se complete la carga
+La categoría "Energía" no tiene video configurado. El componente ya maneja este caso mostrando un gradiente de fallback, por lo que seguirá funcionando igual.
