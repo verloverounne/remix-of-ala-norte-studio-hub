@@ -15,11 +15,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
-
 type EquipmentWithStock = EquipmentWithCategory;
-
 const Equipos = () => {
-  const { equipment, categories, subcategories, loading } = useEquipmentData();
+  const {
+    equipment,
+    categories,
+    subcategories,
+    loading
+  } = useEquipmentData();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
   const [selectedEquipment, setSelectedEquipment] = useState<EquipmentWithStock | null>(null);
@@ -28,10 +31,20 @@ const Equipos = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("cards");
-  
-  const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
-  const { toast } = useToast();
-  const { isMobile, isVisible } = useHeaderVisibility();
+  const {
+    addItem,
+    items,
+    calculateSubtotal,
+    updateQuantity,
+    removeItem
+  } = useCart();
+  const {
+    toast
+  } = useToast();
+  const {
+    isMobile,
+    isVisible
+  } = useHeaderVisibility();
 
   // Calcular top dinámico basado en visibilidad del header
   const stickyTop = useMemo(() => {
@@ -40,7 +53,6 @@ const Equipos = () => {
     }
     return isVisible ? 64 : 0; // 64px = altura del header desktop
   }, [isMobile, isVisible]);
-
   const categoryRefs = useRef<Map<string, CategorySectionRef>>(new Map());
   const filterRef = useRef<HTMLDivElement>(null);
 
@@ -65,12 +77,10 @@ const Equipos = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isFilterOpen]);
-
   const getCartQuantity = useCallback((id: string) => {
     const cartItem = items.find(item => item.id === id);
     return cartItem?.quantity || 0;
   }, [items]);
-
   const canAddMore = useCallback((item: EquipmentWithStock) => {
     const inCart = getCartQuantity(item.id);
     const stock = item.stock_quantity ?? 1;
@@ -219,7 +229,7 @@ const Equipos = () => {
       <div className="sticky z-[50] bg-background/95 backdrop-blur-sm border-b border-foreground/10 transition-all duration-300" style={{
       top: `${stickyTop}px`
     }}>
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-4 py-4 bg-stone-800">
           {/* Row 1: Category chips + Filter button */}
           <div className="flex items-center gap-2 mb-2">
             <div className="flex items-center flex-wrap gap-2 flex-1">
@@ -259,7 +269,7 @@ const Equipos = () => {
             setIsFilterOpen(!isFilterOpen);
             if (isSearchOpen) setIsSearchOpen(false);
           }} className={cn("h-8 px-2 flex-shrink-0", isFilterOpen && "bg-primary text-primary-foreground")}>
-              <Filter className="h-4 w-4" />
+              <Filter className="h-4 w-4 text-background " />
               {selectedSubcategories.length > 0 && <Badge variant="secondary" className="ml-1 text-[9px] h-4 px-1">
                   {selectedSubcategories.length}
                 </Badge>}
