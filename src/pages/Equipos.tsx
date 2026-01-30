@@ -326,7 +326,7 @@ const Equipos = () => {
                 </Badge>
               )}
             </Button>
-            <p className="text-xs text-muted-foreground font-heading uppercase mx-[44px] ml-0 mr-[6px]">
+            <p className="text-xs text-foreground font-heading uppercase mx-[44px] ml-0 mr-[6px]">
               Mostrando {filteredEquipment.length} equipos
             </p>
 
@@ -340,7 +340,10 @@ const Equipos = () => {
                 setIsSearchOpen(!isSearchOpen);
                 if (isFilterOpen) setIsFilterOpen(false);
               }}
-              className={cn("h-8 px-2 flex-shrink-0", isSearchOpen && "bg-primary text-primary-foreground")}
+              className={cn(
+                "h-8 px-2 flex-shrink-0 text-foreground",
+                isSearchOpen && "bg-primary text-primary-foreground",
+              )}
             >
               <Search className="h-4 w-4" />
               <span className="ml-1 text-xs hidden sm:inline">Buscar</span>
