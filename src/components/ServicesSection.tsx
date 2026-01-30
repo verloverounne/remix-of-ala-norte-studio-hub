@@ -115,7 +115,7 @@ const ServiceSlide = ({
                   </li>)}
               </ul>}
 
-            {(service.cta_label || service.button_text) && (service.cta_url || service.button_link) && <div className="pt-16 pb-64 w-full mx-px items-end ">
+            {(service.cta_label || service.button_text) && (service.cta_url || service.button_link) && <div className="pt-16 pb-64 w-full mx-px items-">
                 <Button asChild size="lg" className="font-heading uppercase">
                   <Link to={service.cta_url || service.button_link!}>{service.cta_label || service.button_text}</Link>
                 </Button>
