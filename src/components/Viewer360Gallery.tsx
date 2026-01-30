@@ -19,25 +19,45 @@ interface Text3DItem {
   text: string;
   position: string;
   rotation?: string;
-  action?: { type: 'view' | 'page'; target: string | number };
+  action?: { type: "view" | "page"; target: string | number };
 }
 
 // View 1 labels - Galería main view (360.jpg)
 // TODOS los textos son botones clicables inmersivos
 const VIEW_1_LABELS: Text3DItem[] = [
-  { text: "GALERÍA", position: "0 2 -8", rotation: "0 0 0", action: { type: 'view', target: 1 } },
-  { text: "COMEDOR", position: "-6 1 -5", rotation: "0 45 0", action: { type: 'view', target: 2 } },
-  { text: "SALA DE GRABACIÓN", position: "6 1 -5", rotation: "0 -45 0", action: { type: 'page', target: '/sala-grabacion#view-2' } },
-  { text: "ESTUDIO DE POSTPRODUCCIÓN", position: "0 0.5 -7", rotation: "0 0 0", action: { type: 'page', target: '/sala-grabacion#view-1' } },
+  { text: "GALERÍA", position: "200 72 289", rotation: "0 180 0", action: { type: "view", target: 1 } },
+  { text: "COMEDOR", position: "-6 1 -5", rotation: "0 45 0", action: { type: "view", target: 2 } },
+  {
+    text: "SALA DE GRABACIÓN",
+    position: "6 1 -5",
+    rotation: "0 -45 0",
+    action: { type: "page", target: "/sala-grabacion#view-2" },
+  },
+  {
+    text: "ESTUDIO DE POSTPRODUCCIÓN",
+    position: "0 0.5 -7",
+    rotation: "0 0 0",
+    action: { type: "page", target: "/sala-grabacion#view-1" },
+  },
 ];
 
 // View 2 labels - Comedor view (361.jpg)
 // Navegación: Galería → Vista 1, Comedor → Vista 2, Sala → /sala#view-2, Postprod → /sala#view-1
 const VIEW_2_LABELS: Text3DItem[] = [
-  { text: "GALERÍA", position: "0 2 -8", rotation: "0 0 0", action: { type: 'view', target: 1 } },
-  { text: "COMEDOR", position: "-6 1.5 -5", rotation: "0 45 0", action: { type: 'view', target: 2 } },
-  { text: "SALA DE GRABACIÓN", position: "6 1 -5", rotation: "0 -45 0", action: { type: 'page', target: '/sala-grabacion#view-2' } },
-  { text: "ESTUDIO DE POSTPRODUCCIÓN", position: "0 0.5 -7", rotation: "0 0 0", action: { type: 'page', target: '/sala-grabacion#view-1' } },
+  { text: "GALERÍA", position: "0 2 -8", rotation: "0 0 0", action: { type: "view", target: 1 } },
+  { text: "COMEDOR", position: "-6 1.5 -5", rotation: "0 45 0", action: { type: "view", target: 2 } },
+  {
+    text: "SALA DE GRABACIÓN",
+    position: "6 1 -5",
+    rotation: "0 -45 0",
+    action: { type: "page", target: "/sala-grabacion#view-2" },
+  },
+  {
+    text: "ESTUDIO DE POSTPRODUCCIÓN",
+    position: "0 0.5 -7",
+    rotation: "0 0 0",
+    action: { type: "page", target: "/sala-grabacion#view-1" },
+  },
 ];
 
 interface Viewer360GalleryProps {
@@ -48,8 +68,8 @@ interface Viewer360GalleryProps {
   initialView?: number;
 }
 
-const Viewer360Gallery = ({ 
-  imageSrc, 
+const Viewer360Gallery = ({
+  imageSrc,
   secondImageSrc,
   height = "100vh",
   mobileHeight = "100vh",
@@ -83,8 +103,8 @@ const Viewer360Gallery = ({
   // Check URL hash for initial view
   useEffect(() => {
     const hash = window.location.hash;
-    if (hash === '#view-1') setCurrentView(1);
-    else if (hash === '#view-2') setCurrentView(2);
+    if (hash === "#view-1") setCurrentView(1);
+    else if (hash === "#view-2") setCurrentView(2);
   }, []);
 
   useEffect(() => {
@@ -116,18 +136,19 @@ const Viewer360Gallery = ({
 
       // Generate 3D text entities - TODOS son botones clicables inmersivos
       // Estilo: Poppins Bold, fondo negro con padding, hover color primary (#D4A017)
-      const textsHTML = currentLabels.map((item) => {
-        // Calcular ancho dinámico basado en longitud del texto (padding de 6px simulado)
-        const textLength = item.text.length;
-        const planeWidth = Math.max(2.5, textLength * 0.18 + 0.5);
-        
-        return `
+      const textsHTML = currentLabels
+        .map((item) => {
+          // Calcular ancho dinámico basado en longitud del texto (padding de 6px simulado)
+          const textLength = item.text.length;
+          const planeWidth = Math.max(2.5, textLength * 0.18 + 0.5);
+
+          return `
           <a-entity 
             position="${item.position}"
-            rotation="${item.rotation || '0 0 0'}"
+            rotation="${item.rotation || "0 0 0"}"
             class="clickable-label"
-            data-action-type="${item.action?.type || 'view'}"
-            data-action-target="${item.action?.target || '1'}"
+            data-action-type="${item.action?.type || "view"}"
+            data-action-target="${item.action?.target || "1"}"
           >
             <a-plane 
               width="${planeWidth}" 
@@ -149,7 +170,8 @@ const Viewer360Gallery = ({
             ></a-text>
           </a-entity>
         `;
-      }).join('');
+        })
+        .join("");
 
       // FOV 80 = wider view for gallery
       const sceneHTML = `
@@ -173,34 +195,34 @@ const Viewer360Gallery = ({
 
         // Add click listeners for labels
         setTimeout(() => {
-          const scene = sceneContainer.querySelector('a-scene');
+          const scene = sceneContainer.querySelector("a-scene");
           if (scene) {
-            const labels = scene.querySelectorAll('.clickable-label');
+            const labels = scene.querySelectorAll(".clickable-label");
             labels.forEach((label: any) => {
-              label.addEventListener('click', () => {
-                const actionType = label.getAttribute('data-action-type');
-                const actionTarget = label.getAttribute('data-action-target');
-                
-                if (actionType === 'view') {
+              label.addEventListener("click", () => {
+                const actionType = label.getAttribute("data-action-type");
+                const actionTarget = label.getAttribute("data-action-target");
+
+                if (actionType === "view") {
                   setCurrentView(parseInt(actionTarget));
-                } else if (actionType === 'page') {
+                } else if (actionType === "page") {
                   window.location.href = actionTarget;
                 }
               });
-              
+
               // Hover effect - change to primary color
-              label.addEventListener('mouseenter', () => {
-                const bg = label.querySelector('.label-bg');
+              label.addEventListener("mouseenter", () => {
+                const bg = label.querySelector(".label-bg");
                 if (bg) {
-                  bg.setAttribute('color', '#D4A017');
-                  bg.setAttribute('opacity', '1');
+                  bg.setAttribute("color", "#D4A017");
+                  bg.setAttribute("opacity", "1");
                 }
               });
-              label.addEventListener('mouseleave', () => {
-                const bg = label.querySelector('.label-bg');
+              label.addEventListener("mouseleave", () => {
+                const bg = label.querySelector(".label-bg");
                 if (bg) {
-                  bg.setAttribute('color', '#000000');
-                  bg.setAttribute('opacity', '0.85');
+                  bg.setAttribute("color", "#000000");
+                  bg.setAttribute("opacity", "0.85");
                 }
               });
             });
@@ -220,25 +242,27 @@ const Viewer360Gallery = ({
   const openInNewWindow = () => {
     const currentLabels = viewLabels[currentView as keyof typeof viewLabels] || VIEW_1_LABELS;
     const currentImage = viewImages[currentView as keyof typeof viewImages];
-    
-    const textsHTML = currentLabels.map((item) => {
-      // Ancho dinámico basado en longitud del texto
-      const textLength = item.text.length;
-      const planeWidth = Math.max(2.5, textLength * 0.18 + 0.5);
-      
-      return `
+
+    const textsHTML = currentLabels
+      .map((item) => {
+        // Ancho dinámico basado en longitud del texto
+        const textLength = item.text.length;
+        const planeWidth = Math.max(2.5, textLength * 0.18 + 0.5);
+
+        return `
         <a-entity 
           position="${item.position}"
-          rotation="${item.rotation || '0 0 0'}"
+          rotation="${item.rotation || "0 0 0"}"
           class="clickable-label"
-          data-action-type="${item.action?.type || 'view'}"
-          data-action-target="${item.action?.target || '1'}"
+          data-action-type="${item.action?.type || "view"}"
+          data-action-target="${item.action?.target || "1"}"
         >
           <a-plane width="${planeWidth}" height="0.5" color="#000000" opacity="0.9" class="label-bg"></a-plane>
           <a-text value="${item.text}" position="0 0 0.02" color="#FFFFFF" scale="1.8 1.8 1.8" align="center" width="${planeWidth - 0.3}" anchor="center" baseline="center"></a-text>
         </a-entity>
       `;
-    }).join('');
+      })
+      .join("");
 
     const fullHTML = `
 <!DOCTYPE html>
@@ -356,7 +380,7 @@ const Viewer360Gallery = ({
 </html>
     `;
 
-    const newWindow = window.open('', '_blank');
+    const newWindow = window.open("", "_blank");
     if (newWindow) {
       newWindow.document.write(fullHTML);
       newWindow.document.close();
@@ -367,17 +391,13 @@ const Viewer360Gallery = ({
 
   return (
     <div className="relative w-full">
-      <div
-        ref={containerRef}
-        className="w-full overflow-hidden"
-        style={{ height: displayHeight, width: "100%" }}
-      >
+      <div ref={containerRef} className="w-full overflow-hidden" style={{ height: displayHeight, width: "100%" }}>
         <div className="a-scene-container w-full h-full" style={{ height: displayHeight }} />
       </div>
-      
+
       {/* Control buttons */}
       <div className="absolute top-4 right-4 z-20 flex gap-2">
-        <Button 
+        <Button
           onClick={openInNewWindow}
           variant="secondary"
           size="sm"
@@ -387,22 +407,22 @@ const Viewer360Gallery = ({
           Pantalla Completa
         </Button>
       </div>
-      
+
       {/* View indicator & toggle */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-        <Button 
+        <Button
           onClick={() => setCurrentView(1)}
           variant={currentView === 1 ? "default" : "secondary"}
           size="sm"
-          className={`shadow-lg font-heading font-bold uppercase tracking-wider ${currentView === 1 ? 'bg-primary text-primary-foreground' : 'bg-black/80 text-white hover:bg-primary hover:text-primary-foreground'}`}
+          className={`shadow-lg font-heading font-bold uppercase tracking-wider ${currentView === 1 ? "bg-primary text-primary-foreground" : "bg-black/80 text-white hover:bg-primary hover:text-primary-foreground"}`}
         >
           Galería
         </Button>
-        <Button 
+        <Button
           onClick={() => setCurrentView(2)}
           variant={currentView === 2 ? "default" : "secondary"}
           size="sm"
-          className={`shadow-lg font-heading font-bold uppercase tracking-wider ${currentView === 2 ? 'bg-primary text-primary-foreground' : 'bg-black/80 text-white hover:bg-primary hover:text-primary-foreground'}`}
+          className={`shadow-lg font-heading font-bold uppercase tracking-wider ${currentView === 2 ? "bg-primary text-primary-foreground" : "bg-black/80 text-white hover:bg-primary hover:text-primary-foreground"}`}
         >
           Comedor
         </Button>
