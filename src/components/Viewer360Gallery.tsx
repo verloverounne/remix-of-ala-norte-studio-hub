@@ -36,7 +36,13 @@ interface Viewer360GalleryProps {
 // Static 3D text labels with their positions and links
 const GALLERY_LABELS: Text3DItem[] = [
   { text: "SALA DE GRABACIÓN", position: "-8 1.5 -6", rotation: "0 45 0", link: "/sala-grabacion", isSceneLink: false },
-  { text: "ESTUDIO DE POSTPRODUCCION", position: "8 1.5 -6", rotation: "0 -45 0", link: "/sala-grabacion", isSceneLink: false },
+  {
+    text: "ESTUDIO DE POSTPRODUCCION",
+    position: "8 1.5 -6",
+    rotation: "0 -45 0",
+    link: "/sala-grabacion",
+    isSceneLink: false,
+  },
   { text: "GALERÍA DE FILMACIÓN", position: "0 2 -8", rotation: "0 0 0", link: "/galeria", isSceneLink: false },
   { text: "PISO PINTADO DE BLANCO", position: "-5 -1 -7", rotation: "0 20 0" },
   { text: "11MTS DE TIRO DE CÁMARA", position: "5 -1 -7", rotation: "0 -20 0" },
@@ -45,8 +51,8 @@ const GALLERY_LABELS: Text3DItem[] = [
   { text: "INFINITO BLANCO 6M X 3M", position: "0 -0.5 -9", rotation: "0 0 0" },
 ];
 
-const Viewer360Gallery = ({ 
-  imageSrc, 
+const Viewer360Gallery = ({
+  imageSrc,
   secondImageSrc,
   thirdImageSrc,
   fourthImageSrc,
@@ -101,12 +107,13 @@ const Viewer360Gallery = ({
       const activeImage = scenes[currentScene - 1] || imageSrc;
 
       // Generate 3D text entities with click handlers - Poppins Bold style
-      const textsHTML = GALLERY_LABELS.map((item, index) => `
+      const textsHTML = GALLERY_LABELS.map(
+        (item, index) => `
         <a-entity 
           position="${item.position}"
-          rotation="${item.rotation || '0 0 0'}"
+          rotation="${item.rotation || "0 0 0"}"
           class="clickable-label"
-          data-link="${item.link || ''}"
+          data-link="${item.link || ""}"
           data-scene-link="${item.isSceneLink || false}"
           data-index="${index}"
         >
@@ -115,7 +122,7 @@ const Viewer360Gallery = ({
             height="0.5" 
             color="#000000" 
             opacity="0.7"
-            class="label-bg"
+            class="button"
           ></a-plane>
           <a-text 
             value="${item.text}" 
@@ -129,7 +136,9 @@ const Viewer360Gallery = ({
             baseline="center"
             font-weight="bold"
           ></a-text>
-          ${item.link ? `
+          ${
+            item.link
+              ? `
           <a-text 
             value="→" 
             position="1.8 0 0.02"
@@ -137,9 +146,12 @@ const Viewer360Gallery = ({
             scale="2.5 2.5 2.5"
             align="center"
           ></a-text>
-          ` : ''}
+          `
+              : ""
+          }
         </a-entity>
-      `).join('');
+      `,
+      ).join("");
 
       // 3D Toggle button immersed in the scene
       const toggleButtonHTML = `
@@ -152,7 +164,7 @@ const Viewer360Gallery = ({
             class="toggle-btn"
           ></a-plane>
           <a-text 
-            value="${currentScene === 1 ? '→ VER OTRA VISTA' : '← VOLVER A INICIO'}"
+            value="${currentScene === 1 ? "→ VER OTRA VISTA" : "← VOLVER A INICIO"}"
             position="0 0 0.01"
             color="#FFFFFF"
             scale="2.5 2.5 2.5"
@@ -186,34 +198,34 @@ const Viewer360Gallery = ({
 
         // Add click listeners after scene is created
         setTimeout(() => {
-          const scene = sceneContainer.querySelector('a-scene');
+          const scene = sceneContainer.querySelector("a-scene");
           if (scene) {
             // Toggle button click
-            const toggleEntity = scene.querySelector('.clickable-toggle');
+            const toggleEntity = scene.querySelector(".clickable-toggle");
             if (toggleEntity) {
-              toggleEntity.addEventListener('click', () => {
-                setCurrentScene(prev => prev === 1 ? 2 : 1);
+              toggleEntity.addEventListener("click", () => {
+                setCurrentScene((prev) => (prev === 1 ? 2 : 1));
               });
             }
 
             // Label clicks for navigation
-            const labels = scene.querySelectorAll('.clickable-label');
+            const labels = scene.querySelectorAll(".clickable-label");
             labels.forEach((label: any) => {
-              label.addEventListener('click', () => {
-                const link = label.getAttribute('data-link');
+              label.addEventListener("click", () => {
+                const link = label.getAttribute("data-link");
                 if (link) {
                   window.location.href = link;
                 }
               });
-              
+
               // Hover effect
-              label.addEventListener('mouseenter', () => {
-                const bg = label.querySelector('.label-bg');
-                if (bg) bg.setAttribute('opacity', '0.9');
+              label.addEventListener("mouseenter", () => {
+                const bg = label.querySelector(".label-bg");
+                if (bg) bg.setAttribute("opacity", "0.9");
               });
-              label.addEventListener('mouseleave', () => {
-                const bg = label.querySelector('.label-bg');
-                if (bg) bg.setAttribute('opacity', '0.7');
+              label.addEventListener("mouseleave", () => {
+                const bg = label.querySelector(".label-bg");
+                if (bg) bg.setAttribute("opacity", "0.7");
               });
             });
           }
@@ -230,20 +242,21 @@ const Viewer360Gallery = ({
   }, [currentScene, height, mobileHeight, isMobile, imageSrc, secondImageSrc, thirdImageSrc, fourthImageSrc]);
 
   const handleToggleScene = () => {
-    setCurrentScene(prev => prev === 1 ? 2 : 1);
+    setCurrentScene((prev) => (prev === 1 ? 2 : 1));
   };
 
   const openInNewWindow = () => {
     const scenes = [imageSrc, secondImageSrc, thirdImageSrc, fourthImageSrc].filter(Boolean);
     const activeImage = scenes[currentScene - 1] || imageSrc;
-    
+
     // Generate labels HTML for fullscreen
-    const textsHTML = GALLERY_LABELS.map((item, index) => `
+    const textsHTML = GALLERY_LABELS.map(
+      (item, index) => `
       <a-entity 
         position="${item.position}"
-        rotation="${item.rotation || '0 0 0'}"
+        rotation="${item.rotation || "0 0 0"}"
         class="clickable-label"
-        data-link="${item.link || ''}"
+        data-link="${item.link || ""}"
       >
         <a-plane 
           width="4" 
@@ -262,9 +275,10 @@ const Viewer360Gallery = ({
           anchor="center"
           baseline="center"
         ></a-text>
-        ${item.link ? '<a-text value="→" position="1.8 0 0.02" color="#FFFFFF" scale="2.5 2.5 2.5" align="center"></a-text>' : ''}
+        ${item.link ? '<a-text value="→" position="1.8 0 0.02" color="#FFFFFF" scale="2.5 2.5 2.5" align="center"></a-text>' : ""}
       </a-entity>
-    `).join('');
+    `,
+    ).join("");
 
     const fullHTML = `
 <!DOCTYPE html>
@@ -366,7 +380,7 @@ const Viewer360Gallery = ({
 </html>
     `;
 
-    const newWindow = window.open('', '_blank');
+    const newWindow = window.open("", "_blank");
     if (newWindow) {
       newWindow.document.write(fullHTML);
       newWindow.document.close();
@@ -377,17 +391,13 @@ const Viewer360Gallery = ({
 
   return (
     <div className="relative w-full">
-      <div
-        ref={containerRef}
-        className="w-full overflow-hidden"
-        style={{ height: displayHeight, width: "100%" }}
-      >
+      <div ref={containerRef} className="w-full overflow-hidden" style={{ height: displayHeight, width: "100%" }}>
         <div className="a-scene-container w-full h-full" style={{ height: displayHeight }} />
       </div>
-      
+
       {/* Control buttons overlaid - minimal UI */}
       <div className="absolute top-4 right-4 z-20 flex gap-2">
-        <Button 
+        <Button
           onClick={openInNewWindow}
           variant="secondary"
           size="sm"
@@ -400,7 +410,7 @@ const Viewer360Gallery = ({
 
       {/* Fallback toggle button */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20">
-        <Button 
+        <Button
           onClick={handleToggleScene}
           variant="default"
           size="lg"
