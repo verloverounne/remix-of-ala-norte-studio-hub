@@ -126,9 +126,9 @@ export const Header = () => {
         </button>}
 
       <header className={`fixed top-0 left-0 right-0 z-[65] bg-background border-b border-foreground transition-transform duration-300 ${isMobile ? mobileMenuOpen ? "translate-y-0" : "-translate-y-full" : isVisible || isHovering ? "translate-y-0" : "-translate-y-full"}`} onMouseEnter={!isMobile ? handleMouseEnter : undefined} onMouseLeave={!isMobile ? handleMouseLeave : undefined}>
-      
         
-        <nav className="w-full flex items-center justify-center px-4 py-3">
+        {/* Nav - hidden on mobile when menu is open to prevent blocking */}
+        <nav className={`w-full flex items-center justify-center px-4 py-3 ${isMobile && mobileMenuOpen ? 'pointer-events-none' : ''}`}>
           <div className="flex h-10 lg:h-14 items-center justify-center gap-4">
             {/* Logo Brutal - hidden on mobile */}
             <Link to="/" className="hidden lg:flex items-center">
@@ -183,7 +183,7 @@ export const Header = () => {
         {/* Mobile menu - full width */}
 
           {/* Mobile Navigation Brutal */}
-          {mobileMenuOpen && <div ref={menuRef} className="lg:hidden pb-4 mt-2 relative z-[56]" onTouchStart={resetAutoCloseTimer} onMouseMove={resetAutoCloseTimer}>
+          {mobileMenuOpen && <div ref={menuRef} className="lg:hidden pb-4 mt-2 relative z-[70] pointer-events-auto" onTouchStart={resetAutoCloseTimer} onMouseMove={resetAutoCloseTimer}>
               <div className="flex flex-col gap-2 mt-2">
                 {navigation.map(item => <Link key={item.name} to={item.href} onClick={() => setMobileMenuOpen(false)} className={`block px-4 py-3 font-heading text-sm touch-manipulation ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground active:bg-foreground active:text-background"}`} style={{
             WebkitTapHighlightColor: "rgba(0,0,0,0.1)"
