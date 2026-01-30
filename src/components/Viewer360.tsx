@@ -8,8 +8,18 @@ declare global {
       "a-scene": any;
       "a-sky": any;
       "a-camera": any;
+      "a-text": any;
+      "a-entity": any;
     }
   }
+}
+
+interface Text3DItem {
+  text: string;
+  position: string; // "x y z"
+  rotation?: string; // "x y z"
+  color?: string;
+  scale?: string;
 }
 
 interface Viewer360Props {
@@ -17,13 +27,15 @@ interface Viewer360Props {
   secondImageSrc?: string;
   height?: string;
   mobileHeight?: string;
+  texts3D?: Text3DItem[];
 }
 
 const Viewer360 = ({ 
   imageSrc, 
   secondImageSrc,
   height = "1000px",
-  mobileHeight = "80vh"
+  mobileHeight = "80vh",
+  texts3D = []
 }: Viewer360Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentImage, setCurrentImage] = useState(imageSrc);
@@ -63,7 +75,21 @@ const Viewer360 = ({
 
       const currentHeight = isMobile ? mobileHeight : height;
 
-      // FOV más bajo = imagen más cerca (como vista de persona)
+      // Generate 3D text entities
+      const textsHTML = texts3D.map((item, index) => `
+        <a-text 
+          value="${item.text}" 
+          position="${item.position}"
+          rotation="${item.rotation || '0 0 0'}"
+          color="${item.color || '#FFFFFF'}"
+          scale="${item.scale || '8 8 8'}"
+          align="center"
+          font="roboto"
+          width="6"
+        ></a-text>
+      `).join('');
+
+      // FOV 80 = vista más natural/normal de persona
       const sceneHTML = `
         <a-scene 
           embedded 
@@ -72,7 +98,8 @@ const Viewer360 = ({
           loading-screen="enabled: true"
         >
           <a-sky src="${currentImage}" rotation="0 -30 0" scale="-1 1 1"></a-sky>
-          <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="60"></a-camera>
+          ${textsHTML}
+          <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="80"></a-camera>
         </a-scene>
       `;
 
@@ -87,7 +114,7 @@ const Viewer360 = ({
         sceneContainer.innerHTML = "";
       }
     };
-  }, [currentImage, height, mobileHeight, isMobile]);
+  }, [currentImage, height, mobileHeight, isMobile, texts3D]);
 
   const toggleImage = () => {
     if (secondImageSrc) {

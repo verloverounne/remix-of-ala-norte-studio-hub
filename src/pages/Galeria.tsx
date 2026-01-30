@@ -152,10 +152,17 @@ const Galeria = () => {
           </div>
           <div className="w-full">
             <Viewer360 
-              imageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//360.jpg"
-              secondImageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//361.jpg"
-              height="1000px"
-              mobileHeight="80vh"
+              imageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//36-1%203.JPG"
+              height="700px"
+              mobileHeight="60vh"
+              texts3D={[
+                { text: "ESTUDIO", position: "0 2 -8", color: "#FFFFFF", scale: "12 12 12" },
+                { text: "GALERÍA", position: "-6 1 -5", rotation: "0 45 0", color: "#E5E5E5", scale: "8 8 8" },
+                { text: "ALA NORTE", position: "6 1 -5", rotation: "0 -45 0", color: "#E5E5E5", scale: "8 8 8" },
+                { text: "FOTOGRAFÍA", position: "-4 0 -10", rotation: "0 30 0", color: "#CCCCCC", scale: "6 6 6" },
+                { text: "VIDEO", position: "4 0 -10", rotation: "0 -30 0", color: "#CCCCCC", scale: "6 6 6" },
+                { text: "PRODUCCIÓN", position: "0 -1 -7", color: "#AAAAAA", scale: "5 5 5" },
+              ]}
             />
           </div>
         </div>
