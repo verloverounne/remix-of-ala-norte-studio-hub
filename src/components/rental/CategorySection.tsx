@@ -166,7 +166,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                           </div>
 
                           {item.image_url ? <LazyImage src={item.image_url} alt={item.name} className="w-full h-full group-hover:scale-105 transition-all duration-300 rounded-none text-foreground bg-stone-50 px-[8px]" placeholderClassName="w-full h-full" aspectRatio="square" /> : <div className="w-full h-full flex items-center justify-center bg-muted">
-                              <span className="text-2xl sm:text-3xl opacity-20 font-heading">?</span>
+                              <span className="text-2xl sm:text-3xl opacity-20 font-heading bg-background">?</span>
                             </div>}
                         </div>
 
