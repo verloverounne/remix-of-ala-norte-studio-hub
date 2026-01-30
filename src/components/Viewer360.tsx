@@ -22,23 +22,26 @@ interface Text3DItem {
   action?: { type: 'view' | 'page'; target: string | number };
 }
 
-// View 1 labels - Main studio view
+// View 1 labels - Main studio view (Sala de Grabación)
+// TODOS los textos son botones clicables inmersivos
 const VIEW_1_LABELS: Text3DItem[] = [
   { text: "SALA DE GRABACIÓN", position: "0 2 -8", rotation: "0 0 0", action: { type: 'view', target: 2 } },
-  { text: "ESTUDIO DE POSTPRODUCCION", position: "-7 1 -5", rotation: "0 50 0", action: { type: 'view', target: 1 } },
-  { text: "GALERÍA DE FILMACIÓN", position: "7 1 -5", rotation: "0 -50 0", action: { type: 'page', target: '/galeria#view-1' } },
-  { text: "PISO PINTADO DE BLANCO", position: "-4 -0.5 -7", rotation: "0 15 0" },
-  { text: "11MTS DE TIRO DE CÁMARA", position: "4 -0.5 -7", rotation: "0 -15 0" },
-  { text: "MONTACARGA", position: "-8 0.5 -3", rotation: "0 70 0" },
+  { text: "ESTUDIO DE POSTPRODUCCIÓN", position: "-7 1 -5", rotation: "0 50 0", action: { type: 'view', target: 1 } },
+  { text: "GALERÍA", position: "7 1 -5", rotation: "0 -50 0", action: { type: 'page', target: '/galeria#view-1' } },
+  { text: "PISO PINTADO DE BLANCO", position: "-4 -0.5 -7", rotation: "0 15 0", action: { type: 'view', target: 1 } },
+  { text: "11MTS DE TIRO DE CÁMARA", position: "4 -0.5 -7", rotation: "0 -15 0", action: { type: 'view', target: 1 } },
+  { text: "MONTACARGA", position: "-8 0.5 -3", rotation: "0 70 0", action: { type: 'view', target: 1 } },
   { text: "COMEDOR", position: "8 0.5 -3", rotation: "0 -70 0", action: { type: 'page', target: '/galeria#view-2' } },
-  { text: "INFINITO BLANCO 6M X 3M", position: "0 -1 -9", rotation: "0 0 0" },
+  { text: "INFINITO BLANCO 6M X 3M", position: "0 -1 -9", rotation: "0 0 0", action: { type: 'view', target: 1 } },
 ];
 
-// View 2 labels - 363.jpg (Postproduction studio view)
+// View 2 labels - 363.jpg (Vista desde Estudio de Postproducción)
+// Navegación: Sala → Vista 2, Estudio Postprod → Vista 1, Galería → /galeria#view-1
 const VIEW_2_LABELS: Text3DItem[] = [
   { text: "SALA DE GRABACIÓN", position: "0 1.5 -8", rotation: "0 0 0", action: { type: 'view', target: 2 } },
   { text: "ESTUDIO DE POSTPRODUCCIÓN", position: "-6 1 -5", rotation: "0 45 0", action: { type: 'view', target: 1 } },
   { text: "GALERÍA", position: "6 1 -5", rotation: "0 -45 0", action: { type: 'page', target: '/galeria#view-1' } },
+  { text: "COMEDOR", position: "7 0 -4", rotation: "0 -60 0", action: { type: 'page', target: '/galeria#view-2' } },
 ];
 
 interface Viewer360Props {
@@ -115,36 +118,39 @@ const Viewer360 = ({
       const currentLabels = viewLabels[currentView as keyof typeof viewLabels] || VIEW_1_LABELS;
       const currentImage = viewImages[currentView as keyof typeof viewImages];
 
-      // Generate 3D text entities with click handlers - Poppins Bold style with hover
-      const textsHTML = currentLabels.map((item, index) => {
-        const hasAction = !!item.action;
+      // Generate 3D text entities - TODOS son botones clicables inmersivos
+      // Estilo: Poppins Bold, fondo negro con padding, hover color primary (#D4A017)
+      const textsHTML = currentLabels.map((item) => {
+        // Calcular ancho dinámico basado en longitud del texto (padding de 6px simulado)
+        const textLength = item.text.length;
+        const planeWidth = Math.max(2.5, textLength * 0.18 + 0.5);
+        
         return `
           <a-entity 
             position="${item.position}"
             rotation="${item.rotation || '0 0 0'}"
-            class="${hasAction ? 'clickable-label' : ''}"
-            data-action-type="${item.action?.type || ''}"
-            data-action-target="${item.action?.target || ''}"
+            class="clickable-label"
+            data-action-type="${item.action?.type || 'view'}"
+            data-action-target="${item.action?.target || '1'}"
           >
             <a-plane 
-              width="4.2" 
-              height="0.6" 
+              width="${planeWidth}" 
+              height="0.5" 
               color="#000000" 
-              opacity="0.85"
+              opacity="0.9"
               class="label-bg"
             ></a-plane>
             <a-text 
               value="${item.text}" 
               position="0 0 0.02"
               color="#FFFFFF"
-              scale="2 2 2"
+              scale="1.8 1.8 1.8"
               align="center"
-              width="4"
+              width="${planeWidth - 0.3}"
               anchor="center"
               baseline="center"
               font="https://cdn.aframe.io/fonts/Roboto-msdf.json"
             ></a-text>
-            ${hasAction ? '<a-text value="→" position="1.9 0 0.02" color="#FFFFFF" scale="2.5 2.5 2.5" align="center"></a-text>' : ''}
           </a-entity>
         `;
       }).join('');
@@ -220,18 +226,20 @@ const Viewer360 = ({
     const currentImage = viewImages[currentView as keyof typeof viewImages];
     
     const textsHTML = currentLabels.map((item) => {
-      const hasAction = !!item.action;
+      // Ancho dinámico basado en longitud del texto
+      const textLength = item.text.length;
+      const planeWidth = Math.max(2.5, textLength * 0.18 + 0.5);
+      
       return `
         <a-entity 
           position="${item.position}"
           rotation="${item.rotation || '0 0 0'}"
-          class="${hasAction ? 'clickable-label' : ''}"
-          data-action-type="${item.action?.type || ''}"
-          data-action-target="${item.action?.target || ''}"
+          class="clickable-label"
+          data-action-type="${item.action?.type || 'view'}"
+          data-action-target="${item.action?.target || '1'}"
         >
-          <a-plane width="4.2" height="0.6" color="#000000" opacity="0.85" class="label-bg"></a-plane>
-          <a-text value="${item.text}" position="0 0 0.02" color="#FFFFFF" scale="2 2 2" align="center" width="4" anchor="center" baseline="center"></a-text>
-          ${hasAction ? '<a-text value="→" position="1.9 0 0.02" color="#FFFFFF" scale="2.5 2.5 2.5" align="center"></a-text>' : ''}
+          <a-plane width="${planeWidth}" height="0.5" color="#000000" opacity="0.9" class="label-bg"></a-plane>
+          <a-text value="${item.text}" position="0 0 0.02" color="#FFFFFF" scale="1.8 1.8 1.8" align="center" width="${planeWidth - 0.3}" anchor="center" baseline="center"></a-text>
         </a-entity>
       `;
     }).join('');
