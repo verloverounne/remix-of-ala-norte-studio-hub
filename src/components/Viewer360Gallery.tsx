@@ -10,7 +10,6 @@ declare global {
       "a-camera": any;
       "a-text": any;
       "a-entity": any;
-      "a-box": any;
       "a-plane": any;
     }
   }
@@ -20,49 +19,55 @@ interface Text3DItem {
   text: string;
   position: string;
   rotation?: string;
-  link?: string; // URL to navigate or scene to switch
-  isSceneLink?: boolean; // If true, switches to another scene instead of URL
+  action?: { type: 'view' | 'page'; target: string | number };
 }
+
+// View 1 labels - Galería main view (360.jpg)
+const VIEW_1_LABELS: Text3DItem[] = [
+  { text: "GALERÍA", position: "0 2 -8", rotation: "0 0 0", action: { type: 'view', target: 1 } },
+  { text: "COMEDOR", position: "-6 1 -5", rotation: "0 45 0", action: { type: 'view', target: 2 } },
+  { text: "SALA DE GRABACIÓN", position: "6 1 -5", rotation: "0 -45 0", action: { type: 'page', target: '/sala-grabacion#view-2' } },
+  { text: "ESTUDIO DE POSTPRODUCCIÓN", position: "0 0.5 -7", rotation: "0 0 0", action: { type: 'page', target: '/sala-grabacion#view-1' } },
+];
+
+// View 2 labels - Comedor view (361.jpg)
+const VIEW_2_LABELS: Text3DItem[] = [
+  { text: "GALERÍA", position: "0 2 -8", rotation: "0 0 0", action: { type: 'view', target: 1 } },
+  { text: "COMEDOR", position: "-6 1.5 -5", rotation: "0 45 0", action: { type: 'view', target: 2 } },
+  { text: "SALA DE GRABACIÓN", position: "6 1 -5", rotation: "0 -45 0", action: { type: 'page', target: '/sala-grabacion#view-2' } },
+  { text: "ESTUDIO DE POSTPRODUCCIÓN", position: "0 0.5 -7", rotation: "0 0 0", action: { type: 'page', target: '/sala-grabacion#view-1' } },
+];
 
 interface Viewer360GalleryProps {
   imageSrc: string;
-  secondImageSrc: string;
-  thirdImageSrc?: string; // For additional scenes like COMEDOR
-  fourthImageSrc?: string; // For additional scenes like SALA DE GRABACIÓN
+  secondImageSrc?: string;
   height?: string;
   mobileHeight?: string;
+  initialView?: number;
 }
 
-// Static 3D text labels with their positions and links
-const GALLERY_LABELS: Text3DItem[] = [
-  { text: "SALA DE GRABACIÓN", position: "-8 1.5 -6", rotation: "0 45 0", link: "/sala-grabacion", isSceneLink: false },
-  {
-    text: "ESTUDIO DE POSTPRODUCCION",
-    position: "8 1.5 -6",
-    rotation: "0 -45 0",
-    link: "/sala-grabacion",
-    isSceneLink: false,
-  },
-  { text: "GALERÍA DE FILMACIÓN", position: "0 2 -8", rotation: "0 0 0", link: "/galeria", isSceneLink: false },
-  { text: "PISO PINTADO DE BLANCO", position: "-5 -1 -7", rotation: "0 20 0" },
-  { text: "11MTS DE TIRO DE CÁMARA", position: "5 -1 -7", rotation: "0 -20 0" },
-  { text: "MONTACARGA", position: "-7 0 -4", rotation: "0 60 0" },
-  { text: "COMEDOR", position: "7 0 -4", rotation: "0 -60 0", link: "/contacto", isSceneLink: false },
-  { text: "INFINITO BLANCO 6M X 3M", position: "0 -0.5 -9", rotation: "0 0 0" },
-];
-
-const Viewer360Gallery = ({
-  imageSrc,
+const Viewer360Gallery = ({ 
+  imageSrc, 
   secondImageSrc,
-  thirdImageSrc,
-  fourthImageSrc,
   height = "100vh",
   mobileHeight = "100vh",
+  initialView = 1,
 }: Viewer360GalleryProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [currentScene, setCurrentScene] = useState(1);
+  const [currentView, setCurrentView] = useState(initialView);
   const [isMobile, setIsMobile] = useState(false);
-  const [sceneReady, setSceneReady] = useState(false);
+
+  // Image sources for each view
+  const viewImages = {
+    1: imageSrc,
+    2: secondImageSrc || imageSrc,
+  };
+
+  // Labels for each view
+  const viewLabels = {
+    1: VIEW_1_LABELS,
+    2: VIEW_2_LABELS,
+  };
 
   useEffect(() => {
     const checkMobile = () => {
@@ -73,6 +78,13 @@ const Viewer360Gallery = ({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // Check URL hash for initial view
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash === '#view-1') setCurrentView(1);
+    else if (hash === '#view-2') setCurrentView(2);
+  }, []);
+
   useEffect(() => {
     const existingScript = document.querySelector('script[src*="aframe"]');
 
@@ -81,17 +93,11 @@ const Viewer360Gallery = ({
       script.src = "https://aframe.io/releases/1.4.2/aframe.min.js";
       script.async = true;
       script.onload = () => {
-        setTimeout(() => {
-          createScene();
-          setSceneReady(true);
-        }, 100);
+        createScene();
       };
       document.head.appendChild(script);
     } else {
-      setTimeout(() => {
-        createScene();
-        setSceneReady(true);
-      }, 100);
+      setTimeout(() => createScene(), 100);
     }
 
     function createScene() {
@@ -103,79 +109,44 @@ const Viewer360Gallery = ({
       }
 
       const currentHeight = isMobile ? mobileHeight : height;
-      const scenes = [imageSrc, secondImageSrc, thirdImageSrc, fourthImageSrc].filter(Boolean);
-      const activeImage = scenes[currentScene - 1] || imageSrc;
+      const currentLabels = viewLabels[currentView as keyof typeof viewLabels] || VIEW_1_LABELS;
+      const currentImage = viewImages[currentView as keyof typeof viewImages];
 
-      // Generate 3D text entities with click handlers - Poppins Bold style
-      const textsHTML = GALLERY_LABELS.map(
-        (item, index) => `
-        <a-entity 
-          position="${item.position}"
-          rotation="${item.rotation || "0 0 0"}"
-          class="clickable-label"
-          data-link="${item.link || ""}"
-          data-scene-link="${item.isSceneLink || false}"
-          data-index="${index}"
-        >
-          <a-plane 
-            width="4" 
-            height="0.5" 
-            color="#000000" 
-            opacity="0.7"
-            class="button"
-          ></a-plane>
-          <a-text 
-            value="${item.text}" 
-            position="0 0 0.02"
-            color="#FFFFFF"
-            scale="2 2 2"
-            align="center"
-            font="https://cdn.aframe.io/fonts/Roboto-msdf.json"
-            width="4"
-            anchor="center"
-            baseline="center"
-            font-weight="bold"
-          ></a-text>
-          ${
-            item.link
-              ? `
-          <a-text 
-            value="→" 
-            position="1.8 0 0.02"
-            color="#FFFFFF"
-            scale="2.5 2.5 2.5"
-            align="center"
-          ></a-text>
-          `
-              : ""
-          }
-        </a-entity>
-      `,
-      ).join("");
+      // Generate 3D text entities with click handlers
+      const textsHTML = currentLabels.map((item, index) => {
+        const hasAction = !!item.action;
+        return `
+          <a-entity 
+            position="${item.position}"
+            rotation="${item.rotation || '0 0 0'}"
+            class="${hasAction ? 'clickable-label' : ''}"
+            data-action-type="${item.action?.type || ''}"
+            data-action-target="${item.action?.target || ''}"
+          >
+            <a-plane 
+              width="4.2" 
+              height="0.6" 
+              color="#000000" 
+              opacity="0.85"
+              class="label-bg"
+            ></a-plane>
+            <a-text 
+              value="${item.text}" 
+              position="0 0 0.02"
+              color="#FFFFFF"
+              scale="2 2 2"
+              align="center"
+              width="4"
+              anchor="center"
+              baseline="center"
+              font="https://cdn.aframe.io/fonts/Roboto-msdf.json"
+            ></a-text>
+            ${hasAction ? '<a-text value="→" position="1.9 0 0.02" color="#FFFFFF" scale="2.5 2.5 2.5" align="center"></a-text>' : ''}
+          </a-entity>
+        `;
+      }).join('');
 
-      // 3D Toggle button immersed in the scene
-      const toggleButtonHTML = `
-        <a-entity position="0 -2.5 -5" class="clickable-toggle">
-          <a-plane 
-            width="3.5" 
-            height="0.6" 
-            color="#1a1a1a" 
-            opacity="0.9"
-            class="toggle-btn"
-          ></a-plane>
-          <a-text 
-            value="${currentScene === 1 ? "→ VER OTRA VISTA" : "← VOLVER A INICIO"}"
-            position="0 0 0.01"
-            color="#FFFFFF"
-            scale="2.5 2.5 2.5"
-            align="center"
-            font-weight="bold"
-            width="4"
-          ></a-text>
-        </a-entity>
-      `;
-
-      // FOV 70 = vista subjetiva normal, más natural
+      // FOV 80 = wider view for gallery
       const sceneHTML = `
         <a-scene 
           embedded 
@@ -184,11 +155,10 @@ const Viewer360Gallery = ({
           loading-screen="enabled: true"
           inspector="url: https://cdn.jsdelivr.net/gh/aframevr/aframe-inspector@master/dist/aframe-inspector.min.js"
         >
-          <a-sky src="${activeImage}" rotation="0 -30 0" scale="-1 1 1"></a-sky>
+          <a-sky src="${currentImage}" rotation="0 -30 0" scale="-1 1 1"></a-sky>
           ${textsHTML}
-          ${toggleButtonHTML}
-          <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="70" position="0 1.6 0">
-            <a-cursor color="#FFFFFF" opacity="0.6" fuse="true" fuse-timeout="1200" raycaster="objects: .clickable-label, .clickable-toggle"></a-cursor>
+          <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="80" position="0 1.6 0">
+            <a-cursor color="#FFFFFF" opacity="0.6" fuse="true" fuse-timeout="1200" raycaster="objects: .clickable-label"></a-cursor>
           </a-camera>
         </a-scene>
       `;
@@ -196,36 +166,37 @@ const Viewer360Gallery = ({
       if (sceneContainer) {
         sceneContainer.innerHTML = sceneHTML;
 
-        // Add click listeners after scene is created
+        // Add click listeners for labels
         setTimeout(() => {
-          const scene = sceneContainer.querySelector("a-scene");
+          const scene = sceneContainer.querySelector('a-scene');
           if (scene) {
-            // Toggle button click
-            const toggleEntity = scene.querySelector(".clickable-toggle");
-            if (toggleEntity) {
-              toggleEntity.addEventListener("click", () => {
-                setCurrentScene((prev) => (prev === 1 ? 2 : 1));
-              });
-            }
-
-            // Label clicks for navigation
-            const labels = scene.querySelectorAll(".clickable-label");
+            const labels = scene.querySelectorAll('.clickable-label');
             labels.forEach((label: any) => {
-              label.addEventListener("click", () => {
-                const link = label.getAttribute("data-link");
-                if (link) {
-                  window.location.href = link;
+              label.addEventListener('click', () => {
+                const actionType = label.getAttribute('data-action-type');
+                const actionTarget = label.getAttribute('data-action-target');
+                
+                if (actionType === 'view') {
+                  setCurrentView(parseInt(actionTarget));
+                } else if (actionType === 'page') {
+                  window.location.href = actionTarget;
                 }
               });
-
-              // Hover effect
-              label.addEventListener("mouseenter", () => {
-                const bg = label.querySelector(".label-bg");
-                if (bg) bg.setAttribute("opacity", "0.9");
+              
+              // Hover effect - change to primary color
+              label.addEventListener('mouseenter', () => {
+                const bg = label.querySelector('.label-bg');
+                if (bg) {
+                  bg.setAttribute('color', '#D4A017');
+                  bg.setAttribute('opacity', '1');
+                }
               });
-              label.addEventListener("mouseleave", () => {
-                const bg = label.querySelector(".label-bg");
-                if (bg) bg.setAttribute("opacity", "0.7");
+              label.addEventListener('mouseleave', () => {
+                const bg = label.querySelector('.label-bg');
+                if (bg) {
+                  bg.setAttribute('color', '#000000');
+                  bg.setAttribute('opacity', '0.85');
+                }
               });
             });
           }
@@ -239,46 +210,28 @@ const Viewer360Gallery = ({
         sceneContainer.innerHTML = "";
       }
     };
-  }, [currentScene, height, mobileHeight, isMobile, imageSrc, secondImageSrc, thirdImageSrc, fourthImageSrc]);
-
-  const handleToggleScene = () => {
-    setCurrentScene((prev) => (prev === 1 ? 2 : 1));
-  };
+  }, [currentView, height, mobileHeight, isMobile]);
 
   const openInNewWindow = () => {
-    const scenes = [imageSrc, secondImageSrc, thirdImageSrc, fourthImageSrc].filter(Boolean);
-    const activeImage = scenes[currentScene - 1] || imageSrc;
-
-    // Generate labels HTML for fullscreen
-    const textsHTML = GALLERY_LABELS.map(
-      (item, index) => `
-      <a-entity 
-        position="${item.position}"
-        rotation="${item.rotation || "0 0 0"}"
-        class="clickable-label"
-        data-link="${item.link || ""}"
-      >
-        <a-plane 
-          width="4" 
-          height="0.5" 
-          color="#000000" 
-          opacity="0.7"
-          class="label-bg"
-        ></a-plane>
-        <a-text 
-          value="${item.text}" 
-          position="0 0 0.02"
-          color="#FFFFFF"
-          scale="2 2 2"
-          align="center"
-          width="4"
-          anchor="center"
-          baseline="center"
-        ></a-text>
-        ${item.link ? '<a-text value="→" position="1.8 0 0.02" color="#FFFFFF" scale="2.5 2.5 2.5" align="center"></a-text>' : ""}
-      </a-entity>
-    `,
-    ).join("");
+    const currentLabels = viewLabels[currentView as keyof typeof viewLabels] || VIEW_1_LABELS;
+    const currentImage = viewImages[currentView as keyof typeof viewImages];
+    
+    const textsHTML = currentLabels.map((item) => {
+      const hasAction = !!item.action;
+      return `
+        <a-entity 
+          position="${item.position}"
+          rotation="${item.rotation || '0 0 0'}"
+          class="${hasAction ? 'clickable-label' : ''}"
+          data-action-type="${item.action?.type || ''}"
+          data-action-target="${item.action?.target || ''}"
+        >
+          <a-plane width="4.2" height="0.6" color="#000000" opacity="0.85" class="label-bg"></a-plane>
+          <a-text value="${item.text}" position="0 0 0.02" color="#FFFFFF" scale="2 2 2" align="center" width="4" anchor="center" baseline="center"></a-text>
+          ${hasAction ? '<a-text value="→" position="1.9 0 0.02" color="#FFFFFF" scale="2.5 2.5 2.5" align="center"></a-text>' : ''}
+        </a-entity>
+      `;
+    }).join('');
 
     const fullHTML = `
 <!DOCTYPE html>
@@ -304,7 +257,6 @@ const Viewer360Gallery = ({
       background: rgba(0,0,0,0.9);
       color: white;
       border: none;
-      border-radius: 0;
       cursor: pointer;
       font-family: 'Poppins', sans-serif;
       font-weight: 700;
@@ -312,9 +264,7 @@ const Viewer360Gallery = ({
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    .controls button:hover {
-      background: rgba(30,30,30,1);
-    }
+    .controls button:hover { background: #D4A017; }
     .hint {
       position: fixed;
       top: 20px;
@@ -333,44 +283,63 @@ const Viewer360Gallery = ({
   </style>
 </head>
 <body>
-  <div class="hint">Ctrl+Alt+I para Inspector</div>
+  <div class="hint">Arrastra para explorar • Haz clic en los botones para navegar</div>
   <div class="controls">
-    <button onclick="toggleImage()">Cambiar Vista</button>
+    <button onclick="toggleView()">Cambiar Vista</button>
     <button onclick="openInspector()">Inspector</button>
   </div>
   <a-scene 
     vr-mode-ui="enabled: true"
     inspector="url: https://cdn.jsdelivr.net/gh/aframevr/aframe-inspector@master/dist/aframe-inspector.min.js"
   >
-    <a-sky id="sky" src="${activeImage}" rotation="0 -30 0" scale="-1 1 1"></a-sky>
+    <a-sky id="sky" src="${currentImage}" rotation="0 -30 0" scale="-1 1 1"></a-sky>
     ${textsHTML}
-    <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="70" position="0 1.6 0">
+    <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="80" position="0 1.6 0">
       <a-cursor color="#FFFFFF" opacity="0.6" fuse="true" fuse-timeout="1200" raycaster="objects: .clickable-label"></a-cursor>
     </a-camera>
   </a-scene>
   <script>
-    const images = ${JSON.stringify(scenes)};
-    let currentIdx = ${currentScene - 1};
+    const images = ['${viewImages[1]}', '${viewImages[2]}'];
+    let currentIdx = ${currentView - 1};
     
-    function toggleImage() {
+    function toggleView() {
       currentIdx = (currentIdx + 1) % images.length;
       document.getElementById('sky').setAttribute('src', images[currentIdx]);
     }
     
     function openInspector() {
       const scene = document.querySelector('a-scene');
-      if (scene && scene.components && scene.components.inspector) {
-        scene.components.inspector.openInspector();
-      }
+      if (scene?.components?.inspector) scene.components.inspector.openInspector();
     }
 
-    // Handle label clicks
     document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         document.querySelectorAll('.clickable-label').forEach(label => {
           label.addEventListener('click', () => {
-            const link = label.getAttribute('data-link');
-            if (link) window.location.href = link;
+            const actionType = label.getAttribute('data-action-type');
+            const actionTarget = label.getAttribute('data-action-target');
+            if (actionType === 'view') {
+              currentIdx = parseInt(actionTarget) - 1;
+              document.getElementById('sky').setAttribute('src', images[currentIdx]);
+            } else if (actionType === 'page') {
+              window.location.href = actionTarget;
+            }
+          });
+          
+          // Hover effect
+          label.addEventListener('mouseenter', () => {
+            const bg = label.querySelector('.label-bg');
+            if (bg) {
+              bg.setAttribute('color', '#D4A017');
+              bg.setAttribute('opacity', '1');
+            }
+          });
+          label.addEventListener('mouseleave', () => {
+            const bg = label.querySelector('.label-bg');
+            if (bg) {
+              bg.setAttribute('color', '#000000');
+              bg.setAttribute('opacity', '0.85');
+            }
           });
         });
       }, 1000);
@@ -380,7 +349,7 @@ const Viewer360Gallery = ({
 </html>
     `;
 
-    const newWindow = window.open("", "_blank");
+    const newWindow = window.open('', '_blank');
     if (newWindow) {
       newWindow.document.write(fullHTML);
       newWindow.document.close();
@@ -391,32 +360,44 @@ const Viewer360Gallery = ({
 
   return (
     <div className="relative w-full">
-      <div ref={containerRef} className="w-full overflow-hidden" style={{ height: displayHeight, width: "100%" }}>
+      <div
+        ref={containerRef}
+        className="w-full overflow-hidden"
+        style={{ height: displayHeight, width: "100%" }}
+      >
         <div className="a-scene-container w-full h-full" style={{ height: displayHeight }} />
       </div>
-
-      {/* Control buttons overlaid - minimal UI */}
+      
+      {/* Control buttons */}
       <div className="absolute top-4 right-4 z-20 flex gap-2">
-        <Button
+        <Button 
           onClick={openInNewWindow}
           variant="secondary"
           size="sm"
-          className="shadow-lg backdrop-blur-sm bg-black/80 text-white border-0 font-heading font-bold uppercase tracking-wider hover:bg-black"
+          className="shadow-lg backdrop-blur-sm bg-black/80 text-white border-0 font-heading font-bold uppercase tracking-wider hover:bg-primary hover:text-primary-foreground"
         >
           <Maximize2 className="h-4 w-4 mr-1" />
           Pantalla Completa
         </Button>
       </div>
-
-      {/* Fallback toggle button */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20">
-        <Button
-          onClick={handleToggleScene}
-          variant="default"
-          size="lg"
-          className="shadow-lg backdrop-blur-sm bg-black text-white font-heading font-bold uppercase tracking-wider hover:bg-black/90"
+      
+      {/* View indicator & toggle */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        <Button 
+          onClick={() => setCurrentView(1)}
+          variant={currentView === 1 ? "default" : "secondary"}
+          size="sm"
+          className={`shadow-lg font-heading font-bold uppercase tracking-wider ${currentView === 1 ? 'bg-primary text-primary-foreground' : 'bg-black/80 text-white hover:bg-primary hover:text-primary-foreground'}`}
         >
-          {currentScene === 1 ? "→ Ver otra vista" : "← Volver a inicio"}
+          Galería
+        </Button>
+        <Button 
+          onClick={() => setCurrentView(2)}
+          variant={currentView === 2 ? "default" : "secondary"}
+          size="sm"
+          className={`shadow-lg font-heading font-bold uppercase tracking-wider ${currentView === 2 ? 'bg-primary text-primary-foreground' : 'bg-black/80 text-white hover:bg-primary hover:text-primary-foreground'}`}
+        >
+          Comedor
         </Button>
       </div>
     </div>
