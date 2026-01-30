@@ -96,7 +96,7 @@ const ServiceSlide = ({
 
         {/* Columna derecha: Texto con fondo - sin parallax para mantener visibilidad */}
         <div className="flex-col h-full p-8 lg:p-12 xl:p-16 overflow-y-auto bg-background flex items-center justify-center">
-          <div className="max-w-xl text-foreground space-y-4">
+          <div className="max-w-l text-foreground space-y-4">
             <div className="space-y-3">
               <span className="font-heading text-sm text-muted-foreground uppercase tracking-wider">
                 Servicio {String(index + 1).padStart(2, "0")}
