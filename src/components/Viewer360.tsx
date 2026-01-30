@@ -19,19 +19,26 @@ interface Text3DItem {
   text: string;
   position: string;
   rotation?: string;
-  link?: string;
+  action?: { type: 'view' | 'page'; target: string | number };
 }
 
-// Static 3D text labels for Sala de Grabación
-const STUDIO_LABELS: Text3DItem[] = [
-  { text: "SALA DE GRABACIÓN", position: "0 2 -8", rotation: "0 0 0", link: "/sala-grabacion" },
-  { text: "ESTUDIO DE POSTPRODUCCION", position: "-7 1 -5", rotation: "0 50 0", link: "/sala-grabacion" },
-  { text: "GALERÍA DE FILMACIÓN", position: "7 1 -5", rotation: "0 -50 0", link: "/galeria" },
+// View 1 labels - Main studio view
+const VIEW_1_LABELS: Text3DItem[] = [
+  { text: "SALA DE GRABACIÓN", position: "0 2 -8", rotation: "0 0 0", action: { type: 'view', target: 2 } },
+  { text: "ESTUDIO DE POSTPRODUCCION", position: "-7 1 -5", rotation: "0 50 0", action: { type: 'view', target: 1 } },
+  { text: "GALERÍA DE FILMACIÓN", position: "7 1 -5", rotation: "0 -50 0", action: { type: 'page', target: '/galeria#view-1' } },
   { text: "PISO PINTADO DE BLANCO", position: "-4 -0.5 -7", rotation: "0 15 0" },
   { text: "11MTS DE TIRO DE CÁMARA", position: "4 -0.5 -7", rotation: "0 -15 0" },
   { text: "MONTACARGA", position: "-8 0.5 -3", rotation: "0 70 0" },
-  { text: "COMEDOR", position: "8 0.5 -3", rotation: "0 -70 0", link: "/contacto" },
+  { text: "COMEDOR", position: "8 0.5 -3", rotation: "0 -70 0", action: { type: 'page', target: '/galeria#view-2' } },
   { text: "INFINITO BLANCO 6M X 3M", position: "0 -1 -9", rotation: "0 0 0" },
+];
+
+// View 2 labels - 363.jpg (Postproduction studio view)
+const VIEW_2_LABELS: Text3DItem[] = [
+  { text: "SALA DE GRABACIÓN", position: "0 1.5 -8", rotation: "0 0 0", action: { type: 'view', target: 2 } },
+  { text: "ESTUDIO DE POSTPRODUCCIÓN", position: "-6 1 -5", rotation: "0 45 0", action: { type: 'view', target: 1 } },
+  { text: "GALERÍA", position: "6 1 -5", rotation: "0 -45 0", action: { type: 'page', target: '/galeria#view-1' } },
 ];
 
 interface Viewer360Props {
@@ -39,6 +46,7 @@ interface Viewer360Props {
   secondImageSrc?: string;
   height?: string;
   mobileHeight?: string;
+  initialView?: number;
 }
 
 const Viewer360 = ({ 
@@ -46,10 +54,23 @@ const Viewer360 = ({
   secondImageSrc,
   height = "100vh",
   mobileHeight = "100vh",
+  initialView = 1,
 }: Viewer360Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [currentImage, setCurrentImage] = useState(imageSrc);
+  const [currentView, setCurrentView] = useState(initialView);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Image sources for each view
+  const viewImages = {
+    1: imageSrc,
+    2: secondImageSrc || "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//363.jpg",
+  };
+
+  // Labels for each view
+  const viewLabels = {
+    1: VIEW_1_LABELS,
+    2: VIEW_2_LABELS,
+  };
 
   useEffect(() => {
     const checkMobile = () => {
@@ -58,6 +79,13 @@ const Viewer360 = ({
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Check URL hash for initial view
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash === '#view-1') setCurrentView(1);
+    else if (hash === '#view-2') setCurrentView(2);
   }, []);
 
   useEffect(() => {
@@ -84,35 +112,42 @@ const Viewer360 = ({
       }
 
       const currentHeight = isMobile ? mobileHeight : height;
+      const currentLabels = viewLabels[currentView as keyof typeof viewLabels] || VIEW_1_LABELS;
+      const currentImage = viewImages[currentView as keyof typeof viewImages];
 
-      // Generate 3D text entities with click handlers - Poppins Bold style
-      const textsHTML = STUDIO_LABELS.map((item, index) => `
-        <a-entity 
-          position="${item.position}"
-          rotation="${item.rotation || '0 0 0'}"
-          class="clickable-label"
-          data-link="${item.link || ''}"
-        >
-          <a-plane 
-            width="4" 
-            height="0.5" 
-            color="#000000" 
-            opacity="0.7"
-            class="label-bg"
-          ></a-plane>
-          <a-text 
-            value="${item.text}" 
-            position="0 0 0.02"
-            color="#FFFFFF"
-            scale="2 2 2"
-            align="center"
-            width="4"
-            anchor="center"
-            baseline="center"
-          ></a-text>
-          ${item.link ? '<a-text value="→" position="1.8 0 0.02" color="#FFFFFF" scale="2.5 2.5 2.5" align="center"></a-text>' : ''}
-        </a-entity>
-      `).join('');
+      // Generate 3D text entities with click handlers - Poppins Bold style with hover
+      const textsHTML = currentLabels.map((item, index) => {
+        const hasAction = !!item.action;
+        return `
+          <a-entity 
+            position="${item.position}"
+            rotation="${item.rotation || '0 0 0'}"
+            class="${hasAction ? 'clickable-label' : ''}"
+            data-action-type="${item.action?.type || ''}"
+            data-action-target="${item.action?.target || ''}"
+          >
+            <a-plane 
+              width="4.2" 
+              height="0.6" 
+              color="#000000" 
+              opacity="0.85"
+              class="label-bg"
+            ></a-plane>
+            <a-text 
+              value="${item.text}" 
+              position="0 0 0.02"
+              color="#FFFFFF"
+              scale="2 2 2"
+              align="center"
+              width="4"
+              anchor="center"
+              baseline="center"
+              font="https://cdn.aframe.io/fonts/Roboto-msdf.json"
+            ></a-text>
+            ${hasAction ? '<a-text value="→" position="1.9 0 0.02" color="#FFFFFF" scale="2.5 2.5 2.5" align="center"></a-text>' : ''}
+          </a-entity>
+        `;
+      }).join('');
 
       // FOV 70 = vista subjetiva normal
       const sceneHTML = `
@@ -141,20 +176,30 @@ const Viewer360 = ({
             const labels = scene.querySelectorAll('.clickable-label');
             labels.forEach((label: any) => {
               label.addEventListener('click', () => {
-                const link = label.getAttribute('data-link');
-                if (link) {
-                  window.location.href = link;
+                const actionType = label.getAttribute('data-action-type');
+                const actionTarget = label.getAttribute('data-action-target');
+                
+                if (actionType === 'view') {
+                  setCurrentView(parseInt(actionTarget));
+                } else if (actionType === 'page') {
+                  window.location.href = actionTarget;
                 }
               });
               
-              // Hover effect
+              // Hover effect - change to primary color (hsl 43 74% 49%)
               label.addEventListener('mouseenter', () => {
                 const bg = label.querySelector('.label-bg');
-                if (bg) bg.setAttribute('opacity', '0.9');
+                if (bg) {
+                  bg.setAttribute('color', '#D4A017');
+                  bg.setAttribute('opacity', '1');
+                }
               });
               label.addEventListener('mouseleave', () => {
                 const bg = label.querySelector('.label-bg');
-                if (bg) bg.setAttribute('opacity', '0.7');
+                if (bg) {
+                  bg.setAttribute('color', '#000000');
+                  bg.setAttribute('opacity', '0.85');
+                }
               });
             });
           }
@@ -168,27 +213,28 @@ const Viewer360 = ({
         sceneContainer.innerHTML = "";
       }
     };
-  }, [currentImage, height, mobileHeight, isMobile]);
-
-  const toggleImage = () => {
-    if (secondImageSrc) {
-      setCurrentImage(prev => prev === imageSrc ? secondImageSrc : imageSrc);
-    }
-  };
+  }, [currentView, height, mobileHeight, isMobile]);
 
   const openInNewWindow = () => {
-    const textsHTML = STUDIO_LABELS.map((item) => `
-      <a-entity 
-        position="${item.position}"
-        rotation="${item.rotation || '0 0 0'}"
-        class="clickable-label"
-        data-link="${item.link || ''}"
-      >
-        <a-plane width="4" height="0.5" color="#000000" opacity="0.7" class="label-bg"></a-plane>
-        <a-text value="${item.text}" position="0 0 0.02" color="#FFFFFF" scale="2 2 2" align="center" width="4" anchor="center" baseline="center"></a-text>
-        ${item.link ? '<a-text value="→" position="1.8 0 0.02" color="#FFFFFF" scale="2.5 2.5 2.5" align="center"></a-text>' : ''}
-      </a-entity>
-    `).join('');
+    const currentLabels = viewLabels[currentView as keyof typeof viewLabels] || VIEW_1_LABELS;
+    const currentImage = viewImages[currentView as keyof typeof viewImages];
+    
+    const textsHTML = currentLabels.map((item) => {
+      const hasAction = !!item.action;
+      return `
+        <a-entity 
+          position="${item.position}"
+          rotation="${item.rotation || '0 0 0'}"
+          class="${hasAction ? 'clickable-label' : ''}"
+          data-action-type="${item.action?.type || ''}"
+          data-action-target="${item.action?.target || ''}"
+        >
+          <a-plane width="4.2" height="0.6" color="#000000" opacity="0.85" class="label-bg"></a-plane>
+          <a-text value="${item.text}" position="0 0 0.02" color="#FFFFFF" scale="2 2 2" align="center" width="4" anchor="center" baseline="center"></a-text>
+          ${hasAction ? '<a-text value="→" position="1.9 0 0.02" color="#FFFFFF" scale="2.5 2.5 2.5" align="center"></a-text>' : ''}
+        </a-entity>
+      `;
+    }).join('');
 
     const fullHTML = `
 <!DOCTYPE html>
@@ -221,7 +267,7 @@ const Viewer360 = ({
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    .controls button:hover { background: rgba(30,30,30,1); }
+    .controls button:hover { background: #D4A017; }
     .hint {
       position: fixed;
       top: 20px;
@@ -240,9 +286,9 @@ const Viewer360 = ({
   </style>
 </head>
 <body>
-  <div class="hint">Ctrl+Alt+I para Inspector</div>
+  <div class="hint">Arrastra para explorar • Haz clic en los botones para navegar</div>
   <div class="controls">
-    ${secondImageSrc ? '<button onclick="toggleImage()">Cambiar Vista</button>' : ''}
+    <button onclick="toggleView()">Cambiar Vista</button>
     <button onclick="openInspector()">Inspector</button>
   </div>
   <a-scene 
@@ -256,10 +302,10 @@ const Viewer360 = ({
     </a-camera>
   </a-scene>
   <script>
-    const images = ['${imageSrc}'${secondImageSrc ? `, '${secondImageSrc}'` : ''}];
-    let currentIdx = 0;
+    const images = ['${viewImages[1]}', '${viewImages[2]}'];
+    let currentIdx = ${currentView - 1};
     
-    function toggleImage() {
+    function toggleView() {
       currentIdx = (currentIdx + 1) % images.length;
       document.getElementById('sky').setAttribute('src', images[currentIdx]);
     }
@@ -273,8 +319,30 @@ const Viewer360 = ({
       setTimeout(() => {
         document.querySelectorAll('.clickable-label').forEach(label => {
           label.addEventListener('click', () => {
-            const link = label.getAttribute('data-link');
-            if (link) window.location.href = link;
+            const actionType = label.getAttribute('data-action-type');
+            const actionTarget = label.getAttribute('data-action-target');
+            if (actionType === 'view') {
+              currentIdx = parseInt(actionTarget) - 1;
+              document.getElementById('sky').setAttribute('src', images[currentIdx]);
+            } else if (actionType === 'page') {
+              window.location.href = actionTarget;
+            }
+          });
+          
+          // Hover effect
+          label.addEventListener('mouseenter', () => {
+            const bg = label.querySelector('.label-bg');
+            if (bg) {
+              bg.setAttribute('color', '#D4A017');
+              bg.setAttribute('opacity', '1');
+            }
+          });
+          label.addEventListener('mouseleave', () => {
+            const bg = label.querySelector('.label-bg');
+            if (bg) {
+              bg.setAttribute('color', '#000000');
+              bg.setAttribute('opacity', '0.85');
+            }
           });
         });
       }, 1000);
@@ -309,26 +377,32 @@ const Viewer360 = ({
           onClick={openInNewWindow}
           variant="secondary"
           size="sm"
-          className="shadow-lg backdrop-blur-sm bg-black/80 text-white border-0 font-heading font-bold uppercase tracking-wider hover:bg-black"
+          className="shadow-lg backdrop-blur-sm bg-black/80 text-white border-0 font-heading font-bold uppercase tracking-wider hover:bg-primary hover:text-primary-foreground"
         >
           <Maximize2 className="h-4 w-4 mr-1" />
           Pantalla Completa
         </Button>
       </div>
       
-      {/* Toggle button */}
-      {secondImageSrc && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20">
-          <Button 
-            onClick={toggleImage}
-            variant="default"
-            size="lg"
-            className="shadow-lg backdrop-blur-sm bg-black text-white font-heading font-bold uppercase tracking-wider hover:bg-black/90"
-          >
-            {currentImage === imageSrc ? "→ Ver otra vista" : "← Volver a inicio"}
-          </Button>
-        </div>
-      )}
+      {/* View indicator & toggle */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        <Button 
+          onClick={() => setCurrentView(1)}
+          variant={currentView === 1 ? "default" : "secondary"}
+          size="sm"
+          className={`shadow-lg font-heading font-bold uppercase tracking-wider ${currentView === 1 ? 'bg-primary text-primary-foreground' : 'bg-black/80 text-white hover:bg-primary hover:text-primary-foreground'}`}
+        >
+          Vista 1
+        </Button>
+        <Button 
+          onClick={() => setCurrentView(2)}
+          variant={currentView === 2 ? "default" : "secondary"}
+          size="sm"
+          className={`shadow-lg font-heading font-bold uppercase tracking-wider ${currentView === 2 ? 'bg-primary text-primary-foreground' : 'bg-black/80 text-white hover:bg-primary hover:text-primary-foreground'}`}
+        >
+          Vista 2
+        </Button>
+      </div>
     </div>
   );
 };

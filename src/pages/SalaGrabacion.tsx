@@ -167,15 +167,9 @@ const SalaGrabacion = () => {
           <div className="w-full">
             <Viewer360
               imageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//36-1%203.JPG"
+              secondImageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//363.jpg"
               height="700px"
               mobileHeight="60vh"
-              texts3D={[
-                { text: "SALA DE GRABACIÓN", position: "0 2 -8", color: "#FFFFFF", scale: "10 10 10" },
-                { text: "AUDIO", position: "-5 1 -6", rotation: "0 40 0", color: "#E5E5E5", scale: "7 7 7" },
-                { text: "PODCAST", position: "5 1 -6", rotation: "0 -40 0", color: "#E5E5E5", scale: "7 7 7" },
-                { text: "VOICEOVER", position: "-3 0 -9", rotation: "0 25 0", color: "#CCCCCC", scale: "5 5 5" },
-                { text: "MÚSICA", position: "3 0 -9", rotation: "0 -25 0", color: "#CCCCCC", scale: "5 5 5" },
-              ]}
             />
           </div>
         </div>
