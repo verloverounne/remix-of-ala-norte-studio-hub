@@ -27,7 +27,7 @@ const Equipos = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<ViewMode>("cards");
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
 
   const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
   const { toast } = useToast();
