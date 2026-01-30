@@ -23,6 +23,7 @@ interface Text3DItem {
 }
 
 // View 1 labels - Galería main view (360.jpg)
+// TODOS los textos son botones clicables inmersivos
 const VIEW_1_LABELS: Text3DItem[] = [
   { text: "GALERÍA", position: "0 2 -8", rotation: "0 0 0", action: { type: 'view', target: 1 } },
   { text: "COMEDOR", position: "-6 1 -5", rotation: "0 45 0", action: { type: 'view', target: 2 } },
@@ -31,6 +32,7 @@ const VIEW_1_LABELS: Text3DItem[] = [
 ];
 
 // View 2 labels - Comedor view (361.jpg)
+// Navegación: Galería → Vista 1, Comedor → Vista 2, Sala → /sala#view-2, Postprod → /sala#view-1
 const VIEW_2_LABELS: Text3DItem[] = [
   { text: "GALERÍA", position: "0 2 -8", rotation: "0 0 0", action: { type: 'view', target: 1 } },
   { text: "COMEDOR", position: "-6 1.5 -5", rotation: "0 45 0", action: { type: 'view', target: 2 } },
@@ -112,36 +114,39 @@ const Viewer360Gallery = ({
       const currentLabels = viewLabels[currentView as keyof typeof viewLabels] || VIEW_1_LABELS;
       const currentImage = viewImages[currentView as keyof typeof viewImages];
 
-      // Generate 3D text entities with click handlers
-      const textsHTML = currentLabels.map((item, index) => {
-        const hasAction = !!item.action;
+      // Generate 3D text entities - TODOS son botones clicables inmersivos
+      // Estilo: Poppins Bold, fondo negro con padding, hover color primary (#D4A017)
+      const textsHTML = currentLabels.map((item) => {
+        // Calcular ancho dinámico basado en longitud del texto (padding de 6px simulado)
+        const textLength = item.text.length;
+        const planeWidth = Math.max(2.5, textLength * 0.18 + 0.5);
+        
         return `
           <a-entity 
             position="${item.position}"
             rotation="${item.rotation || '0 0 0'}"
-            class="${hasAction ? 'clickable-label' : ''}"
-            data-action-type="${item.action?.type || ''}"
-            data-action-target="${item.action?.target || ''}"
+            class="clickable-label"
+            data-action-type="${item.action?.type || 'view'}"
+            data-action-target="${item.action?.target || '1'}"
           >
             <a-plane 
-              width="4.2" 
-              height="0.6" 
+              width="${planeWidth}" 
+              height="0.5" 
               color="#000000" 
-              opacity="0.85"
+              opacity="0.9"
               class="label-bg"
             ></a-plane>
             <a-text 
               value="${item.text}" 
               position="0 0 0.02"
               color="#FFFFFF"
-              scale="2 2 2"
+              scale="1.8 1.8 1.8"
               align="center"
-              width="4"
+              width="${planeWidth - 0.3}"
               anchor="center"
               baseline="center"
               font="https://cdn.aframe.io/fonts/Roboto-msdf.json"
             ></a-text>
-            ${hasAction ? '<a-text value="→" position="1.9 0 0.02" color="#FFFFFF" scale="2.5 2.5 2.5" align="center"></a-text>' : ''}
           </a-entity>
         `;
       }).join('');
@@ -217,18 +222,20 @@ const Viewer360Gallery = ({
     const currentImage = viewImages[currentView as keyof typeof viewImages];
     
     const textsHTML = currentLabels.map((item) => {
-      const hasAction = !!item.action;
+      // Ancho dinámico basado en longitud del texto
+      const textLength = item.text.length;
+      const planeWidth = Math.max(2.5, textLength * 0.18 + 0.5);
+      
       return `
         <a-entity 
           position="${item.position}"
           rotation="${item.rotation || '0 0 0'}"
-          class="${hasAction ? 'clickable-label' : ''}"
-          data-action-type="${item.action?.type || ''}"
-          data-action-target="${item.action?.target || ''}"
+          class="clickable-label"
+          data-action-type="${item.action?.type || 'view'}"
+          data-action-target="${item.action?.target || '1'}"
         >
-          <a-plane width="4.2" height="0.6" color="#000000" opacity="0.85" class="label-bg"></a-plane>
-          <a-text value="${item.text}" position="0 0 0.02" color="#FFFFFF" scale="2 2 2" align="center" width="4" anchor="center" baseline="center"></a-text>
-          ${hasAction ? '<a-text value="→" position="1.9 0 0.02" color="#FFFFFF" scale="2.5 2.5 2.5" align="center"></a-text>' : ''}
+          <a-plane width="${planeWidth}" height="0.5" color="#000000" opacity="0.9" class="label-bg"></a-plane>
+          <a-text value="${item.text}" position="0 0 0.02" color="#FFFFFF" scale="1.8 1.8 1.8" align="center" width="${planeWidth - 0.3}" anchor="center" baseline="center"></a-text>
         </a-entity>
       `;
     }).join('');
