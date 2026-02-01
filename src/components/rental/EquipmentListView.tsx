@@ -1,7 +1,6 @@
 import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { LazyImage } from "@/components/LazyImage";
 import { cn, formatEquipmentName } from "@/lib/utils";
 import type { EquipmentWithCategory } from "@/types/supabase";
 type EquipmentWithStock = EquipmentWithCategory;
@@ -28,14 +27,7 @@ export const EquipmentListView = ({
       {equipment.map(item => {
       const cartQty = getCartQuantity(item.id);
       const canAdd = canAddMore(item);
-      return <div key={item.id} className="flex items-center max-w-screen-lg gap-3 py-3 transition-colors border-[#2e2c29] bg-background mx-2">
-            {/* Thumbnail */}
-            <div className="w-8 h-8 sm:w-16 sm:h-16 flex-shrink-0 cursor-pointer overflow-hidden bg-muted" onClick={() => onViewDetails(item)}>
-              {item.image_url ? <LazyImage src={item.image_url} alt={item.name} className="w-full h-full object-cover" placeholderClassName="w-full h-full" aspectRatio="square" /> : <div className="w-full h-full flex items-center justify-center">
-                  <span className="text-lg opacity-20 font-heading">?</span>
-                </div>}
-            </div>
-
+      return <div key={item.id} className="flex items-center max-w-screen-lg gap-3 py-2 transition-colors border-[#2e2c29] bg-background mx-2">
             {/* Name - clickable */}
             <div className="flex-1 min-w-0 cursor-pointer" onClick={() => onViewDetails(item)}>
               <h3 className="font-heading text-xs sm:text-sm normal-case line-clamp-2 hover:text-primary transition-colors">

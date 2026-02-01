@@ -462,6 +462,8 @@ const Equipos = () => {
                     onCategoryActivate={handleCategoryActivate}
                     viewMode={viewMode}
                     sortOption={sortOption}
+                    onSubcategorySelect={toggleSubcategory}
+                    selectedSubcategories={selectedSubcategories}
                   />
                 ))}
               </div>
