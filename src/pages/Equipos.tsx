@@ -10,7 +10,7 @@ import { CategorySection, CategorySectionRef } from "@/components/rental/Categor
 import { CartSidebar } from "@/components/rental/CartSidebar";
 import { ViewModeToggle, ViewMode } from "@/components/rental/ViewModeToggle";
 import { cn } from "@/lib/utils";
-import { Search, Filter, X, ArrowUpDown } from "lucide-react";
+import { Search, Filter, X, ArrowUpDown, ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -309,10 +309,27 @@ const Equipos = () => {
 
           {/* Subcategory filters - visible by default */}
           <div ref={filterRef}>
-            <Collapsible open={isFilterOpen}>
+            <Collapsible open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+              <div className="pb-2">
+                <button
+                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  className="flex items-center gap-1 font-heading text-xs uppercase text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                >
+                  {isFilterOpen ? (
+                    <ChevronDown className="h-3 w-3" />
+                  ) : (
+                    <ChevronRight className="h-3 w-3" />
+                  )}
+                  Subcategorías
+                  {selectedSubcategories.length > 0 && (
+                    <span className="ml-1 text-[10px] bg-primary text-primary-foreground px-1.5 rounded-sm">
+                      {selectedSubcategories.length}
+                    </span>
+                  )}
+                </button>
+              </div>
               <CollapsibleContent>
                 <div className="pb-4">
-                  <h4 className="font-heading text-xs mb-2 uppercase text-muted-foreground">Subcategorías</h4>
                   {filteredSubcategories.length === 0 ? (
                     <p className="text-xs text-muted-foreground">No hay subcategorías para esta categoría</p>
                   ) : (
