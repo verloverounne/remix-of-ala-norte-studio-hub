@@ -19,7 +19,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 type EquipmentWithStock = EquipmentWithCategory;
 
-type SortOption = "alphabetic" | "subcategory" | "price-asc" | "price-desc";
+type SortOption = "alphabetic" | "price-asc" | "price-desc";
 
 const Equipos = () => {
   const { equipment, categories, subcategories, loading } = useEquipmentData();
@@ -31,7 +31,7 @@ const Equipos = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(true); // Default to OPEN
   const [viewMode, setViewMode] = useState<ViewMode>("list");
-  const [sortOption, setSortOption] = useState<SortOption>("subcategory");
+  const [sortOption, setSortOption] = useState<SortOption>("alphabetic");
 
   const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
   const { toast } = useToast();
@@ -125,31 +125,31 @@ const Equipos = () => {
     });
   }, [equipment, searchTerm, selectedSubcategories]);
 
-  // Sort equipment based on selected option
+  // Sort equipment based on selected option - ALWAYS respects subcategory grouping first
   const sortedEquipment = useMemo(() => {
     const sorted = [...filteredEquipment];
     
-    switch (sortOption) {
-      case "alphabetic":
-        sorted.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case "subcategory":
-        sorted.sort((a, b) => {
-          const subA = subcategories.find(s => s.id === a.subcategory_id);
-          const subB = subcategories.find(s => s.id === b.subcategory_id);
-          const orderA = subA?.order_index ?? 999;
-          const orderB = subB?.order_index ?? 999;
-          if (orderA !== orderB) return orderA - orderB;
+    sorted.sort((a, b) => {
+      // Always sort by subcategory order_index first
+      const subA = subcategories.find(s => s.id === a.subcategory_id);
+      const subB = subcategories.find(s => s.id === b.subcategory_id);
+      const orderA = subA?.order_index ?? 999;
+      const orderB = subB?.order_index ?? 999;
+      
+      if (orderA !== orderB) return orderA - orderB;
+      
+      // Then apply secondary sort based on sortOption
+      switch (sortOption) {
+        case "alphabetic":
           return a.name.localeCompare(b.name);
-        });
-        break;
-      case "price-asc":
-        sorted.sort((a, b) => (a.price_per_day || 0) - (b.price_per_day || 0));
-        break;
-      case "price-desc":
-        sorted.sort((a, b) => (b.price_per_day || 0) - (a.price_per_day || 0));
-        break;
-    }
+        case "price-asc":
+          return (a.price_per_day || 0) - (b.price_per_day || 0);
+        case "price-desc":
+          return (b.price_per_day || 0) - (a.price_per_day || 0);
+        default:
+          return a.name.localeCompare(b.name);
+      }
+    });
     
     return sorted;
   }, [filteredEquipment, sortOption, subcategories]);
@@ -369,9 +369,6 @@ const Equipos = () => {
                 <SelectValue placeholder="Ordenar" />
               </SelectTrigger>
               <SelectContent className="bg-background z-50">
-                <SelectItem value="subcategory" className="font-heading text-xs">
-                  Por subcategoría
-                </SelectItem>
                 <SelectItem value="alphabetic" className="font-heading text-xs">
                   Alfabético
                 </SelectItem>
