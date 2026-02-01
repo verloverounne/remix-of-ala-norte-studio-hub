@@ -8,7 +8,12 @@ import { cn, formatEquipmentName } from "@/lib/utils";
 import type { EquipmentWithCategory } from "@/types/supabase";
 import { EquipmentListView } from "./EquipmentListView";
 import type { ViewMode } from "./ViewModeToggle";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 type EquipmentWithStock = EquipmentWithCategory;
 type SortOption = "alphabetic" | "subcategory" | "price-asc" | "price-desc";
 
@@ -38,6 +43,8 @@ interface CategorySectionProps {
   onCategoryActivate?: (categoryId: string) => void;
   viewMode?: ViewMode;
   sortOption?: SortOption;
+  onSubcategorySelect?: (subcategoryId: string) => void;
+  selectedSubcategories?: string[];
 }
 
 export interface CategorySectionRef {
@@ -61,6 +68,8 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
       onCategoryActivate,
       viewMode = "cards",
       sortOption = "subcategory",
+      onSubcategorySelect,
+      selectedSubcategories = [],
     },
     ref,
   ) => {
@@ -171,7 +180,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
               ) : (
                 <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform flex-shrink-0" />
               )}
-              <h2 className="font-heading text-sm sm:text-lg md:text-xl uppercase truncate bg-transparent text-[#2e2c29]">
+              <h2 className="font-heading text-sm sm:text-lg md:text-xl uppercase truncate bg-transparent text-foreground">
                 {category.name}
               </h2>
               <Badge
@@ -181,6 +190,32 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                 {equipment.length}
               </Badge>
             </button>
+
+            {/* Subcategory dropdown */}
+            {subcategories.length > 0 && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="h-7 px-2 text-xs font-heading uppercase">
+                    Subcategorías
+                    <ChevronDown className="h-3 w-3 ml-1" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="bg-background z-50">
+                  {subcategories.map((sub) => (
+                    <DropdownMenuItem
+                      key={sub.id}
+                      onClick={() => onSubcategorySelect?.(sub.id)}
+                      className={cn(
+                        "font-heading text-xs uppercase cursor-pointer",
+                        selectedSubcategories.includes(sub.id) && "bg-primary text-primary-foreground"
+                      )}
+                    >
+                      {sub.name}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         </div>
 
