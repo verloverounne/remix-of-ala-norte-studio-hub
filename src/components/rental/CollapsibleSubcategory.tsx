@@ -13,7 +13,7 @@ export const CollapsibleSubcategory = ({
   name,
   count,
   children,
-  defaultExpanded = true,
+  defaultExpanded = false,
 }: CollapsibleSubcategoryProps) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
