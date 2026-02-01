@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,31 +7,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Map from "@/components/Map.tsx";
-import { supabase } from "@/integrations/supabase/client";
+import { useGalleryImages } from "@/hooks/useGalleryImages";
+
 const Contacto = () => {
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
+  const { getByPageType } = useGalleryImages();
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     message: ""
   });
-  const [contactVideo, setContactVideo] = useState<string | null>(null);
-  useEffect(() => {
-    const fetchContactVideo = async () => {
-      const {
-        data
-      } = await supabase.from("gallery_images").select("image_url, media_type").eq("page_type", "contacto").order("order_index", {
-        ascending: true
-      }).limit(1).single();
-      if (data && data.media_type === "video") {
-        setContactVideo(data.image_url);
-      }
-    };
-    fetchContactVideo();
-  }, []);
+
+  // Get contact video from cached gallery images
+  const contactoMedia = getByPageType("contacto");
+  const contactVideo = contactoMedia[0]?.media_type === "video" ? contactoMedia[0]?.image_url : null;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
@@ -43,13 +35,11 @@ const Contacto = () => {
       return;
     }
 
-    // Here you would typically send the form data to a backend
     toast({
       title: "¡Listo!",
       description: "Tu consulta fue enviada. Te vamos a responder lo antes posible."
     });
 
-    // Reset form
     setFormData({
       name: "",
       email: "",
@@ -57,13 +47,16 @@ const Contacto = () => {
       message: ""
     });
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-  return <div className="min-h-screen pt-16">
+
+  return (
+    <div className="min-h-screen pt-16">
       {/* Hero Section */}
       <section className="py-20 bg-foreground text-background">
         <div className="container mx-auto px-4 max-w-6xl text-left">
@@ -128,9 +121,11 @@ const Contacto = () => {
             {/* Contact Info */}
             <div className="space-y-6">
               {/* Vertical Video */}
-              {contactVideo && <div className="aspect-[9/16] w-full rounded-lg overflow-hidden bg-muted">
+              {contactVideo && (
+                <div className="aspect-[9/16] w-full rounded-lg overflow-hidden bg-muted">
                   <video src={contactVideo} autoPlay loop muted playsInline className="w-full h-full object-cover" />
-                </div>}
+                </div>
+              )}
 
               <Card>
                 <CardHeader>
@@ -200,6 +195,8 @@ const Contacto = () => {
           </div>
         </div>
       </section>
-    </div>;
+    </div>
+  );
 };
+
 export default Contacto;

@@ -1,63 +1,26 @@
-import { useState, useEffect } from "react";
 import { MapPin, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import type { Space } from "@/types/supabase";
 import Viewer360 from "@/components/Viewer360";
 import { GalleryHero } from "@/components/GalleryHero";
 import { useGalleryImages } from "@/hooks/useGalleryImages";
+import { SALA_GRABACION_SPACE } from "@/data/spaces";
 
 const SalaGrabacion = () => {
-  const [space, setSpace] = useState<Space | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { getByPageType, loading: galleryLoading } = useGalleryImages();
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    setLoading(true);
-    const { data: spaceData } = await supabase
-      .from("spaces")
-      .select("*")
-      .eq("slug", "sala-grabacion")
-      .single();
-
-    if (spaceData) {
-      setSpace({
-        ...spaceData,
-        images: Array.isArray(spaceData.images) ? (spaceData.images as string[]) : [],
-        features: Array.isArray(spaceData.features) ? (spaceData.features as string[]) : [],
-        included_items: Array.isArray(spaceData.included_items) ? (spaceData.included_items as string[]) : [],
-        optional_services: Array.isArray(spaceData.optional_services) ? (spaceData.optional_services as string[]) : [],
-        amenities: Array.isArray(spaceData.amenities) ? (spaceData.amenities as any[]) : [],
-        specs: spaceData.specs || {},
-      } as Space);
-    }
-    setLoading(false);
-  };
+  const space = SALA_GRABACION_SPACE;
+  const { getByPageType } = useGalleryImages();
 
   // Get featured image from gallery images
   const salaImages = getByPageType("sala-grabacion");
   const featuredMediaImage = salaImages[0]?.image_url || null;
 
-  if (loading || !space) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen">
-      {/* Hero Section - Mantener intacto */}
+      {/* Hero Section */}
       <GalleryHero space={space} />
 
-      {/* Details Section with Featured Image - Mismo estilo que Galería */}
+      {/* Details Section with Featured Image */}
       <section className="py-12 sm:py-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
@@ -151,7 +114,7 @@ const SalaGrabacion = () => {
         </div>
       </section>
 
-      {/* 360° Virtual Tour Section - Mismo estilo que Galería */}
+      {/* 360° Virtual Tour Section */}
       <section className="py-12 sm:py-16 bg-foreground">
         <div className="w-full px-0">
           <div className="container mx-auto px-4 mb-8">
@@ -175,7 +138,7 @@ const SalaGrabacion = () => {
         </div>
       </section>
 
-      {/* CTA Section - Mismo estilo que Galería */}
+      {/* CTA Section */}
       <section className="py-12 sm:py-16 bg-background">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4 text-center">
