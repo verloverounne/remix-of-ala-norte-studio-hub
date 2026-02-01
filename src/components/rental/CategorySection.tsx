@@ -7,6 +7,7 @@ import { LazyImage } from "@/components/LazyImage";
 import { cn, formatEquipmentName } from "@/lib/utils";
 import type { EquipmentWithCategory } from "@/types/supabase";
 import { EquipmentListView } from "./EquipmentListView";
+import { CollapsibleSubcategory } from "./CollapsibleSubcategory";
 import type { ViewMode } from "./ViewModeToggle";
 import {
   DropdownMenu,
@@ -231,138 +232,221 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
               </div>
             ) : viewMode === "list" ? (
               // List view with subcategory headers
-              <div className="space-y-6">
-                {groups.map((group, groupIndex) => (
+              <div className="space-y-2">
+                {groups.map((group) => (
                   <div key={group.subcategory?.id || "no-subcategory"}>
-                    {/* Subcategory header */}
-                    {sortOption === "subcategory" && (
-                      <div className="border-b border-foreground/20 pb-2 mb-3 px-2">
-                        <h3 className="font-heading text-xs sm:text-sm uppercase text-muted-foreground">
-                          {group.subcategory?.name || "Sin subcategoría"}
-                          <span className="ml-2 text-[10px]">({group.items.length})</span>
-                        </h3>
-                      </div>
+                    {sortOption === "subcategory" ? (
+                      <CollapsibleSubcategory
+                        name={group.subcategory?.name || "Sin subcategoría"}
+                        count={group.items.length}
+                        defaultExpanded={true}
+                      >
+                        <EquipmentListView
+                          equipment={group.items}
+                          onAddToCart={onAddToCart}
+                          onViewDetails={onViewDetails}
+                          getCartQuantity={getCartQuantity}
+                          canAddMore={canAddMore}
+                        />
+                      </CollapsibleSubcategory>
+                    ) : (
+                      <EquipmentListView
+                        equipment={group.items}
+                        onAddToCart={onAddToCart}
+                        onViewDetails={onViewDetails}
+                        getCartQuantity={getCartQuantity}
+                        canAddMore={canAddMore}
+                      />
                     )}
-                    <EquipmentListView
-                      equipment={group.items}
-                      onAddToCart={onAddToCart}
-                      onViewDetails={onViewDetails}
-                      getCartQuantity={getCartQuantity}
-                      canAddMore={canAddMore}
-                    />
                   </div>
                 ))}
               </div>
             ) : (
               // Card view with subcategory headers
-              <div className="space-y-6">
+              <div className="space-y-2">
                 {groups.map((group) => (
                   <div key={group.subcategory?.id || "no-subcategory"}>
-                    {/* Subcategory header */}
-                    {sortOption === "subcategory" && (
-                      <div className="border-b border-foreground/20 pb-2 mb-3 px-2">
-                        <h3 className="font-heading text-xs sm:text-sm uppercase text-muted-foreground">
-                          {group.subcategory?.name || "Sin subcategoría"}
-                          <span className="ml-2 text-[10px]">({group.items.length})</span>
-                        </h3>
+                    {sortOption === "subcategory" ? (
+                      <CollapsibleSubcategory
+                        name={group.subcategory?.name || "Sin subcategoría"}
+                        count={group.items.length}
+                        defaultExpanded={true}
+                      >
+                        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+                          {group.items.map((item) => {
+                            const cartQty = getCartQuantity(item.id);
+                            const canAdd = canAddMore(item);
+                            return (
+                              <Card
+                                key={item.id}
+                                className="overflow-hidden group relative border-0 shadow-none hover:shadow-sm bg-transparent"
+                              >
+                                <CardContent className="p-2 sm:p-3 flex flex-col space-y-2 px-[4px] bg-muted text-stone-200">
+                                  <h3
+                                    className="font-heading normal-case text-xs leading-tight pt-2 line-clamp-2 cursor-pointer transition-colors h-[5em] text-left font-medium text-foreground mx-[4px] sm:text-sm"
+                                    onClick={() => onViewDetails(item)}
+                                  >
+                                    {formatEquipmentName(item.name)}
+                                  </h3>
+                                  <div
+                                    className="relative aspect-square cursor-pointer duotone-hover-group overflow-hidden"
+                                    onClick={() => onViewDetails(item)}
+                                  >
+                                    <div
+                                      className={cn(
+                                        "absolute bottom-2 right-2 z-10 rounded-none px-2 py-0.5 flex items-center justify-center font-heading text-[10px] sm:text-xs shadow-brutal-sm",
+                                        cartQty > 0
+                                          ? "bg-primary text-primary-foreground"
+                                          : "bg-muted text-muted-foreground",
+                                      )}
+                                    >
+                                      {cartQty}/{item.stock_quantity}
+                                    </div>
+                                    {item.image_url ? (
+                                      <LazyImage
+                                        src={item.image_url}
+                                        alt={item.name}
+                                        className="w-full h-full group-hover:scale-105 transition-all duration-300 rounded-none text-foreground bg-stone-50 px-[8px]"
+                                        placeholderClassName="w-full h-full"
+                                        aspectRatio="square"
+                                      />
+                                    ) : (
+                                      <div className="w-full h-full flex items-center justify-center bg-muted">
+                                        <span className="text-2xl sm:text-3xl opacity-20 font-heading bg-background">
+                                          ?
+                                        </span>
+                                      </div>
+                                    )}
+                                  </div>
+                                  <div className="mt-auto flex items-center gap-2">
+                                    <div className="flex-1 flex items-baseline gap-1">
+                                      <span className="font-heading text-lg sm:text-xl text-[#f82020]">
+                                        ${item.price_per_day > 0 ? (item.price_per_day / 1000).toFixed(0) + "K" : "—"}
+                                      </span>
+                                      <span className="text-muted-foreground font-mono text-[10px]">/día</span>
+                                    </div>
+                                    {item.status === "available" ? (
+                                      <Button
+                                        size="sm"
+                                        className="h-8 sm:h-9 w-8 sm:w-9 p-0 overflow-hidden transition-all duration-300 hover:w-[100px] sm:hover:w-[120px] hover:px-2 sm:hover:px-3 font-black flex-shrink-0 group relative flex items-center justify-center gap-0 bg-primary"
+                                        onClick={() => onAddToCart(item)}
+                                        disabled={!canAdd}
+                                      >
+                                        {canAdd ? (
+                                          <>
+                                            <Plus className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0 m-0" />
+                                            <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:opacity-100 group-hover:w-auto group-hover:ml-2 font-black">
+                                              AGREGAR
+                                            </span>
+                                          </>
+                                        ) : (
+                                          <span className="text-[10px] font-black">MÁX</span>
+                                        )}
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        size="sm"
+                                        className="h-8 sm:h-9 w-8 sm:w-9 p-0 font-black flex-shrink-0 flex items-center justify-center bg-secondary text-accent"
+                                        disabled
+                                      >
+                                        <X className="h-3 w-3 sm:h-4 sm:w-4" />
+                                      </Button>
+                                    )}
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            );
+                          })}
+                        </div>
+                      </CollapsibleSubcategory>
+                    ) : (
+                      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+                        {group.items.map((item) => {
+                          const cartQty = getCartQuantity(item.id);
+                          const canAdd = canAddMore(item);
+                          return (
+                            <Card
+                              key={item.id}
+                              className="overflow-hidden group relative border-0 shadow-none hover:shadow-sm bg-transparent"
+                            >
+                              <CardContent className="p-2 sm:p-3 flex flex-col space-y-2 px-[4px] bg-muted text-stone-200">
+                                <h3
+                                  className="font-heading normal-case text-xs leading-tight pt-2 line-clamp-2 cursor-pointer transition-colors h-[5em] text-left font-medium text-foreground mx-[4px] sm:text-sm"
+                                  onClick={() => onViewDetails(item)}
+                                >
+                                  {formatEquipmentName(item.name)}
+                                </h3>
+                                <div
+                                  className="relative aspect-square cursor-pointer duotone-hover-group overflow-hidden"
+                                  onClick={() => onViewDetails(item)}
+                                >
+                                  <div
+                                    className={cn(
+                                      "absolute bottom-2 right-2 z-10 rounded-none px-2 py-0.5 flex items-center justify-center font-heading text-[10px] sm:text-xs shadow-brutal-sm",
+                                      cartQty > 0
+                                        ? "bg-primary text-primary-foreground"
+                                        : "bg-muted text-muted-foreground",
+                                    )}
+                                  >
+                                    {cartQty}/{item.stock_quantity}
+                                  </div>
+                                  {item.image_url ? (
+                                    <LazyImage
+                                      src={item.image_url}
+                                      alt={item.name}
+                                      className="w-full h-full group-hover:scale-105 transition-all duration-300 rounded-none text-foreground bg-stone-50 px-[8px]"
+                                      placeholderClassName="w-full h-full"
+                                      aspectRatio="square"
+                                    />
+                                  ) : (
+                                    <div className="w-full h-full flex items-center justify-center bg-muted">
+                                      <span className="text-2xl sm:text-3xl opacity-20 font-heading bg-background">
+                                        ?
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="mt-auto flex items-center gap-2">
+                                  <div className="flex-1 flex items-baseline gap-1">
+                                    <span className="font-heading text-lg sm:text-xl text-[#f82020]">
+                                      ${item.price_per_day > 0 ? (item.price_per_day / 1000).toFixed(0) + "K" : "—"}
+                                    </span>
+                                    <span className="text-muted-foreground font-mono text-[10px]">/día</span>
+                                  </div>
+                                  {item.status === "available" ? (
+                                    <Button
+                                      size="sm"
+                                      className="h-8 sm:h-9 w-8 sm:w-9 p-0 overflow-hidden transition-all duration-300 hover:w-[100px] sm:hover:w-[120px] hover:px-2 sm:hover:px-3 font-black flex-shrink-0 group relative flex items-center justify-center gap-0 bg-primary"
+                                      onClick={() => onAddToCart(item)}
+                                      disabled={!canAdd}
+                                    >
+                                      {canAdd ? (
+                                        <>
+                                          <Plus className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0 m-0" />
+                                          <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:opacity-100 group-hover:w-auto group-hover:ml-2 font-black">
+                                            AGREGAR
+                                          </span>
+                                        </>
+                                      ) : (
+                                        <span className="text-[10px] font-black">MÁX</span>
+                                      )}
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      size="sm"
+                                      className="h-8 sm:h-9 w-8 sm:w-9 p-0 font-black flex-shrink-0 flex items-center justify-center bg-secondary text-accent"
+                                      disabled
+                                    >
+                                      <X className="h-3 w-3 sm:h-4 sm:w-4" />
+                                    </Button>
+                                  )}
+                                </div>
+                              </CardContent>
+                            </Card>
+                          );
+                        })}
                       </div>
                     )}
-                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
-                      {group.items.map((item) => {
-                        const cartQty = getCartQuantity(item.id);
-                        const canAdd = canAddMore(item);
-                        return (
-                          <Card
-                            key={item.id}
-                            className="overflow-hidden group relative border-0 shadow-none hover:shadow-sm bg-transparent"
-                          >
-                            <CardContent className="p-2 sm:p-3 flex flex-col space-y-2 px-[4px] bg-muted text-stone-200">
-                              {/* 1. Nombre del equipo - formateado */}
-                              <h3
-                                className="font-heading normal-case text-xs leading-tight pt-2 line-clamp-2 cursor-pointer transition-colors h-[5em] text-left font-medium text-foreground mx-[4px] sm:text-sm"
-                                onClick={() => onViewDetails(item)}
-                              >
-                                {formatEquipmentName(item.name)}
-                              </h3>
-
-                              {/* 2. Foto */}
-                              <div
-                                className="relative aspect-square cursor-pointer duotone-hover-group overflow-hidden"
-                                onClick={() => onViewDetails(item)}
-                              >
-                                {/* Cart quantity badge with stock indicator */}
-                                <div
-                                  className={cn(
-                                    "absolute bottom-2 right-2 z-10 rounded-none px-2 py-0.5 flex items-center justify-center font-heading text-[10px] sm:text-xs shadow-brutal-sm",
-                                    cartQty > 0
-                                      ? "bg-primary text-primary-foreground"
-                                      : "bg-muted text-muted-foreground",
-                                  )}
-                                >
-                                  {cartQty}/{item.stock_quantity}
-                                </div>
-
-                                {item.image_url ? (
-                                  <LazyImage
-                                    src={item.image_url}
-                                    alt={item.name}
-                                    className="w-full h-full group-hover:scale-105 transition-all duration-300 rounded-none text-foreground bg-stone-50 px-[8px]"
-                                    placeholderClassName="w-full h-full"
-                                    aspectRatio="square"
-                                  />
-                                ) : (
-                                  <div className="w-full h-full flex items-center justify-center bg-muted">
-                                    <span className="text-2xl sm:text-3xl opacity-20 font-heading bg-background">
-                                      ?
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-
-                              {/* 4. Precio y Botón agregar */}
-                              <div className="mt-auto flex items-center gap-2">
-                                {/* Precio */}
-                                <div className="flex-1 flex items-baseline gap-1">
-                                  <span className="font-heading text-lg sm:text-xl text-[#f82020]">
-                                    ${item.price_per_day > 0 ? (item.price_per_day / 1000).toFixed(0) + "K" : "—"}
-                                  </span>
-                                  <span className="text-muted-foreground font-mono text-[10px]">/día</span>
-                                </div>
-
-                                {/* Botón agregar */}
-                                {item.status === "available" ? (
-                                  <Button
-                                    size="sm"
-                                    className="h-8 sm:h-9 w-8 sm:w-9 p-0 overflow-hidden transition-all duration-300 hover:w-[100px] sm:hover:w-[120px] hover:px-2 sm:hover:px-3 font-black flex-shrink-0 group relative flex items-center justify-center gap-0 bg-primary"
-                                    onClick={() => onAddToCart(item)}
-                                    disabled={!canAdd}
-                                  >
-                                    {canAdd ? (
-                                      <>
-                                        <Plus className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0 m-0" />
-                                        <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:opacity-100 group-hover:w-auto group-hover:ml-2 font-black">
-                                          AGREGAR
-                                        </span>
-                                      </>
-                                    ) : (
-                                      <span className="text-[10px] font-black">MÁX</span>
-                                    )}
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    size="sm"
-                                    className="h-8 sm:h-9 w-8 sm:w-9 p-0 font-black flex-shrink-0 flex items-center justify-center bg-secondary text-accent"
-                                    disabled
-                                  >
-                                    <X className="h-3 w-3 sm:h-4 sm:w-4" />
-                                  </Button>
-                                )}
-                              </div>
-                            </CardContent>
-                          </Card>
-                        );
-                      })}
-                    </div>
                   </div>
                 ))}
               </div>
