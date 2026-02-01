@@ -24,16 +24,7 @@ interface Text3DItem {
 
 // View 1 labels - Main studio view (Sala de Grabación)
 // TODOS los textos son botones clicables inmersivos
-// const VIEW_1_LABELS: Text3DItem[] = [
- // { text: "SALA DE GRABACIÓN", position: "0 2 -8", rotation: "0 0 0", action: { type: 'view', target: 2 } },
-//  { text: "ESTUDIO DE POSTPRODUCCIÓN", position: "-7 1 -5", rotation: "0 50 0", action: { type: 'view', target: 1 } },
-//  { text: "GALERÍA", position: "7 1 -5", rotation: "0 -50 0", action: { type: 'page', target: '/galeria#view-1' } },
-//  { text: "PISO PINTADO DE BLANCO", position: "-4 -0.5 -7", rotation: "0 15 0", action: { type: 'view', target: 1 } },
-//  { text: "11MTS DE TIRO DE CÁMARA", position: "4 -0.5 -7", rotation: "0 -15 0", action: { type: 'view', target: 1 } },
-//  { text: "MONTACARGA", position: "-8 0.5 -3", rotation: "0 70 0", action: { type: 'view', target: 1 } },
-//  { text: "COMEDOR", position: "8 0.5 -3", rotation: "0 -70 0", action: { type: 'page', target: '/galeria#view-2' } },
-//  { text: "INFINITO BLANCO 6M X 3M", position: "0 -1 -9", rotation: "0 0 0", action: { type: 'view', target: 1 } },
-];
+const VIEW_1_LABELS: Text3DItem[] = [];
 
 // View 2 labels - 363.jpg (Vista desde Estudio de Postproducción)
 // Navegación: Sala → Vista 2, Estudio Postprod → Vista 1, Galería → /galeria#view-1
