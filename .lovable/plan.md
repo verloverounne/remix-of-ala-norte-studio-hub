@@ -1,70 +1,172 @@
 
-# Plan: Hero de Rental Estático con URLs Fijas
+# Plan de Optimización del Sitio
 
-## Resumen
+## Resumen de Cambios
 
-Convertir el componente `HeroCarouselRental` para que use datos estáticos en lugar de consultar la base de datos. Se tomarán los datos actuales del panel por última vez y se guardarán como constantes en el código.
+Implementaré las optimizaciones aprobadas, conservando `SubcategoryFilter.tsx` como solicitaste.
 
-## Datos Actuales del Panel (Snapshot Final)
+---
 
-| Categoría | ID | Video URL |
-|-----------|-----|-----------|
-| Cámara | `4d52bbca-3bcb-4c73-ac1b-5b6d437e9163` | `...equipment-images/1768951104500_camara_fondo_blanco_gonzalo.mp4` |
-| Iluminación | `f0edceff-b3b4-4735-ab37-b9e3f4bb905a` | `...equipment-images/1768951451525_luces.mp4` |
-| Audio | `bdaa1e73-8532-4b85-8495-6ef8bba5be31` | `...equipment-images/1768951063587_sonido.mp4` |
-| Grip | `d9e6fca2-0d23-41c8-b782-8216d97e86a5` | `...equipment-images/1768951477713_grips.mp4` |
-| Energía | `efc708dd-ad95-4094-9ea6-fde7b74fe4ed` | *(sin video configurado)* |
+## Paso 1: Crear Archivo de Datos Estáticos
 
-## Cambios a Realizar
+**Nuevo archivo:** `src/data/spaces.ts`
 
-### Archivo: `src/components/rental/HeroCarouselRental.tsx`
+Contendrá los datos completos de ambos espacios extraídos de la base de datos:
 
-1. **Eliminar importación de Supabase** - Ya no se necesita consultar la base de datos
+**GALERIA_SPACE:**
+- hero_title: "GALERÍA ALA NORTE"
+- hero_subtitle: "BLOQUES DE 4HS PARA TU PRODUCCIÓN AUDIOVISUAL"
+- video_url: URL del video hero
+- features: 5 características (tiro de cámara, infinitos, chroma)
+- included_items: 6 items (fresneles, tubos, infinitos)
+- optional_services: 6 servicios adicionales
+- Horarios, precios, layout_description, etc.
 
-2. **Crear constante estática `STATIC_HERO_BACKGROUNDS`** con el mapeo fijo:
-```text
-{
-  "4d52bbca-3bcb-4c73-ac1b-5b6d437e9163": {  // Cámara
-    id: "static-camara",
-    image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951104500_camara_fondo_blanco_gonzalo.mp4",
-    media_type: "video",
-    title: null,
-    description: null,
-    order_index: 1
-  },
-  "f0edceff-b3b4-4735-ab37-b9e3f4bb905a": {  // Iluminación
-    image_url: "...1768951451525_luces.mp4",
-    media_type: "video",
-    ...
-  },
-  "bdaa1e73-8532-4b85-8495-6ef8bba5be31": {  // Audio
-    image_url: "...1768951063587_sonido.mp4",
-    media_type: "video",
-    ...
-  },
-  "d9e6fca2-0d23-41c8-b782-8216d97e86a5": {  // Grip
-    image_url: "...1768951477713_grips.mp4",
-    media_type: "video",
-    ...
-  }
+**SALA_GRABACION_SPACE:**
+- hero_title: "Sala de grabación y edición"
+- hero_subtitle: "ISLA DE POSTPRODUCCIÓN PROFESIONAL DE AUDIO Y VIDEO"
+- features: 4 características (acústica, iluminación, clima, aislamiento)
+- included_items: 4 items (consola, monitores, micrófonos, interfaz)
+- optional_services: 4 servicios
+- Horarios, precios, layout_description, etc.
+
+---
+
+## Paso 2: Modificar Galeria.tsx
+
+Cambios:
+- Eliminar import de `supabase`
+- Eliminar `useState` para `space` y `loading`
+- Eliminar `useEffect` con `fetchData()`
+- Importar `GALERIA_SPACE` desde `@/data/spaces`
+- Usar el espacio estático directamente
+- Mantener `useGalleryImages` para imágenes del slider (ya cacheado)
+
+---
+
+## Paso 3: Modificar SalaGrabacion.tsx
+
+Mismos cambios que Galería:
+- Eliminar import de `supabase`
+- Eliminar `useState`/`useEffect`
+- Importar `SALA_GRABACION_SPACE` desde `@/data/spaces`
+- Usar datos estáticos
+
+---
+
+## Paso 4: Optimizar Contacto.tsx
+
+- Eliminar import de `supabase`
+- Eliminar `useEffect` con query directa
+- Usar hook `useGalleryImages` (cache 24h) en su lugar:
+```typescript
+const { getByPageType } = useGalleryImages();
+const contactoMedia = getByPageType("contacto");
+```
+
+---
+
+## Paso 5: Eliminar Componentes No Utilizados
+
+**8 archivos a eliminar** (conservando SubcategoryFilter.tsx):
+
+| Archivo | Razón |
+|---------|-------|
+| `src/components/BulkImageAssigner.tsx` | Sin imports |
+| `src/components/SpaceModal.tsx` | Reemplazado por páginas dedicadas |
+| `src/components/SpaceAvailabilityCalendar.tsx` | Solo usado por SpaceModal |
+| `src/components/AvailabilityCalendar.tsx` | Sin imports |
+| `src/components/rental/QuoteSidebar.tsx` | Reemplazado por CartSidebar |
+| `src/components/VideoHeroSlider.tsx` | Reemplazado por HomeVideoHeroSlider |
+| `src/components/admin/ComponentsDownloadPanel.tsx` | Sin imports |
+| `src/components/admin/HomeServicesPanel.tsx` | Sin imports |
+
+---
+
+## Resumen de Archivos
+
+| Acción | Archivo |
+|--------|---------|
+| Crear | `src/data/spaces.ts` |
+| Modificar | `src/pages/Galeria.tsx` |
+| Modificar | `src/pages/SalaGrabacion.tsx` |
+| Modificar | `src/pages/Contacto.tsx` |
+| Eliminar | 8 componentes no utilizados |
+
+---
+
+## Impacto en Rendimiento
+
+| Métrica | Antes | Después |
+|---------|-------|---------|
+| Queries Cloud /galeria | 1 | 0 |
+| Queries Cloud /sala-grabacion | 1 | 0 |
+| Queries Cloud /contacto | 1 | 0 (usa cache) |
+| Tiempo carga espacios | ~300ms | <10ms |
+| Componentes eliminados | 0 | 8 |
+
+---
+
+## Sección Técnica
+
+### Estructura de src/data/spaces.ts
+
+```typescript
+import type { Space } from "@/types/supabase";
+
+export const GALERIA_SPACE: Space = {
+  id: "ccd3f3dd-6fa3-47be-9f42-9a257fd02253",
+  name: "Galería",
+  slug: "galeria",
+  hero_title: "GALERÍA ALA NORTE",
+  hero_subtitle: "BLOQUES DE 4HS PARA TU PRODUCCIÓN AUDIOVISUAL",
+  video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/hero_galeria_1768776126818_alanorte_galerias_hero.mp4",
+  features: ["11 m de tiro de cámara", "Infinito blanco 6 m x 3 m", ...],
+  included_items: ["3 fresneles 1K", "16 tubos", ...],
+  // ... resto de campos
+};
+
+export const SALA_GRABACION_SPACE: Space = {
+  id: "f4af2ff2-c867-406f-b9f0-19d3b1c1fdf1",
+  name: "Sala de Grabación / Postproducción",
+  slug: "sala-grabacion",
+  hero_title: "Sala de grabación y edición",
+  hero_subtitle: "ISLA DE POSTPRODUCCIÓN PROFESIONAL DE AUDIO Y VIDEO",
+  video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//sala.mp4",
+  features: ["Tratamiento acústico profesional", ...],
+  // ... resto de campos
+};
+
+export function getSpaceBySlug(slug: string): Space | null {
+  // Helper para obtener espacio por slug
 }
 ```
 
-3. **Eliminar estado `categoryBackgrounds` y el useEffect que hace fetch** - Reemplazar con la constante estática
+### Cambios en Galeria.tsx
 
-4. **Eliminar estado `loading`** - Ya no hay fetch asíncrono, los datos están disponibles inmediatamente
+```typescript
+// ANTES
+import { supabase } from "@/integrations/supabase/client";
+const [space, setSpace] = useState<Space | null>(null);
+const [loading, setLoading] = useState(true);
+useEffect(() => { fetchData(); }, []);
 
-5. **Actualizar función `getBackgroundForCategory`** - Leer directamente de la constante estática
+// DESPUÉS
+import { GALERIA_SPACE } from "@/data/spaces";
+const space = GALERIA_SPACE; // Uso directo, sin loading
+```
 
-6. **Simplificar el render** - Sin estado de carga, renderizar directamente el carousel
+### Cambios en Contacto.tsx
 
-## Beneficios
+```typescript
+// ANTES
+import { supabase } from "@/integrations/supabase/client";
+useEffect(() => {
+  const { data } = await supabase.from("gallery_images")...
+}, []);
 
-- **Sin consultas a la base de datos** - Carga instantánea
-- **Menor uso de Cloud** - Reduce costos operativos
-- **Rendimiento mejorado** - No hay latencia de red
-- **Base de datos intacta** - Los datos del panel permanecen sin cambios
-
-## Consideración para Energía
-
-La categoría "Energía" no tiene video configurado. El componente ya maneja este caso mostrando un gradiente de fallback, por lo que seguirá funcionando igual.
+// DESPUÉS
+import { useGalleryImages } from "@/hooks/useGalleryImages";
+const { getByPageType } = useGalleryImages();
+const contactoMedia = getByPageType("contacto");
+```
