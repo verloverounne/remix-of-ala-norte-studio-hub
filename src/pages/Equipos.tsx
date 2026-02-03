@@ -114,6 +114,9 @@ const Equipos = () => {
 
   const filteredEquipment = useMemo(() => {
     return equipment.filter((item) => {
+      // Solo mostrar equipos disponibles en la página de rental
+      if (item.status !== 'available') return false;
+      
       const matchesSearch =
         fuzzyMatch(item.name, searchTerm) ||
         fuzzyMatch(item.brand || "", searchTerm) ||
