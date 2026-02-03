@@ -501,6 +501,38 @@ export const EquipmentManager = () => {
     }
   };
 
+  // Inline quick update for status, featured, and price
+  const handleInlineUpdate = async (
+    equipmentId: string,
+    field: 'status' | 'featured' | 'price_per_day',
+    value: string | boolean | number
+  ) => {
+    const updateData: Record<string, any> = {};
+    updateData[field] = value;
+
+    const { error } = await supabase
+      .from("equipment")
+      .update(updateData)
+      .eq("id", equipmentId);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      // Update local state
+      setEquipment(prev => prev.map(eq => 
+        eq.id === equipmentId ? { ...eq, [field]: value } : eq
+      ));
+      toast({
+        title: "Actualizado",
+        description: "Cambio guardado",
+      });
+    }
+  };
+
   const handleCreateEquipment = async () => {
     if (!newEquipment.name || !newEquipment.price_per_day) {
       toast({ title: "Error", description: "Nombre y precio son requeridos", variant: "destructive" });
@@ -877,15 +909,6 @@ export const EquipmentManager = () => {
                                 {eq.categories.name}
                               </Badge>
                             )}
-                            {eq.status === 'available' ? (
-                              <Badge variant="default" className="text-xs bg-green-600">
-                                Disponible
-                              </Badge>
-                            ) : (
-                              <Badge variant="destructive" className="text-xs">
-                                No disponible
-                              </Badge>
-                            )}
                             {hasImage(eq) ? (
                               <Badge variant="default" className="text-xs bg-blue-600">
                                 Con imagen
@@ -895,6 +918,48 @@ export const EquipmentManager = () => {
                                 Sin imagen
                               </Badge>
                             )}
+                          </div>
+                        </div>
+                        {/* Inline controls */}
+                        <div className="flex items-center gap-2 shrink-0" onClick={(e) => e.stopPropagation()}>
+                          {/* Price */}
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs text-muted-foreground">$</span>
+                            <Input
+                              type="number"
+                              value={eq.price_per_day}
+                              onChange={(e) => {
+                                const newPrice = parseInt(e.target.value) || 0;
+                                setEquipment(prev => prev.map(item => 
+                                  item.id === eq.id ? { ...item, price_per_day: newPrice } : item
+                                ));
+                              }}
+                              onBlur={(e) => {
+                                const newPrice = parseInt(e.target.value) || 0;
+                                handleInlineUpdate(eq.id, 'price_per_day', newPrice);
+                              }}
+                              className="w-20 h-7 text-xs px-2"
+                            />
+                          </div>
+                          {/* Featured toggle */}
+                          <div className="flex items-center gap-1" title="Destacado">
+                            <Switch
+                              checked={eq.featured}
+                              onCheckedChange={(v) => handleInlineUpdate(eq.id, 'featured', v)}
+                              className="scale-75"
+                            />
+                            <Star className={cn("h-3.5 w-3.5", eq.featured ? "text-yellow-500 fill-yellow-500" : "text-muted-foreground")} />
+                          </div>
+                          {/* Status toggle */}
+                          <div className="flex items-center gap-1" title="Disponible">
+                            <Switch
+                              checked={eq.status === 'available'}
+                              onCheckedChange={(v) => handleInlineUpdate(eq.id, 'status', v ? 'available' : 'maintenance')}
+                              className="scale-75"
+                            />
+                            <span className={cn("text-xs font-medium", eq.status === 'available' ? "text-green-600" : "text-destructive")}>
+                              {eq.status === 'available' ? 'Disp' : 'No'}
+                            </span>
                           </div>
                         </div>
                       </button>
