@@ -1,91 +1,96 @@
 
-# Plan: Ordenamiento y Subcategorías Colapsables
+# Plan: Conmutador de Disponibilidad para Equipos
 
-## Resumen de Cambios
-
-1. **Eliminar "Por subcategoría" de opciones de orden** - Las otras opciones (alfabético, precio) ahora respetarán siempre el agrupamiento por subcategorías
-2. **Subcategorías siempre colapsadas por defecto** - A menos que estén seleccionadas en el filtrado
+## Objetivo
+Agregar un conmutador (switch) de disponibilidad en:
+1. El modal de edición de equipos del admin
+2. El listado de equipos en la pestaña de equipos del admin
+3. Filtrar equipos no disponibles en la página de rental `/rental`
 
 ---
 
-## Cambios en Archivos
+## Cambios Requeridos
 
-### 1. `src/pages/Equipos.tsx`
+### 1. `src/components/admin/EquipmentManager.tsx`
 
-**Cambios:**
-- Eliminar `"subcategory"` del tipo `SortOption`
-- Cambiar valor por defecto de `sortOption` a `"alphabetic"`
-- Eliminar la opción "Por subcategoría" del dropdown de ordenamiento
-- Modificar la lógica de ordenamiento para que **siempre** ordene primero por subcategoría (order_index) y luego aplique el orden secundario seleccionado
+**Modificaciones al interface `Equipment`:**
+- Agregar campo `status` al interface local
 
-**Lógica de ordenamiento actualizada:**
+**Modificaciones a `fetchEquipment`:**
+- Incluir `status` en el select de la consulta
+
+**Modificaciones a `handleEditEquipment`:**
+- Incluir `status` en los datos del equipo que se cargan
+
+**Modificaciones a `handleUpdateEquipment`:**
+- Incluir `status` en el update
+
+**Modificaciones al listado de equipos:**
+- Mostrar badge visual de disponibilidad (verde: disponible, rojo: no disponible)
+- Agregar switch inline para cambio rápido de disponibilidad
+
+**Modificaciones al modal de edición:**
+- Agregar switch "Disponible" con label que indique el estado actual
+
+---
+
+### 2. `src/pages/Equipos.tsx`
+
+**Modificaciones a `filteredEquipment`:**
+- Agregar filtro para excluir equipos con `status !== 'available'`
+
+---
+
+## Detalles de Implementación
+
+### Interface Equipment actualizado
 ```typescript
-type SortOption = "alphabetic" | "price-asc" | "price-desc";
-
-// Siempre ordenar por subcategoría primero, luego por la opción seleccionada
-sorted.sort((a, b) => {
-  const subA = subcategories.find(s => s.id === a.subcategory_id);
-  const subB = subcategories.find(s => s.id === b.subcategory_id);
-  const orderA = subA?.order_index ?? 999;
-  const orderB = subB?.order_index ?? 999;
-  
-  // Primero ordenar por subcategoría
-  if (orderA !== orderB) return orderA - orderB;
-  
-  // Luego aplicar orden secundario
-  switch (sortOption) {
-    case "alphabetic":
-      return a.name.localeCompare(b.name);
-    case "price-asc":
-      return (a.price_per_day || 0) - (b.price_per_day || 0);
-    case "price-desc":
-      return (b.price_per_day || 0) - (a.price_per_day || 0);
-  }
-});
+interface Equipment {
+  // ... campos existentes
+  status: 'available' | 'rented' | 'maintenance';
+}
 ```
 
----
-
-### 2. `src/components/rental/CategorySection.tsx`
-
-**Cambios:**
-- Eliminar `sortOption` de la lógica condicional (siempre mostrar cabeceras de subcategoría)
-- Pasar `selectedSubcategories` al componente `CollapsibleSubcategory`
-- Determinar si una subcategoría debe estar expandida basándose en si está seleccionada en el filtro
-
-**Lógica de expansión:**
-```typescript
-// Una subcategoría está expandida si:
-// 1. No hay filtros activos (selectedSubcategories está vacío), o
-// 2. Esta subcategoría específica está en la lista de filtros seleccionados
-const isSubcategoryExpanded = selectedSubcategories.length === 0 
-  ? false  // Sin filtros = todas colapsadas
-  : selectedSubcategories.includes(group.subcategory?.id || "");
+### Nuevo Switch en el Modal de Edición (líneas ~1160-1176)
+```tsx
+<div className="flex items-center gap-2">
+  <Switch
+    checked={editingEquipment.status === 'available'}
+    onCheckedChange={(v) => setEditingEquipment({ 
+      ...editingEquipment, 
+      status: v ? 'available' : 'maintenance' 
+    })}
+  />
+  <Label>Disponible para alquiler</Label>
+</div>
 ```
 
----
+### Badge de estado en el listado (dentro del grid de badges ~871-884)
+```tsx
+{eq.status === 'available' ? (
+  <Badge variant="default" className="text-xs bg-green-600">
+    Disponible
+  </Badge>
+) : (
+  <Badge variant="destructive" className="text-xs">
+    No disponible
+  </Badge>
+)}
+```
 
-### 3. `src/components/rental/CollapsibleSubcategory.tsx`
-
-**Cambios:**
-- Cambiar `defaultExpanded` a `false` por defecto
-- El componente sigue funcionando igual, solo cambia el valor inicial
-
----
-
-## Comportamiento Final
-
-| Escenario | Estado de subcategorías |
-|-----------|-------------------------|
-| Sin filtros activos | Todas colapsadas |
-| Filtro "Lentes" activo | Solo "Lentes" expandida |
-| Filtros "Lentes" + "Cámaras" | Ambas expandidas |
-
-| Opción de orden | Comportamiento |
-|-----------------|----------------|
-| Alfabético | Por subcategoría → luego A-Z |
-| Precio ↑ | Por subcategoría → luego menor a mayor |
-| Precio ↓ | Por subcategoría → luego mayor a menor |
+### Filtro en Equipos.tsx (dentro de filteredEquipment ~115-126)
+```typescript
+const filteredEquipment = useMemo(() => {
+  return equipment.filter((item) => {
+    // Solo mostrar equipos disponibles
+    if (item.status !== 'available') return false;
+    
+    const matchesSearch = /* ... */;
+    const matchesSubcategory = /* ... */;
+    return matchesSearch && matchesSubcategory;
+  });
+}, [equipment, searchTerm, selectedSubcategories]);
+```
 
 ---
 
@@ -93,6 +98,16 @@ const isSubcategoryExpanded = selectedSubcategories.length === 0
 
 | Archivo | Cambios |
 |---------|---------|
-| `src/pages/Equipos.tsx` | Eliminar opción subcategoría, actualizar lógica de sort |
-| `src/components/rental/CategorySection.tsx` | Siempre mostrar headers, pasar estado de expansión |
-| `src/components/rental/CollapsibleSubcategory.tsx` | Cambiar defaultExpanded a false |
+| `src/components/admin/EquipmentManager.tsx` | Agregar status al interface, consultas, modal de edición, y badges en listado |
+| `src/pages/Equipos.tsx` | Filtrar equipos no disponibles |
+
+---
+
+## Comportamiento Esperado
+
+| Escenario | Resultado |
+|-----------|-----------|
+| Equipo con status `available` | Visible en rental y admin |
+| Equipo con status `rented` o `maintenance` | Solo visible en admin, oculto en rental |
+| Switch activado en admin | Status cambia a `available` |
+| Switch desactivado en admin | Status cambia a `maintenance` |
