@@ -65,6 +65,7 @@ interface Equipment {
   subcategory_id: string | null;
   featured: boolean;
   featured_copy: string | null;
+  status: 'available' | 'rented' | 'maintenance';
   categories: Category | null;
   subcategories: Subcategory | null;
   equipment_images?: EquipmentImage[];
@@ -137,13 +138,14 @@ export const EquipmentManager = () => {
     const { data } = await supabase
       .from("equipment")
       .select(
-        "id, name, name_en, image_url, images, brand, model, description, price_per_day, price_per_week, category_id, subcategory_id, featured, featured_copy, categories (*), subcategories (*)",
+        "id, name, name_en, image_url, images, brand, model, description, price_per_day, price_per_week, category_id, subcategory_id, featured, featured_copy, status, categories (*), subcategories (*)",
       )
       .order("name");
     if (data) {
       const transformed = data.map((item: any) => ({
         ...item,
         images: Array.isArray(item.images) ? item.images : [],
+        status: item.status || 'available',
       }));
       setEquipment(transformed);
     }
@@ -441,6 +443,7 @@ export const EquipmentManager = () => {
         subcategory_id: data.subcategory_id,
         featured: data.featured || false,
         featured_copy: data.featured_copy,
+        status: data.status || 'available',
         categories: data.categories as Category | null,
         subcategories: data.subcategories as Subcategory | null,
       };
@@ -475,6 +478,7 @@ export const EquipmentManager = () => {
         price_per_week: editingEquipment.price_per_week || null,
         featured: editingEquipment.featured || false,
         featured_copy: editingEquipment.featured_copy || null,
+        status: editingEquipment.status,
       })
       .eq("id", editingEquipment.id);
 
@@ -873,12 +877,21 @@ export const EquipmentManager = () => {
                                 {eq.categories.name}
                               </Badge>
                             )}
-                            {hasImage(eq) ? (
+                            {eq.status === 'available' ? (
                               <Badge variant="default" className="text-xs bg-green-600">
-                                Con imagen
+                                Disponible
                               </Badge>
                             ) : (
                               <Badge variant="destructive" className="text-xs">
+                                No disponible
+                              </Badge>
+                            )}
+                            {hasImage(eq) ? (
+                              <Badge variant="default" className="text-xs bg-blue-600">
+                                Con imagen
+                              </Badge>
+                            ) : (
+                              <Badge variant="outline" className="text-xs text-muted-foreground">
                                 Sin imagen
                               </Badge>
                             )}
@@ -1157,7 +1170,16 @@ export const EquipmentManager = () => {
                   onChange={(e) => setEditingEquipment({ ...editingEquipment, description: e.target.value })}
                 />
               </div>
-              <div className="md:col-span-2 flex items-center gap-4">
+              <div className="md:col-span-2 flex items-center gap-4 flex-wrap">
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={editingEquipment.status === 'available'}
+                    onCheckedChange={(v) => setEditingEquipment({ ...editingEquipment, status: v ? 'available' : 'maintenance' })}
+                  />
+                  <Label className={editingEquipment.status === 'available' ? 'text-green-600' : 'text-destructive'}>
+                    {editingEquipment.status === 'available' ? 'Disponible' : 'No disponible'}
+                  </Label>
+                </div>
                 <div className="flex items-center gap-2">
                   <Switch
                     checked={editingEquipment.featured}
