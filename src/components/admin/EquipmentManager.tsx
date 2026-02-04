@@ -26,6 +26,8 @@ import {
   Plus,
   Star,
   StarOff,
+  Download,
+  ArrowUpDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Category, Subcategory } from "@/types/supabase";
@@ -66,6 +68,7 @@ interface Equipment {
   featured: boolean;
   featured_copy: string | null;
   status: 'available' | 'rented' | 'maintenance';
+  stock_quantity: number;
   categories: Category | null;
   subcategories: Subcategory | null;
   equipment_images?: EquipmentImage[];
@@ -77,6 +80,7 @@ interface StorageFile {
 }
 
 type ImageFilter = "all" | "with" | "without";
+type PriceSort = "none" | "asc" | "desc";
 
 export const EquipmentManager = () => {
   const [equipment, setEquipment] = useState<Equipment[]>([]);
@@ -90,6 +94,7 @@ export const EquipmentManager = () => {
   const [deleting, setDeleting] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [imageFilter, setImageFilter] = useState<ImageFilter>("all");
+  const [priceSort, setPriceSort] = useState<PriceSort>("none");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingEquipment, setEditingEquipment] = useState<Equipment | null>(null);
@@ -138,7 +143,7 @@ export const EquipmentManager = () => {
     const { data } = await supabase
       .from("equipment")
       .select(
-        "id, name, name_en, image_url, images, brand, model, description, price_per_day, price_per_week, category_id, subcategory_id, featured, featured_copy, status, categories (*), subcategories (*)",
+        "id, name, name_en, image_url, images, brand, model, description, price_per_day, price_per_week, category_id, subcategory_id, featured, featured_copy, status, stock_quantity, categories (*), subcategories (*)",
       )
       .order("name");
     if (data) {
@@ -146,6 +151,7 @@ export const EquipmentManager = () => {
         ...item,
         images: Array.isArray(item.images) ? item.images : [],
         status: item.status || 'available',
+        stock_quantity: item.stock_quantity ?? 1,
       }));
       setEquipment(transformed);
     }
@@ -293,9 +299,13 @@ export const EquipmentManager = () => {
     return eq.category_id === categoryFilter;
   };
 
-  const filteredEquipment = equipment.filter(
-    (e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e),
-  );
+  const filteredEquipment = equipment
+    .filter((e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e))
+    .sort((a, b) => {
+      if (priceSort === "asc") return a.price_per_day - b.price_per_day;
+      if (priceSort === "desc") return b.price_per_day - a.price_per_day;
+      return 0;
+    });
 
   const handleAddImage = async (imageUrl: string) => {
     if (!selectedEquipment) {
@@ -444,6 +454,7 @@ export const EquipmentManager = () => {
         featured: data.featured || false,
         featured_copy: data.featured_copy,
         status: data.status || 'available',
+        stock_quantity: data.stock_quantity ?? 1,
         categories: data.categories as Category | null,
         subcategories: data.subcategories as Subcategory | null,
       };
@@ -479,6 +490,7 @@ export const EquipmentManager = () => {
         featured: editingEquipment.featured || false,
         featured_copy: editingEquipment.featured_copy || null,
         status: editingEquipment.status,
+        stock_quantity: editingEquipment.stock_quantity,
       })
       .eq("id", editingEquipment.id);
 
@@ -501,10 +513,10 @@ export const EquipmentManager = () => {
     }
   };
 
-  // Inline quick update for status, featured, and price
+  // Inline quick update for status, featured, price, and stock_quantity
   const handleInlineUpdate = async (
     equipmentId: string,
-    field: 'status' | 'featured' | 'price_per_day',
+    field: 'status' | 'featured' | 'price_per_day' | 'stock_quantity',
     value: string | boolean | number
   ) => {
     const updateData: Record<string, any> = {};
@@ -584,6 +596,42 @@ export const EquipmentManager = () => {
     ? subcategories.filter((s) => s.category_id === newEquipment.category_id)
     : [];
 
+  // Download backup JSON
+  const handleDownloadBackup = async () => {
+    const { data, error } = await supabase
+      .from("equipment")
+      .select("*")
+      .order("name");
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "No se pudo obtener los datos",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const backupData = {
+      timestamp: new Date().toISOString(),
+      total_count: data.length,
+      equipment: data,
+    };
+
+    const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `equipos-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    toast({
+      title: "Backup descargado",
+      description: `${data.length} equipos exportados`,
+    });
+  };
+
   if (loading) {
     return (
       <Card>
@@ -600,21 +648,27 @@ export const EquipmentManager = () => {
       {/* Add Equipment Form Toggle */}
       <Card>
         <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <CardTitle className="text-lg">Gestión de Equipos e Imágenes</CardTitle>
-            <Button variant={isAddFormOpen ? "outline" : "hero"} onClick={() => setIsAddFormOpen(!isAddFormOpen)}>
-              {isAddFormOpen ? (
-                <>
-                  <X className="h-4 w-4 mr-2" />
-                  Cerrar
-                </>
-              ) : (
-                <>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Agregar Equipo
-                </>
-              )}
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button variant="outline" size="sm" onClick={handleDownloadBackup}>
+                <Download className="h-4 w-4 mr-2" />
+                Backup JSON
+              </Button>
+              <Button variant={isAddFormOpen ? "outline" : "hero"} onClick={() => setIsAddFormOpen(!isAddFormOpen)}>
+                {isAddFormOpen ? (
+                  <>
+                    <X className="h-4 w-4 mr-2" />
+                    Cerrar
+                  </>
+                ) : (
+                  <>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Agregar Equipo
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </CardHeader>
 
@@ -748,10 +802,10 @@ export const EquipmentManager = () => {
             destacada.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <CardContent className="px-2 sm:px-6">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 w-full">
             {/* Equipment Column */}
-            <div className="space-y-2">
+            <div className="space-y-2 w-full min-w-0">
               <div className="flex items-center justify-between">
                 <h3 className="font-heading font-bold text-lg">Equipos</h3>
                 <Badge variant="secondary">
@@ -781,7 +835,7 @@ export const EquipmentManager = () => {
               </div>
 
               {/* Filters */}
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 <div className="space-y-1">
                   <Label className="text-xs text-muted-foreground flex items-center gap-1">
                     <Filter className="h-3 w-3" />
@@ -814,6 +868,22 @@ export const EquipmentManager = () => {
                           {cat.name}
                         </SelectItem>
                       ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1 col-span-2 sm:col-span-1">
+                  <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                    <ArrowUpDown className="h-3 w-3" />
+                    Ordenar por
+                  </Label>
+                  <Select value={priceSort} onValueChange={(v) => setPriceSort(v as PriceSort)}>
+                    <SelectTrigger className="h-9 text-xs">
+                      <SelectValue placeholder="Ordenar" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">Sin orden</SelectItem>
+                      <SelectItem value="asc">Precio ascendente</SelectItem>
+                      <SelectItem value="desc">Precio descendente</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -921,9 +991,29 @@ export const EquipmentManager = () => {
                           </div>
                         </div>
                         {/* Inline controls */}
-                        <div className="flex items-center gap-2 shrink-0" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex flex-wrap items-center gap-1 sm:gap-2 shrink-0" onClick={(e) => e.stopPropagation()}>
+                          {/* Quantity */}
+                          <div className="flex items-center gap-1" title="Cantidad">
+                            <span className="text-xs text-muted-foreground hidden sm:inline">Cant:</span>
+                            <Input
+                              type="number"
+                              min="0"
+                              value={eq.stock_quantity}
+                              onChange={(e) => {
+                                const newQty = parseInt(e.target.value) || 0;
+                                setEquipment(prev => prev.map(item => 
+                                  item.id === eq.id ? { ...item, stock_quantity: newQty } : item
+                                ));
+                              }}
+                              onBlur={(e) => {
+                                const newQty = parseInt(e.target.value) || 0;
+                                handleInlineUpdate(eq.id, 'stock_quantity', newQty);
+                              }}
+                              className="w-14 h-7 text-xs px-1"
+                            />
+                          </div>
                           {/* Price */}
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-1" title="Precio/día">
                             <span className="text-xs text-muted-foreground">$</span>
                             <Input
                               type="number"
@@ -938,11 +1028,11 @@ export const EquipmentManager = () => {
                                 const newPrice = parseInt(e.target.value) || 0;
                                 handleInlineUpdate(eq.id, 'price_per_day', newPrice);
                               }}
-                              className="w-20 h-7 text-xs px-2"
+                              className="w-16 sm:w-20 h-7 text-xs px-1"
                             />
                           </div>
                           {/* Featured toggle */}
-                          <div className="flex items-center gap-1" title="Destacado">
+                          <div className="flex items-center gap-0.5" title="Destacado">
                             <Switch
                               checked={eq.featured}
                               onCheckedChange={(v) => handleInlineUpdate(eq.id, 'featured', v)}
@@ -951,7 +1041,7 @@ export const EquipmentManager = () => {
                             <Star className={cn("h-3.5 w-3.5", eq.featured ? "text-yellow-500 fill-yellow-500" : "text-muted-foreground")} />
                           </div>
                           {/* Status toggle */}
-                          <div className="flex items-center gap-1" title="Disponible">
+                          <div className="flex items-center gap-0.5" title="Disponible">
                             <Switch
                               checked={eq.status === 'available'}
                               onCheckedChange={(v) => handleInlineUpdate(eq.id, 'status', v ? 'available' : 'maintenance')}
@@ -1225,6 +1315,17 @@ export const EquipmentManager = () => {
                   value={editingEquipment.price_per_week || ""}
                   onChange={(e) =>
                     setEditingEquipment({ ...editingEquipment, price_per_week: parseInt(e.target.value) || null })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Cantidad disponible</Label>
+                <Input
+                  type="number"
+                  min="0"
+                  value={editingEquipment.stock_quantity}
+                  onChange={(e) =>
+                    setEditingEquipment({ ...editingEquipment, stock_quantity: parseInt(e.target.value) || 0 })
                   }
                 />
               </div>
