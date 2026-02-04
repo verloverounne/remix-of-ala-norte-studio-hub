@@ -192,14 +192,14 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
       <section
         ref={sectionRef}
         id={`categoria-${category.slug}`}
-        className="relative"
+        className="relative bg-foreground"
         style={{
           scrollMarginTop: `${stickyTop + 8}px`,
         }}
       >
         {/* Sticky Category Header with Collapse */}
         <div
-          className="sticky z-50 bg-foreground mb-0 -mt-px"
+          className="sticky z-20 bg-foreground mb-0 -mt-px"
           style={{
             top: `${stickyTop - 1}px`,
           }}
