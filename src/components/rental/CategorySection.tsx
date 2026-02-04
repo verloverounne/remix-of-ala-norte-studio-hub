@@ -182,10 +182,10 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
     scrollMarginTop: `${stickyTop + 8}px`
   }}>
         {/* Sticky Category Header with Collapse */}
-        <div className="sticky z-20 bg-foreground mb-0 -mt-px" style={{
+        <div className="sticky z-20 bg-foreground mb-0 -mt-px my-0" style={{
       top: `${stickyTop - 1}px`
     }}>
-          <div className="justify-n px-2 sm:px-4 py-2 sm:py-3 h-[40px] sm:h-[52px] flex items-center justify-start gap-[32px] bg-popover-foreground text-popover">
+          <div className="justify-n px-2 sm:px-4 flex items-center justify-start gap-[32px] bg-popover-foreground text-popover">
             <button onClick={handleHeaderClick} className="flex items-center gap-1 sm:gap-3 cursor-pointer hover:text-primary transition-colors">
               {isExpanded ? <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5 transition-transform flex-shrink-0 text-primary" /> : <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform flex-shrink-0" />}
               <h2 className="font-heading text-sm sm:text-lg md:text-xl uppercase truncate bg-transparent text-primary">
