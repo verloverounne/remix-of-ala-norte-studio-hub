@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -7,6 +7,8 @@ interface CollapsibleSubcategoryProps {
   count: number;
   children: React.ReactNode;
   defaultExpanded?: boolean;
+  isExpanded?: boolean;
+  onToggle?: (expanded: boolean) => void;
 }
 
 export const CollapsibleSubcategory = ({
@@ -14,13 +16,33 @@ export const CollapsibleSubcategory = ({
   count,
   children,
   defaultExpanded = false,
+  isExpanded: controlledExpanded,
+  onToggle,
 }: CollapsibleSubcategoryProps) => {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+  const isControlled = controlledExpanded !== undefined;
+  const [internalExpanded, setInternalExpanded] = useState(defaultExpanded);
+  
+  const isExpanded = isControlled ? controlledExpanded : internalExpanded;
+
+  useEffect(() => {
+    if (!isControlled) {
+      setInternalExpanded(defaultExpanded);
+    }
+  }, [defaultExpanded, isControlled]);
+
+  const handleToggle = () => {
+    const newState = !isExpanded;
+    if (isControlled) {
+      onToggle?.(newState);
+    } else {
+      setInternalExpanded(newState);
+    }
+  };
 
   return (
     <div className="mb-4">
       <button
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={handleToggle}
         className="flex items-center gap-2 w-full border-b border-foreground/20 pb-2 mb-3 px-2 hover:text-primary transition-colors cursor-pointer"
       >
         {isExpanded ? (

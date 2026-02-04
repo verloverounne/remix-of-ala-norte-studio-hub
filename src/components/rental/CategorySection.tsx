@@ -1,5 +1,5 @@
-import { useRef, forwardRef, useImperativeHandle, useState } from "react";
-import { Plus, ChevronDown, ChevronRight, X } from "lucide-react";
+import { useRef, forwardRef, useImperativeHandle, useState, useEffect } from "react";
+import { Plus, ChevronDown, ChevronRight, X, ChevronsUpDown } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -79,6 +79,44 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
     const sectionRef = useRef<HTMLDivElement>(null);
     const gridRef = useRef<HTMLDivElement>(null);
     const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+    const [allSubcategoriesExpanded, setAllSubcategoriesExpanded] = useState(true);
+    const [subcategoryStates, setSubcategoryStates] = useState<Record<string, boolean>>({});
+
+    // Initialize subcategory states when subcategories change or category expands
+    useEffect(() => {
+      if (isExpanded && subcategories.length > 0) {
+        const initialStates: Record<string, boolean> = {};
+        subcategories.forEach(sub => {
+          const subcatId = sub.id;
+          const isForceExpanded = forceExpandSubcategories?.has(subcatId);
+          const shouldExpand = isForceExpanded || 
+            (selectedSubcategories.length === 0 ? true : selectedSubcategories.includes(subcatId));
+          initialStates[subcatId] = shouldExpand;
+        });
+        initialStates["no-subcategory"] = true;
+        setSubcategoryStates(initialStates);
+        setAllSubcategoriesExpanded(Object.values(initialStates).every(v => v));
+      }
+    }, [isExpanded, subcategories, forceExpandSubcategories, selectedSubcategories]);
+
+    const toggleAllSubcategories = () => {
+      const newState = !allSubcategoriesExpanded;
+      setAllSubcategoriesExpanded(newState);
+      const newStates: Record<string, boolean> = {};
+      subcategories.forEach(sub => {
+        newStates[sub.id] = newState;
+      });
+      newStates["no-subcategory"] = newState;
+      setSubcategoryStates(newStates);
+    };
+
+    const handleSubcategoryToggle = (subcatId: string, expanded: boolean) => {
+      setSubcategoryStates(prev => {
+        const newStates = { ...prev, [subcatId]: expanded };
+        setAllSubcategoriesExpanded(Object.values(newStates).every(v => v));
+        return newStates;
+      });
+    };
 
     useImperativeHandle(ref, () => ({
       scrollIntoView: () => {
@@ -190,6 +228,25 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
               </Badge>
             </button>
 
+            {/* Toggle all subcategories button */}
+            {subcategories.length > 0 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleAllSubcategories();
+                }}
+                className="h-7 px-2 text-xs font-heading uppercase gap-1"
+                title={allSubcategoriesExpanded ? "Colapsar todas" : "Expandir todas"}
+              >
+                <ChevronsUpDown className="h-3 w-3" />
+                <span className="hidden sm:inline">
+                  {allSubcategoriesExpanded ? "Colapsar" : "Expandir"}
+                </span>
+              </Button>
+            )}
+
             {/* Subcategory dropdown */}
             {subcategories.length > 0 && (
               <DropdownMenu>
@@ -232,18 +289,16 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
               // List view with subcategory headers
               <div className="space-y-2">
               {groups.map((group) => {
-                  // Force expand if searching and has results, or if selected in filters, or expand all by default when no filters
-                  const subcatId = group.subcategory?.id || "";
-                  const isForceExpanded = forceExpandSubcategories?.has(subcatId);
-                  const isSubcategoryExpanded = isForceExpanded || 
-                    (selectedSubcategories.length === 0 ? true : selectedSubcategories.includes(subcatId));
+                  const subcatId = group.subcategory?.id || "no-subcategory";
+                  const isSubcategoryExpanded = subcategoryStates[subcatId] ?? true;
                   
                   return (
                     <div key={group.subcategory?.id || "no-subcategory"}>
                       <CollapsibleSubcategory
                         name={group.subcategory?.name || "Sin subcategoría"}
                         count={group.items.length}
-                        defaultExpanded={isSubcategoryExpanded}
+                        isExpanded={isSubcategoryExpanded}
+                        onToggle={(expanded) => handleSubcategoryToggle(subcatId, expanded)}
                       >
                         <EquipmentListView
                           equipment={group.items}
@@ -261,18 +316,16 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
               // Card view with subcategory headers
               <div className="space-y-2">
                 {groups.map((group) => {
-                  // Force expand if searching and has results, or if selected in filters, or expand all by default when no filters
-                  const subcatId = group.subcategory?.id || "";
-                  const isForceExpanded = forceExpandSubcategories?.has(subcatId);
-                  const isSubcategoryExpanded = isForceExpanded || 
-                    (selectedSubcategories.length === 0 ? true : selectedSubcategories.includes(subcatId));
+                  const subcatId = group.subcategory?.id || "no-subcategory";
+                  const isSubcategoryExpanded = subcategoryStates[subcatId] ?? true;
                   
                   return (
                     <div key={group.subcategory?.id || "no-subcategory"}>
                       <CollapsibleSubcategory
                         name={group.subcategory?.name || "Sin subcategoría"}
                         count={group.items.length}
-                        defaultExpanded={isSubcategoryExpanded}
+                        isExpanded={isSubcategoryExpanded}
+                        onToggle={(expanded) => handleSubcategoryToggle(subcatId, expanded)}
                       >
                         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
                           {group.items.map((item) => {
