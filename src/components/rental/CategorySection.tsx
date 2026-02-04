@@ -46,6 +46,7 @@ interface CategorySectionProps {
   sortOption?: SortOption;
   onSubcategorySelect?: (subcategoryId: string) => void;
   selectedSubcategories?: string[];
+  forceExpandSubcategories?: Set<string>;
 }
 
 export interface CategorySectionRef {
@@ -71,6 +72,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
       sortOption = "subcategory",
       onSubcategorySelect,
       selectedSubcategories = [],
+      forceExpandSubcategories,
     },
     ref,
   ) => {
@@ -230,10 +232,11 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
               // List view with subcategory headers
               <div className="space-y-2">
               {groups.map((group) => {
-                  // Subcategory is expanded only if selected in filters
-                  const isSubcategoryExpanded = selectedSubcategories.length === 0 
-                    ? false 
-                    : selectedSubcategories.includes(group.subcategory?.id || "");
+                  // Force expand if searching and has results, or if selected in filters, or expand all by default when no filters
+                  const subcatId = group.subcategory?.id || "";
+                  const isForceExpanded = forceExpandSubcategories?.has(subcatId);
+                  const isSubcategoryExpanded = isForceExpanded || 
+                    (selectedSubcategories.length === 0 ? true : selectedSubcategories.includes(subcatId));
                   
                   return (
                     <div key={group.subcategory?.id || "no-subcategory"}>
@@ -258,10 +261,11 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
               // Card view with subcategory headers
               <div className="space-y-2">
                 {groups.map((group) => {
-                  // Subcategory is expanded only if selected in filters
-                  const isSubcategoryExpanded = selectedSubcategories.length === 0 
-                    ? false 
-                    : selectedSubcategories.includes(group.subcategory?.id || "");
+                  // Force expand if searching and has results, or if selected in filters, or expand all by default when no filters
+                  const subcatId = group.subcategory?.id || "";
+                  const isForceExpanded = forceExpandSubcategories?.has(subcatId);
+                  const isSubcategoryExpanded = isForceExpanded || 
+                    (selectedSubcategories.length === 0 ? true : selectedSubcategories.includes(subcatId));
                   
                   return (
                     <div key={group.subcategory?.id || "no-subcategory"}>
