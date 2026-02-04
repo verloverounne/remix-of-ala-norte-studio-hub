@@ -158,7 +158,7 @@ export const HeroCarouselRental = ({ categories, activeCategory, onCategoryChang
                         loading="lazy"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-foreground via-foreground/90 to-primary/30" />
+                      <div className="w-full h-full" />
                     )}
 
                     {/* Text overlay */}
