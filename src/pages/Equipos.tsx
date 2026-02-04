@@ -112,6 +112,9 @@ const Equipos = () => {
     return matrix[len1][len2];
   };
 
+  // When searching, search across ALL categories
+  const isSearching = searchTerm.length > 0;
+
   const filteredEquipment = useMemo(() => {
     return equipment.filter((item) => {
       // Solo mostrar equipos disponibles en la página de rental
@@ -121,12 +124,45 @@ const Equipos = () => {
         fuzzyMatch(item.name, searchTerm) ||
         fuzzyMatch(item.brand || "", searchTerm) ||
         fuzzyMatch(item.model || "", searchTerm);
+      
+      // When searching, ignore category filter - search across all
+      if (isSearching) {
+        const matchesSubcategory =
+          selectedSubcategories.length === 0 ||
+          (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
+        return matchesSearch && matchesSubcategory;
+      }
+      
       const matchesSubcategory =
         selectedSubcategories.length === 0 ||
         (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
       return matchesSearch && matchesSubcategory;
     });
-  }, [equipment, searchTerm, selectedSubcategories]);
+  }, [equipment, searchTerm, selectedSubcategories, isSearching]);
+
+  // Get subcategories that have matching equipment when searching
+  const subcategoriesWithResults = useMemo(() => {
+    if (!isSearching) return new Set<string>();
+    const subcatIds = new Set<string>();
+    filteredEquipment.forEach(item => {
+      if (item.subcategory_id) {
+        subcatIds.add(item.subcategory_id);
+      }
+    });
+    return subcatIds;
+  }, [filteredEquipment, isSearching]);
+
+  // Get categories that have matching equipment when searching
+  const categoriesWithResults = useMemo(() => {
+    if (!isSearching) return new Set<string>();
+    const catIds = new Set<string>();
+    filteredEquipment.forEach(item => {
+      if (item.category_id) {
+        catIds.add(item.category_id);
+      }
+    });
+    return catIds;
+  }, [filteredEquipment, isSearching]);
 
   // Sort equipment based on selected option - ALWAYS respects subcategory grouping first
   const sortedEquipment = useMemo(() => {
@@ -226,8 +262,10 @@ const Equipos = () => {
 
   const handleCategoryClick = (categoryId: string) => {
     setActiveCategory(categoryId);
-    // Clear subcategory filters when changing category
+    // Clear subcategory filters and search when changing category
     setSelectedSubcategories([]);
+    setSearchTerm("");
+    setIsSearchOpen(false);
     categoryRefs.current.forEach((ref, id) => {
       if (id === categoryId) {
         ref.expand();
@@ -240,6 +278,8 @@ const Equipos = () => {
   const handleCategoryActivate = (categoryId: string) => {
     setActiveCategory(categoryId);
     setSelectedSubcategories([]);
+    setSearchTerm("");
+    setIsSearchOpen(false);
     categoryRefs.current.forEach((ref, id) => {
       if (id !== categoryId) {
         ref.collapse();
@@ -457,7 +497,9 @@ const Equipos = () => {
               </div>
             ) : (
               <div className="space-y-4 sm:space-y-6 bg-background">
-                {orderedCategories.map((category, index) => (
+                {orderedCategories
+                  .filter(category => !isSearching || categoriesWithResults.has(category.id))
+                  .map((category, index) => (
                   <CategorySection
                     key={category.id}
                     ref={(ref) => {
@@ -475,12 +517,13 @@ const Equipos = () => {
                     getCartQuantity={getCartQuantity}
                     canAddMore={canAddMore}
                     stickyTop={categoryTitleTop}
-                    defaultExpanded={index === 0}
+                    defaultExpanded={isSearching ? categoriesWithResults.has(category.id) : index === 0}
                     onCategoryActivate={handleCategoryActivate}
                     viewMode={viewMode}
                     sortOption={sortOption}
                     onSubcategorySelect={toggleSubcategory}
                     selectedSubcategories={selectedSubcategories}
+                    forceExpandSubcategories={isSearching ? subcategoriesWithResults : undefined}
                   />
                 ))}
               </div>
