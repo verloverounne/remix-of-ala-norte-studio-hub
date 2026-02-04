@@ -1,5 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { Carousel, CarouselContent, CarouselItem, CarouselApi, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselApi,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
 
 interface HeroSlide {
@@ -28,47 +35,47 @@ const STATIC_HERO_BACKGROUNDS: Record<string, HeroSlide> = {
   // Cámara
   "4d52bbca-3bcb-4c73-ac1b-5b6d437e9163": {
     id: "static-camara",
-    image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951104500_camara_fondo_blanco_gonzalo.mp4",
+    image_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//1768951104500_camara_fondo_blanco_gonzalo.mp4",
     media_type: "video",
     title: null,
     description: null,
-    order_index: 1
+    order_index: 1,
   },
   // Iluminación
   "f0edceff-b3b4-4735-ab37-b9e3f4bb905a": {
     id: "static-iluminacion",
-    image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951451525_luces.mp4",
+    image_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951451525_luces.mp4",
     media_type: "video",
     title: null,
     description: null,
-    order_index: 2
+    order_index: 2,
   },
   // Audio
   "bdaa1e73-8532-4b85-8495-6ef8bba5be31": {
     id: "static-audio",
-    image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951063587_sonido.mp4",
+    image_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951063587_sonido.mp4",
     media_type: "video",
     title: null,
     description: null,
-    order_index: 3
+    order_index: 3,
   },
   // Grip
   "d9e6fca2-0d23-41c8-b782-8216d97e86a5": {
     id: "static-grip",
-    image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951477713_grips.mp4",
+    image_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951477713_grips.mp4",
     media_type: "video",
     title: null,
     description: null,
-    order_index: 4
-  }
+    order_index: 4,
+  },
   // Energía: no video configured, will use gradient fallback
 };
 
-export const HeroCarouselRental = ({
-  categories,
-  activeCategory,
-  onCategoryChange
-}: HeroCarouselRentalProps) => {
+export const HeroCarouselRental = ({ categories, activeCategory, onCategoryChange }: HeroCarouselRentalProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -76,7 +83,7 @@ export const HeroCarouselRental = ({
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: "instant"
+      behavior: "instant",
     });
   }, []);
 
@@ -102,7 +109,7 @@ export const HeroCarouselRental = ({
       if (!api.scrollSnapList || api.scrollSnapList().length === 0) {
         return;
       }
-      const slideIndex = categories.findIndex(c => c.id === activeCategory);
+      const slideIndex = categories.findIndex((c) => c.id === activeCategory);
       if (slideIndex !== -1 && slideIndex !== currentSlide) {
         api.scrollTo(slideIndex);
       }
@@ -129,7 +136,7 @@ export const HeroCarouselRental = ({
       <section className="relative overflow-hidden">
         <Carousel className="w-full" setApi={setApi}>
           <CarouselContent className="-ml-0">
-            {categories.map(category => {
+            {categories.map((category) => {
               const bg = getBackgroundForCategory(category.id);
               return (
                 <CarouselItem key={category.id} className="pl-0 basis-full">
