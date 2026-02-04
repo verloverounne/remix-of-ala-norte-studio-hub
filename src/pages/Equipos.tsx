@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import type { EquipmentWithCategory } from "@/types/supabase";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/use-toast";
@@ -22,6 +23,7 @@ type EquipmentWithStock = EquipmentWithCategory;
 type SortOption = "alphabetic" | "price-asc" | "price-desc";
 
 const Equipos = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { equipment, categories, subcategories, loading } = useEquipmentData();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
@@ -36,6 +38,29 @@ const Equipos = () => {
   const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
   const { toast } = useToast();
   const { isMobile, isVisible } = useHeaderVisibility();
+
+  // Read equipment ID from URL and open modal automatically
+  useEffect(() => {
+    const equipmentId = searchParams.get("id");
+    if (equipmentId && equipment.length > 0 && !loading) {
+      const foundEquipment = equipment.find(e => e.id === equipmentId);
+      if (foundEquipment) {
+        setSelectedEquipment(foundEquipment);
+        setModalOpen(true);
+      }
+    }
+  }, [searchParams, equipment, loading]);
+
+  // Handle modal close - clear URL parameter
+  const handleModalClose = (open: boolean) => {
+    setModalOpen(open);
+    if (!open) {
+      // Remove the id parameter from URL when closing modal
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete("id");
+      setSearchParams(newParams, { replace: true });
+    }
+  };
 
   // Calcular top dinámico basado en visibilidad del header
   const stickyTop = useMemo(() => {
@@ -557,7 +582,7 @@ const Equipos = () => {
       <EquipmentModal
         equipment={selectedEquipment}
         open={modalOpen}
-        onOpenChange={setModalOpen}
+        onOpenChange={handleModalClose}
         onAddToCart={handleAddToCart}
         getCartQuantity={getCartQuantity}
         canAddMore={canAddMore}
