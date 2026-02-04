@@ -308,7 +308,7 @@ const Equipos = () => {
       <div className="sticky z-[50] bg-background/95 backdrop-blur-sm border-b border-foreground/10 transition-all duration-300" style={{
       top: `${stickyTop}px`
     }}>
-        <div className="container mx-auto px-4 py-0">
+        <div className="container mx-auto px-4 py-0 items-center">
           {/* Row 1: Category chips */}
           <div className="flex items-center gap-2 mb-2">
             <div className="flex w-screen items-center flex-wrap gap-2 flex-1">
