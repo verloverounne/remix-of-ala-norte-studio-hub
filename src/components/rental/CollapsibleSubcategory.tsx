@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
+import type { ReactNode } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
 
-interface CollapsibleSubcategoryProps {
+export interface CollapsibleSubcategoryProps {
   name: string;
   count: number;
-  children: React.ReactNode;
+  children: ReactNode;
   defaultExpanded?: boolean;
   isExpanded?: boolean;
   onToggle?: (expanded: boolean) => void;
@@ -21,7 +21,7 @@ export const CollapsibleSubcategory = ({
 }: CollapsibleSubcategoryProps) => {
   const isControlled = controlledExpanded !== undefined;
   const [internalExpanded, setInternalExpanded] = useState(defaultExpanded);
-  
+
   const isExpanded = isControlled ? controlledExpanded : internalExpanded;
 
   useEffect(() => {
