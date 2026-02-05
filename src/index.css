@@ -20,7 +20,7 @@ All colors MUST be HSL.
     --foreground: 0 0% 8%; /* #141414 Negro */
 
     --card: 0 0% 25.098%;
-    --card-foreground: 0 74.6835% 15.4902%;
+    --card-foreground: 0 0% 83.1373%;
 
     --popover: 0 0% 83.1373%;
     --popover-foreground: 0 0% 8%;
@@ -33,16 +33,16 @@ All colors MUST be HSL.
     --primary-dark: 343 100% 22%; /* #6E0022 */
 
     /* Secundario - Gris Brutal */
-    --secondary: 0 0% 32.1569%; /* #333333 Gris oscuro */
-    --secondary-foreground: 0 0% 83.1373%;
+    --secondary: 24 5.7471% 82.9412%; /* #333333 Gris oscuro */
+    --secondary-foreground: 0 0% 14.902%;
     --secondary-hover: 0 0% 15%;
 
     /* Neutrales Brutales */
     --muted: 0 0% 25.098%; /* #E5E5E5 */
     --muted-foreground: 0 0% 9.0196%; /* #4D4D4D */
 
-    --accent: 0 70% 35.2941%; /* Rojo para acentos */
-    --accent-foreground: 0 0% 32.1569%;
+    --accent: 0 72.2222% 50.5882%; /* Rojo para acentos */
+    --accent-foreground: 0 0% 83.1373%;
 
     --destructive: 348 83% 47%;
     --destructive-foreground: 0 0% 98%;
