@@ -39,7 +39,7 @@ All colors MUST be HSL.
     --muted: 0 0% 90%; /* #E5E5E5 */
     --muted-foreground: 0 0% 30%; /* #4D4D4D */
 
-    --accent: 348 83% 47%; /* Rojo para acentos */
+    --accent: 0 94% 55%; /* Rojo para acentos */
     --accent-foreground: 0 0% 98%;
 
     --destructive: 348 83% 47%;
