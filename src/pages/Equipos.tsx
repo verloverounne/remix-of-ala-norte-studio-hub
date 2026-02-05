@@ -311,7 +311,7 @@ const Equipos = () => {
         <div className="container mx-auto py-0 items-center px-0">
           {/* Row 1: Category chips */}
           <div className="flex items-center gap-2 mb-2">
-            <div className="flex w-screen items-center flex-wrap gap-2 flex-1">
+            <div className="flex w-screen items-center flex-wrap gap-2 flex-1 pt-4">
               {categories.map(category => {
               const count = equipmentCounts[category.id] || 0;
               const isActive = activeCategory === category.id;
