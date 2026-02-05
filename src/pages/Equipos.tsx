@@ -305,13 +305,13 @@ const Equipos = () => {
       <HeroCarouselRental categories={categories} onCategoryChange={handleCategoryClick} activeCategory={activeCategory} />
 
       {/* Sticky navigation bar - Below Hero */}
-      <div className="sticky z-[50] backdrop-blur-sm border-b border-foreground/10 transition-all duration-300 bg-accent-foreground" style={{
+      <div className="sticky z-[50] backdrop-blur-sm border-b border-foreground/10 transition-all duration-300 bg-transparent" style={{
       top: `${stickyTop}px`
     }}>
-        <div className="container mx-auto py-0 items-center px-0 bg-card">
+        <div className="container mx-auto py-0 items-center px-0 bg-transparent">
           {/* Row 1: Category chips */}
           <div className="flex items-center gap-2 mb-2">
-            <div className="min-w-screen flex-wrap flex-1 pt-4 flex items-center justify-center py-0 bg-foreground my-0 pb-[16px] gap-[24px] pl-[16px] pr-[16px] px-[16px]">
+            <div className="min-w-screen flex-wrap flex-1 pt-4 flex items-center justify-center py-0 my-0 pb-[16px] gap-[24px] pl-[16px] pr-[16px] px-[16px] bg-transparent">
               {categories.map(category => {
               const count = equipmentCounts[category.id] || 0;
               const isActive = activeCategory === category.id;
