@@ -49,7 +49,7 @@ All colors MUST be HSL.
     --input: 0 0% 8%;
     --ring: 348 83% 47%;
 
-    --radius: 0.125rem; /* Sin border-radius: BRUTAL */
+    --radius: 0.5rem; /* Bordes suavizados - digital cinematográfico */
 
     /* Border widths - editables desde tokens */
     --border-width-none: 0px;
@@ -69,11 +69,11 @@ All colors MUST be HSL.
     --tritone-mid: 0 0% 15%; /* Color para tonos medios (areas medias) */
     --tritone-low: 0 0% 8%; /* Color para tonos bajos (areas oscuras) */
 
-    /* Sombras Brutales - Duras y sin blur pero sutiles */
-    --shadow-brutal: 4px 4px 0 hsl(0 0% 8%);
-    --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 8%);
-    --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 8%);
-    --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
+    /* Sombras Cinematográficas - Suaves con blur */
+    --shadow-brutal: 0 4px 12px -2px hsl(0 0% 8% / 0.25);
+    --shadow-brutal-sm: 0 2px 6px -1px hsl(0 0% 8% / 0.2);
+    --shadow-brutal-lg: 0 8px 24px -4px hsl(0 0% 8% / 0.3);
+    --shadow-brutal-red: 0 4px 16px -2px hsl(348 83% 47% / 0.4);
 
     /* Gradientes Brutales */
     --gradient-primary: linear-gradient(135deg, hsl(348 83% 47%), hsl(343 100% 33%));
@@ -83,9 +83,9 @@ All colors MUST be HSL.
     --border-gradient-silver: linear-gradient(135deg, #e5e7eb, #9ca3af);
     --border-gradient-silver-vertical: linear-gradient(180deg, #e5e7eb, #9ca3af);
 
-    /* Transiciones Brutales - Instantaneas o mecanicas */
-    --transition-brutal: all 0.1s linear;
-    --transition-none: none;
+    /* Transiciones Cinematográficas - Suaves y fluidas */
+    --transition-brutal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-none: all 0.2s ease-out;
     --shadow-sm: 3px 5px 7.5px -1px hsl(240, 4%, 46%);
     --shadow: 3px 5px 15px -1px hsl(240, 4%, 46%);
     --shadow-md: 3px 5px 22.5px -1px hsl(240, 4%, 46%);
@@ -122,10 +122,10 @@ All colors MUST be HSL.
     --gray-medium: 0 0% 40%;
     --gray-light: 0 0% 70%;
     --gray-lighter: 0 0% 90%;
-    --shadow-brutal: 4px 4px 0 hsl(0 0% 98%);
-    --shadow-brutal-sm: 2px 2px 0 hsl(0 0% 98%);
-    --shadow-brutal-lg: 6px 6px 0 hsl(0 0% 98%);
-    --shadow-brutal-red: 4px 4px 0 hsl(348 83% 47%);
+    --shadow-brutal: 0 4px 12px -2px hsl(0 0% 98% / 0.15);
+    --shadow-brutal-sm: 0 2px 6px -1px hsl(0 0% 98% / 0.1);
+    --shadow-brutal-lg: 0 8px 24px -4px hsl(0 0% 98% / 0.2);
+    --shadow-brutal-red: 0 4px 16px -2px hsl(348 83% 47% / 0.4);
     --font-sans: Poppins, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 
   }
@@ -197,7 +197,7 @@ All colors MUST be HSL.
 
   .border-brutal {
     border-width: var(--border-width-brutal, 1px);
-    @apply border-foreground;
+    @apply border-foreground/20;
   }
 
   .transition-brutal {
@@ -210,11 +210,11 @@ All colors MUST be HSL.
 
   /* Hover Brutales - Instantaneos */
   .hover-brutal {
-    @apply transition-none hover:shadow-brutal;
+    @apply transition-brutal hover:shadow-brutal;
   }
 
   .hover-brutal-red {
-    @apply transition-none hover:shadow-brutal-red hover:-translate-x-1 hover:-translate-y-1;
+    @apply transition-brutal hover:shadow-brutal-red hover:-translate-y-1;
   }
 
   /* Gradientes */
