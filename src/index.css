@@ -19,8 +19,8 @@ All colors MUST be HSL.
     --background: 0 0% 83.1373%; /* #FAFAFA Blanco brutal */
     --foreground: 0 0% 8%; /* #141414 Negro */
 
-    --card: 0 0% 25.098%;
-    --card-foreground: 0 74.6835% 15.4902%;
+    --card: 0 0% 89.8039%;
+    --card-foreground: 0 0% 25.098%;
 
     --popover: 0 0% 83.1373%;
     --popover-foreground: 0 0% 8%;
@@ -38,8 +38,8 @@ All colors MUST be HSL.
     --secondary-hover: 0 0% 15%;
 
     /* Neutrales Brutales */
-    --muted: 0 0% 25.098%; /* #E5E5E5 */
-    --muted-foreground: 0 0% 9.0196%; /* #4D4D4D */
+    --muted: 0 0% 63.9216%; /* #E5E5E5 */
+    --muted-foreground: 0 0% 32.1569%; /* #4D4D4D */
 
     --accent: 0 72.2222% 50.5882%; /* Rojo para acentos */
     --accent-foreground: 0 0% 83.1373%;
