@@ -69,11 +69,11 @@ All colors MUST be HSL.
     --tritone-mid: 0 0% 15%; /* Color para tonos medios (areas medias) */
     --tritone-low: 0 0% 8%; /* Color para tonos bajos (areas oscuras) */
 
-    /* Sombras Cinematográficas - Suaves con blur */
-    --shadow-brutal: 0 4px 12px -2px hsl(0 0% 8% / 0.25);
-    --shadow-brutal-sm: 0 2px 6px -1px hsl(0 0% 8% / 0.2);
-    --shadow-brutal-lg: 0 8px 24px -4px hsl(0 0% 8% / 0.3);
-    --shadow-brutal-red: 0 4px 16px -2px hsl(348 83% 47% / 0.4);
+    /* Sombras Brutales Finas - Offset sólido pero sutil */
+    --shadow-brutal: 2px 2px 0 0 hsl(0 0% 8% / 0.15);
+    --shadow-brutal-sm: 1px 1px 0 0 hsl(0 0% 8% / 0.12);
+    --shadow-brutal-lg: 3px 3px 0 0 hsl(0 0% 8% / 0.2);
+    --shadow-brutal-red: 2px 2px 0 0 hsl(348 83% 47% / 0.3);
 
     /* Gradientes Brutales */
     --gradient-primary: linear-gradient(135deg, hsl(348 83% 47%), hsl(343 100% 33%));
@@ -122,10 +122,10 @@ All colors MUST be HSL.
     --gray-medium: 0 0% 40%;
     --gray-light: 0 0% 70%;
     --gray-lighter: 0 0% 90%;
-    --shadow-brutal: 0 4px 12px -2px hsl(0 0% 98% / 0.15);
-    --shadow-brutal-sm: 0 2px 6px -1px hsl(0 0% 98% / 0.1);
-    --shadow-brutal-lg: 0 8px 24px -4px hsl(0 0% 98% / 0.2);
-    --shadow-brutal-red: 0 4px 16px -2px hsl(348 83% 47% / 0.4);
+    --shadow-brutal: 2px 2px 0 0 hsl(0 0% 98% / 0.15);
+    --shadow-brutal-sm: 1px 1px 0 0 hsl(0 0% 98% / 0.1);
+    --shadow-brutal-lg: 3px 3px 0 0 hsl(0 0% 98% / 0.2);
+    --shadow-brutal-red: 2px 2px 0 0 hsl(348 83% 47% / 0.3);
     --font-sans: Poppins, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 
   }
