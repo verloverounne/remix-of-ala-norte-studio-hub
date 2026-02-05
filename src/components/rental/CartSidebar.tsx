@@ -166,7 +166,7 @@ export const CartSidebar = ({
   // Desktop: Sticky sidebar - responsive, no max height
   return (
     <div
-      className="z-20 bg-background shadow-brutal"
+      className="z-20 bg-card shadow-brutal border-px"
       style={{
         top: `${stickyTop}px`,
       }}
