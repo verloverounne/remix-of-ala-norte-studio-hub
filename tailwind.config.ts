@@ -15,7 +15,7 @@ export default {
   	extend: {
   		fontFamily: {
   			sans: [
-  				'Poppins',
+  				'Roboto',
   				'ui-sans-serif',
   				'system-ui',
   				'sans-serif',
