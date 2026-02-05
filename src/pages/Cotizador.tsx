@@ -274,7 +274,7 @@ Contactar cliente para coordinar entrega/retiro.
                   </Button>}
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 bg-background">
               {items.length === 0 ? <div className="text-center py-12 border border-dashed border-foreground/20">
                   <ShoppingCart className="h-16 w-16 mx-auto mb-4 opacity-20" />
                   <p className="font-heading text-xl mb-2">Todavía no hay equipos en tu lista</p>
@@ -292,7 +292,7 @@ Contactar cliente para coordinar entrega/retiro.
                   {items.map(item => {
                 const isUnavailable = unavailableEquipment.has(item.id);
                 return <Card key={item.id} className={`overflow-hidden ${isUnavailable ? 'border-destructive border-2' : ''}`}>
-                        <div className="grid grid-cols-1 sm:grid-cols-[80px_1fr_auto] gap-4 p-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-[80px_1fr_auto] gap-4 p-4 bg-card">
                           {/* Image */}
                           <div className="aspect-square w-20 sm:w-full bg-muted overflow-hidden relative mx-auto sm:mx-0">
                             {item.imageUrl ? <img src={item.imageUrl} alt={item.name} className={`w-full h-full object-cover ${isUnavailable ? 'grayscale opacity-50' : 'grayscale'}`} /> : <div className="w-full h-full flex items-center justify-center bg-muted">
