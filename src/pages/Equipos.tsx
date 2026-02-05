@@ -305,13 +305,13 @@ const Equipos = () => {
       <HeroCarouselRental categories={categories} onCategoryChange={handleCategoryClick} activeCategory={activeCategory} />
 
       {/* Sticky navigation bar - Below Hero */}
-      <div className="sticky z-[50] bg-background/95 backdrop-blur-sm border-b border-foreground/10 transition-all duration-300" style={{
+      <div className="sticky z-[50] backdrop-blur-sm border-b border-foreground/10 transition-all duration-300 bg-accent-foreground" style={{
       top: `${stickyTop}px`
     }}>
         <div className="container mx-auto py-0 items-center px-0">
           {/* Row 1: Category chips */}
           <div className="flex items-center gap-2 mb-2">
-            <div className="flex w-screen items-center flex-wrap gap-2 flex-1 pt-4">
+            <div className="w-screen flex-wrap gap-2 flex-1 pt-4 flex items-center justify-center py-0 my-[6px]">
               {categories.map(category => {
               const count = equipmentCounts[category.id] || 0;
               const isActive = activeCategory === category.id;
@@ -329,7 +329,7 @@ const Equipos = () => {
           <div ref={filterRef}>
             <Collapsible open={isFilterOpen} onOpenChange={setIsFilterOpen}>
               <div className="pb-2">
-                <button onClick={() => setIsFilterOpen(!isFilterOpen)} className="flex items-center gap-1 font-heading text-xs uppercase text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+                <button onClick={() => setIsFilterOpen(!isFilterOpen)} className="flex items-center gap-1 font-heading uppercase text-muted-foreground hover:text-foreground transition-colors cursor-pointer text-base font-bold">
                   {isFilterOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
                   Subcategorías
                   {selectedSubcategories.length > 0 && <span className="ml-1 text-[10px] bg-primary text-primary-foreground px-1.5 rounded-sm">
@@ -338,7 +338,7 @@ const Equipos = () => {
                 </button>
               </div>
               <CollapsibleContent>
-                <div className="pb-4">
+                <div className="pb-4 mx-[24px]">
                   {filteredSubcategories.length === 0 ? <p className="text-xs text-muted-foreground items-center justify-between px-2 mb:px-2 lg:px-4">No hay subcategorías para esta categoría</p> : <div className="flex flex-wrap gap-2">
                       {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("px-2 py-1 text-xs font-heading uppercase transition-all border", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                           {sub.name}
