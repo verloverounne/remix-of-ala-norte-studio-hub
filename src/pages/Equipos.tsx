@@ -391,7 +391,7 @@ const Equipos = () => {
             <Button variant="ghost" size="sm" onClick={() => {
             setIsSearchOpen(!isSearchOpen);
             if (isFilterOpen) setIsFilterOpen(false);
-          }} className={cn("h-8 px-2 flex-shrink-0 text-foreground", isSearchOpen && "bg-primary text-primary-foreground")}>
+          }} className={cn("h-8 px-2 flex-shrink-0 text-foreground rounded-none", isSearchOpen && "bg-primary text-primary-foreground")}>
               <Search className="h-4 w-4" />
               <span className="ml-1 text-xs hidden sm:inline text-accent-foreground">Buscar</span>
             </Button>
