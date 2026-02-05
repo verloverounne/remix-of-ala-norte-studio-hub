@@ -308,14 +308,14 @@ const Equipos = () => {
       <div className="sticky z-[50] backdrop-blur-sm border-b border-foreground/10 transition-all duration-300 bg-accent-foreground" style={{
       top: `${stickyTop}px`
     }}>
-        <div className="container mx-auto py-0 items-center px-0">
+        <div className="container mx-auto py-0 items-center px-0 bg-card">
           {/* Row 1: Category chips */}
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-screen flex-wrap gap-2 flex-1 pt-4 flex items-center justify-center py-0 my-[6px]">
+            <div className="min-w-screen flex-wrap flex-1 pt-4 flex items-center justify-center py-0 bg-foreground my-0 pb-[16px] gap-[24px] pl-[16px] pr-[16px] px-[16px]">
               {categories.map(category => {
               const count = equipmentCounts[category.id] || 0;
               const isActive = activeCategory === category.id;
-              return <button key={category.id} onClick={() => handleCategoryClick(category.id)} className={cn("flex-shrink-0 px-3 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap border", isActive ? "bg-primary text-primary-foreground shadow-brutal-sm border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
+              return <button key={category.id} onClick={() => handleCategoryClick(category.id)} className={cn("flex-shrink-0 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap border px-[24px] font-medium", isActive ? "bg-primary text-primary-foreground shadow-brutal-sm border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                     <span>{category.name}</span>
                     {count > 0 && <span className={cn("ml-1.5 text-[10px]", isActive ? "text-primary-background/80" : "text-background")}>
                         ({count})
@@ -329,10 +329,10 @@ const Equipos = () => {
           <div ref={filterRef}>
             <Collapsible open={isFilterOpen} onOpenChange={setIsFilterOpen}>
               <div className="pb-2">
-                <button onClick={() => setIsFilterOpen(!isFilterOpen)} className="flex items-center gap-1 font-heading uppercase text-muted-foreground hover:text-foreground transition-colors cursor-pointer text-base font-bold">
+                <button onClick={() => setIsFilterOpen(!isFilterOpen)} className="flex items-center gap-1 font-heading uppercase transition-colors cursor-pointer text-base font-bold text-accent-foreground">
                   {isFilterOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
                   Subcategorías
-                  {selectedSubcategories.length > 0 && <span className="ml-1 text-[10px] bg-primary text-primary-foreground px-1.5 rounded-sm">
+                  {selectedSubcategories.length > 0 && <span className="ml-1 text-[10px] text-primary-foreground px-1.5 rounded-sm bg-accent-foreground">
                       {selectedSubcategories.length}
                     </span>}
                 </button>
@@ -340,7 +340,7 @@ const Equipos = () => {
               <CollapsibleContent>
                 <div className="pb-4 mx-[24px]">
                   {filteredSubcategories.length === 0 ? <p className="text-xs text-muted-foreground items-center justify-between px-2 mb:px-2 lg:px-4">No hay subcategorías para esta categoría</p> : <div className="flex flex-wrap gap-2">
-                      {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("px-2 py-1 text-xs font-heading uppercase transition-all border", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
+                      {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("px-2 py-1 text-xs font-heading uppercase transition-all border text-secondary bg-border", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                           {sub.name}
                         </button>)}
                     </div>}
@@ -355,14 +355,14 @@ const Equipos = () => {
             <Button variant="ghost" size="sm" onClick={() => {
             setIsFilterOpen(!isFilterOpen);
             if (isSearchOpen) setIsSearchOpen(false);
-          }} className={cn("h-8 px-2 flex-shrink-0", !isFilterOpen && "bg-primary text-primary-foreground")}>
+          }} className={cn("h-8 px-2 flex-shrink-0 text-accent-foreground", !isFilterOpen && "bg-primary text-primary-foreground")}>
               <Filter className="h-4 w-4" />
               {selectedSubcategories.length > 0 && <Badge variant="secondary" className="ml-1 text-[9px] h-4 px-1">
                   {selectedSubcategories.length}
                 </Badge>}
             </Button>
 
-            <p className="text-xs text-foreground font-heading uppercase mx-[44px] ml-0 mr-[6px]">
+            <p className="text-xs font-heading uppercase mx-[44px] ml-0 mr-[6px] text-accent-foreground">
               Mostrando {filteredEquipment.length} equipos
             </p>
 
@@ -393,7 +393,7 @@ const Equipos = () => {
             if (isFilterOpen) setIsFilterOpen(false);
           }} className={cn("h-8 px-2 flex-shrink-0 text-foreground", isSearchOpen && "bg-primary text-primary-foreground")}>
               <Search className="h-4 w-4" />
-              <span className="ml-1 text-xs hidden sm:inline">Buscar</span>
+              <span className="ml-1 text-xs hidden sm:inline text-accent-foreground">Buscar</span>
             </Button>
           </div>
 
