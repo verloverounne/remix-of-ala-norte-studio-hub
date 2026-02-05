@@ -184,19 +184,108 @@ export default {
   				'50%': {
   					transform: 'translateX(25%)'
   				}
-  			}
-  		},
-  		animation: {
-  			'accordion-down': 'accordion-down 0.3s ease-out',
-  			'accordion-up': 'accordion-up 0.3s ease-out',
-  			'fade-in': 'fade-in 0.5s ease-out',
-  			'fade-in-up': 'fade-in-up 0.6s ease-out',
-  			'slide-in': 'slide-in 0.4s ease-out',
-  			'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
-  			shimmer: 'shimmer 1.5s infinite',
-  			'bounce-x': 'bounce-x 1s ease-in-out infinite'
-  		}
-  	}
+			},
+			'cinema-focus': {
+				'0%': {
+					filter: 'blur(8px)',
+					opacity: '0',
+					transform: 'translateY(20px)'
+				},
+				'60%': {
+					filter: 'blur(2px)',
+					opacity: '0.8'
+				},
+				'100%': {
+					filter: 'blur(0)',
+					opacity: '1',
+					transform: 'translateY(0)'
+				}
+			},
+			'digital-glitch': {
+				'0%': {
+					transform: 'translateY(20px) skewX(0deg)',
+					opacity: '0'
+				},
+				'30%': {
+					transform: 'translateY(10px) skewX(-1deg)',
+					opacity: '0.7'
+				},
+				'60%': {
+					transform: 'translateY(5px) skewX(0.5deg)',
+					opacity: '0.9'
+				},
+				'100%': {
+					transform: 'translateY(0) skewX(0deg)',
+					opacity: '1'
+				}
+			},
+			'battery-load': {
+				'0%': {
+					opacity: '0',
+					transform: 'translateY(30px) scale(0.95)'
+				},
+				'50%': {
+					opacity: '0.7',
+					transform: 'translateY(10px) scale(0.98)'
+				},
+				'100%': {
+					opacity: '1',
+					transform: 'translateY(0) scale(1)'
+				}
+			},
+			'reveal-scan': {
+				'0%': {
+					opacity: '0',
+					transform: 'translateY(30px)',
+					clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)'
+				},
+				'100%': {
+					opacity: '1',
+					transform: 'translateY(0)',
+					clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
+				}
+			},
+			'aperture-open': {
+				'0%': {
+					opacity: '0',
+					transform: 'scale(0.8)',
+					clipPath: 'circle(0% at 50% 50%)'
+				},
+				'100%': {
+					opacity: '1',
+					transform: 'scale(1)',
+					clipPath: 'circle(150% at 50% 50%)'
+				}
+			},
+			'interactive-pulse': {
+				'0%': {
+					boxShadow: '0 0 0 0 hsl(var(--primary) / 0.4)'
+				},
+				'50%': {
+					boxShadow: '0 0 0 8px hsl(var(--primary) / 0.1)'
+				},
+				'100%': {
+					boxShadow: '0 0 0 0 hsl(var(--primary) / 0)'
+				}
+			}
+		},
+		animation: {
+			'accordion-down': 'accordion-down 0.3s ease-out',
+			'accordion-up': 'accordion-up 0.3s ease-out',
+			'fade-in': 'fade-in 0.5s ease-out',
+			'fade-in-up': 'fade-in-up 0.6s ease-out',
+			'slide-in': 'slide-in 0.4s ease-out',
+			'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
+			shimmer: 'shimmer 1.5s infinite',
+			'bounce-x': 'bounce-x 1s ease-in-out infinite',
+			'cinema-focus': 'cinema-focus 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+			'digital-glitch': 'digital-glitch 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+			'battery-load': 'battery-load 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+			'reveal-scan': 'reveal-scan 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+			'aperture-open': 'aperture-open 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+			'interactive-pulse': 'interactive-pulse 1.5s ease-out'
+		}
+	}
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
