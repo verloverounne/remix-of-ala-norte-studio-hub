@@ -513,11 +513,11 @@ export const EquipmentManager = () => {
     }
   };
 
-  // Inline quick update for status, featured, price, and stock_quantity
+  // Inline quick update for status, featured, price, stock_quantity, name, and image_url
   const handleInlineUpdate = async (
     equipmentId: string,
-    field: 'status' | 'featured' | 'price_per_day' | 'stock_quantity',
-    value: string | boolean | number
+    field: 'status' | 'featured' | 'price_per_day' | 'stock_quantity' | 'name' | 'image_url',
+    value: string | boolean | number | null
   ) => {
     const updateData: Record<string, any> = {};
     updateData[field] = value;
@@ -891,32 +891,27 @@ export const EquipmentManager = () => {
 
               {/* Equipment List */}
               <ScrollArea className="h-[400px] sm:h-[500px] border rounded-md">
-                <div className="p-2 space-y-1">
+                <div className="p-2 space-y-2">
                   {filteredEquipment.map((eq) => (
                     <div
                       key={eq.id}
                       className={cn(
-                        "w-full flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-md transition-colors group",
-                        selectedEquipment?.id === eq.id ? "bg-primary text-primary-foreground" : "hover:bg-muted",
+                        "w-full p-2 sm:p-3 rounded-md transition-colors border",
+                        selectedEquipment?.id === eq.id ? "bg-primary/10 border-primary" : "hover:bg-muted border-transparent",
                       )}
                     >
-                      <button
-                        onClick={() => setSelectedEquipment(eq)}
-                        className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 text-left pr-2"
-                      >
-                        {/* Botones de editar/eliminar a la izquierda */}
-                        <div className="flex gap-1 shrink-0">
+                      {/* Primera línea: Acciones + Imagen + Nombre editable */}
+                      <div className="flex items-start gap-2">
+                        {/* Botones de acción */}
+                        <div className="flex flex-col gap-1 shrink-0">
                           <Button
                             variant="ghost"
                             size="icon"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleEditEquipment(eq);
-                            }}
+                            onClick={() => handleEditEquipment(eq)}
                             title="Editar equipo"
-                            className="h-8 w-8"
+                            className="h-7 w-7"
                           >
-                            <Edit className="h-4 w-4" />
+                            <Edit className="h-3.5 w-3.5" />
                           </Button>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
@@ -925,13 +920,12 @@ export const EquipmentManager = () => {
                                 size="icon"
                                 disabled={deleting === eq.id}
                                 title="Eliminar equipo"
-                                className="h-8 w-8"
-                                onClick={(e) => e.stopPropagation()}
+                                className="h-7 w-7"
                               >
                                 {deleting === eq.id ? (
-                                  <RefreshCw className="h-4 w-4 animate-spin text-destructive" />
+                                  <RefreshCw className="h-3.5 w-3.5 animate-spin text-destructive" />
                                 ) : (
-                                  <Trash2 className="h-4 w-4 text-destructive" />
+                                  <Trash2 className="h-3.5 w-3.5 text-destructive" />
                                 )}
                               </Button>
                             </AlertDialogTrigger>
@@ -953,9 +947,22 @@ export const EquipmentManager = () => {
                               </AlertDialogFooter>
                             </AlertDialogContent>
                           </AlertDialog>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setSelectedEquipment(eq)}
+                            title="Gestionar imágenes"
+                            className={cn("h-7 w-7", selectedEquipment?.id === eq.id && "text-primary")}
+                          >
+                            <ImageIcon className="h-3.5 w-3.5" />
+                          </Button>
                         </div>
+
                         {/* Imagen del equipo */}
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded bg-muted shrink-0 border-2">
+                        <button
+                          onClick={() => setSelectedEquipment(eq)}
+                          className="w-12 h-12 sm:w-14 sm:h-14 rounded bg-muted shrink-0 border-2 overflow-hidden"
+                        >
                           {getMainImageUrl(eq) ? (
                             <img
                               src={getMainImageUrl(eq)!}
@@ -970,10 +977,25 @@ export const EquipmentManager = () => {
                               <ImageIcon className="h-5 w-5 text-muted-foreground" />
                             </div>
                           )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium truncate">{eq.name}</p>
-                          <div className="flex gap-1 mt-1 flex-wrap">
+                        </button>
+
+                        {/* Nombre editable + Badges */}
+                        <div className="flex-1 min-w-0 space-y-1">
+                          <Input
+                            value={eq.name}
+                            onChange={(e) => {
+                              const newName = e.target.value;
+                              setEquipment(prev => prev.map(item => 
+                                item.id === eq.id ? { ...item, name: newName } : item
+                              ));
+                            }}
+                            onBlur={(e) => {
+                              handleInlineUpdate(eq.id, 'name', e.target.value);
+                            }}
+                            className="h-7 text-sm font-medium w-full"
+                            placeholder="Nombre del equipo"
+                          />
+                          <div className="flex gap-1 flex-wrap">
                             {eq.categories && (
                               <Badge variant="outline" className="text-xs">
                                 {eq.categories.name}
@@ -981,20 +1003,60 @@ export const EquipmentManager = () => {
                             )}
                             {hasImage(eq) ? (
                               <Badge variant="default" className="text-xs bg-blue-600">
-                                Con imagen
+                                Img
                               </Badge>
                             ) : (
                               <Badge variant="outline" className="text-xs text-muted-foreground">
-                                Sin imagen
+                                Sin img
+                              </Badge>
+                            )}
+                            {eq.status === 'available' ? (
+                              <Badge variant="default" className="text-xs bg-green-600">
+                                Disp
+                              </Badge>
+                            ) : (
+                              <Badge variant="destructive" className="text-xs">
+                                No disp
+                              </Badge>
+                            )}
+                            {eq.featured && (
+                              <Badge variant="default" className="text-xs bg-yellow-600">
+                                <Star className="h-3 w-3 mr-0.5 fill-current" />
+                                Dest
                               </Badge>
                             )}
                           </div>
                         </div>
-                        {/* Inline controls */}
-                        <div className="flex flex-wrap items-center gap-1 sm:gap-2 shrink-0" onClick={(e) => e.stopPropagation()}>
+                      </div>
+
+                      {/* Segunda línea: URL de imagen + Controles */}
+                      <div className="mt-2 flex flex-col sm:flex-row gap-2">
+                        {/* URL de imagen editable */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-1">
+                            <ImageIcon className="h-3 w-3 text-muted-foreground shrink-0" />
+                            <Input
+                              value={eq.image_url || ""}
+                              onChange={(e) => {
+                                const newUrl = e.target.value;
+                                setEquipment(prev => prev.map(item => 
+                                  item.id === eq.id ? { ...item, image_url: newUrl } : item
+                                ));
+                              }}
+                              onBlur={(e) => {
+                                handleInlineUpdate(eq.id, 'image_url', e.target.value || null);
+                              }}
+                              className="h-6 text-xs flex-1"
+                              placeholder="URL de imagen principal..."
+                            />
+                          </div>
+                        </div>
+
+                        {/* Controles inline */}
+                        <div className="flex items-center gap-2 flex-wrap">
                           {/* Quantity */}
                           <div className="flex items-center gap-1" title="Cantidad">
-                            <span className="text-xs text-muted-foreground hidden sm:inline">Cant:</span>
+                            <span className="text-xs text-muted-foreground">Cant:</span>
                             <Input
                               type="number"
                               min="0"
@@ -1009,7 +1071,7 @@ export const EquipmentManager = () => {
                                 const newQty = parseInt(e.target.value) || 0;
                                 handleInlineUpdate(eq.id, 'stock_quantity', newQty);
                               }}
-                              className="w-14 h-7 text-xs px-1"
+                              className="w-12 h-6 text-xs px-1"
                             />
                           </div>
                           {/* Price */}
@@ -1028,7 +1090,7 @@ export const EquipmentManager = () => {
                                 const newPrice = parseInt(e.target.value) || 0;
                                 handleInlineUpdate(eq.id, 'price_per_day', newPrice);
                               }}
-                              className="w-16 sm:w-20 h-7 text-xs px-1"
+                              className="w-16 h-6 text-xs px-1"
                             />
                           </div>
                           {/* Featured toggle */}
@@ -1038,7 +1100,7 @@ export const EquipmentManager = () => {
                               onCheckedChange={(v) => handleInlineUpdate(eq.id, 'featured', v)}
                               className="scale-75"
                             />
-                            <Star className={cn("h-3.5 w-3.5", eq.featured ? "text-yellow-500 fill-yellow-500" : "text-muted-foreground")} />
+                            <Star className={cn("h-3 w-3", eq.featured ? "text-yellow-500 fill-yellow-500" : "text-muted-foreground")} />
                           </div>
                           {/* Status toggle */}
                           <div className="flex items-center gap-0.5" title="Disponible">
@@ -1047,12 +1109,12 @@ export const EquipmentManager = () => {
                               onCheckedChange={(v) => handleInlineUpdate(eq.id, 'status', v ? 'available' : 'maintenance')}
                               className="scale-75"
                             />
-                            <span className={cn("text-xs font-medium", eq.status === 'available' ? "text-green-600" : "text-destructive")}>
-                              {eq.status === 'available' ? 'Disp' : 'No'}
+                            <span className={cn("text-xs", eq.status === 'available' ? "text-green-600" : "text-destructive")}>
+                              {eq.status === 'available' ? '✓' : '✗'}
                             </span>
                           </div>
                         </div>
-                      </button>
+                      </div>
                     </div>
                   ))}
                 </div>
