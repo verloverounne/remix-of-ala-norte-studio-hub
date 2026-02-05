@@ -338,7 +338,7 @@ const Equipos = () => {
                 </button>
               </div>
               <CollapsibleContent>
-                <div className="pb-4 mx-[24px]">
+                <div className="pb-4 mx-0">
                   {filteredSubcategories.length === 0 ? <p className="text-xs text-muted-foreground items-center justify-between px-2 mb:px-2 lg:px-4">No hay subcategorías para esta categoría</p> : <div className="flex flex-wrap gap-2">
                       {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("px-2 py-1 text-xs font-heading uppercase transition-all border text-border bg-border", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                           {sub.name}
@@ -352,15 +352,7 @@ const Equipos = () => {
           {/* Row 2: Filter toggle + Equipment count + Sort + View toggle + Search button */}
           <div className="flex items-center mb-2 flex-wrap gap-2 flex-1">
             {/* Filter button - to HIDE subcategories */}
-            <Button variant="ghost" size="sm" onClick={() => {
-            setIsFilterOpen(!isFilterOpen);
-            if (isSearchOpen) setIsSearchOpen(false);
-          }} className={cn("h-8 px-2 flex-shrink-0 text-accent-foreground", !isFilterOpen && "bg-primary text-primary-foreground")}>
-              <Filter className="h-4 w-4" />
-              {selectedSubcategories.length > 0 && <Badge variant="secondary" className="ml-1 text-[9px] h-4 px-1">
-                  {selectedSubcategories.length}
-                </Badge>}
-            </Button>
+            
 
             <p className="text-xs font-heading uppercase mx-[44px] ml-0 mr-[6px] text-accent-foreground">
               Mostrando {filteredEquipment.length} equipos
@@ -414,7 +406,7 @@ const Equipos = () => {
         </div>
       </div>
 
-      <div className="container w-screen mx-auto px-4 pb-4 sm:pb-6 bg-background">
+      <div className="container w-screen mx-auto pb-4 sm:pb-6 bg-background px-0">
         <div className="grid lg:grid-cols-4 gap-4 lg:gap-6">
           {/* Main Content - Category Sections */}
           <main className="lg:col-span-3 bg-background">
