@@ -311,11 +311,11 @@ const Equipos = () => {
         <div className="container mx-auto py-0 items-center px-0 bg-card">
           {/* Row 1: Category chips */}
           <div className="flex items-center gap-2 mb-2">
-            <div className="min-w-screen flex-wrap flex-1 pt-4 flex items-center justify-center py-0 bg-foreground my-0 pb-[16px] gap-[24px] pl-[16px] pr-[16px] px-[16px]">
+            <div className="min-w-screen flex-wrap gap-2 flex-1 pt-4 flex items-center justify-center py-0 my-[6px]">
               {categories.map(category => {
               const count = equipmentCounts[category.id] || 0;
               const isActive = activeCategory === category.id;
-              return <button key={category.id} onClick={() => handleCategoryClick(category.id)} className={cn("flex-shrink-0 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap border px-[24px] font-medium", isActive ? "bg-primary text-primary-foreground shadow-brutal-sm border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
+              return <button key={category.id} onClick={() => handleCategoryClick(category.id)} className={cn("flex-shrink-0 px-3 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap border", isActive ? "bg-primary text-primary-foreground shadow-brutal-sm border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                     <span>{category.name}</span>
                     {count > 0 && <span className={cn("ml-1.5 text-[10px]", isActive ? "text-primary-background/80" : "text-background")}>
                         ({count})
@@ -332,7 +332,7 @@ const Equipos = () => {
                 <button onClick={() => setIsFilterOpen(!isFilterOpen)} className="flex items-center gap-1 font-heading uppercase transition-colors cursor-pointer text-base font-bold text-accent-foreground">
                   {isFilterOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
                   Subcategorías
-                  {selectedSubcategories.length > 0 && <span className="ml-1 text-[10px] text-primary-foreground px-1.5 rounded-sm bg-accent-foreground">
+                  {selectedSubcategories.length > 0 && <span className="ml-1 text-[10px] bg-primary text-primary-foreground px-1.5 rounded-sm">
                       {selectedSubcategories.length}
                     </span>}
                 </button>
@@ -340,7 +340,7 @@ const Equipos = () => {
               <CollapsibleContent>
                 <div className="pb-4 mx-[24px]">
                   {filteredSubcategories.length === 0 ? <p className="text-xs text-muted-foreground items-center justify-between px-2 mb:px-2 lg:px-4">No hay subcategorías para esta categoría</p> : <div className="flex flex-wrap gap-2">
-                      {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("px-2 py-1 text-xs font-heading uppercase transition-all border text-secondary bg-border", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
+                      {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("px-2 py-1 text-xs font-heading uppercase transition-all border bg-secondary-foreground text-secondary", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                           {sub.name}
                         </button>)}
                     </div>}
