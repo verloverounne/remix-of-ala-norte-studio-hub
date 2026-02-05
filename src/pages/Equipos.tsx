@@ -311,7 +311,7 @@ const Equipos = () => {
         <div className="container mx-auto py-0 items-center px-0 bg-card">
           {/* Row 1: Category chips */}
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-screen flex-wrap gap-2 flex-1 pt-4 flex items-center justify-center py-0 my-[6px]">
+            <div className="min-w-screen flex-wrap gap-2 flex-1 pt-4 flex items-center justify-center py-0 my-[6px]">
               {categories.map(category => {
               const count = equipmentCounts[category.id] || 0;
               const isActive = activeCategory === category.id;
@@ -340,7 +340,7 @@ const Equipos = () => {
               <CollapsibleContent>
                 <div className="pb-4 mx-[24px]">
                   {filteredSubcategories.length === 0 ? <p className="text-xs text-muted-foreground items-center justify-between px-2 mb:px-2 lg:px-4">No hay subcategorías para esta categoría</p> : <div className="flex flex-wrap gap-2">
-                      {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("px-2 py-1 text-xs font-heading uppercase transition-all border", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
+                      {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("px-2 py-1 text-xs font-heading uppercase transition-all border bg-secondary-foreground text-secondary", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                           {sub.name}
                         </button>)}
                     </div>}
