@@ -25,7 +25,7 @@ export const CartSidebar = ({
     <>
       {/* Header */}
       <div className="p-4">
-        <div className="flex items-center justify-between bg-background">
+        <div className="flex items-center justify-between">
           <h3 className="font-heading text-lg sm:text-xl uppercase">Tu presupuesto</h3>
           <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded">
             {totalItems} {totalItems === 1 ? "ítem" : "ítems"}
@@ -166,7 +166,7 @@ export const CartSidebar = ({
   // Desktop: Sticky sidebar - responsive, no max height
   return (
     <div
-      className="z-20 bg-card shadow-brutal"
+      className="z-20 bg-background shadow-brutal"
       style={{
         top: `${stickyTop}px`,
       }}
