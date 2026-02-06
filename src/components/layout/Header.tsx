@@ -219,7 +219,7 @@ export const Header = () => {
           onMouseLeave={handleMouseLeave}
         >
           <nav className="w-full flex items-center justify-center px-4 py-3 backdrop-blur-sm">
-            <div className="flex h-12 items-center justify-center gap-4">
+            <div className="flex h-10 lg:h-14 items-center justify-center gap-4">
               {/* Logo Brutal */}
               <Link to="/" className="flex items-center">
                 <img src={logo} alt="Ala Norte" className="h-full w-auto object-contain mx-8" />
@@ -231,16 +231,7 @@ export const Header = () => {
                   <Link
                     key={item.name}
                     to={item.href}
-                    className={`flex items-center justify-center flex-shrink-0
-        px-4 xl:px-6
-        h-12
-        font-heading text-xs xl:text-sm tracking-tight
-        border transition-none
-        ${
-          location.pathname === item.href
-            ? "bg-primary text-primary-foreground border-foreground shadow-brutal-sm"
-            : "bg-background text-foreground border-transparent hover:border-foreground hover:shadow-brutal-sm"
-        }`}
+                    className={`px-4 xl:px-6 h-10 xl:h-12 flex items-center justify-center font-heading text-xs xl:text-sm tracking-tight border transition-none flex-shrink-0 ${location.pathname === item.href ? "bg-primary text-primary-foreground border-foreground shadow-brutal-sm" : "bg-background border-transparent hover:border-foreground hover:shadow-brutal-sm"}`}
                   >
                     {item.name}
                   </Link>
