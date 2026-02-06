@@ -34,7 +34,7 @@ const FeaturedEquipmentSection = ({
   });
   return <section className="relative border-y border-border bg-background overflow-hidden">
       <div className="py-12 sm:py-0 bg-foreground lg:py-[64px]">
-        <div ref={headerParallax.ref as any} style={headerParallax.style} className="container mx-auto mb-8 sm:mb-12 border-background bg-foreground px-0">
+        <div ref={headerParallax.ref as any} style={headerParallax.style} className="container mx-auto mb-8 sm:mb-12 border-background bg-foreground ">
           <div>
             <h2 className="font-heading text-3xl lg:text-brutal mb-2 sm:mb-4 text-center sm:text-5xl text-primary my-[3px] py-[32px] bg-muted-foreground">
               RENTAL DESTACADO
