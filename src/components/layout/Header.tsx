@@ -249,11 +249,11 @@ export const Header = () => {
                       px-4 xl:px-6
                       h-12
                       font-heading text-xs xl:text-sm tracking-tight
-                      border transition-none
+                      transition-colors
                       ${
                         location.pathname === item.href
-                          ? "bg-primary text-primary-foreground border-foreground shadow-brutal-sm"
-                          : "bg-background text-foreground border-transparent hover:border-foreground hover:shadow-brutal-sm"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-transparent text-foreground hover:bg-primary hover:text-primary-foreground"
                       }`}
                   >
                     {item.name}
@@ -263,22 +263,22 @@ export const Header = () => {
 
               {/* Actions Brutales */}
               <div className="flex flex-wrap items-center gap-1 sm:gap-2 h-12">
-                {/* Search */}
-                <div className="flex items-center h-12">
+                {/* Search: sin borde, mismo hover que los demás */}
+                <div className="flex items-center justify-center h-12 px-4 xl:px-6 bg-transparent hover:bg-primary hover:text-primary-foreground transition-colors">
                   <SearchBar />
                 </div>
 
-                {/* ADMIN cuando es admin */}
+                {/* ADMIN: sin borde, mismo hover */}
                 {user && isAdmin && (
                   <Link
                     to="/admin"
-                    className="flex items-center justify-center h-12 px-4 xl:px-6 font-heading text-xs xl:text-sm tracking-tight border bg-background text-foreground hover:border-foreground hover:shadow-brutal-sm"
+                    className="flex items-center justify-center h-12 px-4 xl:px-6 font-heading text-xs xl:text-sm tracking-tight bg-transparent text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
                     ADMIN
                   </Link>
                 )}
 
-                {/* Logout / Login */}
+                {/* Logout / Login: sin borde, mismo hover */}
                 {user ? (
                   <button
                     type="button"
@@ -286,7 +286,7 @@ export const Header = () => {
                       signOut();
                       navigate("/");
                     }}
-                    className="flex items-center justify-center h-12 px-3 border bg-background text-foreground hover:border-foreground hover:shadow-brutal-sm"
+                    className="flex items-center justify-center h-12 px-3 bg-transparent text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                     title="Cerrar sesión"
                   >
                     <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
@@ -294,7 +294,7 @@ export const Header = () => {
                 ) : (
                   <Link
                     to="/auth"
-                    className="flex items-center justify-center h-12 px-4 xl:px-6 font-heading text-xs xl:text-sm tracking-tight border bg-background text-foreground hover:border-foreground hover:shadow-brutal-sm"
+                    className="flex items-center justify-center h-12 px-4 xl:px-6 font-heading text-xs xl:text-sm tracking-tight bg-transparent text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
                     LOGIN
                   </Link>
