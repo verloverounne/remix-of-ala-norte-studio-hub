@@ -248,7 +248,7 @@ export const Header = () => {
                   variant="ghost"
                   size="icon"
                   asChild
-                  className="h-10 w-10 xl:h-12 xl:w-12 hover:bg-green-500 hover:text-white"
+                  className="h-10 w-10 xl:h-12 xl:w-12 rounded-0 hover:bg-green-500 hover:text-white"
                   aria-label="Contactar por WhatsApp"
                 >
                   <a
@@ -262,7 +262,7 @@ export const Header = () => {
 
                 {user && isAdmin ? (
                   <>
-                    <Button asChild variant="ghost" size="sm" className="h-10 xl:h-12 text-xs xl:text-sm">
+                    <Button asChild variant="ghost" size="sm" className="h-10 xl:h-12 rounded-0 text-xs xl:text-sm">
                       <Link to="/admin">ADMIN</Link>
                     </Button>
                     <Button
@@ -286,13 +286,13 @@ export const Header = () => {
                       signOut();
                       navigate("/");
                     }}
-                    className="h-10 w-10 xl:h-12 xl:w-12"
+                    className="h-10 w-10 xl:h-12 xl:w-12 rounded-0"
                     title="Cerrar sesión"
                   >
-                    <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
+                    <LogOut className="h-4 w-4 xl:h-5 xl:w-5 rounded-0" />
                   </Button>
                 ) : (
-                  <Button asChild variant="outline" size="sm" className="h-10 xl:h-12 text-xs xl:text-sm">
+                  <Button asChild variant="outline" size="sm" className="h-10 xl:h-12 text-xs xl:text-sm rounded-0">
                     <Link to="/auth">LOGIN</Link>
                   </Button>
                 )}
