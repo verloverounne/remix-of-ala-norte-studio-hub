@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
 import { SearchBar } from "@/components/SearchBar";
 import logo from "@/assets/logo-brutal.png";
+
 const WHATSAPP_NUMBER = "541147180732"; // +54 (11) 4718-0732
 
 const navigation = [
@@ -27,7 +28,7 @@ const navigation = [
     name: "SALA",
     href: "/sala-grabacion",
   },
-  //  { name: "SERVICIOS", href: "/servicios" },
+  // { name: "SERVICIOS", href: "/servicios" },
   {
     name: "CONTACTO",
     href: "/contacto",
@@ -37,6 +38,7 @@ const navigation = [
     href: "/cotizador",
   },
 ];
+
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isVisible, setIsVisible, isHovering, setIsHovering, isMobile } = useHeaderVisibility();
@@ -66,8 +68,10 @@ export const Header = () => {
         setMobileMenuOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("touchstart", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);
@@ -81,6 +85,7 @@ export const Header = () => {
         setMobileMenuOpen(false);
       }, 5000);
     }
+
     return () => {
       if (autoCloseTimerRef.current) {
         clearTimeout(autoCloseTimerRef.current);
@@ -98,16 +103,19 @@ export const Header = () => {
       setMobileMenuOpen(false);
     }, 5000);
   }, []);
+
   const handleMouseEnter = () => {
     setIsHovering(true);
     setIsVisible(true);
   };
+
   const handleMouseLeave = () => {
     setIsHovering(false);
     if (!mobileMenuOpen) {
       setIsVisible(false);
     }
   };
+
   return (
     <>
       {/* Hover trigger zone - only on desktop (non-touch devices) */}
@@ -143,7 +151,11 @@ export const Header = () => {
                 key={item.name}
                 to={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block px-4 py-3 font-heading text-sm touch-manipulation border-b border-foreground/20 last:border-b-0 ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground active:bg-foreground active:text-background"}`}
+                className={`block px-4 py-3 font-heading text-sm touch-manipulation border-b border-foreground/20 last:border-b-0 ${
+                  location.pathname === item.href
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-background text-foreground active:bg-foreground active:text-background"
+                }`}
                 style={{
                   WebkitTapHighlightColor: "rgba(0,0,0,0.1)",
                 }}
@@ -158,7 +170,7 @@ export const Header = () => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-4 py-3 font-heading text-sm bg-teal-500 text-white active:bg-teal-600 touch-manipulation border-b border-foreground/20"
+              className="flex items-center gap-3 px-4 py-3 font-heading text-sm bg-green-500 text-white active:bg-green-600 touch-manipulation border-b border-foreground/20"
               style={{
                 WebkitTapHighlightColor: "rgba(0,0,0,0.1)",
               }}
@@ -214,14 +226,16 @@ export const Header = () => {
       {/* Desktop Header - only visible on non-touch devices */}
       {!isMobile && (
         <header
-          className={`fixed top-0 left-0 right-0 z-[65] bg-transparent border-b border-foreground transition-transform duration-300 ${isVisible || isHovering ? "translate-y-0" : "-translate-y-full"}`}
+          className={`fixed top-0 left-0 right-0 z-[65] bg-transparent border-b border-foreground transition-transform duration-300 ${
+            isVisible || isHovering ? "translate-y-0" : "-translate-y-full"
+          }`}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
           <nav className="w-full flex items-center justify-center px-4 py-3 backdrop-blur-sm">
-            <div className="flex h-10 lg:h-14 items-center justify-center gap-4">
+            <div className="flex h-12 items-center justify-center gap-4">
               {/* Logo Brutal */}
-              <Link to="/" className="flex items-center">
+              <Link to="/" className="flex items-center h-full">
                 <img src={logo} alt="Ala Norte" className="h-full w-auto object-contain mx-8" />
               </Link>
 
@@ -231,7 +245,16 @@ export const Header = () => {
                   <Link
                     key={item.name}
                     to={item.href}
-                    className={`px-4 xl:px-6 h-10 xl:h-12 flex items-center justify-center font-heading text-xs xl:text-sm tracking-tight border transition-none flex-shrink-0 ${location.pathname === item.href ? "bg-primary text-primary-foreground border-foreground shadow-brutal-sm" : "bg-background border-transparent hover:border-foreground hover:shadow-brutal-sm"}`}
+                    className={`flex items-center justify-center flex-shrink-0
+                      px-4 xl:px-6
+                      h-12
+                      font-heading text-xs xl:text-sm tracking-tight
+                      border transition-none
+                      ${
+                        location.pathname === item.href
+                          ? "bg-primary text-primary-foreground border-foreground shadow-brutal-sm"
+                          : "bg-background text-foreground border-transparent hover:border-foreground hover:shadow-brutal-sm"
+                      }`}
                   >
                     {item.name}
                   </Link>
@@ -239,33 +262,43 @@ export const Header = () => {
               </div>
 
               {/* Actions Brutales */}
-              <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+              <div className="flex flex-wrap items-center gap-1 sm:gap-2 h-12">
                 {/* Search */}
-                <SearchBar />
+                <div className="flex items-center h-12">
+                  <SearchBar />
+                </div>
 
-                {/* WhatsApp Button 
-                <Button variant="ghost" size="icon" asChild className="h-10 w-10 xl:h-12 xl:w-12 hover:bg-green-500 hover:text-white" aria-label="Contactar por WhatsApp">
-                  
-                </Button>
+                {/* ADMIN cuando es admin */}
+                {user && isAdmin && (
+                  <Link
+                    to="/admin"
+                    className="flex items-center justify-center h-12 px-4 xl:px-6 font-heading text-xs xl:text-sm tracking-tight border bg-background text-foreground hover:border-foreground hover:shadow-brutal-sm"
+                  >
+                    ADMIN
+                  </Link>
+                )}
 
-                {user && isAdmin ? <>
-                    <Button asChild variant="ghost" size="sm" className="h-10 xl:h-12 text-xs xl:text-sm">
-                      <Link to="/admin">ADMIN</Link>
-                    </Button>
-                    <Button variant="ghost" size="icon" onClick={() => {
-                signOut();
-                navigate("/");
-              }} className="h-10 w-10 xl:h-12 xl:w-12" title="Cerrar sesión">
-                      <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
-                    </Button>
-                  </> : user ? <Button variant="ghost" size="icon" onClick={() => {
-              signOut();
-              navigate("/");
-            }} className="h-10 w-10 xl:h-12 xl:w-12" title="Cerrar sesión">
+                {/* Logout / Login */}
+                {user ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      signOut();
+                      navigate("/");
+                    }}
+                    className="flex items-center justify-center h-12 px-3 border bg-background text-foreground hover:border-foreground hover:shadow-brutal-sm"
+                    title="Cerrar sesión"
+                  >
                     <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
-                  </Button> : <Button asChild variant="outline" size="sm" className="h-10 xl:h-12 text-xs xl:text-sm">
-                    <Link to="/auth">LOGIN</Link>
-                  </Button>} */}
+                  </button>
+                ) : (
+                  <Link
+                    to="/auth"
+                    className="flex items-center justify-center h-12 px-4 xl:px-6 font-heading text-xs xl:text-sm tracking-tight border bg-background text-foreground hover:border-foreground hover:shadow-brutal-sm"
+                  >
+                    LOGIN
+                  </Link>
+                )}
               </div>
             </div>
           </nav>
