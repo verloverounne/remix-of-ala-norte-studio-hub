@@ -80,7 +80,7 @@ const EquipmentSlide = ({
           {equipment.image_url && <div ref={imageParallax.ref as any} style={imageParallax.style} className="absolute inset-0 w-full h-[120%]">
               <img src={equipment.image_url} alt={equipment.name} className="w-full h-full object-cover opacity-40 group-hover:opacity-50 transition-opacity" />
             </div>}
-          <div ref={contentParallax.ref as any} style={contentParallax.style} className="absolute inset-0 flex items-center justify-center">
+          <div ref={contentParallax.ref as any} style={contentParallax.style} className="absolute inset-0 flex items-center justify-center image-duotone ">
             <div className="text-center z-10 p-8 max-w-4xl">
               <h3 className="font-heading text-6xl mb-6 uppercase text-center text-secondary md:text-5xl">
                 {equipment.name}
