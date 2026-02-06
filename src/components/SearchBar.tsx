@@ -181,7 +181,7 @@ export const SearchBar = () => {
       setTimeout(() => inputRef.current?.focus(), 100);
     }} className="h-10 w-10 xl:h-12 xl:w-12 rounded-0 rounded-none bg-inherit" aria-label="Abrir búsqueda">
           <Search className="h-4 w-4 xl:h-5 xl:w-5" />
-        </Button> : <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 top-20 sm:top-0 w-auto sm:w-80 md:w-96 bg-background border border-foreground shadow-brutal-lg z-50">
+        </Button> : <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 top-20 sm:top-0 w-auto sm:w-80 md:w-96 border border-foreground shadow-brutal-lg z-50 bg-transparent">
           <div className="flex items-center gap-2 p-3 border-b border-foreground bg-transparent">
             <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
             <Input ref={inputRef} type="text" placeholder="Buscar equipos, espacios..." value={query} onChange={e => setQuery(e.target.value)} onKeyDown={handleKeyDown} autoFocus className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0" />
@@ -228,7 +228,7 @@ export const SearchBar = () => {
               <p className="text-xs">Intenta con otras palabras clave</p>
             </div>}
           
-          {query.trim().length < 2 && <div className="p-6 text-center text-muted-foreground text-xs">
+          {query.trim().length < 2 && <div className="p-6 text-center text-muted-foreground text-s">
               Escribe al menos 2 caracteres para buscar
             </div>}
         </div>}
