@@ -244,8 +244,8 @@ export const HomeVideoHeroSlider = () => {
         </button>}
 
       {/* Logo centrado en la parte superior */}
-      <div className="absolute top-2 left-0 right-0 z-20 flex justify-center mt-1 md:2 lg:6 lg:12 my-0">
-        <img alt="Ala Norte Logo" className="sticky top-0 z-20 object-contain w-28 md:w-1/4 lg:w-1/5" src="/lovable-uploads/3245f3e3-446c-4ed7-a748-e60180c533bf.png" />
+      <div className="absolute top-2 left-0 right-0 z-20 flex justify-center mt-8 md:2 lg:6 lg:12 my-0">
+        <img alt="Ala Norte Logo" className="sticky top-10 z-20 object-contain w-28 md:w-1/4 lg:w-1/5" src="/lovable-uploads/3245f3e3-446c-4ed7-a748-e60180c533bf.png" />
       </div>
 
       {/* Navigation dots */}
