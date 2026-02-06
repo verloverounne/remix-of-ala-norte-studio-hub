@@ -350,11 +350,11 @@ const Equipos = () => {
           </div>
 
           {/* Row 2: Filter toggle + Equipment count + Sort + View toggle + Search button */}
-          <div className="flex items-center mb-2 flex-wrap gap-2 flex-1 obje">
+          <div className="mb-2 flex-wrap flex-1 obje flex items-center justify-center gap-[12px]">
             {/* Filter button - to HIDE subcategories */}
             
 
-            <p className="text-xs font-heading uppercase mx-[44px] ml-0 mr-[6px] text-accent-foreground">
+            <p className="text-xs font-heading uppercas ml-8 mr-[6px] text-accent-foreground mx-0">
               Mostrando {filteredEquipment.length} equipos
             </p>
 
