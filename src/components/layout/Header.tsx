@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
 import { SearchBar } from "@/components/SearchBar";
 import logo from "@/assets/logo-brutal.png";
-const WHATSAPP_NUMBER = "005411947180732"; // +54 (11) 4718-0732
+const WHATSAPP_NUMBER = "541147180732"; // +54 (11) 4718-0732
 
 const navigation = [
   {
@@ -206,7 +206,7 @@ export const Header = () => {
       {/* Desktop Header - only visible on non-touch devices */}
       {!isMobile && (
         <header
-          className={`fixed top-0 left-0 right-0 z-[65] bg-background border-b border-foreground transition-transform duration-300 ${
+          className={`fixed top-0 left-0 right-0 z-[65] bg-transparent backdrop-blur-sm border-b border-foreground transition-transform duration-300 ${
             isVisible || isHovering ? "translate-y-0" : "-translate-y-full"
           }`}
           onMouseEnter={handleMouseEnter}
@@ -216,7 +216,7 @@ export const Header = () => {
             <div className="flex h-10 lg:h-14 items-center justify-center gap-4">
               {/* Logo Brutal */}
               <Link to="/" className="flex items-center">
-                <img src={logo} alt="Ala Norte" className="h-full max-h-100px w-auto object-contain mx-8" />
+                <img src={logo} alt="Ala Norte" className="h-full w-auto object-contain mx-8" />
               </Link>
 
               {/* Desktop Navigation Brutal */}
