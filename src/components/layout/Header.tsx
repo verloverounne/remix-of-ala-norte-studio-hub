@@ -119,7 +119,7 @@ export const Header = () => {
           ref={menuButtonRef}
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="fixed top-3 right-3 z-[60] h-10 w-10 bg-background/80 backdrop-blur-sm border border-foreground shadow-brutal-sm flex items-center justify-center touch-manipulation"
+          className="fixed top-3 right-3 z-[60] h-10 w-10 bg-background/80 backdrop-blur-sm border border-background shadow-brutal-sm flex items-center justify-center touch-manipulation"
           aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
           style={{
             WebkitTapHighlightColor: "transparent",
@@ -133,7 +133,7 @@ export const Header = () => {
       {isMobile && mobileMenuOpen && (
         <div
           ref={menuRef}
-          className="fixed top-14 right-3 z-[70] w-64 bg-background/50 backdrop-blur-sm border border-foreground shadow-brutal pointer-events-auto"
+          className="fixed top-14 right-3 z-[70] w-64 bg-background border border-foreground shadow-brutal pointer-events-auto"
           onTouchStart={resetAutoCloseTimer}
           onMouseMove={resetAutoCloseTimer}
         >
@@ -214,7 +214,7 @@ export const Header = () => {
       {/* Desktop Header - only visible on non-touch devices */}
       {!isMobile && (
         <header
-          className={`fixed top-0 left-0 right-0 z-[65] bg-background/50 border-b border-foreground transition-transform duration-300 ${isVisible || isHovering ? "translate-y-0" : "-translate-y-full"}`}
+          className={`fixed top-0 left-0 right-0 z-[65] bg-transparent border-b border-foreground transition-transform duration-300 ${isVisible || isHovering ? "translate-y-0" : "-translate-y-full"}`}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
