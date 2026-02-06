@@ -350,7 +350,7 @@ const Equipos = () => {
           </div>
 
           {/* Row 2: Filter toggle + Equipment count + Sort + View toggle + Search button */}
-          <div className="flex items-center mb-2 flex-wrap gap-2 flex-1">
+          <div className="flex items-center mb-2 flex-wrap gap-2 flex-1 shrink-1">
             {/* Filter button - to HIDE subcategories */}
             
 
@@ -395,7 +395,7 @@ const Equipos = () => {
               <div className="pb-4">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input type="text" placeholder="Buscar equipos..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10 font-heading uppercase text-sm" autoFocus />
+                  <Input type="text" placeholder="Buscar equipos..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10 font-heading uppercase text-sm my-[16px] px-[32px] mx-0" autoFocus />
                   {searchTerm && <button onClick={() => setSearchTerm("")} className="absolute right-3 top-1/2 -translate-y-1/2">
                       <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
                     </button>}
