@@ -311,13 +311,13 @@ const Equipos = () => {
         <div className="container mx-auto py-0 items-center px-0 bg-transparent">
           {/* Row 1: Category chips */}
           <div className="flex items-center gap-2 mb-2">
-            <div className="min-w-screen flex-wrap flex-1 pt-4 flex items-center justify-center py-0 my-0 pb-[16px] gap-[24px] pl-[16px] pr-[16px] px-[16px] bg-transparent">
+            <div className="min-w-screen flex-wrap flex-1 pt-4 flex items-center justify-center py-0 my-0 pb-[16px] gap-[24px] pl-[16px] pr-[16px] px-[16px] bg-popover">
               {categories.map(category => {
               const count = equipmentCounts[category.id] || 0;
               const isActive = activeCategory === category.id;
               return <button key={category.id} onClick={() => handleCategoryClick(category.id)} className={cn("flex-wrap flex-1 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap border font-medium px-[12px]", isActive ? "bg-primary text-primary-foreground shadow-brutal-sm border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                     <span>{category.name}</span>
-                    {count > 0 && <span className={cn("ml-1.5 text-[10px]", isActive ? "text-primary-background/80" : "text-background")}>
+                    {count > 0 && <span className={cn("ml-1.5 text-[10px] text-foreground", isActive ? "text-primary-background/80" : "text-background")}>
                         ({count})
                       </span>}
                   </button>;
@@ -339,7 +339,7 @@ const Equipos = () => {
               </div>
               <CollapsibleContent>
                 <div className="pb-4 mx-0">
-                  {filteredSubcategories.length === 0 ? <p className="flex flex-auto text-xs text-muted-foreground items-center justify-between px-2 mb:px-4 lg:px-16">No hay subcategorías para esta categoría</p> : <div className="flex flex-wrap gap-2">
+                  {filteredSubcategories.length === 0 ? <p className="flex flex-wrap text-xs text-muted-foreground items-center justify-between px-2 mb:px-4 lg:px-16">No hay subcategorías para esta categoría</p> : <div className="flex flex-wrap gap-2">
                       {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("text-xs font-heading uppercase transition-all text-border text-center border-0 bg-popover px-[16px] py-[8px]", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                           {sub.name}
                         </button>)}
