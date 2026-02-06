@@ -214,7 +214,7 @@ export const Header = () => {
       {/* Desktop Header - only visible on non-touch devices */}
       {!isMobile && (
         <header
-          className={`fixed top-0 left-0 right-0 z-[65] bg-transparent border-b border-foreground transition-transform duration-300 ${
+          className={`fixed top-0 left-0 right-0 z-[65] bg-transparent border-b border-background transition-transform duration-300 ${
             isVisible || isHovering ? "translate-y-0" : "-translate-y-full"
           }`}
           onMouseEnter={handleMouseEnter}
@@ -224,11 +224,7 @@ export const Header = () => {
             <div className="flex w-full h-12 items-center justify-between">
               {/* Logo Brutal */}
               <Link to="/" className="flex items-center h-full">
-                <img
-                  src={logo}
-                  alt="Ala Norte"
-                  className="h-full w-auto object-contain"
-                />
+                <img src={logo} alt="Ala Norte" className="h-full w-auto object-contain" />
               </Link>
 
               {/* Desktop Navigation Brutal */}
@@ -296,7 +292,6 @@ export const Header = () => {
           </nav>
         </header>
       )}
-
     </>
   );
 };
