@@ -350,7 +350,7 @@ const Equipos = () => {
           </div>
 
           {/* Row 2: Filter toggle + Equipment count + Sort + View toggle + Search button */}
-          <div className="flex items-center mb-2 flex-wrap gap-2 flex-1 shrink-1">
+          <div className="flex items-center mb-2 flex-wrap gap-2 flex-1">
             {/* Filter button - to HIDE subcategories */}
             
 
