@@ -315,7 +315,7 @@ const Equipos = () => {
               {categories.map(category => {
               const count = equipmentCounts[category.id] || 0;
               const isActive = activeCategory === category.id;
-              return <button key={category.id} onClick={() => handleCategoryClick(category.id)} className={cn("shrink md:shrink-4 lg: shrink-16 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap border px-[24px] font-medium", isActive ? "bg-primary text-primary-foreground shadow-brutal-sm border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
+              return <button key={category.id} onClick={() => handleCategoryClick(category.id)} className={cn("flex-wrap flex-1 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap border font-medium px-[12px]", isActive ? "bg-primary text-primary-foreground shadow-brutal-sm border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                     <span>{category.name}</span>
                     {count > 0 && <span className={cn("ml-1.5 text-[10px]", isActive ? "text-primary-background/80" : "text-background")}>
                         ({count})
@@ -340,7 +340,7 @@ const Equipos = () => {
               <CollapsibleContent>
                 <div className="pb-4 mx-0">
                   {filteredSubcategories.length === 0 ? <p className="flex flex-auto text-xs text-muted-foreground items-center justify-between px-2 mb:px-4 lg:px-16">No hay subcategorías para esta categoría</p> : <div className="flex flex-wrap gap-2">
-                      {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("px-2 py-1 text-xs font-heading uppercase transition-all border text-border bg-border", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
+                      {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("text-xs font-heading uppercase transition-all text-border text-center border-0 bg-popover px-[16px] py-[8px]", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                           {sub.name}
                         </button>)}
                     </div>}
