@@ -231,7 +231,7 @@ export const Header = () => {
                   <Link
                     key={item.name}
                     to={item.href}
-                    className={`px-4 xl:px-6 h-10 xl:h-12 flex items-center  bg-background/50 justify-center bg-background font-heading text-xs xl:text-sm tracking-wider border transition-none flex-shrink-0 ${location.pathname === item.href ? "bg-primary text-primary-foreground border-foreground shadow-brutal-sm" : "bg-transparent border-transparent hover:border-foreground hover:shadow-brutal-sm"}`}
+                    className={`px-4 xl:px-6 h-10 xl:h-12 flex items-center justify-center font-heading text-xs xl:text-sm tracking-wider border transition-none flex-shrink-0 ${location.pathname === item.href ? "bg-primary text-primary-foreground border-foreground shadow-brutal-sm" : "bg-background border-transparent hover:border-foreground hover:shadow-brutal-sm"}`}
                   >
                     {item.name}
                   </Link>
