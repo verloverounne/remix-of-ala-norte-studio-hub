@@ -133,7 +133,7 @@ export const Header = () => {
       {isMobile && mobileMenuOpen && (
         <div
           ref={menuRef}
-          className="fixed top-14 right-3 z-[70] w-64 bg-background border border-foreground shadow-brutal pointer-events-auto"
+          className="fixed top-14 right-3 z-[70] w-64 bg-background/50 backdrop-blur-sm border border-foreground shadow-brutal pointer-events-auto"
           onTouchStart={resetAutoCloseTimer}
           onMouseMove={resetAutoCloseTimer}
         >
@@ -214,7 +214,7 @@ export const Header = () => {
       {/* Desktop Header - only visible on non-touch devices */}
       {!isMobile && (
         <header
-          className={`fixed top-0 left-0 right-0 z-[65] bg-transparent border-b border-foreground transition-transform duration-300 ${isVisible || isHovering ? "translate-y-0" : "-translate-y-full"}`}
+          className={`fixed top-0 left-0 right-0 z-[65] bg-background/50 border-b border-foreground transition-transform duration-300 ${isVisible || isHovering ? "translate-y-0" : "-translate-y-full"}`}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -248,7 +248,7 @@ export const Header = () => {
                   variant="ghost"
                   size="icon"
                   asChild
-                  className="h-10 w-10 xl:h-12 xl:w-12 rounded-0 hover:bg-green-500 hover:text-white"
+                  className="h-10 w-10 xl:h-12 xl:w-12 hover:bg-green-500 hover:text-white"
                   aria-label="Contactar por WhatsApp"
                 >
                   <a
@@ -262,7 +262,7 @@ export const Header = () => {
 
                 {user && isAdmin ? (
                   <>
-                    <Button asChild variant="ghost" size="sm" className="h-10 xl:h-12 rounded-0 text-xs xl:text-sm">
+                    <Button asChild variant="ghost" size="sm" className="h-10 xl:h-12 text-xs xl:text-sm">
                       <Link to="/admin">ADMIN</Link>
                     </Button>
                     <Button
@@ -286,13 +286,13 @@ export const Header = () => {
                       signOut();
                       navigate("/");
                     }}
-                    className="h-10 w-10 xl:h-12 xl:w-12 rounded-0"
+                    className="h-10 w-10 xl:h-12 xl:w-12"
                     title="Cerrar sesión"
                   >
-                    <LogOut className="h-4 w-4 xl:h-5 xl:w-5 rounded-0" />
+                    <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
                   </Button>
                 ) : (
-                  <Button asChild variant="outline" size="sm" className="h-10 xl:h-12 text-xs xl:text-sm rounded-0">
+                  <Button asChild variant="outline" size="sm" className="h-10 xl:h-12 text-xs xl:text-sm">
                     <Link to="/auth">LOGIN</Link>
                   </Button>
                 )}
