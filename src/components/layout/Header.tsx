@@ -231,26 +231,6 @@ export const Header = () => {
                 />
               </Link>
 
-       {/* Desktop Header - only visible on non-touch devices */}
-      {!isMobile && (
-        <header
-          className={`fixed top-0 left-0 right-0 z-[65] bg-transparent border-b border-foreground transition-transform duration-300 ${
-            isVisible || isHovering ? "translate-y-0" : "-translate-y-full"
-          }`}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          <nav className="w-screen flex items-center justify-center px-10 py-3 backdrop-blur-sm">
-            <div className="flex w-full h-12 items-center justify-between">
-              {/* Logo Brutal */}
-              <Link to="/" className="flex items-center h-full">
-                <img
-                  src={logo}
-                  alt="Ala Norte"
-                  className="h-full w-auto object-contain"
-                />
-              </Link>
-
               {/* Desktop Navigation Brutal */}
               <div className="flex flex-1 justify-center gap-4">
                 {navigation.map((item) => (
