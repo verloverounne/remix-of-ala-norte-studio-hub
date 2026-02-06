@@ -214,11 +214,13 @@ export const Header = () => {
       {/* Desktop Header - only visible on non-touch devices */}
       {!isMobile && (
         <header
-          className={`fixed top-0 left-0 right-0 z-[65] bg-background/10 border-b border-foreground transition-transform duration-300 ${isVisible || isHovering ? "translate-y-0" : "-translate-y-full"}`}
+          className={`fixed top-0 left-0 right-0 z-[65] bg-transparent border-b border-foreground transition-transform duration-300 ${
+            isVisible || isHovering ? "translate-y-0" : "-translate-y-full"
+          }`}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <nav className="w-screen flex items-center justify-center px-10 py-3 backdrop-blur-sm max-w-lg">
+          <nav className="w-screen flex items-center justify-center px-10 py-3 backdrop-blur-sm">
             <div className="flex w-full h-12 items-center justify-between">
               {/* Logo Brutal */}
               <Link to="/" className="flex items-center h-full">
@@ -236,7 +238,11 @@ export const Header = () => {
                       h-12
                       font-heading text-xs xl:text-sm tracking-tight
                       transition-colors
-                      ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-transparent text-foreground hover:bg-primary hover:text-primary-foreground"}`}
+                      ${
+                        location.pathname === item.href
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-background/50 text-foreground hover:bg-primary hover:text-primary-foreground"
+                      }`}
                   >
                     {item.name}
                   </Link>
@@ -245,8 +251,8 @@ export const Header = () => {
 
               {/* Actions Brutales */}
               <div className="flex items-center gap-2">
-                {/* Search wrapper con padding 24px y mismo hover */}
-                <div className="flex items-center justify-center h-12 px-6 bg-transparent hover:bg-primary hover:text-primary-foreground transition-colors">
+                {/* Search wrapper */}
+                <div className="flex items-center justify-center h-12 px-6 bg-background/50 hover:bg-primary hover:text-primary-foreground transition-colors">
                   <SearchBar />
                 </div>
 
@@ -254,7 +260,7 @@ export const Header = () => {
                 {user && isAdmin && (
                   <Link
                     to="/admin"
-                    className="flex items-center justify-center h-12 px-6 font-heading text-xs xl:text-sm tracking-tight bg-transparent text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="flex items-center justify-center h-12 px-6 font-heading text-xs xl:text-sm tracking-tight bg-background/50 text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
                     ADMIN
                   </Link>
@@ -268,7 +274,7 @@ export const Header = () => {
                       signOut();
                       navigate("/");
                     }}
-                    className="flex items-center justify-center h-12 px-6 bg-transparent text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="flex items-center justify-center h-12 px-6 bg-background/50 text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                     title="Cerrar sesión"
                   >
                     <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
@@ -276,7 +282,7 @@ export const Header = () => {
                 ) : (
                   <Link
                     to="/auth"
-                    className="flex items-center justify-center h-12 px-6 font-heading text-xs xl:text-sm tracking-tight bg-transparent text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="flex items-center justify-center h-12 px-6 font-heading text-xs xl:text-sm tracking-tight bg-background/50 text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
                     LOGIN
                   </Link>
