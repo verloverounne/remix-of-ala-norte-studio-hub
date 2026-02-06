@@ -206,7 +206,7 @@ export const Header = () => {
       {/* Desktop Header - only visible on non-touch devices */}
       {!isMobile && (
         <header
-          className={`fixed top-0 left-0 right-0 z-[65] bg-transparent backdrop-blur-sm border-b border-foreground transition-transform duration-300 ${
+          className={`fixed top-0 left-0 right-0 z-[65] bg-background border-b border-foreground transition-transform duration-300 ${
             isVisible || isHovering ? "translate-y-0" : "-translate-y-full"
           }`}
           onMouseEnter={handleMouseEnter}
@@ -228,7 +228,7 @@ export const Header = () => {
                     className={`px-4 xl:px-6 h-10 xl:h-12 flex items-center justify-center font-heading text-xs xl:text-sm tracking-wider border transition-none flex-shrink-0 ${
                       location.pathname === item.href
                         ? "bg-primary text-primary-foreground border-foreground shadow-brutal-sm"
-                        : "bg-transparent border-transparent hover:border-foreground hover:shadow-brutal-sm"
+                        : "bg-background border-transparent hover:border-foreground hover:shadow-brutal-sm"
                     }`}
                   >
                     {item.name}
