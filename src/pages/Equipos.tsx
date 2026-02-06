@@ -339,7 +339,7 @@ const Equipos = () => {
               </div>
               <CollapsibleContent>
                 <div className="pb-4 mx-0">
-                  {filteredSubcategories.length === 0 ? <p className="flex-wrap flex-1 text-xs text-muted-foreground items-center px-2 mb:px-4 lg:px-16">No hay subcategorías para esta categoría</p> : <div className="flex flex-wrap gap-2">
+                  {filteredSubcategories.length === 0 ? <p className="flex-wrap text-xs text-muted-foreground items-center px-2 mb:px-4 lg:px-16">No hay subcategorías para esta categoría</p> : <div className="flex flex-wrap gap-2">
                       {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("text-xs font-heading uppercase transition-all text-border text-center border-0 bg-popover px-[16px] py-[8px]", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                           {sub.name}
                         </button>)}
