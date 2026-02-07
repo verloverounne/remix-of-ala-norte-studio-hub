@@ -407,7 +407,7 @@ const Equipos = () => {
       </div>
 
       <div className="container w-screen mx-auto pb-4 sm:pb-6 bg-background px-0">
-        <div className="grid lg:grid-cols-4 gap-4 lg:gap-6">
+        <div className="grid lg:grid-cols-4 gap-4 lg:gap-6 bg-foreground">
           {/* Main Content - Category Sections */}
           <main className="lg:col-span-3 bg-background">
             {loading ? <div className="text-center py-12 sm:py-16 border border-foreground p-8 sm:p-12">

@@ -223,7 +223,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
         </div>
 
         {/* Equipment Grid - Collapsible with Subcategory Headers */}
-        {isExpanded && <div ref={gridRef} className="p-3 sm:p-4 border-[#201e1d] border-0 px-16 bg-background max-w-screen">
+        {isExpanded && <div ref={gridRef} className="p-3 sm:p-4 border-[#201e1d] border-0 px-16 bg-background max-w-screen ml-[16px]">
             {equipment.length === 0 ? <div className="text-center py-8 sm:py-12 text-muted-foreground">
                 <p className="font-heading text-lg">No hay equipos en esta categoría</p>
               </div> : viewMode === "list" ?
