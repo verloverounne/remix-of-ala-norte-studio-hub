@@ -305,13 +305,13 @@ const Equipos = () => {
       <HeroCarouselRental categories={categories} onCategoryChange={handleCategoryClick} activeCategory={activeCategory} />
 
       {/* Sticky navigation bar - Below Hero */}
-      <div className="sticky z-[50] backdrop-blur-sm border-b border-foreground/10 transition-all duration-300 bg-transparent" style={{
+      <div className="sticky z-[50] backdrop-blur-sm border-b border-foreground/10 transition-all duration-300 " style={{
       top: `${stickyTop}px`
     }}>
-        <div className="container mx-auto py-0 items-center px-0 bg-secondary-hover">
+        <div className="container mx-auto py-0 items-center px-0 bg-inherit">
           {/* Row 1: Category chips */}
           <div className="flex items-center gap-2 mb-2">
-            <div className="min-w-screen flex-wrap flex-1 pt-4 flex items-center justify-center py-0 my-0 pb-[16px] gap-[24px] pl-[16px] pr-[16px] px-[16px] bg-secondary-foreground">
+            <div className="min-w-screen flex-wrap flex-1 pt-4 flex items-center justify-center py-0 my-0 pb-[16px] gap-[24px] pl-[16px] pr-[16px] px-[16px] bg-inherit">
               {categories.map(category => {
               const count = equipmentCounts[category.id] || 0;
               const isActive = activeCategory === category.id;
@@ -350,7 +350,7 @@ const Equipos = () => {
           </div>
 
           {/* Row 2: Filter toggle + Equipment count + Sort + View toggle + Search button */}
-          <div className="mb-2 flex-wrap flex-1 obje flex items-center justify-center gap-[12px] text-background">
+          <div className="flex-wrap flex-1 obje flex items-center justify-center gap-[12px] text-foreground">
             {/* Filter button - to HIDE subcategories */}
             
 
@@ -412,7 +412,7 @@ const Equipos = () => {
           <main className="lg:col-span-3 bg-background">
             {loading ? <div className="text-center py-12 sm:py-16 border border-foreground p-8 sm:p-12">
                 <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>
-              </div> : <div className="space-y-4 sm:space-y-6 bg-background">
+              </div> : <div className="space-y-4 sm:space-y-6 bg-border">
                 {orderedCategories.filter(category => !isSearching || categoriesWithResults.has(category.id)).map((category, index) => <CategorySection key={category.id} ref={ref => {
               if (ref) {
                 categoryRefs.current.set(category.id, ref);
