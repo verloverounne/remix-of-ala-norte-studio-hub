@@ -210,7 +210,10 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
               className="flex items-center gap-1 sm:gap-3 cursor-pointer hover:text-primary transition-colors"
             >
               {isExpanded ? (
-         
+                <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 text-background" />
+              ) : (
+                <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 text-background" />
+              )}
               <h2 className="font-heading text-sm sm:text-lg md:text-xl uppercase truncate bg-transparent text-background">
                 {category.name}
               </h2>
