@@ -512,7 +512,7 @@ const Equipos = () => {
           </main>
 
           {/* Cart Sidebar - Sticky on desktop, drawer on mobile */}
-          <aside className="hidden lg:block lg:col-span-1 shadow-none pr-16">
+          <aside className="hidden lg:block lg:col-span-1 shadow-none pr-4">
             <CartSidebar
               items={items}
               calculateSubtotal={calculateSubtotal}
