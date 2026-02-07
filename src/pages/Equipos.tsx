@@ -424,7 +424,7 @@ const Equipos = () => {
           </main>
 
           {/* Cart Sidebar - Sticky on desktop, drawer on mobile */}
-          <aside className="hidden lg:block lg:col-span-1 shadow-none bg-background">
+          <aside className="hidden lg:block lg:col-span-1 shadow-none bg-foreground">
             <CartSidebar items={items} calculateSubtotal={calculateSubtotal} updateQuantity={updateQuantity} removeItem={removeItem} stickyTop={cartStickyTop} />
           </aside>
 
