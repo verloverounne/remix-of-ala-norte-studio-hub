@@ -350,11 +350,11 @@ const Equipos = () => {
           </div>
 
           {/* Row 2: Filter toggle + Equipment count + Sort + View toggle + Search button */}
-          <div className="mb-2 flex-wrap flex-1 obje flex items-center justify-center gap-[12px] text-popover">
+          <div className="mb-2 flex-wrap flex-1 obje flex items-center justify-center gap-[12px] text-background">
             {/* Filter button - to HIDE subcategories */}
             
 
-            <p className="text-xs font-heading uppercas ml-8 mr-[6px] text-accent-foreground mx-0">
+            <p className="text-xs font-heading uppercas ml-8 mr-[6px] mx-0 text-inherit">
               Mostrando {filteredEquipment.length} equipos
             </p>
 
@@ -383,9 +383,9 @@ const Equipos = () => {
             <Button variant="ghost" size="sm" onClick={() => {
             setIsSearchOpen(!isSearchOpen);
             if (isFilterOpen) setIsFilterOpen(false);
-          }} className={cn("h-8 px-2 flex-shrink-0 text-foreground rounded-none bg-inherit", isSearchOpen && "bg-primary text-primary-foreground")}>
+          }} className={cn("h-8 px-2 flex-shrink-0 rounded-none bg-inherit text-muted", isSearchOpen && "bg-primary text-primary-foreground")}>
               <Search className="h-4 w-4" />
-              <span className="ml-1 text-xs hidden sm:inline text-accent-foreground">Buscar</span>
+              <span className="ml-1 text-xs hidden sm:inline text-inherit">Buscar</span>
             </Button>
           </div>
 
