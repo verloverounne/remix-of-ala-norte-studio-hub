@@ -305,7 +305,7 @@ const Equipos = () => {
       <HeroCarouselRental categories={categories} onCategoryChange={handleCategoryClick} activeCategory={activeCategory} />
 
       {/* Sticky navigation bar - Below Hero */}
-      <div className="sticky z-[50] backdrop-blur-sm border-b  transition-all duration-300 " style={{
+      <div className="sticky z-[50] backdrop-blur-sm transition-all duration-300 " style={{
       top: `${stickyTop}px`
     }}>
         <div className="container mx-auto py-0 items-center px-0 bg-foreground">
@@ -329,7 +329,7 @@ const Equipos = () => {
           <div ref={filterRef}>
             <Collapsible open={isFilterOpen} onOpenChange={setIsFilterOpen}>
               <div className="pb-2">
-                <button onClick={() => setIsFilterOpen(!isFilterOpen)} className="flex items-center gap-1 font-heading uppercase transition-colors cursor-pointer text-base font-bold text-accent-foreground">
+                <button onClick={() => setIsFilterOpen(!isFilterOpen)} className="gap-1 font-heading uppercase transition-colors cursor-pointer text-base font-bold text-background flex items-center justify-center px-[16px]">
                   {isFilterOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
                   Subcategorías
                   {selectedSubcategories.length > 0 && <span className="ml-1 text-[10px] text-primary-foreground px-1.5 rounded-sm bg-accent-foreground">
@@ -411,7 +411,7 @@ const Equipos = () => {
           <main className="lg:col-span-3 bg-foreground">
             {loading ? <div className="text-center py-12 sm:py-16 border border-foreground p-8 sm:p-12">
                 <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>
-              </div> : <div className="space-y-4 sm:space-y-6 bg-border">
+              </div> : <div className="space-y-4 sm:space-y-6 bg-transparent">
                 {orderedCategories.filter(category => !isSearching || categoriesWithResults.has(category.id)).map((category, index) => <CategorySection key={category.id} ref={ref => {
               if (ref) {
                 categoryRefs.current.set(category.id, ref);
