@@ -439,7 +439,7 @@ const Equipos = () => {
 
           {/* Cart Sidebar - Sticky on desktop, drawer on mobile */}
           <aside className="hidden lg:block lg:col-span-1 shadow-none pr-4">
-            <div className="sticky" style={{ top: `${stickyTop + stickyNavHeight + 8}px` }}>
+            <div className="sticky" style={{ top: `${stickyTop + stickyNavHeight + 8}px`, ['--cart-top' as string]: `${stickyTop + stickyNavHeight + 8}px` }}>
               <CartSidebar items={items} calculateSubtotal={calculateSubtotal} updateQuantity={updateQuantity} removeItem={removeItem} />
             </div>
           </aside>

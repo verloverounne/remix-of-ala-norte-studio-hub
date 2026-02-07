@@ -22,9 +22,9 @@ export const CartSidebar = ({
   const [drawerOpen, setDrawerOpen] = useState(false);
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const CartContent = () => (
-    <>
+    <div className="flex flex-col h-full max-h-[calc(100vh-var(--cart-top,120px))]">
       {/* Header */}
-      <div className="p-4">
+      <div className="p-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <h3 className="font-heading text-lg sm:text-xl uppercase">Tu presupuesto</h3>
           <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded">
@@ -33,8 +33,8 @@ export const CartSidebar = ({
         </div>
       </div>
 
-      {/* Items list with internal scroll */}
-      <div className="overflow-y-auto flex-1 p-4">
+      {/* Items list - scrollable */}
+      <div className="overflow-y-auto flex-1 min-h-0 p-4 pt-0">
         {items.length === 0 ? (
           <div className="text-center py-8">
             <ShoppingCart className="w-12 h-12 mx-auto text-muted-foreground/40 mb-3" />
@@ -43,7 +43,7 @@ export const CartSidebar = ({
             </p>
           </div>
         ) : (
-          <div className="space-y-3 max-h-screen overflow-scroll ">
+          <div className="space-y-3">
             {items.map((item) => (
               <div key={item.id} className="p-3 bg-inherit">
                 <div className="flex gap-3">
@@ -100,9 +100,9 @@ export const CartSidebar = ({
         )}
       </div>
 
-      {/* Footer */}
+      {/* Footer - always visible at bottom */}
       {items.length > 0 && (
-        <div className="p-4 bg-muted/30">
+        <div className="p-4 bg-muted/30 flex-shrink-0 border-t border-foreground/10">
           <div className="space-y-2 mb-4">
             <div className="flex justify-between items-baseline">
               <span className="font-heading text-sm">Subtotal (1 día):</span>
@@ -119,7 +119,7 @@ export const CartSidebar = ({
           </Button>
         </div>
       )}
-    </>
+    </div>
   );
 
   // Mobile: Fixed bottom button + Drawer
