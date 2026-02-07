@@ -299,7 +299,7 @@ const Equipos = () => {
 
   // Sticky top for category headers
   const categoryTitleTop = isMobile ? 0 : 0;
-  const cartStickyTop = 80;
+  
   return <div className="min-h-screen bg-background">
       {/* Hero Carousel - Now simplified, only shows slides */}
       <HeroCarouselRental categories={categories} onCategoryChange={handleCategoryClick} activeCategory={activeCategory} />
@@ -424,7 +424,9 @@ const Equipos = () => {
 
           {/* Cart Sidebar - Sticky on desktop, drawer on mobile */}
           <aside className="hidden lg:block lg:col-span-1 shadow-none pr-4">
-            <CartSidebar items={items} calculateSubtotal={calculateSubtotal} updateQuantity={updateQuantity} removeItem={removeItem} stickyTop={cartStickyTop} />
+            <div className="sticky" style={{ top: `${stickyTop + 8}px` }}>
+              <CartSidebar items={items} calculateSubtotal={calculateSubtotal} updateQuantity={updateQuantity} removeItem={removeItem} />
+            </div>
           </aside>
 
           {/* Mobile cart button/drawer */}
