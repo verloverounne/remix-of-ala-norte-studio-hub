@@ -199,7 +199,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
       >
         {/* Sticky Category Header with Collapse */}
         <div
-          className="sticky z-20 bg-foreground mb-0 -mt-px my-0"
+          className="z-20 bg-foreground mb-0 -mt-px my-0"
           style={{
             top: `${stickyTop - 1}px`,
           }}
@@ -254,7 +254,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
             {/* Toggle all subcategories button */}
             {subcategories.length > 0 && (
               <Button
-                variant="ghost"
+                variant="link"
                 size="sm"
                 onClick={(e) => {
                   e.stopPropagation();
