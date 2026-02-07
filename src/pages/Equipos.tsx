@@ -405,7 +405,7 @@ const Equipos = () => {
 
             {/* Sort dropdown */}
             <Select value={sortOption} onValueChange={(val) => setSortOption(val as SortOption)}>
-              <SelectTrigger className="w-[140px] sm:w-[160px] h-8 text-xs font-heading">
+              <SelectTrigger className="w-[140px] sm:w-[160px] h-8 text-xs  text-background  bg-foreground font-heading">
                 <ArrowUpDown className="h-3 w-3 mr-1" />
                 <SelectValue placeholder="Ordenar" />
               </SelectTrigger>
