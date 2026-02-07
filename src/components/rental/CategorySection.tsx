@@ -225,7 +225,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
               </Badge>
             </button>
 
-            {/* Subcategory dropdown */}
+            {/* Subcategory dropdown 
             {subcategories.length > 0 && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -250,7 +250,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
-
+*/}
             {/* Toggle all subcategories button */}
             {subcategories.length > 0 && (
               <Button
