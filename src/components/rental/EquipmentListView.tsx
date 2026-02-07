@@ -22,8 +22,7 @@ export const EquipmentListView = ({
     return <div className="text-center py-8 sm:py-12 text-muted-foreground">
         <p className="font-heading text-lg">No hay equipos disponibles</p>
       </div>;
-  }¿900
-  3+}}}}}}
+  }
 
 
 
