@@ -182,7 +182,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
     scrollMarginTop: `${stickyTop + 8}px`
   }}>
         {/* Sticky Category Header with Collapse */}
-        <div className="z-20 bg-foreground mb-0 -mt-px my-0" style={{
+        <div className="sticky z-20 bg-foreground mb-0 -mt-px my-0" style={{
       top: `${stickyTop - 1}px`
     }}>
           <div className="px-2 sm:px-4 flex items-center justify-between gap-[32px] text-foreground bg-inherit">
