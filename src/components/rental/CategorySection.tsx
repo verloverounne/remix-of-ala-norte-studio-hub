@@ -182,10 +182,10 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
     scrollMarginTop: `${stickyTop + 8}px`
   }}>
         {/* Sticky Category Header with Collapse */}
-        <div className="z-20 bg-foreground mb-0 -mt-px my-0" style={{
+        <div className="z-20 mb-0 -mt-px my-0 bg-foreground" style={{
       top: `${stickyTop - 1}px`
     }}>
-          <div className="justify-n px-2 sm:px-4 flex items-center justify-start gap-[32px] text-foreground bg-inherit">
+          <div className="justify-n px-2 sm:px-4 flex items-center justify-start gap-[32px] text-foreground bg-inherit py-[16px]">
             <button onClick={handleHeaderClick} className="flex items-center gap-1 sm:gap-3 cursor-pointer hover:text-primary transition-colors">
               {isExpanded ? <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5 transition-transform flex-shrink-0 text-background" /> : <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform flex-shrink-0" />}
               <h2 className="font-heading text-sm sm:text-lg md:text-xl uppercase truncate bg-transparent text-background">
@@ -199,7 +199,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
             {/* Subcategory dropdown */}
             {subcategories.length > 0 && <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="link" size="sm" className="h-7 px-2 text-xs font-heading uppercase">
+                  <Button variant="link" size="sm" className="h-7 px-2 text-xs font-heading uppercase text-background">
                     Subcategorías
                     <ChevronDown className="h-3 w-3 ml-1" />
                   </Button>
@@ -216,7 +216,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
           e.stopPropagation();
           toggleAllSubcategories();
         }} className="h-7 px-2 text-xs font-heading uppercase gap-1" title={allSubcategoriesExpanded ? "Colapsar todas" : "Expandir todas"}>
-                <ChevronsUpDown className="h-3 w-3" />
+                <ChevronsUpDown className="h-3 w-3 text-background" />
                 <span className="hidden sm:inline text-background">{allSubcategoriesExpanded ? "Colapsar" : "Expandir"}</span>
               </Button>}
           </div>
