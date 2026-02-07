@@ -308,10 +308,10 @@ const Equipos = () => {
       <div className="sticky z-[50] backdrop-blur-sm border-b border-foreground/10 transition-all duration-300 bg-transparent" style={{
       top: `${stickyTop}px`
     }}>
-        <div className="container mx-auto py-0 items-center px-0 bg-transparent">
+        <div className="container mx-auto py-0 items-center px-0 bg-secondary-hover">
           {/* Row 1: Category chips */}
           <div className="flex items-center gap-2 mb-2">
-            <div className="min-w-screen flex-wrap flex-1 pt-4 flex items-center justify-center py-0 my-0 pb-[16px] gap-[24px] pl-[16px] pr-[16px] px-[16px] bg-popover">
+            <div className="min-w-screen flex-wrap flex-1 pt-4 flex items-center justify-center py-0 my-0 pb-[16px] gap-[24px] pl-[16px] pr-[16px] px-[16px] bg-secondary-foreground">
               {categories.map(category => {
               const count = equipmentCounts[category.id] || 0;
               const isActive = activeCategory === category.id;
@@ -340,7 +340,7 @@ const Equipos = () => {
               <CollapsibleContent>
                 <div className="pb-4 mx-0">
                 {filteredSubcategories.length === 0 ? <p className="text-xs text-muted-foreground px-4">No hay subcategorías para esta categoría</p> : <div className="flex flex-wrap gap-2 px-4">
-                      {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("flex-1 min-w-fit text-xs font-heading uppercase transition-all text-center border-0 px-[16px] py-[8px]", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
+                      {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("flex-1 min-w-fit text-xs font-heading uppercase transition-all text-center border-0 px-[16px] py-[8px] bg-muted", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                           {sub.name}
                         </button>)}
                     </div>}
@@ -350,7 +350,7 @@ const Equipos = () => {
           </div>
 
           {/* Row 2: Filter toggle + Equipment count + Sort + View toggle + Search button */}
-          <div className="mb-2 flex-wrap flex-1 obje flex items-center justify-center gap-[12px]">
+          <div className="mb-2 flex-wrap flex-1 obje flex items-center justify-center gap-[12px] text-popover">
             {/* Filter button - to HIDE subcategories */}
             
 
