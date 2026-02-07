@@ -217,7 +217,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
           toggleAllSubcategories();
         }} className="h-7 px-2 text-xs font-heading uppercase gap-1" title={allSubcategoriesExpanded ? "Colapsar todas" : "Expandir todas"}>
                 <ChevronsUpDown className="h-3 w-3" />
-                <span className="hidden sm:inline">{allSubcategoriesExpanded ? "Colapsar" : "Expandir"}</span>
+                <span className="hidden sm:inline text-background">{allSubcategoriesExpanded ? "Colapsar" : "Expandir"}</span>
               </Button>}
           </div>
         </div>
