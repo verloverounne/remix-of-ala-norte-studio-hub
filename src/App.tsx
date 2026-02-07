@@ -60,7 +60,13 @@ const App = () => (
               <ScrollToTop />
               <Header />
               <MainContent>
-                <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+                <Suspense
+                  fallback={
+                    <div className="min-h-screen bg-foreground flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                    </div>
+                  }
+                >
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/equipos" element={<Equipos />} />
@@ -78,21 +84,21 @@ const App = () => (
                     <Route path="/galeria" element={<Galeria />} />
                     <Route path="/sala-grabacion" element={<SalaGrabacion />} />
                     <Route path="/auth" element={<Auth />} />
-                    <Route 
-                      path="/admin" 
+                    <Route
+                      path="/admin"
                       element={
                         <ProtectedRoute requireAdmin>
                           <Admin />
                         </ProtectedRoute>
-                      } 
+                      }
                     />
-                    <Route 
-                      path="/admin/blog" 
+                    <Route
+                      path="/admin/blog"
                       element={
                         <ProtectedRoute requireAdmin>
                           <AdminBlog />
                         </ProtectedRoute>
-                      } 
+                      }
                     />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
