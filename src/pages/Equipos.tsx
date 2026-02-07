@@ -21,7 +21,12 @@ type EquipmentWithStock = EquipmentWithCategory;
 type SortOption = "alphabetic" | "price-asc" | "price-desc";
 const Equipos = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { equipment, categories, subcategories, loading } = useEquipmentData();
+  const {
+    equipment,
+    categories,
+    subcategories,
+    loading
+  } = useEquipmentData();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
   const [selectedEquipment, setSelectedEquipment] = useState<EquipmentWithStock | null>(null);
@@ -31,15 +36,26 @@ const Equipos = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(true); // Default to OPEN
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [sortOption, setSortOption] = useState<SortOption>("alphabetic");
-  const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
-  const { toast } = useToast();
-  const { isMobile, isVisible } = useHeaderVisibility();
+  const {
+    addItem,
+    items,
+    calculateSubtotal,
+    updateQuantity,
+    removeItem
+  } = useCart();
+  const {
+    toast
+  } = useToast();
+  const {
+    isMobile,
+    isVisible
+  } = useHeaderVisibility();
 
   // Read equipment ID from URL and open modal automatically
   useEffect(() => {
     const equipmentId = searchParams.get("id");
     if (equipmentId && equipment.length > 0 && !loading) {
-      const foundEquipment = equipment.find((e) => e.id === equipmentId);
+      const foundEquipment = equipment.find(e => e.id === equipmentId);
       if (foundEquipment) {
         setSelectedEquipment(foundEquipment);
         setModalOpen(true);
@@ -55,7 +71,7 @@ const Equipos = () => {
       const newParams = new URLSearchParams(searchParams);
       newParams.delete("id");
       setSearchParams(newParams, {
-        replace: true,
+        replace: true
       });
     }
   };
@@ -76,21 +92,15 @@ const Equipos = () => {
       setActiveCategory(categories[0].id);
     }
   }, [categories, activeCategory]);
-  const getCartQuantity = useCallback(
-    (id: string) => {
-      const cartItem = items.find((item) => item.id === id);
-      return cartItem?.quantity || 0;
-    },
-    [items],
-  );
-  const canAddMore = useCallback(
-    (item: EquipmentWithStock) => {
-      const inCart = getCartQuantity(item.id);
-      const stock = item.stock_quantity ?? 1;
-      return inCart < stock;
-    },
-    [getCartQuantity],
-  );
+  const getCartQuantity = useCallback((id: string) => {
+    const cartItem = items.find(item => item.id === id);
+    return cartItem?.quantity || 0;
+  }, [items]);
+  const canAddMore = useCallback((item: EquipmentWithStock) => {
+    const inCart = getCartQuantity(item.id);
+    const stock = item.stock_quantity ?? 1;
+    return inCart < stock;
+  }, [getCartQuantity]);
   const fuzzyMatch = (text: string, search: string): boolean => {
     if (!search) return true;
     text = text.toLowerCase();
@@ -133,24 +143,17 @@ const Equipos = () => {
   // When searching, search across ALL categories
   const isSearching = searchTerm.length > 0;
   const filteredEquipment = useMemo(() => {
-    return equipment.filter((item) => {
+    return equipment.filter(item => {
       // Solo mostrar equipos disponibles en la página de rental
       if (item.status !== "available") return false;
-      const matchesSearch =
-        fuzzyMatch(item.name, searchTerm) ||
-        fuzzyMatch(item.brand || "", searchTerm) ||
-        fuzzyMatch(item.model || "", searchTerm);
+      const matchesSearch = fuzzyMatch(item.name, searchTerm) || fuzzyMatch(item.brand || "", searchTerm) || fuzzyMatch(item.model || "", searchTerm);
 
       // When searching, ignore category filter - search across all
       if (isSearching) {
-        const matchesSubcategory =
-          selectedSubcategories.length === 0 ||
-          (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
+        const matchesSubcategory = selectedSubcategories.length === 0 || item.subcategory_id && selectedSubcategories.includes(item.subcategory_id);
         return matchesSearch && matchesSubcategory;
       }
-      const matchesSubcategory =
-        selectedSubcategories.length === 0 ||
-        (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
+      const matchesSubcategory = selectedSubcategories.length === 0 || item.subcategory_id && selectedSubcategories.includes(item.subcategory_id);
       return matchesSearch && matchesSubcategory;
     });
   }, [equipment, searchTerm, selectedSubcategories, isSearching]);
@@ -159,7 +162,7 @@ const Equipos = () => {
   const subcategoriesWithResults = useMemo(() => {
     if (!isSearching) return new Set<string>();
     const subcatIds = new Set<string>();
-    filteredEquipment.forEach((item) => {
+    filteredEquipment.forEach(item => {
       if (item.subcategory_id) {
         subcatIds.add(item.subcategory_id);
       }
@@ -171,7 +174,7 @@ const Equipos = () => {
   const categoriesWithResults = useMemo(() => {
     if (!isSearching) return new Set<string>();
     const catIds = new Set<string>();
-    filteredEquipment.forEach((item) => {
+    filteredEquipment.forEach(item => {
       if (item.category_id) {
         catIds.add(item.category_id);
       }
@@ -184,8 +187,8 @@ const Equipos = () => {
     const sorted = [...filteredEquipment];
     sorted.sort((a, b) => {
       // Always sort by subcategory order_index first
-      const subA = subcategories.find((s) => s.id === a.subcategory_id);
-      const subB = subcategories.find((s) => s.id === b.subcategory_id);
+      const subA = subcategories.find(s => s.id === a.subcategory_id);
+      const subB = subcategories.find(s => s.id === b.subcategory_id);
       const orderA = subA?.order_index ?? 999;
       const orderB = subB?.order_index ?? 999;
       if (orderA !== orderB) return orderA - orderB;
@@ -206,20 +209,20 @@ const Equipos = () => {
   }, [filteredEquipment, sortOption, subcategories]);
   const equipmentByCategory = useMemo(() => {
     const grouped: Record<string, EquipmentWithStock[]> = {};
-    categories.forEach((cat) => {
-      grouped[cat.id] = sortedEquipment.filter((e) => e.category_id === cat.id);
+    categories.forEach(cat => {
+      grouped[cat.id] = sortedEquipment.filter(e => e.category_id === cat.id);
     });
     return grouped;
   }, [sortedEquipment, categories]);
   const orderedCategories = useMemo(() => {
     if (!activeCategory) return categories;
-    const active = categories.find((c) => c.id === activeCategory);
-    const rest = categories.filter((c) => c.id !== activeCategory);
+    const active = categories.find(c => c.id === activeCategory);
+    const rest = categories.filter(c => c.id !== activeCategory);
     return active ? [active, ...rest] : categories;
   }, [categories, activeCategory]);
   const equipmentCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    categories.forEach((cat) => {
+    categories.forEach(cat => {
       counts[cat.id] = equipmentByCategory[cat.id]?.length || 0;
     });
     return counts;
@@ -227,11 +230,11 @@ const Equipos = () => {
 
   // Subcategories filtered by active category
   const filteredSubcategories = useMemo(() => {
-    return activeCategory ? subcategories.filter((sub) => sub.category_id === activeCategory) : subcategories;
+    return activeCategory ? subcategories.filter(sub => sub.category_id === activeCategory) : subcategories;
   }, [subcategories, activeCategory]);
   const toggleSubcategory = (id: string) => {
     if (selectedSubcategories.includes(id)) {
-      setSelectedSubcategories(selectedSubcategories.filter((s) => s !== id));
+      setSelectedSubcategories(selectedSubcategories.filter(s => s !== id));
     } else {
       setSelectedSubcategories([...selectedSubcategories, id]);
     }
@@ -241,24 +244,21 @@ const Equipos = () => {
       toast({
         title: "Stock máximo alcanzado",
         description: `Solo hay ${item.stock_quantity} unidades disponibles de ${item.name}`,
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
-    addItem(
-      {
-        id: item.id,
-        name: item.name,
-        brand: item.brand || undefined,
-        pricePerDay: item.price_per_day,
-        imageUrl: item.image_url || undefined,
-        stockQuantity: item.stock_quantity,
-      },
-      1,
-    );
+    addItem({
+      id: item.id,
+      name: item.name,
+      brand: item.brand || undefined,
+      pricePerDay: item.price_per_day,
+      imageUrl: item.image_url || undefined,
+      stockQuantity: item.stock_quantity
+    }, 1);
     toast({
       title: "Agregado a cotización",
-      description: `${item.name} agregado`,
+      description: `${item.name} agregado`
     });
   };
   const handleViewDetails = (item: EquipmentWithStock) => {
@@ -300,54 +300,28 @@ const Equipos = () => {
   // Sticky top for category headers
   const categoryTitleTop = isMobile ? 0 : 0;
   const cartStickyTop = 80;
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       {/* Hero Carousel - Now simplified, only shows slides */}
-      <HeroCarouselRental
-        categories={categories}
-        onCategoryChange={handleCategoryClick}
-        activeCategory={activeCategory}
-      />
+      <HeroCarouselRental categories={categories} onCategoryChange={handleCategoryClick} activeCategory={activeCategory} />
 
       {/* Sticky navigation bar - Below Hero */}
-      <div
-        className="sticky z-[50] backdrop-blur-sm border-b border-foreground/10 transition-all duration-300 "
-        style={{
-          top: `${stickyTop}px`,
-        }}
-      >
-        <div className="container mx-auto py-0 items-center px-0 bg-inherit">
+      <div className="sticky z-[50] backdrop-blur-sm border-b  transition-all duration-300 " style={{
+      top: `${stickyTop}px`
+    }}>
+        <div className="container mx-auto py-0 items-center px-0 bg-foreground">
           {/* Row 1: Category chips */}
-          <div className="flex items-center gap-2 mb-2 bg-foreground">
+          <div className="flex items-center gap-2 mb-2">
             <div className="min-w-screen flex-wrap flex-1 pt-4 flex items-center justify-center py-0 my-0 pb-[16px] gap-[24px] pl-[16px] pr-[16px] px-[16px] bg-inherit">
-              {categories.map((category) => {
-                const count = equipmentCounts[category.id] || 0;
-                const isActive = activeCategory === category.id;
-                return (
-                  <button
-                    key={category.id}
-                    onClick={() => handleCategoryClick(category.id)}
-                    className={cn(
-                      "flex-wrap flex-1 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap border font-medium px-[12px]",
-                      isActive
-                        ? "bg-primary text-primary-foreground shadow-brutal-sm border-primary"
-                        : "bg-background text-foreground hover:bg-muted border-foreground/20",
-                    )}
-                  >
+              {categories.map(category => {
+              const count = equipmentCounts[category.id] || 0;
+              const isActive = activeCategory === category.id;
+              return <button key={category.id} onClick={() => handleCategoryClick(category.id)} className={cn("flex-wrap flex-1 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap border font-medium px-[12px]", isActive ? "bg-primary text-primary-foreground shadow-brutal-sm border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                     <span>{category.name}</span>
-                    {count > 0 && (
-                      <span
-                        className={cn(
-                          "ml-1.5 text-[10px] text-foreground",
-                          isActive ? "text-primary-background/80" : "text-background",
-                        )}
-                      >
+                    {count > 0 && <span className={cn("ml-1.5 text-[10px] text-foreground", isActive ? "text-primary-background/80" : "text-background")}>
                         ({count})
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
+                      </span>}
+                  </button>;
+            })}
             </div>
           </div>
 
@@ -355,48 +329,28 @@ const Equipos = () => {
           <div ref={filterRef}>
             <Collapsible open={isFilterOpen} onOpenChange={setIsFilterOpen}>
               <div className="pb-2">
-                <button
-                  onClick={() => setIsFilterOpen(!isFilterOpen)}
-                  className="flex items-center gap-1 font-heading uppercase transition-colors cursor-pointer text-base font-bold text-accent-foreground"
-                >
+                <button onClick={() => setIsFilterOpen(!isFilterOpen)} className="flex items-center gap-1 font-heading uppercase transition-colors cursor-pointer text-base font-bold text-accent-foreground">
                   {isFilterOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
                   Subcategorías
-                  {selectedSubcategories.length > 0 && (
-                    <span className="ml-1 text-[10px] text-primary-foreground px-1.5 rounded-sm bg-accent-foreground">
+                  {selectedSubcategories.length > 0 && <span className="ml-1 text-[10px] text-primary-foreground px-1.5 rounded-sm bg-accent-foreground">
                       {selectedSubcategories.length}
-                    </span>
-                  )}
+                    </span>}
                 </button>
               </div>
               <CollapsibleContent>
                 <div className="pb-4 mx-0">
-                  {filteredSubcategories.length === 0 ? (
-                    <p className="text-xs text-muted-foreground px-4">No hay subcategorías para esta categoría</p>
-                  ) : (
-                    <div className="flex flex-wrap gap-2 px-4">
-                      {filteredSubcategories.map((sub) => (
-                        <button
-                          key={sub.id}
-                          onClick={() => toggleSubcategory(sub.id)}
-                          className={cn(
-                            "flex-1 min-w-fit text-xs font-heading uppercase transition-all text-center px-[16px] py-[8px] bg-muted border border-muted",
-                            selectedSubcategories.includes(sub.id)
-                              ? "bg-primary text-primary-foreground border-primary"
-                              : "bg-background text-foreground hover:bg-muted border-foreground/20",
-                          )}
-                        >
+                  {filteredSubcategories.length === 0 ? <p className="text-xs text-muted-foreground px-4">No hay subcategorías para esta categoría</p> : <div className="flex flex-wrap gap-2 px-4">
+                      {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("flex-1 min-w-fit text-xs font-heading uppercase transition-all text-center px-[16px] py-[8px] bg-muted border border-muted", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                           {sub.name}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                        </button>)}
+                    </div>}
                 </div>
               </CollapsibleContent>
             </Collapsible>
           </div>
 
           {/* Row 2: Filter toggle + Equipment count + Sort + View toggle + Search button */}
-          <div className="flex-wrap flex-1 obje flex items-center justify-center gap-[12px] text-foreground">
+          <div className="flex-wrap flex-1 obje flex items-center justify-center gap-[12px] text-background">
             {/* Filter button - to HIDE subcategories */}
 
             <p className="text-xs font-heading uppercas ml-8 mr-[6px] mx-0 text-inherit">
@@ -404,7 +358,7 @@ const Equipos = () => {
             </p>
 
             {/* Sort dropdown */}
-            <Select value={sortOption} onValueChange={(val) => setSortOption(val as SortOption)}>
+            <Select value={sortOption} onValueChange={val => setSortOption(val as SortOption)}>
               <SelectTrigger className="w-[140px] sm:w-[160px] h-8 text-xs font-heading">
                 <ArrowUpDown className="h-3 w-3 mr-1" />
                 <SelectValue placeholder="Ordenar" />
@@ -425,18 +379,10 @@ const Equipos = () => {
             {/* View mode toggle */}
             <ViewModeToggle viewMode={viewMode} onViewModeChange={setViewMode} />
 
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                setIsSearchOpen(!isSearchOpen);
-                if (isFilterOpen) setIsFilterOpen(false);
-              }}
-              className={cn(
-                "h-8 px-2 flex-shrink-0 rounded-none bg-inherit text-inherit border-0",
-                isSearchOpen && "bg-primary text-primary-foreground",
-              )}
-            >
+            <Button variant="ghost" size="sm" onClick={() => {
+            setIsSearchOpen(!isSearchOpen);
+            if (isFilterOpen) setIsFilterOpen(false);
+          }} className={cn("h-8 px-2 flex-shrink-0 rounded-none bg-inherit text-inherit border-0", isSearchOpen && "bg-primary text-primary-foreground")}>
               <Search className="h-4 w-4" />
               <span className="ml-1 text-xs hidden sm:inline text-inherit">Buscar</span>
             </Button>
@@ -448,19 +394,10 @@ const Equipos = () => {
               <div className="pb-4">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    placeholder="Buscar equipos..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 font-heading uppercase text-sm my-[16px] px-[32px] mx-0"
-                    autoFocus
-                  />
-                  {searchTerm && (
-                    <button onClick={() => setSearchTerm("")} className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <Input type="text" placeholder="Buscar equipos..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10 font-heading uppercase text-sm my-[16px] px-[32px] mx-0" autoFocus />
+                  {searchTerm && <button onClick={() => setSearchTerm("")} className="absolute right-3 top-1/2 -translate-y-1/2">
                       <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
-                    </button>
-                  )}
+                    </button>}
                 </div>
               </div>
             </CollapsibleContent>
@@ -469,84 +406,38 @@ const Equipos = () => {
       </div>
 
       <div className="container w-screen mx-auto pb-4 sm:pb-6 bg-background px-0">
-        <div className="grid lg:grid-cols-4 gap-4 lg:gap-6">
+        <div className="grid lg:grid-cols-4 gap-4 lg:gap-6 py-[16px] ml-0 px-0 pl-[16px] bg-foreground">
           {/* Main Content - Category Sections */}
-          <main className="lg:col-span-3 bg-background">
-            {loading ? (
-              <div className="text-center py-12 sm:py-16 border border-foreground p-8 sm:p-12">
+          <main className="lg:col-span-3 bg-foreground">
+            {loading ? <div className="text-center py-12 sm:py-16 border border-foreground p-8 sm:p-12">
                 <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>
-              </div>
-            ) : (
-              <div className="space-y-4 sm:space-y-6 bg-border">
-                {orderedCategories
-                  .filter((category) => !isSearching || categoriesWithResults.has(category.id))
-                  .map((category, index) => (
-                    <CategorySection
-                      key={category.id}
-                      ref={(ref) => {
-                        if (ref) {
-                          categoryRefs.current.set(category.id, ref);
-                        } else {
-                          categoryRefs.current.delete(category.id);
-                        }
-                      }}
-                      category={category}
-                      equipment={equipmentByCategory[category.id] || []}
-                      subcategories={subcategories.filter((s) => s.category_id === category.id)}
-                      onAddToCart={handleAddToCart}
-                      onViewDetails={handleViewDetails}
-                      getCartQuantity={getCartQuantity}
-                      canAddMore={canAddMore}
-                      stickyTop={categoryTitleTop}
-                      defaultExpanded={isSearching ? categoriesWithResults.has(category.id) : index === 0}
-                      onCategoryActivate={handleCategoryActivate}
-                      viewMode={viewMode}
-                      sortOption={sortOption}
-                      onSubcategorySelect={toggleSubcategory}
-                      selectedSubcategories={selectedSubcategories}
-                      forceExpandSubcategories={isSearching ? subcategoriesWithResults : undefined}
-                    />
-                  ))}
-              </div>
-            )}
+              </div> : <div className="space-y-4 sm:space-y-6 bg-border">
+                {orderedCategories.filter(category => !isSearching || categoriesWithResults.has(category.id)).map((category, index) => <CategorySection key={category.id} ref={ref => {
+              if (ref) {
+                categoryRefs.current.set(category.id, ref);
+              } else {
+                categoryRefs.current.delete(category.id);
+              }
+            }} category={category} equipment={equipmentByCategory[category.id] || []} subcategories={subcategories.filter(s => s.category_id === category.id)} onAddToCart={handleAddToCart} onViewDetails={handleViewDetails} getCartQuantity={getCartQuantity} canAddMore={canAddMore} stickyTop={categoryTitleTop} defaultExpanded={isSearching ? categoriesWithResults.has(category.id) : index === 0} onCategoryActivate={handleCategoryActivate} viewMode={viewMode} sortOption={sortOption} onSubcategorySelect={toggleSubcategory} selectedSubcategories={selectedSubcategories} forceExpandSubcategories={isSearching ? subcategoriesWithResults : undefined} />)}
+              </div>}
           </main>
 
           {/* Cart Sidebar - Sticky on desktop, drawer on mobile */}
           <aside className="hidden lg:block lg:col-span-1 shadow-none pr-4">
-            <CartSidebar
-              items={items}
-              calculateSubtotal={calculateSubtotal}
-              updateQuantity={updateQuantity}
-              removeItem={removeItem}
-              stickyTop={cartStickyTop}
-            />
+            <CartSidebar items={items} calculateSubtotal={calculateSubtotal} updateQuantity={updateQuantity} removeItem={removeItem} stickyTop={cartStickyTop} />
           </aside>
 
           {/* Mobile cart button/drawer */}
           <div className="lg:hidden">
-            <CartSidebar
-              items={items}
-              calculateSubtotal={calculateSubtotal}
-              updateQuantity={updateQuantity}
-              removeItem={removeItem}
-            />
+            <CartSidebar items={items} calculateSubtotal={calculateSubtotal} updateQuantity={updateQuantity} removeItem={removeItem} />
           </div>
         </div>
       </div>
 
       {/* Equipment Modal */}
-      <EquipmentModal
-        equipment={selectedEquipment}
-        open={modalOpen}
-        onOpenChange={handleModalClose}
-        onAddToCart={handleAddToCart}
-        getCartQuantity={getCartQuantity}
-        canAddMore={canAddMore}
-        onViewDetails={(item) => {
-          setSelectedEquipment(item);
-        }}
-      />
-    </div>
-  );
+      <EquipmentModal equipment={selectedEquipment} open={modalOpen} onOpenChange={handleModalClose} onAddToCart={handleAddToCart} getCartQuantity={getCartQuantity} canAddMore={canAddMore} onViewDetails={item => {
+      setSelectedEquipment(item);
+    }} />
+    </div>;
 };
 export default Equipos;
