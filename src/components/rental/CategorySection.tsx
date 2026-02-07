@@ -204,7 +204,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
             top: `${stickyTop - 1}px`,
           }}
         >
-          <div className="justify-n px-2 sm:px-4 flex items-center justify-start gap-[32px] text-foreground">
+          <div className="justify-n px-2 sm:px-4 flex items-center justify-start gap-[32px] text-foreground bg-muted">
             <button
               onClick={handleHeaderClick}
               className="flex items-center gap-1 sm:gap-3 cursor-pointer hover:text-primary transition-colors"
@@ -214,8 +214,13 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
               ) : (
                 <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 transition-transform flex-shrink-0" />
               )}
-              <h2 className="font-heading text-sm sm:text-lg md:text-xl uppercase truncate">{category.name}</h2>
-              <Badge variant="secondary" className="text-[10px] sm:text-xs px-1.5 py-0 flex-shrink-0">
+              <h2 className="font-heading text-sm sm:text-lg md:text-xl uppercase truncate bg-transparent text-destructive">
+                {category.name}
+              </h2>
+              <Badge
+                variant="secondary"
+                className="text-[10px] sm:text-xs px-1.5 py-0 flex-shrink-0 bg-[#131211] text-[#fbf2ee]"
+              >
                 {equipment.length}
               </Badge>
             </button>
@@ -224,7 +229,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
             {subcategories.length > 0 && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="default" size="sm" className="çh-7 px-2 rounded-0 text-xs font-heading uppercase">
+                  <Button variant="link" size="sm" className="h-7 px-2 text-xs font-heading uppercase">
                     Subcategorías
                     <ChevronDown className="h-3 w-3 ml-1" />
                   </Button>
@@ -249,13 +254,13 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
             {/* Toggle all subcategories button */}
             {subcategories.length > 0 && (
               <Button
-                variant="default"
+                variant="ghost"
                 size="sm"
                 onClick={(e) => {
                   e.stopPropagation();
                   toggleAllSubcategories();
                 }}
-                className="h-7 çpx-2 text-xs font-heading uppercase gap-1"
+                className="h-7 px-2 text-xs font-heading uppercase gap-1"
                 title={allSubcategoriesExpanded ? "Colapsar todas" : "Expandir todas"}
               >
                 <ChevronsUpDown className="h-3 w-3" />
