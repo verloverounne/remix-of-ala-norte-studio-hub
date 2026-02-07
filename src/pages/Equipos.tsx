@@ -85,6 +85,21 @@ const Equipos = () => {
   }, [isMobile, isVisible]);
   const categoryRefs = useRef<Map<string, CategorySectionRef>>(new Map());
   const filterRef = useRef<HTMLDivElement>(null);
+  const stickyNavRef = useRef<HTMLDivElement>(null);
+  const [stickyNavHeight, setStickyNavHeight] = useState(0);
+
+  // Track sticky nav bar height dynamically (reacts to subcategory expand/collapse)
+  useEffect(() => {
+    const el = stickyNavRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setStickyNavHeight(entry.contentRect.height);
+      }
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Set active category when categories load
   useEffect(() => {
@@ -305,7 +320,7 @@ const Equipos = () => {
       <HeroCarouselRental categories={categories} onCategoryChange={handleCategoryClick} activeCategory={activeCategory} />
 
       {/* Sticky navigation bar - Below Hero */}
-      <div className="sticky z-[50] backdrop-blur-sm border-b border-foreground/10 transition-all duration-300 " style={{
+      <div ref={stickyNavRef} className="sticky z-[50] backdrop-blur-sm border-b border-foreground/10 transition-all duration-300 " style={{
       top: `${stickyTop}px`
     }}>
         <div className="container mx-auto py-0 items-center px-0 bg-inherit">
@@ -424,7 +439,7 @@ const Equipos = () => {
 
           {/* Cart Sidebar - Sticky on desktop, drawer on mobile */}
           <aside className="hidden lg:block lg:col-span-1 shadow-none pr-4">
-            <div className="sticky" style={{ top: `${stickyTop + 8}px` }}>
+            <div className="sticky" style={{ top: `${stickyTop + stickyNavHeight + 8}px` }}>
               <CartSidebar items={items} calculateSubtotal={calculateSubtotal} updateQuantity={updateQuantity} removeItem={removeItem} />
             </div>
           </aside>
