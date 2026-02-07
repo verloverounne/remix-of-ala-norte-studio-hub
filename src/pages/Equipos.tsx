@@ -340,7 +340,7 @@ const Equipos = () => {
               <CollapsibleContent>
                 <div className="pb-4 mx-0">
                 {filteredSubcategories.length === 0 ? <p className="text-xs text-muted-foreground px-4">No hay subcategorías para esta categoría</p> : <div className="flex flex-wrap gap-2 px-4">
-                      {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("flex-1 min-w-fit text-xs font-heading uppercase transition-all text-center border-0 px-[16px] py-[8px] bg-muted", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
+                      {filteredSubcategories.map(sub => <button key={sub.id} onClick={() => toggleSubcategory(sub.id)} className={cn("flex-1 min-w-fit text-xs font-heading uppercase transition-all text-center px-[16px] py-[8px] bg-muted border border-muted", selectedSubcategories.includes(sub.id) ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground hover:bg-muted border-foreground/20")}>
                           {sub.name}
                         </button>)}
                     </div>}
@@ -383,7 +383,7 @@ const Equipos = () => {
             <Button variant="ghost" size="sm" onClick={() => {
             setIsSearchOpen(!isSearchOpen);
             if (isFilterOpen) setIsFilterOpen(false);
-          }} className={cn("h-8 px-2 flex-shrink-0 rounded-none bg-inherit text-inherit", isSearchOpen && "bg-primary text-primary-foreground")}>
+          }} className={cn("h-8 px-2 flex-shrink-0 rounded-none bg-inherit text-inherit border-0", isSearchOpen && "bg-primary text-primary-foreground")}>
               <Search className="h-4 w-4" />
               <span className="ml-1 text-xs hidden sm:inline text-inherit">Buscar</span>
             </Button>
