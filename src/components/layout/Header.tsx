@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
 import { SearchBar } from "@/components/SearchBar";
 import logo from "@/assets/logo-brutal.png";
-const WHATSAPP_NUMBER = "541147180732"; // +54 (11) 4718-0732
+const WHATSAPP_NUMBER = "54114780732";
 
 const navigation = [{
   name: "INICIO",
