@@ -237,12 +237,15 @@ const Equipos = () => {
   const filteredSubcategories = useMemo(() => {
     return activeCategory ? subcategories.filter((sub) => sub.category_id === activeCategory) : subcategories;
   }, [subcategories, activeCategory]);
+  const mainContentRef = useRef<HTMLDivElement>(null);
   const toggleSubcategory = (id: string) => {
     if (selectedSubcategories.includes(id)) {
       setSelectedSubcategories(selectedSubcategories.filter((s) => s !== id));
     } else {
       setSelectedSubcategories([...selectedSubcategories, id]);
     }
+    // Scroll to top of equipment list
+    mainContentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
   const handleAddToCart = (item: EquipmentWithStock) => {
     if (!canAddMore(item)) {
@@ -485,7 +488,7 @@ const Equipos = () => {
       <div className="container w-screen mx-auto pb-4 sm:pb-6 bg-background px-0">
         <div className="grid lg:grid-cols-4 gap-4 lg:gap-6 py-[16px] ml-0 px-0 pl-[16px] bg-foreground">
           {/* Main Content - Category Sections */}
-          <main className="lg:col-span-3 bg-foreground">
+          <main ref={mainContentRef} className="lg:col-span-3 bg-foreground">
             {loading ? (
               <div className="text-center py-12 sm:py-16 border p-8 sm:p-12">
                 <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>
