@@ -155,7 +155,7 @@ const Soporte = () => {
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="h-auto py-6 font-heading">
-              <a href="https://wa.me/5491112345678" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2">
+              <a href="https://wa.me/54114780732" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2">
                 <MessageCircle className="h-6 w-6" />
                 <span>WHATSAPP</span>
               </a>
