@@ -244,8 +244,15 @@ const Equipos = () => {
     } else {
       setSelectedSubcategories([...selectedSubcategories, id]);
     }
-    // Scroll to top of equipment list
-    mainContentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Scroll to the subcategory header in the list
+    setTimeout(() => {
+      const el = document.getElementById(`subcategory-${id}`);
+      if (el) {
+        const offset = stickyTop + 60; // account for sticky nav
+        const top = el.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: "smooth" });
+      }
+    }, 100);
   };
   const handleAddToCart = (item: EquipmentWithStock) => {
     if (!canAddMore(item)) {

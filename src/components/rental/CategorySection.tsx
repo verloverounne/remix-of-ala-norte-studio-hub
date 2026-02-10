@@ -288,11 +288,12 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                   const isSubcategoryExpanded = subcategoryStates[subcatId] ?? true;
                   return (
                     <div key={group.subcategory?.id || "no-subcategory"}>
-                      <CollapsibleSubcategory
+                    <CollapsibleSubcategory
                         name={group.subcategory?.name || "Sin subcategoría"}
                         count={group.items.length}
                         isExpanded={isSubcategoryExpanded}
                         onToggle={(expanded) => handleSubcategoryToggle(subcatId, expanded)}
+                        subcategoryId={group.subcategory?.id}
                       >
                         <EquipmentListView
                           equipment={group.items}
@@ -314,11 +315,12 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                   const isSubcategoryExpanded = subcategoryStates[subcatId] ?? true;
                   return (
                     <div key={group.subcategory?.id || "no-subcategory"}>
-                      <CollapsibleSubcategory
+                    <CollapsibleSubcategory
                         name={group.subcategory?.name || "Sin subcategoría"}
                         count={group.items.length}
                         isExpanded={isSubcategoryExpanded}
                         onToggle={(expanded) => handleSubcategoryToggle(subcatId, expanded)}
+                        subcategoryId={group.subcategory?.id}
                       >
                         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
                           {group.items.map((item) => {
