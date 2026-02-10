@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 type EquipmentWithStock = EquipmentWithCategory;
-type SortOption = "alphabetic" | "price-asc" | "price-desc";
+type SortOption = "alphabetic" | "price-asc" | "price-desc" | "available-first" | "unavailable-first";
 interface Category {
   id: string;
   name: string;

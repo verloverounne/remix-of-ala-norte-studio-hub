@@ -18,7 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 type EquipmentWithStock = EquipmentWithCategory;
-type SortOption = "alphabetic" | "price-asc" | "price-desc";
+type SortOption = "alphabetic" | "price-asc" | "price-desc" | "available-first" | "unavailable-first";
 const Equipos = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { equipment, categories, subcategories, loading } = useEquipmentData();
@@ -134,8 +134,6 @@ const Equipos = () => {
   const isSearching = searchTerm.length > 0;
   const filteredEquipment = useMemo(() => {
     return equipment.filter((item) => {
-      // Solo mostrar equipos disponibles en la página de rental
-      if (item.status !== "available") return false;
       const matchesSearch =
         fuzzyMatch(item.name, searchTerm) ||
         fuzzyMatch(item.brand || "", searchTerm) ||
@@ -198,6 +196,16 @@ const Equipos = () => {
           return (a.price_per_day || 0) - (b.price_per_day || 0);
         case "price-desc":
           return (b.price_per_day || 0) - (a.price_per_day || 0);
+        case "available-first": {
+          const aAvail = a.status === "available" ? 0 : 1;
+          const bAvail = b.status === "available" ? 0 : 1;
+          return aAvail !== bAvail ? aAvail - bAvail : a.name.localeCompare(b.name);
+        }
+        case "unavailable-first": {
+          const aAvail = a.status === "available" ? 1 : 0;
+          const bAvail = b.status === "available" ? 1 : 0;
+          return aAvail !== bAvail ? aAvail - bAvail : a.name.localeCompare(b.name);
+        }
         default:
           return a.name.localeCompare(b.name);
       }
@@ -418,6 +426,12 @@ const Equipos = () => {
                 </SelectItem>
                 <SelectItem value="price-desc" className="font-heading text-xs">
                   Precio: mayor a menor
+                </SelectItem>
+                <SelectItem value="available-first" className="font-heading text-xs">
+                  Disponibles primero
+                </SelectItem>
+                <SelectItem value="unavailable-first" className="font-heading text-xs">
+                  No disponibles primero
                 </SelectItem>
               </SelectContent>
             </Select>
