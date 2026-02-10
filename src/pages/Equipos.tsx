@@ -244,8 +244,8 @@ const Equipos = () => {
     } else {
       setSelectedSubcategories([...selectedSubcategories, id]);
     }
-    // Scroll to top of subcategory filter section
-    filterRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Scroll to top of equipment list
+    mainContentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
   const handleAddToCart = (item: EquipmentWithStock) => {
     if (!canAddMore(item)) {
