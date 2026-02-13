@@ -345,7 +345,7 @@ const Equipos = () => {
                   <button
                     key={category.id}
                     onClick={() => handleCategoryClick(category.id)}
-                    className={cn("flex-wrap flex-1 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap px-[12px] font-bold border-0 rounded-md",
+                    className={cn("flex-wrap flex-1 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap px-[12px] font-bold border-0 rounded-none",
 
                     isActive ?
                     "bg-primary text-primary-foreground shadow-brutal-sm border-primary" :
@@ -397,7 +397,7 @@ const Equipos = () => {
                       key={sub.id}
                       onClick={() => toggleSubcategory(sub.id)}
                       className={cn(
-                        "flex-1 min-w-fit text-xs font-heading uppercase transition-all text-center px-[16px] py-[8px] bg-muted border border-muted rounded-md",
+                        "flex-1 min-w-fit text-xs font-heading uppercase transition-all text-center px-[16px] py-[8px] bg-muted border border-muted",
                         selectedSubcategories.includes(sub.id) ?
                         "bg-primary text-primary-foreground border-primary" :
                         "bg-background text-foreground hover:bg-muted border-foreground/20"
@@ -414,7 +414,7 @@ const Equipos = () => {
           </div>
 
           {/* Row 2: Filter toggle + Equipment count + Sort + View toggle + Search button */}
-          <div className="flex-wrap flex-1 obje flex items-center justify-center gap-[12px] text-background">
+          <div className="flex-wrap flex-1 obje flex items-center justify-center text-background gap-[12px]">
             {/* Filter button - to HIDE subcategories */}
 
             <p className="text-xs font-heading uppercas ml-8 mr-[6px] mx-0 text-background">
@@ -457,7 +457,7 @@ const Equipos = () => {
                 if (isFilterOpen) setIsFilterOpen(false);
               }}
               className={cn(
-                "h-8 px-2 flex-shrink-0 rounded-md bg-inherit text-inherit border-0",
+                "h-8 px-2 flex-shrink-0 rounded-none bg-inherit text-inherit border-0",
                 isSearchOpen && "bg-primary text-primary-foreground"
               )}>
 
