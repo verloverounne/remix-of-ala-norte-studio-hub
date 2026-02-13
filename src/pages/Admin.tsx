@@ -553,11 +553,18 @@ const Admin = () => {
   const editFilteredSubcategories = editingEquipment?.category_id ? subcategories.filter(s => s.category_id === editingEquipment.category_id) : [];
   const handleExportBackup = async () => {
     try {
+      // Fetch ALL equipment with no limit
+      const { data: allEquipment, error } = await supabase
+        .from("equipment")
+        .select(`*, categories(*), subcategories(*)`)
+        .order("name")
+        .limit(10000);
+      if (error) throw error;
       const backup = {
         timestamp: new Date().toISOString(),
         version: "1.0",
         data: {
-          equipment,
+          equipment: allEquipment || [],
           categories,
           subcategories,
           spaces
@@ -576,7 +583,7 @@ const Admin = () => {
       URL.revokeObjectURL(url);
       toast({
         title: "✓ BACKUP CREADO",
-        description: "Datos exportados correctamente"
+        description: `JSON exportado con ${(allEquipment || []).length} equipos`
       });
     } catch (error) {
       toast({
@@ -584,6 +591,181 @@ const Admin = () => {
         description: "Error al exportar datos",
         variant: "destructive"
       });
+    }
+  };
+
+  const handleExportCSV = async () => {
+    try {
+      const { data: allEquipment, error } = await supabase
+        .from("equipment")
+        .select(`*, categories(name), subcategories(name)`)
+        .order("name")
+        .limit(10000);
+      if (error) throw error;
+      if (!allEquipment || allEquipment.length === 0) {
+        toast({ title: "SIN DATOS", description: "No hay equipos para exportar", variant: "destructive" });
+        return;
+      }
+
+      const csvColumns = [
+        "id", "name", "name_en", "brand", "model", "description", "detailed_description",
+        "descripcion_corta_es", "descripcion_corta_en", "price_per_day", "price_per_week",
+        "status", "stock_quantity", "featured", "featured_copy", "order_index",
+        "image_url", "images", "tags", "specs", "detailed_specs",
+        "category_id", "category_name", "subcategory_id", "subcategory_name",
+        "sku_rentalos", "tamano", "tipo_equipo", "observaciones_internas", "id_original",
+        "created_at", "updated_at"
+      ];
+
+      const escapeCSV = (val: any): string => {
+        if (val === null || val === undefined) return "";
+        const str = typeof val === "object" ? JSON.stringify(val) : String(val);
+        if (str.includes('"') || str.includes(",") || str.includes("\n") || str.includes("\r")) {
+          return `"${str.replace(/"/g, '""')}"`;
+        }
+        return str;
+      };
+
+      const rows = allEquipment.map((eq: any) => {
+        return [
+          eq.id, eq.name, eq.name_en, eq.brand, eq.model, eq.description, eq.detailed_description,
+          eq.descripcion_corta_es, eq.descripcion_corta_en, eq.price_per_day, eq.price_per_week,
+          eq.status, eq.stock_quantity, eq.featured, eq.featured_copy, eq.order_index,
+          eq.image_url, JSON.stringify(eq.images || []), JSON.stringify(eq.tags || []),
+          JSON.stringify(eq.specs || []), JSON.stringify(eq.detailed_specs || []),
+          eq.category_id, eq.categories?.name || "", eq.subcategory_id, eq.subcategories?.name || "",
+          eq.sku_rentalos, eq.tamano, eq.tipo_equipo, eq.observaciones_internas, eq.id_original,
+          eq.created_at, eq.updated_at
+        ].map(escapeCSV).join(",");
+      });
+
+      const csvContent = "\uFEFF" + csvColumns.join(",") + "\n" + rows.join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `alanorte-equipos-${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      toast({ title: "✓ CSV EXPORTADO", description: `${allEquipment.length} equipos exportados` });
+    } catch (error) {
+      toast({ title: "ERROR", description: "Error al exportar CSV", variant: "destructive" });
+    }
+  };
+
+  const [isImportingCSV, setIsImportingCSV] = useState(false);
+
+  const handleImportCSV = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      setIsImportingCSV(true);
+      const text = await file.text();
+      // Remove BOM if present
+      const cleanText = text.replace(/^\uFEFF/, "");
+      const lines = cleanText.split(/\r?\n/).filter(l => l.trim());
+      if (lines.length < 2) {
+        toast({ title: "ERROR", description: "El CSV está vacío", variant: "destructive" });
+        return;
+      }
+
+      // Parse CSV header
+      const parseCSVLine = (line: string): string[] => {
+        const result: string[] = [];
+        let current = "";
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          if (inQuotes) {
+            if (char === '"' && line[i + 1] === '"') { current += '"'; i++; }
+            else if (char === '"') { inQuotes = false; }
+            else { current += char; }
+          } else {
+            if (char === '"') { inQuotes = true; }
+            else if (char === ',') { result.push(current); current = ""; }
+            else { current += char; }
+          }
+        }
+        result.push(current);
+        return result;
+      };
+
+      const header = parseCSVLine(lines[0]);
+      const dataRows = lines.slice(1).map(l => parseCSVLine(l));
+      
+      const getCol = (row: string[], colName: string): string => {
+        const idx = header.indexOf(colName);
+        return idx >= 0 && idx < row.length ? row[idx] : "";
+      };
+
+      const confirmed = window.confirm(
+        `¿Reemplazar TODOS los equipos con ${dataRows.length} registros del CSV?\n\n` +
+        `Se eliminarán ${equipment.length} equipos actuales.\nEsta acción NO se puede deshacer.`
+      );
+      if (!confirmed) return;
+
+      // Delete all existing equipment
+      toast({ title: "PROCESANDO", description: "Eliminando equipos existentes..." });
+      const { error: delErr } = await supabase.from("equipment").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+      if (delErr) throw new Error(`Error al eliminar: ${delErr.message}`);
+
+      // Parse and insert rows
+      const parseJSON = (val: string, fallback: any) => {
+        if (!val) return fallback;
+        try { return JSON.parse(val); } catch { return fallback; }
+      };
+
+      const equipmentToInsert = dataRows.map(row => ({
+        id: getCol(row, "id") || undefined,
+        name: getCol(row, "name") || "Sin nombre",
+        name_en: getCol(row, "name_en") || null,
+        brand: getCol(row, "brand") || null,
+        model: getCol(row, "model") || null,
+        description: getCol(row, "description") || null,
+        detailed_description: getCol(row, "detailed_description") || null,
+        descripcion_corta_es: getCol(row, "descripcion_corta_es") || null,
+        descripcion_corta_en: getCol(row, "descripcion_corta_en") || null,
+        price_per_day: parseInt(getCol(row, "price_per_day")) || 0,
+        price_per_week: parseInt(getCol(row, "price_per_week")) || null,
+        status: (getCol(row, "status") as any) || "available",
+        stock_quantity: parseInt(getCol(row, "stock_quantity")) || 1,
+        featured: getCol(row, "featured") === "true",
+        featured_copy: getCol(row, "featured_copy") || null,
+        order_index: parseInt(getCol(row, "order_index")) || 0,
+        image_url: getCol(row, "image_url") || null,
+        images: parseJSON(getCol(row, "images"), []),
+        tags: parseJSON(getCol(row, "tags"), []),
+        specs: parseJSON(getCol(row, "specs"), []),
+        detailed_specs: parseJSON(getCol(row, "detailed_specs"), []),
+        category_id: getCol(row, "category_id") || null,
+        subcategory_id: getCol(row, "subcategory_id") || null,
+        sku_rentalos: getCol(row, "sku_rentalos") || null,
+        tamano: getCol(row, "tamano") || null,
+        tipo_equipo: getCol(row, "tipo_equipo") || null,
+        observaciones_internas: getCol(row, "observaciones_internas") || null,
+        id_original: parseInt(getCol(row, "id_original")) || null,
+      }));
+
+      const batchSize = 50;
+      let inserted = 0;
+      for (let i = 0; i < equipmentToInsert.length; i += batchSize) {
+        const batch = equipmentToInsert.slice(i, i + batchSize);
+        const { error: insErr } = await supabase.from("equipment").insert(batch);
+        if (insErr) throw new Error(`Error lote ${Math.floor(i / batchSize) + 1}: ${insErr.message}`);
+        inserted += batch.length;
+        toast({ title: "IMPORTANDO CSV", description: `${inserted} de ${equipmentToInsert.length}...` });
+      }
+
+      toast({ title: "✓ CSV IMPORTADO", description: `${inserted} equipos importados exitosamente` });
+      await fetchEquipment();
+    } catch (error: any) {
+      console.error("CSV import error:", error);
+      toast({ title: "ERROR", description: error.message || "Error al importar CSV", variant: "destructive" });
+    } finally {
+      setIsImportingCSV(false);
+      event.target.value = "";
     }
   };
   const [isImporting, setIsImporting] = useState(false);
@@ -981,16 +1163,39 @@ const Admin = () => {
                     <div className="border-l-4 border-primary pl-4 py-2">
                       <h3 className="font-heading font-bold text-lg mb-2">Exportar Base de Datos</h3>
                       <p className="text-sm text-muted-foreground mb-4">
-                        Descarga un archivo JSON con todos los datos de equipos, categorías, subcategorías y espacios.
+                        Descarga todos los equipos con absolutamente todos los campos.
                       </p>
-                      <Button onClick={handleExportBackup} variant="hero">
-                        <Download className="mr-2 h-4 w-4" />
-                        Descargar Backup JSON
-                      </Button>
+                      <div className="flex flex-wrap gap-3">
+                        <Button onClick={handleExportBackup} variant="hero">
+                          <Download className="mr-2 h-4 w-4" />
+                          Descargar JSON
+                        </Button>
+                        <Button onClick={handleExportCSV} variant="outline">
+                          <Download className="mr-2 h-4 w-4" />
+                          Descargar CSV (Excel)
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="border-l-4 border-accent pl-4 py-2">
+                      <h3 className="font-heading font-bold text-lg mb-2">Importar desde CSV (Excel)</h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Reemplaza TODOS los equipos con los del archivo CSV editado.
+                        <span className="block mt-2 text-destructive font-semibold">
+                          ⚠️ ATENCIÓN: Usa el CSV exportado arriba, editalo en Excel y volvelo a subir.
+                        </span>
+                      </p>
+                      <div className="flex items-center gap-4">
+                        <Input type="file" accept=".csv" onChange={handleImportCSV} className="max-w-xs" disabled={isImportingCSV} />
+                        {isImportingCSV && <span className="text-sm text-muted-foreground animate-pulse">Importando CSV...</span>}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Formato: CSV con las mismas columnas exportadas (separado por comas, UTF-8 con BOM)
+                      </p>
                     </div>
 
                     <div className="border-l-4 border-secondary pl-4 py-2">
-                      <h3 className="font-heading font-bold text-lg mb-2">Importar / Reemplazar Equipos</h3>
+                      <h3 className="font-heading font-bold text-lg mb-2">Importar / Reemplazar desde JSON</h3>
                       <p className="text-sm text-muted-foreground mb-4">
                         Reemplaza TODOS los equipos de la base de datos con los del archivo JSON.
                         <span className="block mt-2 text-destructive font-semibold">
