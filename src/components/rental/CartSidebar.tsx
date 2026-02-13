@@ -40,7 +40,7 @@ export const CartSidebar = ({
               Todavía no hay equipos en tu lista. Explorá el catálogo y sumá lo que necesitás.
             </p>
           </div> : <div className="space-y-3 max-h-screen overflow-scroll ">
-            {items.map(item => <div key={item.id} className="p-3 bg-inherit">
+            {items.map((item) => <div key={item.id} className="p-3 bg-inherit">
                 <div className="flex gap-3">
                   {/* Image */}
                   {item.imageUrl && <div className="w-16 h-16 flex-shrink-0 overflow-hidden">
@@ -103,7 +103,7 @@ export const CartSidebar = ({
     return <>
         {/* Floating button */}
         <div className="fixed bottom-4 center z-40">
-          <button onClick={() => setDrawerOpen(true)} className="relative bg-primary text-primary-foreground p-4 shadow-brutal-sm hover:scale-105 transition-transform py-[12px] px-[12px] my-[8px]">
+          <button onClick={() => setDrawerOpen(true)} className="relative bg-primary text-primary-foreground p-4 shadow-brutal-sm hover:scale-105 transition-transform py-[12px] px-[12px] my-[8px] rounded-sm">
             <ShoppingCart className="w-[16px] h-[16px]" />
             {totalItems > 0 && <span className="absolute -top-2 -right-2 text-destructive-foreground text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center bg-primary">
                 {totalItems}
