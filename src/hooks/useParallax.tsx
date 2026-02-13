@@ -1,82 +1,48 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useCallback } from "react";
 
 interface UseParallaxOptions {
-  speed?: number; // Velocidad del parallax (0.1 = lento, 0.5 = medio, 1.0 = rápido)
-  offset?: number; // Offset inicial
-  direction?: "up" | "down"; // Dirección del movimiento
-  enabled?: boolean; // Habilitar/deshabilitar parallax
+  speed?: number;
+  offset?: number;
+  direction?: "up" | "down";
+  enabled?: boolean;
 }
 
-/**
- * Hook personalizado para crear efectos parallax basados en el scroll
- * @param options - Opciones de configuración del parallax
- * @returns Ref y valor de transformación
- */
 export const useParallax = (options: UseParallaxOptions = {}) => {
   const { speed = 1, offset = 0, direction = "up", enabled = true } = options;
 
   const elementRef = useRef<HTMLElement | null>(null);
-  const [transform, setTransform] = useState(0);
+  const rafId = useRef<number>(0);
 
   useEffect(() => {
     if (!enabled) return;
 
-    let ticking = false;
-
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (!elementRef.current) {
-            ticking = false;
-            return;
-          }
+      if (rafId.current) return;
+      rafId.current = requestAnimationFrame(() => {
+        rafId.current = 0;
+        const el = elementRef.current;
+        if (!el) return;
 
-          const rect = elementRef.current.getBoundingClientRect();
-          const windowHeight = window.innerHeight;
+        const rect = el.getBoundingClientRect();
+        const wh = window.innerHeight;
 
-          // Obtener la posición del elemento relativa al viewport
-          const elementTop = rect.top;
-          const elementHeight = rect.height;
-          const elementBottom = elementTop + elementHeight;
+        if (rect.bottom < 0 || rect.top > wh) return;
 
-          // Solo aplicar parallax cuando el elemento está visible en el viewport
-          if (elementBottom < 0 || elementTop > windowHeight) {
-            setTransform(0);
-            ticking = false;
-            return;
-          }
+        const distanceFromCenter = (rect.top + rect.height / 2) - (wh / 2);
+        const maxMovement = wh * 0.5;
+        const parallaxValue = Math.max(-maxMovement, Math.min(maxMovement, distanceFromCenter * speed * 0.5));
+        const finalValue = direction === "up" ? offset - parallaxValue : offset + parallaxValue;
 
-          // Calcular cuando el elemento está en el viewport
-          // El elemento se mueve más cuando está en el centro del viewport
-          const elementCenter = elementTop + elementHeight / 2;
-          const viewportCenter = windowHeight / 2;
-
-          // Distancia desde el centro del viewport
-          const distanceFromCenter = elementCenter - viewportCenter;
-
-          // Calcular el desplazamiento parallax con límites
-          // Multiplicamos por speed para controlar la intensidad
-          // Limitamos el movimiento para que no se salga del viewport
-          const maxMovement = windowHeight * 0.5; // Máximo 30% de la altura de la ventana
-          const parallaxValue = Math.max(-maxMovement, Math.min(maxMovement, distanceFromCenter * speed * 0.5));
-
-          const finalValue = direction === "up" ? offset - parallaxValue : offset + parallaxValue;
-
-          setTransform(finalValue);
-          ticking = false;
-        });
-        ticking = true;
-      }
+        el.style.transform = `translate3d(0, ${finalValue}px, 0)`;
+      });
     };
 
-    // Ejecutar al cargar
-    setTimeout(() => handleScroll(), 100);
-
-    // Agregar listeners
+    setTimeout(handleScroll, 100);
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll, { passive: true });
 
     return () => {
+      if (rafId.current) cancelAnimationFrame(rafId.current);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
     };
@@ -85,7 +51,6 @@ export const useParallax = (options: UseParallaxOptions = {}) => {
   return {
     ref: elementRef,
     style: {
-      transform: `translate3d(0, ${transform}px, 0)`,
       willChange: "transform",
       backfaceVisibility: "hidden" as const,
       WebkitBackfaceVisibility: "hidden" as const,
@@ -93,16 +58,10 @@ export const useParallax = (options: UseParallaxOptions = {}) => {
   };
 };
 
-/**
- * Hook simplificado para parallax en elementos de fondo
- */
 export const useParallaxBackground = (speed: number = 1) => {
   return useParallax({ speed, direction: "up" });
 };
 
-/**
- * Hook para parallax en elementos que se mueven hacia abajo
- */
 export const useParallaxDown = (speed: number = 1) => {
   return useParallax({ speed, direction: "down" });
 };
