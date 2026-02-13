@@ -96,7 +96,7 @@ export const HeroCarouselRental = ({
       if (!api.scrollSnapList || api.scrollSnapList().length === 0) {
         return;
       }
-      const slideIndex = categories.findIndex(c => c.id === activeCategory);
+      const slideIndex = categories.findIndex((c) => c.id === activeCategory);
       if (slideIndex !== -1 && slideIndex !== currentSlide) {
         api.scrollTo(slideIndex);
       }
@@ -117,7 +117,7 @@ export const HeroCarouselRental = ({
       <section className="relative overflow-hidden">
         <Carousel className="w-full" setApi={setApi}>
           <CarouselContent className="-ml-0">
-            {categories.map(category => {
+            {categories.map((category) => {
             const bg = getBackgroundForCategory(category.id);
             return <CarouselItem key={category.id} className="pl-0 basis-full">
                   <div className="relative h-[40vh] overflow-hidden duotone-hover-group">
