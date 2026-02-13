@@ -355,7 +355,7 @@ const Equipos = () => {
                     <span>{category.name}</span>
                     {count > 0 &&
                     <span
-                      className={cn("ml-1.5 text-[10px] text-background",
+                      className={cn("ml-1.5 text-[10px] text-foreground",
 
                       isActive ? "text-primary-background/80" : "text-background"
                       )}>
