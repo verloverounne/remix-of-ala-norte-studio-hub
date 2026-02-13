@@ -345,7 +345,7 @@ const Equipos = () => {
                   <button
                     key={category.id}
                     onClick={() => handleCategoryClick(category.id)}
-                    className={cn("flex-wrap flex-1 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap px-[12px] font-bold border-0 rounded-none",
+                    className={cn("flex-wrap flex-1 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap px-[12px] font-bold border-0 rounded-md",
 
                     isActive ?
                     "bg-primary text-primary-foreground shadow-brutal-sm border-primary" :
@@ -457,7 +457,7 @@ const Equipos = () => {
                 if (isFilterOpen) setIsFilterOpen(false);
               }}
               className={cn(
-                "h-8 px-2 flex-shrink-0 rounded-none bg-inherit text-inherit border-0",
+                "h-8 px-2 flex-shrink-0 rounded-md bg-inherit text-inherit border-0",
                 isSearchOpen && "bg-primary text-primary-foreground"
               )}>
 
