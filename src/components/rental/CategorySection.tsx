@@ -226,31 +226,31 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
             </button>
 
             {/* Subcategory dropdown 
-                 {subcategories.length > 0 && (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="link" size="sm" className="px-2 text-background text-xs font-heading uppercase">
-                        Subcategorías
-                        <ChevronDown className="h-3 w-3 ml-1 texto-background" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="bg-transparent z-50">
-                      {subcategories.map((sub) => (
-                        <DropdownMenuItem
-                          key={sub.id}
-                          onClick={() => onSubcategorySelect?.(sub.id)}
-                          className={cn(
-                            "font-heading text-xs uppercase cursor-pointer",
-                            selectedSubcategories.includes(sub.id) && "bg-primary text-primary-foreground",
-                          )}
-                        >
-                          {sub.name}
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                 )}
-                 */}
+                  {subcategories.length > 0 && (
+                   <DropdownMenu>
+                     <DropdownMenuTrigger asChild>
+                       <Button variant="link" size="sm" className="px-2 text-background text-xs font-heading uppercase">
+                         Subcategorías
+                         <ChevronDown className="h-3 w-3 ml-1 texto-background" />
+                       </Button>
+                     </DropdownMenuTrigger>
+                     <DropdownMenuContent align="end" className="bg-transparent z-50">
+                       {subcategories.map((sub) => (
+                         <DropdownMenuItem
+                           key={sub.id}
+                           onClick={() => onSubcategorySelect?.(sub.id)}
+                           className={cn(
+                             "font-heading text-xs uppercase cursor-pointer",
+                             selectedSubcategories.includes(sub.id) && "bg-primary text-primary-foreground",
+                           )}
+                         >
+                           {sub.name}
+                         </DropdownMenuItem>
+                       ))}
+                     </DropdownMenuContent>
+                   </DropdownMenu>
+                  )}
+                  */}
             {/* Toggle all subcategories button */}
             {subcategories.length > 0 &&
             <Button
@@ -274,7 +274,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
         {isExpanded &&
         <div
           ref={gridRef}
-          className="border-[#201e1d] border-0 px-16 bg-background max-w-screen-lg">
+          className="border-[#201e1d] border-0 bg-background max-w-screen-lg px-[4px] mx-0">
 
             {equipment.length === 0 ?
           <div className="text-center py-8 sm:py-12 text-muted-foreground">
