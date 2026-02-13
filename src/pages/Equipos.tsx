@@ -345,23 +345,23 @@ const Equipos = () => {
                   <button
                     key={category.id}
                     onClick={() => handleCategoryClick(category.id)}
-                    className={cn(
-                      "flex-wrap flex-1 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap border font-medium px-[12px]",
-                      isActive ?
-                      "bg-primary text-primary-foreground shadow-brutal-sm border-primary" :
-                      "bg-background text-foreground hover:bg-muted border-foreground/20"
+                    className={cn("flex-wrap flex-1 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap px-[12px] font-bold border-0 rounded-md",
+
+                    isActive ?
+                    "bg-primary text-primary-foreground shadow-brutal-sm border-primary" :
+                    "bg-background text-foreground hover:bg-muted border-foreground/20"
                     )}>
 
                     <span>{category.name}</span>
-                    {count > 0 &&
-                    <span
-                      className={cn("ml-1.5 text-[10px] text-foreground",
+                    {count > 0
 
-                      isActive ? "text-primary-background/80" : "text-background"
-                      )}>
 
-                        ({count})
-                      </span>
+
+
+
+
+
+
                     }
                   </button>);
 
