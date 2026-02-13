@@ -28,7 +28,7 @@ export const EquipmentListView = ({
 
 
   return <div className="divide-y divide-foreground/10">
-      {equipment.map(item => {
+      {equipment.map((item) => {
       const cartQty = getCartQuantity(item.id);
       const canAdd = canAddMore(item);
       return <div key={item.id} className="flex items-center max-w-screen transition-colors bg-background gap-12px] py-[6px] border-gray-light flex-wrap">
@@ -44,7 +44,7 @@ export const EquipmentListView = ({
 
             {/* Price */}
             <div className="flex-shrink-0 text-right">
-              <span className="font-heading text-sm sm:text-base text-[#f82020]">
+              <span className="font-heading text-sm sm:text-base text-primary">
                 ${item.price_per_day > 0 ? (item.price_per_day / 1000).toFixed(0) + 'K' : '—'}
               </span>
               <span className="text-muted-foreground font-mono text-[9px] sm:text-[10px] ml-0.5">/día</span>
