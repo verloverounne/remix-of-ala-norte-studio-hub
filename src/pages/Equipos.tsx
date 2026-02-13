@@ -345,7 +345,7 @@ const Equipos = () => {
                   <button
                     key={category.id}
                     onClick={() => handleCategoryClick(category.id)}
-                    className={cn("flex-wrap flex-1 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap px-[12px] font-bold border-0 rounded-sm",
+                    className={cn("flex-wrap flex-1 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap px-[12px] font-bold border-0 rounded-none",
 
                     isActive ?
                     "bg-primary text-primary-foreground shadow-brutal-sm border-primary" :
