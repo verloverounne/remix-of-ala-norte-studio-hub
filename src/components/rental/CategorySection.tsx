@@ -226,31 +226,31 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
             </button>
 
             {/* Subcategory dropdown 
-              {subcategories.length > 0 && (
-               <DropdownMenu>
-                 <DropdownMenuTrigger asChild>
-                   <Button variant="link" size="sm" className="px-2 text-background text-xs font-heading uppercase">
-                     Subcategorías
-                     <ChevronDown className="h-3 w-3 ml-1 texto-background" />
-                   </Button>
-                 </DropdownMenuTrigger>
-                 <DropdownMenuContent align="end" className="bg-transparent z-50">
-                   {subcategories.map((sub) => (
-                     <DropdownMenuItem
-                       key={sub.id}
-                       onClick={() => onSubcategorySelect?.(sub.id)}
-                       className={cn(
-                         "font-heading text-xs uppercase cursor-pointer",
-                         selectedSubcategories.includes(sub.id) && "bg-primary text-primary-foreground",
-                       )}
-                     >
-                       {sub.name}
-                     </DropdownMenuItem>
-                   ))}
-                 </DropdownMenuContent>
-               </DropdownMenu>
-              )}
-              */}
+               {subcategories.length > 0 && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="link" size="sm" className="px-2 text-background text-xs font-heading uppercase">
+                      Subcategorías
+                      <ChevronDown className="h-3 w-3 ml-1 texto-background" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="bg-transparent z-50">
+                    {subcategories.map((sub) => (
+                      <DropdownMenuItem
+                        key={sub.id}
+                        onClick={() => onSubcategorySelect?.(sub.id)}
+                        className={cn(
+                          "font-heading text-xs uppercase cursor-pointer",
+                          selectedSubcategories.includes(sub.id) && "bg-primary text-primary-foreground",
+                        )}
+                      >
+                        {sub.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+               )}
+               */}
             {/* Toggle all subcategories button */}
             {subcategories.length > 0 &&
             <Button
@@ -331,7 +331,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                             key={item.id}
                             className="overflow-hidden group relative border-0 shadow-none hover:shadow-sm bg-transparent">
 
-                                <CardContent className="p-2 sm:p-3 flex flex-col space-y-2 px-[4px] bg-muted text-stone-200">
+                                <CardContent className="p-2 sm:p-3 flex flex-col space-y-2 px-[4px] bg-muted text-stone-200 rounded-sm">
                                   <h3
                                 className="font-heading normal-case text-xs leading-tight pt-2 line-clamp-2 cursor-pointer transition-colors h-[5em] text-left font-medium text-foreground mx-[4px] sm:text-sm"
                                 onClick={() => onViewDetails(item)}>
