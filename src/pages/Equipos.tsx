@@ -55,7 +55,7 @@ const Equipos = () => {
       const newParams = new URLSearchParams(searchParams);
       newParams.delete("id");
       setSearchParams(newParams, {
-        replace: true,
+        replace: true
       });
     }
   };
@@ -81,7 +81,7 @@ const Equipos = () => {
       const cartItem = items.find((item) => item.id === id);
       return cartItem?.quantity || 0;
     },
-    [items],
+    [items]
   );
   const canAddMore = useCallback(
     (item: EquipmentWithStock) => {
@@ -89,7 +89,7 @@ const Equipos = () => {
       const stock = item.stock_quantity ?? 1;
       return inCart < stock;
     },
-    [getCartQuantity],
+    [getCartQuantity]
   );
   const fuzzyMatch = (text: string, search: string): boolean => {
     if (!search) return true;
@@ -135,20 +135,20 @@ const Equipos = () => {
   const filteredEquipment = useMemo(() => {
     return equipment.filter((item) => {
       const matchesSearch =
-        fuzzyMatch(item.name, searchTerm) ||
-        fuzzyMatch(item.brand || "", searchTerm) ||
-        fuzzyMatch(item.model || "", searchTerm);
+      fuzzyMatch(item.name, searchTerm) ||
+      fuzzyMatch(item.brand || "", searchTerm) ||
+      fuzzyMatch(item.model || "", searchTerm);
 
       // When searching, ignore category filter - search across all
       if (isSearching) {
         const matchesSubcategory =
-          selectedSubcategories.length === 0 ||
-          (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
+        selectedSubcategories.length === 0 ||
+        item.subcategory_id && selectedSubcategories.includes(item.subcategory_id);
         return matchesSearch && matchesSubcategory;
       }
       const matchesSubcategory =
-        selectedSubcategories.length === 0 ||
-        (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
+      selectedSubcategories.length === 0 ||
+      item.subcategory_id && selectedSubcategories.includes(item.subcategory_id);
       return matchesSearch && matchesSubcategory;
     });
   }, [equipment, searchTerm, selectedSubcategories, isSearching]);
@@ -196,16 +196,16 @@ const Equipos = () => {
           return (a.price_per_day || 0) - (b.price_per_day || 0);
         case "price-desc":
           return (b.price_per_day || 0) - (a.price_per_day || 0);
-        case "available-first": {
-          const aAvail = a.status === "available" ? 0 : 1;
-          const bAvail = b.status === "available" ? 0 : 1;
-          return aAvail !== bAvail ? aAvail - bAvail : a.name.localeCompare(b.name);
-        }
-        case "unavailable-first": {
-          const aAvail = a.status === "available" ? 1 : 0;
-          const bAvail = b.status === "available" ? 1 : 0;
-          return aAvail !== bAvail ? aAvail - bAvail : a.name.localeCompare(b.name);
-        }
+        case "available-first":{
+            const aAvail = a.status === "available" ? 0 : 1;
+            const bAvail = b.status === "available" ? 0 : 1;
+            return aAvail !== bAvail ? aAvail - bAvail : a.name.localeCompare(b.name);
+          }
+        case "unavailable-first":{
+            const aAvail = a.status === "available" ? 1 : 0;
+            const bAvail = b.status === "available" ? 1 : 0;
+            return aAvail !== bAvail ? aAvail - bAvail : a.name.localeCompare(b.name);
+          }
         default:
           return a.name.localeCompare(b.name);
       }
@@ -259,7 +259,7 @@ const Equipos = () => {
       toast({
         title: "Stock máximo alcanzado",
         description: `Solo hay ${item.stock_quantity} unidades disponibles de ${item.name}`,
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
@@ -270,13 +270,13 @@ const Equipos = () => {
         brand: item.brand || undefined,
         pricePerDay: item.price_per_day,
         imageUrl: item.image_url || undefined,
-        stockQuantity: item.stock_quantity,
+        stockQuantity: item.stock_quantity
       },
-      1,
+      1
     );
     toast({
       title: "Agregado a cotización",
-      description: `${item.name} agregado`,
+      description: `${item.name} agregado`
     });
   };
   const handleViewDetails = (item: EquipmentWithStock) => {
@@ -324,16 +324,16 @@ const Equipos = () => {
       <HeroCarouselRental
         categories={categories}
         onCategoryChange={handleCategoryClick}
-        activeCategory={activeCategory}
-      />
+        activeCategory={activeCategory} />
+
 
       {/* Sticky navigation bar - Below Hero */}
       <div
         className="sticky z-[50] backdrop-blur-sm transition-all duration-300 "
         style={{
-          top: `${stickyTop}px`,
-        }}
-      >
+          top: `${stickyTop}px`
+        }}>
+
         <div className="container mx-auto py-0 items-center px-0 bg-foreground">
           {/* Row 1: Category chips */}
           <div className="flex items-center gap-2 mb-2">
@@ -347,24 +347,24 @@ const Equipos = () => {
                     onClick={() => handleCategoryClick(category.id)}
                     className={cn(
                       "flex-wrap flex-1 py-1.5 font-heading text-xs uppercase transition-all whitespace-nowrap border font-medium px-[12px]",
-                      isActive
-                        ? "bg-primary text-primary-foreground shadow-brutal-sm border-primary"
-                        : "bg-background text-foreground hover:bg-muted border-foreground/20",
-                    )}
-                  >
+                      isActive ?
+                      "bg-primary text-primary-foreground shadow-brutal-sm border-primary" :
+                      "bg-background text-foreground hover:bg-muted border-foreground/20"
+                    )}>
+
                     <span>{category.name}</span>
-                    {count > 0 && (
-                      <span
-                        className={cn(
-                          "ml-1.5 text-[10px] text-foreground",
-                          isActive ? "text-primary-background/80" : "text-background",
-                        )}
-                      >
+                    {count > 0 &&
+                    <span
+                      className={cn("ml-1.5 text-[10px] text-background",
+
+                      isActive ? "text-primary-background/80" : "text-background"
+                      )}>
+
                         ({count})
                       </span>
-                    )}
-                  </button>
-                );
+                    }
+                  </button>);
+
               })}
             </div>
           </div>
@@ -375,39 +375,39 @@ const Equipos = () => {
               <div className="pb-2">
                 <button
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
-                  className="gap-1 font-heading uppercase transition-colors cursor-pointer text-base font-bold text-background flex items-center justify-center px-[16px]"
-                >
+                  className="gap-1 font-heading uppercase transition-colors cursor-pointer text-base font-bold text-background flex items-center justify-center px-[16px]">
+
                   {isFilterOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
                   Subcategorías
-                  {selectedSubcategories.length > 0 && (
-                    <span className="ml-1 text-[10px] text-primary-foreground px-1.5 rounded-sm bg-accent-foreground">
+                  {selectedSubcategories.length > 0 &&
+                  <span className="ml-1 text-[10px] text-primary-foreground px-1.5 rounded-sm bg-accent-foreground">
                       {selectedSubcategories.length}
                     </span>
-                  )}
+                  }
                 </button>
               </div>
               <CollapsibleContent>
                 <div className="pb-4 mx-0">
-                  {filteredSubcategories.length === 0 ? (
-                    <p className="text-xs text-muted-foreground px-4">No hay subcategorías para esta categoría</p>
-                  ) : (
-                    <div className="flex flex-wrap gap-2 px-4">
-                      {filteredSubcategories.map((sub) => (
-                        <button
-                          key={sub.id}
-                          onClick={() => toggleSubcategory(sub.id)}
-                          className={cn(
-                            "flex-1 min-w-fit text-xs font-heading uppercase transition-all text-center px-[16px] py-[8px] bg-muted border border-muted",
-                            selectedSubcategories.includes(sub.id)
-                              ? "bg-primary text-primary-foreground border-primary"
-                              : "bg-background text-foreground hover:bg-muted border-foreground/20",
-                          )}
-                        >
+                  {filteredSubcategories.length === 0 ?
+                  <p className="text-xs text-muted-foreground px-4">No hay subcategorías para esta categoría</p> :
+
+                  <div className="flex flex-wrap gap-2 px-4">
+                      {filteredSubcategories.map((sub) =>
+                    <button
+                      key={sub.id}
+                      onClick={() => toggleSubcategory(sub.id)}
+                      className={cn(
+                        "flex-1 min-w-fit text-xs font-heading uppercase transition-all text-center px-[16px] py-[8px] bg-muted border border-muted",
+                        selectedSubcategories.includes(sub.id) ?
+                        "bg-primary text-primary-foreground border-primary" :
+                        "bg-background text-foreground hover:bg-muted border-foreground/20"
+                      )}>
+
                           {sub.name}
                         </button>
-                      ))}
+                    )}
                     </div>
-                  )}
+                  }
                 </div>
               </CollapsibleContent>
             </Collapsible>
@@ -458,9 +458,9 @@ const Equipos = () => {
               }}
               className={cn(
                 "h-8 px-2 flex-shrink-0 rounded-none bg-inherit text-inherit border-0",
-                isSearchOpen && "bg-primary text-primary-foreground",
-              )}
-            >
+                isSearchOpen && "bg-primary text-primary-foreground"
+              )}>
+
               <Search className="h-4 w-4" />
               <span className="ml-1 text-xs hidden sm:inline text-inherit">Buscar</span>
             </Button>
@@ -478,13 +478,13 @@ const Equipos = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10 font-heading uppercase text-sm my-[16px] px-[32px] mx-0"
-                    autoFocus
-                  />
-                  {searchTerm && (
-                    <button onClick={() => setSearchTerm("")} className="absolute right-3 top-1/2 -translate-y-1/2">
+                    autoFocus />
+
+                  {searchTerm &&
+                  <button onClick={() => setSearchTerm("")} className="absolute right-3 top-1/2 -translate-y-1/2">
                       <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
                     </button>
-                  )}
+                  }
                 </div>
               </div>
             </CollapsibleContent>
@@ -496,43 +496,43 @@ const Equipos = () => {
         <div className="grid lg:grid-cols-4 gap-4 lg:gap-6 py-[16px] ml-0 px-0 pl-[16px] bg-foreground">
           {/* Main Content - Category Sections */}
           <main ref={mainContentRef} className="lg:col-span-3 bg-foreground">
-            {loading ? (
-              <div className="text-center py-12 sm:py-16 border p-8 sm:p-12">
+            {loading ?
+            <div className="text-center py-12 sm:py-16 border p-8 sm:p-12">
                 <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>
+              </div> :
+
+            <div className="space-y-4 sm:space-y-6 bg-transparent">
+                {orderedCategories.
+              filter((category) => !isSearching || categoriesWithResults.has(category.id)).
+              map((category, index) =>
+              <CategorySection
+                key={category.id}
+                ref={(ref) => {
+                  if (ref) {
+                    categoryRefs.current.set(category.id, ref);
+                  } else {
+                    categoryRefs.current.delete(category.id);
+                  }
+                }}
+                category={category}
+                equipment={equipmentByCategory[category.id] || []}
+                subcategories={subcategories.filter((s) => s.category_id === category.id)}
+                onAddToCart={handleAddToCart}
+                onViewDetails={handleViewDetails}
+                getCartQuantity={getCartQuantity}
+                canAddMore={canAddMore}
+                stickyTop={categoryTitleTop}
+                defaultExpanded={isSearching ? categoriesWithResults.has(category.id) : index === 0}
+                onCategoryActivate={handleCategoryActivate}
+                viewMode={viewMode}
+                sortOption={sortOption}
+                onSubcategorySelect={toggleSubcategory}
+                selectedSubcategories={selectedSubcategories}
+                forceExpandSubcategories={isSearching ? subcategoriesWithResults : undefined} />
+
+              )}
               </div>
-            ) : (
-              <div className="space-y-4 sm:space-y-6 bg-transparent">
-                {orderedCategories
-                  .filter((category) => !isSearching || categoriesWithResults.has(category.id))
-                  .map((category, index) => (
-                    <CategorySection
-                      key={category.id}
-                      ref={(ref) => {
-                        if (ref) {
-                          categoryRefs.current.set(category.id, ref);
-                        } else {
-                          categoryRefs.current.delete(category.id);
-                        }
-                      }}
-                      category={category}
-                      equipment={equipmentByCategory[category.id] || []}
-                      subcategories={subcategories.filter((s) => s.category_id === category.id)}
-                      onAddToCart={handleAddToCart}
-                      onViewDetails={handleViewDetails}
-                      getCartQuantity={getCartQuantity}
-                      canAddMore={canAddMore}
-                      stickyTop={categoryTitleTop}
-                      defaultExpanded={isSearching ? categoriesWithResults.has(category.id) : index === 0}
-                      onCategoryActivate={handleCategoryActivate}
-                      viewMode={viewMode}
-                      sortOption={sortOption}
-                      onSubcategorySelect={toggleSubcategory}
-                      selectedSubcategories={selectedSubcategories}
-                      forceExpandSubcategories={isSearching ? subcategoriesWithResults : undefined}
-                    />
-                  ))}
-              </div>
-            )}
+            }
           </main>
 
           {/* Cart Sidebar - Sticky on desktop, drawer on mobile */}
@@ -542,8 +542,8 @@ const Equipos = () => {
               calculateSubtotal={calculateSubtotal}
               updateQuantity={updateQuantity}
               removeItem={removeItem}
-              stickyTop={cartStickyTop}
-            />
+              stickyTop={cartStickyTop} />
+
           </aside>
 
           {/* Mobile cart button/drawer */}
@@ -552,8 +552,8 @@ const Equipos = () => {
               items={items}
               calculateSubtotal={calculateSubtotal}
               updateQuantity={updateQuantity}
-              removeItem={removeItem}
-            />
+              removeItem={removeItem} />
+
           </div>
         </div>
       </div>
@@ -568,9 +568,9 @@ const Equipos = () => {
         canAddMore={canAddMore}
         onViewDetails={(item) => {
           setSelectedEquipment(item);
-        }}
-      />
-    </div>
-  );
+        }} />
+
+    </div>);
+
 };
 export default Equipos;
