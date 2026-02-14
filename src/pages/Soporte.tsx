@@ -17,21 +17,25 @@ const Soporte = () => {
       faqs: [
         {
           question: "¿Cómo puedo reservar un equipo?",
-          answer: "Podés reservar desde nuestra web agregando equipos al cotizador y completando el formulario. También podés escribirnos por WhatsApp o email con tu lista de equipos y fechas."
+          answer:
+            "Podés reservar desde nuestra web agregando equipos al cotizador y completando el formulario. También podés escribirnos por WhatsApp o email con tu lista de equipos y fechas.",
         },
         {
           question: "¿Con cuánta anticipación debo reservar?",
-          answer: "Recomendamos reservar con al menos 7 días de anticipación para producciones grandes. Para equipos específicos o temporada alta, sugerimos 15-20 días."
+          answer:
+            "Recomendamos reservar con al menos 7 días de anticipación para producciones grandes. Para equipos específicos o temporada alta, sugerimos 15-20 días.",
         },
         {
           question: "¿Puedo modificar o cancelar mi reserva?",
-          answer: "Sí, podés modificar tu reserva hasta 48hs antes del inicio. Cancelaciones con más de 72hs de anticipación no tienen cargo. Cancelaciones tardías pueden generar un cargo del 20%."
+          answer:
+            "Sí, podés modificar tu reserva hasta 48hs antes del inicio. Cancelaciones con más de 72hs de anticipación no tienen cargo. Cancelaciones tardías pueden generar un cargo del 20%.",
         },
         {
           question: "¿Qué incluye el alquiler?",
-          answer: "El alquiler incluye el equipo, cables y accesorios básicos, transporte en CABA/GBA, y soporte técnico durante el período de alquiler."
-        }
-      ]
+          answer:
+            "El alquiler incluye el equipo, cables y accesorios básicos, transporte en CABA/GBA, y soporte técnico durante el período de alquiler.",
+        },
+      ],
     },
     {
       title: "Seguros y Garantías",
@@ -39,21 +43,25 @@ const Soporte = () => {
       faqs: [
         {
           question: "¿Los equipos están asegurados?",
-          answer: "Sí, todos nuestros equipos cuentan con seguro contra todo riesgo. El cliente es responsable por el uso correcto del equipo según las especificaciones técnicas."
+          answer:
+            "Sí, todos nuestros equipos cuentan con seguro contra todo riesgo. El cliente es responsable por el uso correcto del equipo según las especificaciones técnicas.",
         },
         {
           question: "¿Qué cubre el seguro?",
-          answer: "El seguro cubre daños accidentales durante el uso normal del equipo. No cubre: negligencia, uso incorrecto, robo sin denuncia policial, o daños por condiciones extremas no autorizadas."
+          answer:
+            "El seguro cubre daños accidentales durante el uso normal del equipo. No cubre: negligencia, uso incorrecto, robo sin denuncia policial, o daños por condiciones extremas no autorizadas.",
         },
         {
           question: "¿Necesito dejar una seña?",
-          answer: "Sí, solicitamos una seña del 30% al confirmar la reserva. El saldo restante se abona al retirar el equipo. Aceptamos transferencia, efectivo y tarjeta."
+          answer:
+            "Sí, solicitamos una seña del 30% al confirmar la reserva. El saldo restante se abona al retirar el equipo. Aceptamos transferencia, efectivo y tarjeta.",
         },
         {
           question: "¿Qué pasa si el equipo falla durante el rodaje?",
-          answer: "Tenemos equipos de respaldo disponibles. En caso de falla técnica, te proporcionamos un reemplazo sin cargo adicional. Contamos con soporte técnico 24/7."
-        }
-      ]
+          answer:
+            "Tenemos equipos de respaldo disponibles. En caso de falla técnica, te proporcionamos un reemplazo sin cargo adicional. Contamos con soporte técnico 24/7.",
+        },
+      ],
     },
     {
       title: "Envíos y Devoluciones",
@@ -61,21 +69,25 @@ const Soporte = () => {
       faqs: [
         {
           question: "¿Hacen envíos a todo el país?",
-          answer: "Sí, enviamos a todo el territorio argentino. Trabajamos con OCA, Andreani y correos especializados para equipos delicados."
+          answer:
+            "Sí, enviamos a todo el territorio argentino. Trabajamos con OCA, Andreani y correos especializados para equipos delicados.",
         },
         {
           question: "¿Cuánto demora el envío?",
-          answer: "CABA/GBA: 24-48hs. Interior: 48-72hs. Envíos urgentes disponibles con cargo adicional. Coordinamos el envío para que llegue 1 día antes del rodaje."
+          answer:
+            "CABA/GBA: 24-48hs. Interior: 48-72hs. Envíos urgentes disponibles con cargo adicional. Coordinamos el envío para que llegue 1 día antes del rodaje.",
         },
         {
           question: "¿Quién se hace cargo del envío?",
-          answer: "Los envíos dentro de CABA están incluidos. Para GBA e interior, el costo de envío se calcula según destino y volumen de equipo. El cliente paga ambos envíos (ida y vuelta)."
+          answer:
+            "Los envíos dentro de CABA están incluidos. Para GBA e interior, el costo de envío se calcula según destino y volumen de equipo. El cliente paga ambos envíos (ida y vuelta).",
         },
         {
           question: "¿Cómo devuelvo el equipo?",
-          answer: "Podés devolverlo en nuestra oficina, coordinar retiro en CABA/GBA (sin cargo), o enviarlo por correo. Debe llegar el día pactado antes de las 18hs."
-        }
-      ]
+          answer:
+            "Podés devolverlo en nuestra oficina, coordinar retiro en CABA/GBA (sin cargo), o enviarlo por correo. Debe llegar el día pactado antes de las 18hs.",
+        },
+      ],
     },
     {
       title: "Uso y Mantenimiento",
@@ -83,38 +95,45 @@ const Soporte = () => {
       faqs: [
         {
           question: "¿Proporcionan capacitación sobre los equipos?",
-          answer: "Sí, ofrecemos una inducción gratuita de 30min al retirar el equipo. También tenemos talleres pagos más extensos y manuales descargables."
+          answer:
+            "Sí, ofrecemos una inducción gratuita de 30min al retirar el equipo. También tenemos talleres pagos más extensos y manuales descargables.",
         },
         {
           question: "¿Puedo probar el equipo antes de alquilar?",
-          answer: "Sí, ofrecemos pruebas de equipo sin cargo en nuestra oficina. Coordiná un turno para probar cámaras, lentes o cualquier equipo antes de tu producción."
+          answer:
+            "Sí, ofrecemos pruebas de equipo sin cargo en nuestra oficina. Coordiná un turno para probar cámaras, lentes o cualquier equipo antes de tu producción.",
         },
         {
           question: "¿Qué hago si tengo problemas técnicos?",
-          answer: "Contactanos de inmediato por WhatsApp (11-XXXX-XXXX), email o teléfono. Nuestro equipo técnico está disponible 24/7 para resolver problemas en tiempo real."
+          answer:
+            "Contactanos de inmediato por WhatsApp (11-XXXX-XXXX), email o teléfono. Nuestro equipo técnico está disponible 24/7 para resolver problemas en tiempo real.",
         },
         {
           question: "¿Debo limpiar el equipo antes de devolverlo?",
-          answer: "No es necesario. Hacemos mantenimiento profesional a todos los equipos. Solo pedimos que lo devuelvas en el mismo estado en que lo recibiste."
-        }
-      ]
-    }
+          answer:
+            "No es necesario. Hacemos mantenimiento profesional a todos los equipos. Solo pedimos que lo devuelvas en el mismo estado en que lo recibiste.",
+        },
+      ],
+    },
   ];
 
   const manuals = [
     { name: "Guía de uso - Cámaras RED", size: "2.3 MB" },
     { name: "Manual - Luces ARRI", size: "1.8 MB" },
     { name: "Configuración - Monitores", size: "950 KB" },
-    { name: "Guía - Sonido directo", size: "1.5 MB" }
+    { name: "Guía - Sonido directo", size: "1.5 MB" },
   ];
 
-  const filteredFaqs = faqCategories.map(category => ({
-    ...category,
-    faqs: category.faqs.filter(faq => 
-      faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      faq.answer.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  })).filter(category => category.faqs.length > 0);
+  const filteredFaqs = faqCategories
+    .map((category) => ({
+      ...category,
+      faqs: category.faqs.filter(
+        (faq) =>
+          faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          faq.answer.toLowerCase().includes(searchTerm.toLowerCase()),
+      ),
+    }))
+    .filter((category) => category.faqs.length > 0);
 
   return (
     <div className="min-h-screen pt-20">
@@ -122,13 +141,11 @@ const Soporte = () => {
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="font-heading text-4xl md:text-6xl mb-6 tracking-tight">
-              CENTRO DE SOPORTE
-            </h1>
+            <h1 className="font-heading text-4xl md:text-6xl mb-6 tracking-tight">CENTRO DE SOPORTE</h1>
             <p className="text-sm md:text-base text-muted-foreground mb-8 leading-tight">
               Encontrá respuestas rápidas a tus preguntas sobre alquiler, seguros, envíos y más.
             </p>
-            
+
             {/* Search Bar */}
             <div className="relative max-w-xl mx-auto">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -155,7 +172,12 @@ const Soporte = () => {
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="h-auto py-6 font-heading">
-              <a href="https://wa.me/54114780732" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2">
+              <a
+                href="https://wa.me/541147180732"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center gap-2"
+              >
                 <MessageCircle className="h-6 w-6" />
                 <span>WHATSAPP</span>
               </a>
@@ -173,9 +195,7 @@ const Soporte = () => {
       {/* FAQs Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <h2 className="font-heading text-3xl md:text-4xl mb-12 text-center">
-            PREGUNTAS FRECUENTES
-          </h2>
+          <h2 className="font-heading text-3xl md:text-4xl mb-12 text-center">PREGUNTAS FRECUENTES</h2>
           <div className="max-w-4xl mx-auto space-y-8">
             {filteredFaqs.length > 0 ? (
               filteredFaqs.map((category, index) => (
@@ -190,12 +210,8 @@ const Soporte = () => {
                     <Accordion type="single" collapsible className="w-full">
                       {category.faqs.map((faq, faqIndex) => (
                         <AccordionItem key={faqIndex} value={`item-${index}-${faqIndex}`}>
-                          <AccordionTrigger className="text-left font-semibold">
-                            {faq.question}
-                          </AccordionTrigger>
-                          <AccordionContent className="text-muted-foreground">
-                            {faq.answer}
-                          </AccordionContent>
+                          <AccordionTrigger className="text-left font-semibold">{faq.question}</AccordionTrigger>
+                          <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
                         </AccordionItem>
                       ))}
                     </Accordion>
@@ -206,9 +222,13 @@ const Soporte = () => {
               <Card className="border-2 border-border shadow-brutal">
                 <CardContent className="py-12 text-center">
                   <p className="text-muted-foreground">
-                    No encontramos resultados para "{searchTerm}". 
+                    No encontramos resultados para "{searchTerm}".
                     <br />
-                    Intentá con otros términos o <Link to="/contacto" className="text-primary underline">contactanos directamente</Link>.
+                    Intentá con otros términos o{" "}
+                    <Link to="/contacto" className="text-primary underline">
+                      contactanos directamente
+                    </Link>
+                    .
                   </p>
                 </CardContent>
               </Card>
@@ -246,9 +266,7 @@ const Soporte = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="font-heading text-3xl md:text-4xl mb-6">
-              ¿NO ENCONTRASTE LO QUE BUSCABAS?
-            </h2>
+            <h2 className="font-heading text-3xl md:text-4xl mb-6">¿NO ENCONTRASTE LO QUE BUSCABAS?</h2>
             <p className="text-sm mb-8 text-muted-foreground leading-tight">
               Nuestro equipo de soporte está disponible para ayudarte. Escribinos y te respondemos en minutos.
             </p>
