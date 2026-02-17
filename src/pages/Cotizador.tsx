@@ -147,7 +147,7 @@ Los precios y disponibilidad deben confirmarse.
 Contactar cliente para coordinar entrega/retiro.
     `.trim();
     if (sendVia === "whatsapp") {
-      const whatsappNumber = "541147180732";
+      const whatsappNumber = "+54 9 11 2682-4709";
       const encodedMessage = encodeURIComponent(message);
       window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, "_blank");
       toast({
