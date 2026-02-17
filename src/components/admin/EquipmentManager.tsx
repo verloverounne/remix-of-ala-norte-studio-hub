@@ -513,10 +513,10 @@ export const EquipmentManager = () => {
     }
   };
 
-  // Inline quick update for status, featured, price, stock_quantity, name, and image_url
+  // Inline quick update for status, featured, price, stock_quantity, name, image_url, category_id, subcategory_id
   const handleInlineUpdate = async (
     equipmentId: string,
-    field: 'status' | 'featured' | 'price_per_day' | 'stock_quantity' | 'name' | 'image_url',
+    field: 'status' | 'featured' | 'price_per_day' | 'stock_quantity' | 'name' | 'image_url' | 'category_id' | 'subcategory_id',
     value: string | boolean | number | null
   ) => {
     const updateData: Record<string, any> = {};
@@ -995,6 +995,33 @@ export const EquipmentManager = () => {
                             className="h-7 text-sm font-medium w-full"
                             placeholder="Nombre del equipo"
                           />
+                          {/* Inline subcategory selector */}
+                          <div className="flex items-center gap-1 flex-wrap">
+                            <Select
+                              value={eq.subcategory_id || "none"}
+                              onValueChange={(v) => {
+                                const newVal = v === "none" ? null : v;
+                                setEquipment(prev => prev.map(item =>
+                                  item.id === eq.id ? { ...item, subcategory_id: newVal, subcategories: newVal ? subcategories.find(s => s.id === newVal) as Subcategory | null : null } : item
+                                ));
+                                handleInlineUpdate(eq.id, 'subcategory_id', newVal);
+                              }}
+                            >
+                              <SelectTrigger className="h-6 text-xs w-auto min-w-[120px] max-w-[180px]">
+                                <SelectValue placeholder="Subcategoría" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="none">Sin subcategoría</SelectItem>
+                                {subcategories
+                                  .filter(s => !eq.category_id || s.category_id === eq.category_id)
+                                  .map((sub) => (
+                                    <SelectItem key={sub.id} value={sub.id}>
+                                      {sub.name}
+                                    </SelectItem>
+                                  ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
                           <div className="flex gap-1 flex-wrap">
                             {eq.categories && (
                               <Badge variant="outline" className="text-xs">
