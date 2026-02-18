@@ -173,7 +173,7 @@ const Soporte = () => {
             </Button>
             <Button asChild size="lg" variant="outline" className="h-auto py-6 font-heading">
               <a
-                href="https://wa.me/+5491126824709"
+                href="https://wa.me/5491126824709"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center gap-2"
