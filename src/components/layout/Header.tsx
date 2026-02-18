@@ -222,6 +222,7 @@ export const Header = () => {
                     className={`flex items-center justify-center
                       px-6
                       h-12
+                      rounded-sm
                       font-heading text-xs xl:text-sm tracking-tight
                       transition-colors
                       ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-primary hover:text-primary-foreground"}`}
@@ -234,7 +235,7 @@ export const Header = () => {
               {/* Actions Brutales */}
               <div className="flex items-center gap-2">
                 {/* Search wrapper */}
-                <div className="flex items-center justify-center h-12 px-6 bg-background hover:bg-primary hover:text-primary-foreground transition-colors">
+                <div className="flex items-center justify-center h-12 px-6 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors">
                   <SearchBar />
                 </div>
 
@@ -242,7 +243,7 @@ export const Header = () => {
                 {user && isAdmin && (
                   <Link
                     to="/admin"
-                    className="flex items-center justify-center h-12 px-6 font-heading text-xs xl:text-sm tracking-tight bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="flex items-center justify-center h-12 px-6 rounded-sm font-heading text-xs xl:text-sm tracking-tight bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
                     ADMIN
                   </Link>
@@ -256,7 +257,7 @@ export const Header = () => {
                       signOut();
                       navigate("/");
                     }}
-                    className="flex items-center justify-center h-12 px-6 bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="flex items-center justify-center h-12 px-6 rounded-sm bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                     title="Cerrar sesión"
                   >
                     <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
@@ -264,7 +265,7 @@ export const Header = () => {
                 ) : (
                   <Link
                     to="/auth"
-                    className="flex items-center justify-center h-12 px-6 font-heading text-xs xl:text-sm tracking-tight bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="flex items-center justify-center h-12 px-6 rounded-sm font-heading text-xs xl:text-sm tracking-tight bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
                     LOGIN
                   </Link>
