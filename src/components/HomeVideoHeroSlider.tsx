@@ -5,6 +5,7 @@ import { Volume2, VolumeX } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useParallax } from "@/hooks/useParallax";
 import { useGalleryImages } from "@/hooks/useGalleryImages";
+import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
 import heroLogo from "@/assets/hero-logo.png";
 interface HeroSlide {
   id: string;
@@ -97,7 +98,7 @@ const HeroSlideComponent = ({
       <div className="hidden md:grid md:grid-cols-2 h-screen bg-foreground">
         {/* Columna izquierda: Texto posicionado al 90% del alto de pantalla */}
         <div className="sticky flex flex-col justify-end h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[16vh] px-0 text-left text-4xl gap-[24px]">
-          <h1 className="text-background mb-4 leading-tight border-0 font-sans font-thin text-5xl" style={{
+          <h1 className="text-background mb-4 leading-tight border-0 font-sans font-thin" style={{
           fontSize: "clamp(2rem, 5vw, 4rem)",
           wordBreak: "break-word",
           overflowWrap: "break-word"
@@ -142,7 +143,7 @@ const HeroSlideComponent = ({
 
         <div className="absolute inset-0 flex items-end justify-center mb-[64px]">
           <div ref={contentParallax.ref as any} style={contentParallax.style} className="backdrop-blur-lg bg-[#423c38]/50 text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px]">
-            <h1 className="text-background md:text-4xl font-medium mb-2 text-3xl lg:text-5xl py-[32px] pt-[32px]">
+            <h1 className="text-background mb-2 font-sans font-thin py-[32px] pt-[32px]" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
               {slide.title}
             </h1>
             <p className="text-background mb-16 font-medium text-xs mb:text-sm text-left">
@@ -161,6 +162,7 @@ export const HomeVideoHeroSlider = () => {
     getByPageType,
     loading
   } = useGalleryImages();
+  const { isVisible: isHeaderVisible } = useHeaderVisibility();
   const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -244,8 +246,8 @@ export const HomeVideoHeroSlider = () => {
         </button>}
 
       {/* Logo centrado en la parte superior */}
-      <div className="absolute top-2 left-0 right-0 z-20 flex justify-center mt-8 md:2 lg:6 lg:12 my-0">
-        <img alt="Ala Norte Logo" className="sticky top-10 z-20 object-contain w-28 md:w-1/4 lg:w-1/5" src="/lovable-uploads/3245f3e3-446c-4ed7-a748-e60180c533bf.png" />
+      <div className={`absolute left-0 right-0 z-20 flex justify-center transition-all duration-300 ${isHeaderVisible ? 'top-20' : 'top-4'}`}>
+        <img alt="Ala Norte Logo" className="object-contain w-28 md:w-1/4 lg:w-1/5" src="/lovable-uploads/3245f3e3-446c-4ed7-a748-e60180c533bf.png" />
       </div>
 
       {/* Navigation dots */}

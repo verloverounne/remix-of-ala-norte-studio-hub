@@ -41,7 +41,7 @@ const FeaturedEquipmentSection = ({
           className="container mx-auto mb-8 sm:mb-12 border-background bg-foreground ">
 
           <div>
-            <h2 className="font-heading text-3xl lg:text-brutal mb-2 sm:mb-4 text-center sm:text-5xl text-primary my-[3px] py-[32px] bg-muted-foreground">
+            <h2 className="font-sans font-thin mb-2 sm:mb-4 text-center text-primary my-[3px] py-[32px] bg-muted-foreground" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
               EQUIPOS DESTACADOS
             </h2>
             {/*          <p className="text-sm sm:text-base lg:text-sm text-muted-foreground font-heading leading-tight">
@@ -110,7 +110,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
             className="absolute inset-0 flex items-center justify-center image-duotone ">
 
             <div className="text-center z-10 p-8 max-w-4xl">
-              <h3 className="font-heading text-6xl mb-6 uppercase text-center text-secondary md:text-5xl">
+              <h3 className="mb-6 uppercase text-center text-secondary font-sans font-thin" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
                 {equipment.name}
               </h3>
               {equipment.featured_copy &&
@@ -157,7 +157,7 @@ const CTASection = () => {
           style={contentParallax.style}
           className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] bg-[#423c38]/50 pt-[64px]">
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6 my-0 px-0 font-extrabold text-[#fbf2ee]">
+          <h2 className="mb-4 sm:mb-6 my-0 px-0 font-sans font-thin text-[#fbf2ee]" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
             ¿Tenés un rodaje en mente?
           </h2>
           <p className="text-sm mb-6 font-heading leading-tight my-[6px] sm:mb-[57px] px-0 font-normal sm:text-lg text-[#fbf2ee]">
@@ -223,7 +223,7 @@ const CartoniSection = () => {
               style={contentParallax.style}
               className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 rounded-lg backdrop-blur-lg py-[68px] max-w-2xl mx-[16px] px-[24px]">
 
-              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mb-4 text-foreground">
+              <h2 className="mb-4 text-foreground font-sans font-thin" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
                 SELLER & SERVICE <span className="text-foreground">OFICIAL CARTONI</span>
               </h2>
               <p className="text-2x1-foreground mb-6 leading-tight text-sm font-medium">

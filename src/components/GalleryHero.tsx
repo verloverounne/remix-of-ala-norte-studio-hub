@@ -101,9 +101,9 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
             {/* Title + Location + Subtitle */}
             <div className="flex flex-wrap items-center gap-[12px]">
               <h1
-                className="font-heading font-bold text-foreground"
+                className="font-sans font-thin text-foreground"
                 style={{
-                  fontSize: "clamp(2.5rem, 6vw, 6rem)",
+                  fontSize: "clamp(2rem, 5vw, 4rem)",
                   lineHeight: 1.1,
                 }}
               >
@@ -212,7 +212,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
             {/* Price Badge */}
 
             {/* Title */}
-            <h1 className="font-heading font-bold text-4xl mb-2 mt-8 text-background ">
+            <h1 className="font-sans font-thin mb-2 mt-8 text-background" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
               {space.hero_title || space.name}
             </h1>
 

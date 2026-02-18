@@ -60,7 +60,7 @@ const Contacto = () => {
       {/* Hero Section */}
       <section className="bg-foreground text-background py-[80px]">
         <div className="container mx-auto px-4 max-w-6xl text-left">
-          <h1 className="text-5xl md:text-6xl font-heading font-bold my-[64px] mb-[2px] mx-[64px]">HABLEMOS</h1>
+          <h1 className="font-sans font-thin my-[64px] mb-[2px] mx-[64px]" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>HABLEMOS</h1>
           <p className="max-w-3xl text-left font-medium text-base md:text-lg mx-[64px] bg-transparent">
             Contanos tu idea, tus fechas y qué necesitás. Armamos juntos una propuesta de equipamiento y espacios a medida. Nuestro equipo te responde con asesoramiento técnico dedicado.
           </p>

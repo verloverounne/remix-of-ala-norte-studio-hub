@@ -65,7 +65,7 @@ export const InstitutionalSlider = ({ pageType, className = "" }: InstitutionalS
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center z-10 p-4 sm:p-8 max-w-4xl">
                       {image.title && (
-                        <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-2 sm:mb-4 uppercase text-background drop-shadow-lg">
+                        <h2 className="font-sans font-thin mb-2 sm:mb-4 uppercase text-background drop-shadow-lg" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
                           {image.title}
                         </h2>
                       )}
