@@ -58,7 +58,7 @@ const App = () =>
           <HeaderVisibilityProvider>
             <VideoDuotoneProvider>
               <ScrollToTop />
-              <Header className="max-w-screen-xl" />
+              <Header />
               <MainContent>
                 <Suspense
                 fallback={
