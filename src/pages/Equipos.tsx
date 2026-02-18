@@ -486,7 +486,7 @@ const Equipos = () => {
         </div>
       </div>
 
-      <div className="container w-screen mx-auto pb-4 sm:pb-6 bg-background px-0">
+      <div className="container pb-4 sm:pb-6 bg-foreground">
         <div className="grid lg:grid-cols-4 gap-4 lg:gap-6 py-[16px] ml-0 px-0 pl-[16px] bg-foreground">
           {/* Main Content - Category Sections */}
           <main ref={mainContentRef} className="lg:col-span-3 bg-foreground">
