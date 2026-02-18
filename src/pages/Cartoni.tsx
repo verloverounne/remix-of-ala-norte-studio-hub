@@ -93,7 +93,7 @@ const Cartoni = () => {
                             alt="Cartoni Logo"
                             className="h-12 sm:h-16 md:h-20 mx-auto mb-4 sm:mb-6 bg-background/90 p-3 rounded"
                           />
-                          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-3 sm:mb-4 uppercase text-background">
+                          <h1 className="font-sans font-thin mb-3 sm:mb-4 uppercase text-background" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
                             SELLER & SERVICE
                             <br />
                             <span className="text-primary">OFICIAL CARTONI</span>
@@ -155,7 +155,7 @@ const Cartoni = () => {
                   className="h-16 md:h-24 mx-auto bg-background p-4 rounded-lg"
                 />
               </div>
-              <h1 className="font-heading text-4xl md:text-6xl lg:text-brutal mb-6">
+              <h1 className="font-sans font-thin mb-6" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
                 SELLER & SERVICE
                 <br />
                 <span className="text-primary">OFICIAL CARTONI</span>
