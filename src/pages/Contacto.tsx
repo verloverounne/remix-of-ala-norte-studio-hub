@@ -186,7 +186,7 @@ const Contacto = () => {
                       <Instagram className="h-5 w-5" />
                     </a>
                     <a href="https://twitter.com/alanorte" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary-dark hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale" aria-label="Twitter X">
-                      <Twitter className="h-5 w-5" />
+                      <Twitter className="h-5 w-5 text-background" />
                     </a>
                   </div>
                 </CardContent>
