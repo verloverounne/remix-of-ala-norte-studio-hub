@@ -12,7 +12,7 @@ import { useGalleryImages } from "@/hooks/useGalleryImages";
 const Contacto = () => {
   const { toast } = useToast();
   const { getByPageType } = useGalleryImages();
-  
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -58,7 +58,7 @@ const Contacto = () => {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
-      <section className="py-20 bg-foreground text-background">
+      <section className="bg-foreground text-background py-[80px]">
         <div className="container mx-auto px-4 max-w-6xl text-left">
           <h1 className="text-5xl md:text-6xl font-heading font-bold my-[64px] mb-[2px] mx-[64px]">HABLEMOS</h1>
           <p className="max-w-3xl text-left font-medium text-base md:text-lg mx-[64px] bg-transparent">
@@ -68,7 +68,7 @@ const Contacto = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 flex gap-4 mx-[32px] bg-background">
+      <section className="py-16 gap-4 bg-background flex items-start justify-center">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Form */}
@@ -121,11 +121,11 @@ const Contacto = () => {
             {/* Contact Info */}
             <div className="space-y-6">
               {/* Vertical Video */}
-              {contactVideo && (
-                <div className="aspect-[9/16] w-full rounded-lg overflow-hidden bg-muted">
+              {contactVideo &&
+              <div className="aspect-[9/16] w-full rounded-lg overflow-hidden bg-muted">
                   <video src={contactVideo} autoPlay loop muted playsInline className="w-full h-full object-cover" />
                 </div>
-              )}
+              }
 
               <Card>
                 <CardHeader>
@@ -185,7 +185,7 @@ const Contacto = () => {
                     <a href="https://www.instagram.com/alanortecinedigital/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale" aria-label="Instagram">
                       <Instagram className="h-5 w-5" />
                     </a>
-                    <a href="https://twitter.com/alanorte" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale" aria-label="Twitter X">
+                    <a href="https://twitter.com/alanorte" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary-dark hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale" aria-label="Twitter X">
                       <Twitter className="h-5 w-5" />
                     </a>
                   </div>
@@ -195,8 +195,8 @@ const Contacto = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Contacto;
