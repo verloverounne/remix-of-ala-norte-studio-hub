@@ -179,10 +179,10 @@ const Contacto = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="flex gap-4">
-                    <a href="https://www.facebook.com/alanortecinedigital" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale" aria-label="Facebook">
-                      <Facebook className="h-5 w-5" />
+                    <a href="https://www.facebook.com/alanortecinedigital" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary-dark hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale" aria-label="Facebook">
+                      <Facebook className="h-5 w-5 text-background" />
                     </a>
-                    <a href="https://www.instagram.com/alanortecinedigital/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale" aria-label="Instagram">
+                    <a href="https://www.instagram.com/alanortecinedigital/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary-dark hover:bg-primary flex items-center justify-center transition-all hover-scale text-background" aria-label="Instagram">
                       <Instagram className="h-5 w-5" />
                     </a>
                     <a href="https://twitter.com/alanorte" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary-dark hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale" aria-label="Twitter X">
