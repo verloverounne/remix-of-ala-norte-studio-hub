@@ -276,7 +276,7 @@ const Home = () => {
       <InstitutionalSlider pageType="home" />
 
       {/* Hero Section - Video Slider with CTAs */}
-      <HomeVideoHeroSlider className="items-center" />
+      <HomeVideoHeroSlider />
 
       {/* Services Section */}
       <ServicesSection />
