@@ -2,11 +2,12 @@ import { ReactNode } from "react";
 
 interface MainContentProps {
   children: ReactNode;
+  className?: string;
 }
 
-export const MainContent = ({ children }: MainContentProps) => {
+export const MainContent = ({ children, className }: MainContentProps) => {
   return (
-    <main>
+    <main className={className}>
       {children}
     </main>
   );
