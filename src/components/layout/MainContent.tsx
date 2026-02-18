@@ -5,9 +5,5 @@ interface MainContentProps {
 }
 
 export const MainContent = ({ children }: MainContentProps) => {
-  return (
-    <main className="max-w-screen-lg mx-auto">
-      {children}
-    </main>
-  );
+  return <main className="max-w-screen-xl mx-auto">{children}</main>;
 };
