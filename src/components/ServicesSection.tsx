@@ -365,10 +365,10 @@ export const ServicesSection = () => {
                 key={service.id}
                 onClick={() => handleTabClick(index)}
                 className={cn(
-                  "flex-1 font-heading text-xs transition-all rounded-sm shadow-none px-32 py-[16px] my-[16px]",
+                  "flex-1 font-heading text-xs transition-all rounded-sm shadow-none py-[16px] mx-8 my-[16px]",
                   activeIndex === index
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-background text-foreground border border-border hover:bg-muted",
+                    ? "bg-primary-dark text-primary-foreground"
+                    : "bg-background text-foreground border border-border hover:bg-primary",
                 )}
               >
                 {service.title}
