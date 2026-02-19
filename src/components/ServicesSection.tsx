@@ -198,7 +198,7 @@ export const ServicesSection = () => {
         error
       } = await supabase.from("home_services").select("id, title, description, image_url, section_media_type, section_video_url, button_text, button_link, bullets, cta_label, cta_url, order_index, is_active").eq("is_active", true).order("order_index");
       if (!error && data) {
-        const transformed = data.map(s => ({
+        const transformed = data.map((s) => ({
           ...s,
           order_index: s.order_index ?? 0,
           section_media_type: s.section_media_type ?? null,
@@ -254,8 +254,8 @@ export const ServicesSection = () => {
     return null;
   }
   return <section className="relative bg-background">
-      <div className="pb-[24px] px-0 text-foreground sm:py-[24px] py-0 pt-[32px] border-0 bg-[#131211] items -enter">
-        <h2 className="pt-8 font-sans text-center font-thin text-background bg-transparent max-w-lg my-0 mx-0 px-[32px]" style={{ fontSize: "clamp(1rem, 3vw, 2rem)" }}>
+      <div className="pb-[24px] pt-[32px] bg-background text-foreground">
+        <h2 className="max-w-screen-xl text-primary text-5xl text-center" style={{ fontSize: "clamp(1rem, 3vw, 2rem)" }}>
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
 
@@ -263,7 +263,7 @@ export const ServicesSection = () => {
         <div className="w-full bg-[#201e1d]">
           {/* Mobile: Dropdown select tied to active slide */}
           <div className="sm:hidden py-3 px-4 w-full text-background bg-[#131211]">
-            <Select value={String(activeIndex)} onValueChange={value => handleTabClick(Number(value))} open={dropdownOpen} onOpenChange={setDropdownOpen}>
+            <Select value={String(activeIndex)} onValueChange={(value) => handleTabClick(Number(value))} open={dropdownOpen} onOpenChange={setDropdownOpen}>
               <SelectTrigger className="w-full bg-[#201e1d]  font-heading text-sm uppercase">
                 <SelectValue>{services[activeIndex]?.title || "Seleccionar servicio"}</SelectValue>
               </SelectTrigger>
