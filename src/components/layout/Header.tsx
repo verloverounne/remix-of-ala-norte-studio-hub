@@ -233,7 +233,7 @@ export const Header = () => {
                 {/* Cart button */}
                 <Link
                   to="/cotizador"
-                  className="relative flex items-center justify-center h-12 px-6 rounded-sm bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                  className="relative flex items-center justify-center h-12 w-12 rounded-sm bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                   title="Carrito de presupuesto"
                 >
                   <ShoppingCart className="h-4 w-4 xl:h-5 xl:w-5" />
@@ -245,7 +245,7 @@ export const Header = () => {
                 </Link>
 
                 {/* Search wrapper */}
-                <div className="flex items-center justify-center h-12 px-6 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors">
+                <div className="flex items-center justify-center h-12 w-12 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors">
                   <SearchBar />
                 </div>
 
