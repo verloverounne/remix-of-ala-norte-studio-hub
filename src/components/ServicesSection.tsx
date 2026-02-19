@@ -364,7 +364,7 @@ export const ServicesSection = () => {
             <button
               key={service.id}
               onClick={() => handleTabClick(index)}
-              className={cn("flex-1 font-heading text-xs transition-all rounded-sm shadow-none py-[16px] mx-8 my-[16px] font-medium border-0",
+              className={cn("flex-1 font-heading text-xs transition-all rounded-sm shadow-none mx-[4px] my-[8px] px-[4px] py-[8px] border-transparent",
 
               activeIndex === index ?
               "bg-primary-dark text-primary-foreground" :
