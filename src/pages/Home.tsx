@@ -29,12 +29,12 @@ const FeaturedEquipmentSection = ({
   setCurrentEquipmentSlide
 }: FeaturedEquipmentSectionProps) => {
   const headerParallax = useParallax({
-    speed: 0.5,
+    speed: 0.2,
     direction: "down"
   });
   return (
     <section className="relative border-y border-border bg-background overflow-hidden">
-      <div className="py-12 sm:py-0 bg-foreground lg:py-[64px]">
+      <div className="py-16 sm:py-20 bg-foreground lg:py-24">
         <div
           ref={headerParallax.ref as any}
           style={headerParallax.style}
@@ -80,17 +80,17 @@ interface EquipmentSlideProps {
 }
 const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   const imageParallax = useParallax({
-    speed: 0.8,
+    speed: 0.3,
     direction: "up"
   });
   const contentParallax = useParallax({
-    speed: 0.5,
+    speed: 0.2,
     direction: "down"
   });
   return (
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
-        <div className="relative h-[70vh] bg-foreground/95 overflow-hidden group cursor-pointer">
+        <div className="relative h-[60vh] bg-foreground/95 overflow-hidden group cursor-pointer">
           {equipment.image_url &&
           <div
             ref={imageParallax.ref as any}
