@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, LogOut, MessageCircle } from "lucide-react";
+import { Menu, X, LogOut, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/hooks/useCart";
@@ -31,10 +31,6 @@ const navigation = [
   {
     name: "CONTACTO",
     href: "/contacto",
-  },
-  {
-    name: "PRESUPUESTO",
-    href: "/cotizador",
   },
 ];
 
@@ -234,6 +230,20 @@ export const Header = () => {
 
               {/* Actions Brutales */}
               <div className="flex items-center gap-2">
+                {/* Cart button */}
+                <Link
+                  to="/cotizador"
+                  className="relative flex items-center justify-center h-12 px-6 rounded-sm bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                  title="Carrito de presupuesto"
+                >
+                  <ShoppingCart className="h-4 w-4 xl:h-5 xl:w-5" />
+                  {totalItems > 0 && (
+                    <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-[10px] bg-primary text-primary-foreground">
+                      {totalItems}
+                    </Badge>
+                  )}
+                </Link>
+
                 {/* Search wrapper */}
                 <div className="flex items-center justify-center h-12 px-6 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors">
                   <SearchBar />
