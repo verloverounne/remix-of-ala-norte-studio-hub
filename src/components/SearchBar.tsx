@@ -80,7 +80,7 @@ export const SearchBar = () => {
         url: '/cotizador'
       },
       // Equipment
-      ...(equipment || []).map(e => ({
+      ...(equipment || []).map((e) => ({
         type: 'equipment' as const,
         title: `${e.name}${e.brand ? ` - ${e.brand}` : ''}${e.model ? ` ${e.model}` : ''}`,
         description: e.description || undefined,
@@ -90,7 +90,7 @@ export const SearchBar = () => {
         availability: e.status
       })),
       // Spaces
-      ...(spaces || []).map(s => ({
+      ...(spaces || []).map((s) => ({
         type: 'space' as const,
         title: s.name,
         description: s.description || undefined,
@@ -116,7 +116,7 @@ export const SearchBar = () => {
         includeScore: true
       });
       const searchResults = fuse.search(query);
-      setResults(searchResults.slice(0, 8).map(r => r.item));
+      setResults(searchResults.slice(0, 8).map((r) => r.item));
       setSelectedIndex(-1);
     }, 300); // 300ms debounce
 
@@ -142,10 +142,10 @@ export const SearchBar = () => {
     if (results.length === 0) return;
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      setSelectedIndex(prev => prev < results.length - 1 ? prev + 1 : 0);
+      setSelectedIndex((prev) => prev < results.length - 1 ? prev + 1 : 0);
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      setSelectedIndex(prev => prev > 0 ? prev - 1 : results.length - 1);
+      setSelectedIndex((prev) => prev > 0 ? prev - 1 : results.length - 1);
     } else if (e.key === 'Enter' && selectedIndex >= 0) {
       e.preventDefault();
       handleResultClick(results[selectedIndex].url);
@@ -179,12 +179,12 @@ export const SearchBar = () => {
       {!isOpen ? <Button variant="ghost" size="icon" onClick={() => {
       setIsOpen(true);
       setTimeout(() => inputRef.current?.focus(), 100);
-    }} className="h-10 w-10 xl:h-12 xl:w-12 rounded-0 rounded-none bg-inherit" aria-label="Abrir búsqueda">
+    }} className="h-10 w-10 xl:h-12 xl:w-12 rounded-0 bg-inherit rounded-sm" aria-label="Abrir búsqueda">
           <Search className="h-4 w-4 xl:h-5 xl:w-5" />
         </Button> : <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 top-20 sm:top-0 w-auto sm:w-80 md:w-96 border border-foreground shadow-brutal-lg z-50 bg-transparent">
           <div className="flex items-center gap-2 p-3 border-b border-foreground bg-transparent">
             <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
-            <Input ref={inputRef} type="text" placeholder="Buscar equipos, espacios..." value={query} onChange={e => setQuery(e.target.value)} onKeyDown={handleKeyDown} autoFocus className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0" />
+            <Input ref={inputRef} type="text" placeholder="Buscar equipos, espacios..." value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={handleKeyDown} autoFocus className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0" />
             <Button variant="ghost" size="icon" onClick={() => {
           setIsOpen(false);
           setQuery("");
