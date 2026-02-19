@@ -29,6 +29,10 @@ const navigation = [
   },
   // { name: "SERVICIOS", href: "/servicios" },
   {
+    name: "CARTONI",
+    href: "/cartoni",
+  },
+  {
     name: "CONTACTO",
     href: "/contacto",
   },
