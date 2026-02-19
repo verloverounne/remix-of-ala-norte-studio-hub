@@ -206,8 +206,8 @@ export const Header = () => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <nav className="max-w-screen-xl mx-auto flex items-center justify-center px-10 py-3 backdrop-blur-sm">
-            <div className="flex w-full h-12 items-center justify-between">
+          <nav className="max-w-screen-xl mx-auto flex items-center justify-center px-10 pt-0 pb-3 backdrop-blur-sm">
+            <div className="flex w-full h-16 items-center justify-between">
               {/* Logo Brutal */}
               <Link to="/" className="flex items-center h-full">
                 <img src={logo} alt="Ala Norte" className="h-full w-auto object-contain" />
