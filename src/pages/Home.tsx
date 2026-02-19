@@ -279,7 +279,7 @@ const Home = () => {
       <HomeVideoHeroSlider />
 
       {/* Services Section */}
-      <ServicesSection className="bg-background text-foreground" />
+      <ServicesSection />
 
       {/* Cartoni Official Dealer Section */}
       <CartoniSection />
