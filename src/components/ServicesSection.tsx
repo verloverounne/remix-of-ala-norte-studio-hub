@@ -254,8 +254,8 @@ export const ServicesSection = () => {
     return null;
   }
   return <section className="relative bg-background">
-      <div className="pb-[24px] pt-[32px] bg-background text-foreground">
-        <h2 className="max-w-screen-xl text-primary text-5xl text-center" style={{ fontSize: "clamp(1rem, 3vw, 2rem)" }}>
+      <div className="pb-[24px] px-0 text-foreground sm:py-[24px] py-0 pt-[32px] border-0 bg-[#131211] items -enter">
+        <h2 className="pt-8 font-sans text-center font-thin text-background bg-transparent max-w-screen-xl my-0 mx-0 px-[32px]" style={{ fontSize: "clamp(1rem, 3vw, 2rem)" }}>
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
 
