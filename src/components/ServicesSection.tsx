@@ -324,18 +324,18 @@ export const ServicesSection = () => {
   }
   return (
     <section className="relative bg-background">
-      <div className="pb-[24px] px-0 text-foreground sm:py-[24px] py-0 pt-[32px] border-0 bg-background items -enter">
+      <div className="pb-[24px] px-8 lg:px-16 text-foreground sm:py-[24px] py-0 pt-[32px] border-0 bg-background">
         <h2
-          className="font-sans text-center font-thin max-w-screen-lg text-primary"
+          className="font-sans text-center font-thin text-primary"
           style={{ fontSize: "clamp(1rem, 3vw, 2rem)" }}>
 
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
 
         {/* Tab Navigation - Dropdown on mobile, horizontal tabs on desktop */}
-        <div className="w-full bg-[#201e1d]">
+        <div className="w-full">
           {/* Mobile: Dropdown select tied to active slide */}
-          <div className="sm:hidden py-3 px-4 w-full text-background bg-[#131211]">
+          <div className="sm:hidden py-3 w-full text-background bg-[#131211]">
             <Select
               value={String(activeIndex)}
               onValueChange={(value) => handleTabClick(Number(value))}
@@ -358,17 +358,17 @@ export const ServicesSection = () => {
               </SelectContent>
             </Select>
           </div>
-          {/* Desktop: horizontal row */}
-          <div className={cn("hidden sm:flex items-center justify-between gap-0", dropdownOpen && "hidden")}>
+          {/* Desktop: horizontal row - link style */}
+          <div className={cn("hidden sm:flex items-center justify-center gap-6", dropdownOpen && "hidden")}>
             {services.map((service, index) =>
             <button
               key={service.id}
               onClick={() => handleTabClick(index)}
-              className={cn("flex-1 font-heading text-xs transition-all rounded-sm shadow-none mx-[4px] my-[8px] px-[4px] py-[8px] border-transparent",
+              className={cn("font-heading text-xs uppercase tracking-wider transition-all py-2 border-b-2 bg-transparent",
 
               activeIndex === index ?
-              "bg-primary-dark text-primary-foreground" :
-              "bg-background text-foreground border border-border hover:bg-primary"
+              "text-primary border-primary" :
+              "text-muted-foreground border-transparent hover:text-foreground hover:border-foreground/30"
               )}>
 
                 {service.title}
