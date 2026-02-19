@@ -38,21 +38,15 @@ interface ServiceSlideProps {
   service: HomeService;
   index: number;
 }
-const ServiceSlide = ({
-  service,
-  index
-}: ServiceSlideProps) => {
+const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaParallax = useParallax({
     speed: 0.6,
-    direction: "up"
+    direction: "up",
   });
 
   // Hook para scroll-driven parallax en mobile
-  const {
-    containerRef,
-    contentStyle
-  } = useScrollParallax();
+  const { containerRef, contentStyle } = useScrollParallax();
   const isVideo = service.section_media_type === "video" && service.section_video_url;
   const mediaUrl = isVideo ? service.section_video_url : service.image_url;
   const hasMedia = mediaUrl && mediaUrl.trim() !== "";
@@ -78,20 +72,43 @@ const ServiceSlide = ({
       }
     }
   };
-  return <div className="flex-[0_0_100%] min-w-0 h-screen">
+  return (
+    <div className="flex-[0_0_100%] min-w-0 h-screen">
       {/* Desktop: 2 columnas - imagen izquierda, texto derecha con blur */}
       <div className="hidden lg:grid lg:grid-cols-2 h-full">
         {/* Columna izquierda: Media con parallax y duotono */}
         <div ref={mediaParallax.ref as any} className="h-full  relative duotone-hover-group bg-muted">
-        {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="video-duotone absolute inset-0 w-full h-full object-cover border-0 bg-[#2e2c29]" style={{
-          ...mediaParallax.style
-        }} autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone absolute inset-0 w-full h-full object-cover" style={{
-          ...mediaParallax.style
-        }} /> : <div className="w-full h-full bg-muted flex">
+          {hasMedia ? (
+            isVideo ? (
+              <video
+                ref={videoRef}
+                src={mediaUrl!}
+                className="video-duotone absolute inset-0 w-full h-full object-cover border-0 bg-[#2e2c29]"
+                style={{
+                  ...mediaParallax.style,
+                }}
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <img
+                src={mediaUrl!}
+                alt={service.title}
+                className="image-duotone absolute inset-0 w-full h-full object-cover"
+                style={{
+                  ...mediaParallax.style,
+                }}
+              />
+            )
+          ) : (
+            <div className="w-full h-full bg-muted flex">
               <span className="font-heading text-6xl text-muted-foreground/30">
                 {String(index + 1).padStart(2, "0")}
               </span>
-            </div>}
+            </div>
+          )}
         </div>
 
         {/* Columna derecha: Texto con fondo - sin parallax para mantener visibilidad */}
@@ -101,25 +118,36 @@ const ServiceSlide = ({
               <span className="font-heading text-sm text-muted-foreground uppercase tracking-wider">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
-              <h3 className="uppercase text-foreground font-sans font-thin" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
+              <h3
+                className="uppercase text-foreground font-sans font-thin"
+                style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+              >
                 {service.title}
               </h3>
             </div>
 
-            {service.description && <p className="text-sm sm:text-base leading-tight text-foreground">{service.description}</p>}
+            {service.description && (
+              <p className="text-sm sm:text-base leading-tight text-foreground">{service.description}</p>
+            )}
 
-            {service.bullets && service.bullets.length > 0 && <ul className="space-y-2">
-                {service.bullets.map((bullet, i) => <li key={i} className="flex items-start gap-3">
+            {service.bullets && service.bullets.length > 0 && (
+              <ul className="space-y-2">
+                {service.bullets.map((bullet, i) => (
+                  <li key={i} className="flex items-start gap-3">
                     <Check className="h-5 w-5 mt-0.5 text-primary flex-shrink-0" />
                     <span className="text-sm sm:text-base text-foreground">{bullet}</span>
-                  </li>)}
-              </ul>}
+                  </li>
+                ))}
+              </ul>
+            )}
 
-            {(service.cta_label || service.button_text) && (service.cta_url || service.button_link) && <div className="pt-16 pb-64 w-full mx-px items-">
+            {(service.cta_label || service.button_text) && (service.cta_url || service.button_link) && (
+              <div className="pt-16 pb-64 w-full mx-px items-">
                 <Button asChild size="lg" className="font-heading uppercase">
                   <Link to={service.cta_url || service.button_link!}>{service.cta_label || service.button_text}</Link>
                 </Button>
-              </div>}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -127,48 +155,81 @@ const ServiceSlide = ({
       <div ref={containerRef} className="lg:hidden h-[130vh] relative">
         {/* Media de fondo - sticky para mantenerse visible (z-0) */}
         <div className="sticky top-0 h-screen z-0 duotone-hover-group overflow-hidden" onClick={handleMobileTap}>
-          {hasMedia ? isVideo ? <video ref={videoRef} src={mediaUrl!} className="w-full h-full video-duotone object-cover" autoPlay loop muted playsInline /> : <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" /> : <div className="w-full h-full bg-muted flex items-center justify-center">
+          {hasMedia ? (
+            isVideo ? (
+              <video
+                ref={videoRef}
+                src={mediaUrl!}
+                className="w-full h-full video-duotone object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" />
+            )
+          ) : (
+            <div className="w-full h-full bg-muted flex items-center justify-center">
               <span className="font-heading text-6xl text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
-            </div>}
+            </div>
+          )}
 
           {/* Overlay oscuro */}
           <div className="absolute inset-0 pointer-events-none" />
         </div>
 
         {/* Contenido con parallax basado en scroll - z-10 para estar encima del video */}
-        <div className="z-10 pointer-events-none" style={{
-        marginTop: "-100vh",
-        ...contentStyle
-      }}>
+        <div
+          className="z-10 pointer-events-none"
+          style={{
+            marginTop: "-100vh",
+            ...contentStyle,
+          }}
+        >
           <div className="h-screen pb-8 px-4 flex items-center justify-center">
             <div className="backdrop-blur-2x1 bg-[#423c38]/70 p-6 w-1/120.8text-foreground max-h-[80vh] overflow-y-auto mx-4 mb-16 lg-32 xl-64 pointer-events-auto mb-0">
               <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
-              <h3 className="uppercase leading-tight mb-3 text-[#fbf2ee] font-sans font-thin" style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)" }}>{service.title}</h3>
-              {service.description && <p className="mb-4 leading-relaxed font-sm text-xs mb-sm lg-medium text-[#fbf2ee]">
+              <h3
+                className="uppercase leading-tight mb-3 text-[#fbf2ee] font-sans font-thin"
+                style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)" }}
+              >
+                {service.title}
+              </h3>
+              {service.description && (
+                <p className="mb-4 leading-relaxed font-sm text-xs mb-sm lg-medium text-[#fbf2ee]">
                   {service.description}
-                </p>}
+                </p>
+              )}
 
               {/* Bullets list - fully visible */}
-              {service.bullets && service.bullets.length > 0 && <ul className="space-y-2 mb-4">
-                  {service.bullets.map((bullet, i) => <li key={i} className="flex items-start gap-2">
+              {service.bullets && service.bullets.length > 0 && (
+                <ul className="space-y-2 mb-4">
+                  {service.bullets.map((bullet, i) => (
+                    <li key={i} className="flex items-start gap-2">
                       <Check className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
                       <span className="font-sm text-xs mb-sm lg-medium text-[#fbf2ee]">{bullet}</span>
-                    </li>)}
-                </ul>}
+                    </li>
+                  ))}
+                </ul>
+              )}
 
-              {(service.button_text || service.cta_label) && (service.button_link || service.cta_url) && <Button asChild variant="default" size="sm">
+              {(service.button_text || service.cta_label) && (service.button_link || service.cta_url) && (
+                <Button asChild variant="default" size="sm">
                   <Link to={service.button_link || service.cta_url!}>
                     {service.button_text || service.cta_label}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
-                </Button>}
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 export const ServicesSection = () => {
   const [services, setServices] = useState<HomeService[]>([]);
@@ -180,7 +241,7 @@ export const ServicesSection = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     align: "start",
-    skipSnaps: false
+    skipSnaps: false,
   });
 
   // Note: Mobile tabs carousel removed - now using dropdown
@@ -193,10 +254,13 @@ export const ServicesSection = () => {
         setLoading(false);
         return;
       }
-      const {
-        data,
-        error
-      } = await supabase.from("home_services").select("id, title, description, image_url, section_media_type, section_video_url, button_text, button_link, bullets, cta_label, cta_url, order_index, is_active").eq("is_active", true).order("order_index");
+      const { data, error } = await supabase
+        .from("home_services")
+        .select(
+          "id, title, description, image_url, section_media_type, section_video_url, button_text, button_link, bullets, cta_label, cta_url, order_index, is_active",
+        )
+        .eq("is_active", true)
+        .order("order_index");
       if (!error && data) {
         const transformed = data.map((s) => ({
           ...s,
@@ -205,7 +269,7 @@ export const ServicesSection = () => {
           section_video_url: s.section_video_url ?? null,
           bullets: parseBullets(s.bullets),
           cta_label: s.cta_label ?? null,
-          cta_url: s.cta_url ?? null
+          cta_url: s.cta_url ?? null,
         }));
         setServices(transformed);
         setCache(CACHE_KEYS.HOME_SERVICES, transformed);
@@ -214,11 +278,14 @@ export const ServicesSection = () => {
     };
     fetchServices();
   }, []);
-  const scrollTo = useCallback((index: number) => {
-    if (emblaApi) {
-      emblaApi.scrollTo(index);
-    }
-  }, [emblaApi]);
+  const scrollTo = useCallback(
+    (index: number) => {
+      if (emblaApi) {
+        emblaApi.scrollTo(index);
+      }
+    },
+    [emblaApi],
+  );
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
   }, [emblaApi]);
@@ -246,16 +313,22 @@ export const ServicesSection = () => {
     scrollTo(index);
   };
   if (loading) {
-    return <section className="min-h-[500px] lg:min-h-[700px] bg-background flex items-center justify-center">
+    return (
+      <section className="min-h-[500px] lg:min-h-[700px] bg-background flex items-center justify-center">
         <div className="animate-pulse font-heading text-xl">Cargando servicios...</div>
-      </section>;
+      </section>
+    );
   }
   if (services.length === 0) {
     return null;
   }
-  return <section className="relative bg-background">
-      <div className="pb-[24px] px-0 text-foreground sm:py-[24px] py-0 pt-[32px] border-0 bg-[#131211] items -enter">
-        <h2 className="pt-8 font-sans text-center font-thin  bg-transparent max-w-screen-lg my-0 mx-0 px-[32px] text-4xl-" style={{ fontSize: "clamp(1rem, 3vw, 2rem)" }}>
+  return (
+    <section className="relative bg-background">
+      <div className="pb-[24px] px-0 text-foreground sm:py-[24px] py-0 pt-[32px] border-0 bg-background items -enter">
+        <h2
+          className="pt-8 font-sans text-center font-thin text-background bg-transparent max-w-lg my-0 mx-0 px-[32px]"
+          style={{ fontSize: "clamp(1rem, 3vw, 2rem)" }}
+        >
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
 
@@ -263,22 +336,44 @@ export const ServicesSection = () => {
         <div className="w-full bg-[#201e1d]">
           {/* Mobile: Dropdown select tied to active slide */}
           <div className="sm:hidden py-3 px-4 w-full text-background bg-[#131211]">
-            <Select value={String(activeIndex)} onValueChange={(value) => handleTabClick(Number(value))} open={dropdownOpen} onOpenChange={setDropdownOpen}>
+            <Select
+              value={String(activeIndex)}
+              onValueChange={(value) => handleTabClick(Number(value))}
+              open={dropdownOpen}
+              onOpenChange={setDropdownOpen}
+            >
               <SelectTrigger className="w-full bg-[#201e1d]  font-heading text-sm uppercase">
                 <SelectValue>{services[activeIndex]?.title || "Seleccionar servicio"}</SelectValue>
               </SelectTrigger>
               <SelectContent className="bg-[#201e1d] z-50">
-                {services.map((service, index) => <SelectItem key={service.id} value={String(index)} className="font-heading text-sm uppercase cursor-pointer">
+                {services.map((service, index) => (
+                  <SelectItem
+                    key={service.id}
+                    value={String(index)}
+                    className="font-heading text-sm uppercase cursor-pointer"
+                  >
                     {service.title}
-                  </SelectItem>)}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
           {/* Desktop: horizontal row */}
           <div className={cn("hidden sm:flex items-center justify-between gap-0", dropdownOpen && "hidden")}>
-            {services.map((service, index) => <button key={service.id} onClick={() => handleTabClick(index)} className={cn("flex-1 font-heading text-xs transition-all rounded-none shadow-none px-0 py-[16px] my-[16px]", activeIndex === index ? "bg-primary text-primary-foreground" : "bg-background text-foreground border border-border hover:bg-muted")}>
+            {services.map((service, index) => (
+              <button
+                key={service.id}
+                onClick={() => handleTabClick(index)}
+                className={cn(
+                  "flex-1 font-heading text-xs transition-all rounded-none shadow-none px-0 py-[16px] my-[16px]",
+                  activeIndex === index
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-background text-foreground border border-border hover:bg-muted",
+                )}
+              >
                 {service.title}
-              </button>)}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -286,19 +381,38 @@ export const ServicesSection = () => {
       <div className="relative">
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex">
-            {services.map((service, index) => <ServiceSlide key={service.id} service={service} index={index} />)}
+            {services.map((service, index) => (
+              <ServiceSlide key={service.id} service={service} index={index} />
+            ))}
           </div>
         </div>
 
         {/* Navigation Arrows */}
-        <button onClick={scrollPrev} className={cn("absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all py-[4px] px-[4px] text-foreground bg-primary border-foreground my-px mx-[16px]", activeIndex === 0 && "opacity-50 cursor-not-allowed")} disabled={activeIndex === 0} aria-label="Anterior">
+        <button
+          onClick={scrollPrev}
+          className={cn(
+            "absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all py-[4px] px-[4px] text-foreground bg-primary border-foreground my-px mx-[16px]",
+            activeIndex === 0 && "opacity-50 cursor-not-allowed",
+          )}
+          disabled={activeIndex === 0}
+          aria-label="Anterior"
+        >
           <ChevronLeft className="h-[24px] w-[24px]" />
         </button>
-        <button onClick={scrollNext} className={cn("absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all px-[4px] py-[4px] text-background bg-primary border-foreground mx-[16px]", activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed")} disabled={activeIndex === services.length - 1} aria-label="Siguiente">
+        <button
+          onClick={scrollNext}
+          className={cn(
+            "absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all px-[4px] py-[4px] text-background bg-primary border-foreground mx-[16px]",
+            activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed",
+          )}
+          disabled={activeIndex === services.length - 1}
+          aria-label="Siguiente"
+        >
           <ChevronRight className="text-foreground mx-px h-[24px] w-[24px]" />
         </button>
         {/* Dots indicator */}
       </div>
-    </section>;
+    </section>
+  );
 };
 export default ServicesSection;
