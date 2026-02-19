@@ -333,7 +333,7 @@ export const ServicesSection = () => {
         </h2>
 
         {/* Tab Navigation - Dropdown on mobile, horizontal tabs on desktop */}
-        <div className="w-full bg-[#201e1d]">
+        <div className="w-full bg-inherit">
           {/* Mobile: Dropdown select tied to active slide */}
           <div className="sm:hidden py-3 px-4 w-full text-background bg-[#131211]">
             <Select

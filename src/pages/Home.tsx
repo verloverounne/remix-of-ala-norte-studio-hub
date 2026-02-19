@@ -45,8 +45,8 @@ const FeaturedEquipmentSection = ({
               EQUIPOS DESTACADOS
             </h2>
             {/*          <p className="text-sm sm:text-base lg:text-sm text-muted-foreground font-heading leading-tight">
-                   TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
-                  </p> */}
+                       TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
+                      </p> */}
           </div>
         </div>
 
@@ -212,8 +212,8 @@ const CartoniSection = () => {
         }
 
         {/* Overlay para legibilidad
-              <div className="pointer-events-none absolute inset-0 bg-background/0 z-[1]" />
-               */}
+                  <div className="pointer-events-none absolute inset-0 bg-background/0 z-[1]" />
+                   */}
 
         {/* Contenido - superpuesto, abajo izquierda */}
         <div className="absolute inset-0 z-10 flex items-end">
@@ -279,7 +279,7 @@ const Home = () => {
       <HomeVideoHeroSlider />
 
       {/* Services Section */}
-      <ServicesSection className="bg-background" />
+      <ServicesSection className="bg-background text-foreground" />
 
       {/* Cartoni Official Dealer Section */}
       <CartoniSection />
