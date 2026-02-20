@@ -1,113 +1,80 @@
 
-# Plan: Conmutador de Disponibilidad para Equipos
+# Plan: Reducir consultas a la nube al minimo
 
-## Objetivo
-Agregar un conmutador (switch) de disponibilidad en:
-1. El modal de edición de equipos del admin
-2. El listado de equipos en la pestaña de equipos del admin
-3. Filtrar equipos no disponibles en la página de rental `/rental`
+## Situacion actual
 
----
+Cada vez que un usuario visita el sitio, se hacen multiples consultas a la base de datos. Muchos de estos datos cambian muy raramente (solo cuando el admin los edita). El sistema ya tiene un cache de 24hs en localStorage pero igual hace la primera consulta siempre en sesiones nuevas.
 
-## Cambios Requeridos
+## Consultas actuales identificadas
 
-### 1. `src/components/admin/EquipmentManager.tsx`
+| Consulta | Donde se usa | Frecuencia de cambio | Accion propuesta |
+|---|---|---|---|
+| `gallery_images` (todas) | Home hero, Cartoni, Contacto, Galeria, Sala, Producciones, Institutional, Rental hero, Video preloader | Muy rara (admin) | **Hardcodear como JSON estatico** |
+| `equipment` (featured=true) | Home page | Rara | **Hardcodear como JSON estatico** |
+| `home_services` (is_active=true) | Home ServicesSection, Servicios page | Rara | **Hardcodear como JSON estatico** |
+| `equipment` + `categories` + `subcategories` | Equipos page (catalogo) | Media (precios, stock) | **Mantener con cache existente** (datos operativos) |
+| `equipment` + `spaces` (SearchBar) | Header (busqueda) | Media | **Mantener con cache existente** |
+| `blog_articles` + `blog_categories` | Blog | Media | **Mantener** (contenido editorial) |
 
-**Modificaciones al interface `Equipment`:**
-- Agregar campo `status` al interface local
+## Cambios propuestos
 
-**Modificaciones a `fetchEquipment`:**
-- Incluir `status` en el select de la consulta
+### 1. Crear archivo de datos estaticos para gallery_images
+**Archivo nuevo:** `src/data/galleryData.ts`
 
-**Modificaciones a `handleEditEquipment`:**
-- Incluir `status` en los datos del equipo que se cargan
+Exportar todas las gallery_images como un array constante, copiando los datos exactos que devuelve la API actualmente (ya los tenemos del network request). Incluir una funcion helper `getByPageType()`.
 
-**Modificaciones a `handleUpdateEquipment`:**
-- Incluir `status` en el update
+### 2. Crear archivo de datos estaticos para home_services
+**Archivo nuevo:** `src/data/servicesData.ts`
 
-**Modificaciones al listado de equipos:**
-- Mostrar badge visual de disponibilidad (verde: disponible, rojo: no disponible)
-- Agregar switch inline para cambio rápido de disponibilidad
+Exportar los 6 servicios activos como constante, tomados del response actual de la API.
 
-**Modificaciones al modal de edición:**
-- Agregar switch "Disponible" con label que indique el estado actual
+### 3. Crear archivo de datos estaticos para featured equipment
+**Archivo nuevo:** `src/data/featuredEquipment.ts`
 
----
+Exportar los 2 equipos destacados actuales como constante.
 
-### 2. `src/pages/Equipos.tsx`
+### 4. Modificar `useGalleryImages` hook
+Cambiar para que use los datos estaticos en lugar de consultar la base de datos. Eliminar la logica de fetch y cache. El hook seguira exponiendo la misma interfaz (`images`, `loading: false`, `getByPageType`).
 
-**Modificaciones a `filteredEquipment`:**
-- Agregar filtro para excluir equipos con `status !== 'available'`
+### 5. Modificar Home.tsx
+Eliminar la consulta `supabase.from("equipment").eq("featured", true)` y usar los datos importados directamente.
 
----
+### 6. Modificar ServicesSection.tsx
+Eliminar la consulta a `home_services` y usar los datos estaticos.
 
-## Detalles de Implementación
+### 7. Modificar Servicios.tsx (pagina)
+Eliminar la consulta a `home_services` y usar los datos estaticos.
 
-### Interface Equipment actualizado
-```typescript
-interface Equipment {
-  // ... campos existentes
-  status: 'available' | 'rented' | 'maintenance';
-}
-```
+### 8. Eliminar preloadGalleryImages() de App.tsx
+Ya no es necesario precargar porque los datos son estaticos.
 
-### Nuevo Switch en el Modal de Edición (líneas ~1160-1176)
-```tsx
-<div className="flex items-center gap-2">
-  <Switch
-    checked={editingEquipment.status === 'available'}
-    onCheckedChange={(v) => setEditingEquipment({ 
-      ...editingEquipment, 
-      status: v ? 'available' : 'maintenance' 
-    })}
-  />
-  <Label>Disponible para alquiler</Label>
-</div>
-```
+### 9. Simplificar useVideoPreloader
+Ya no necesita esperar a que se carguen datos de la DB; puede tomar las URLs de video directamente de los datos estaticos.
 
-### Badge de estado en el listado (dentro del grid de badges ~871-884)
-```tsx
-{eq.status === 'available' ? (
-  <Badge variant="default" className="text-xs bg-green-600">
-    Disponible
-  </Badge>
-) : (
-  <Badge variant="destructive" className="text-xs">
-    No disponible
-  </Badge>
-)}
-```
+## Consultas que se mantienen (necesarias)
 
-### Filtro en Equipos.tsx (dentro de filteredEquipment ~115-126)
-```typescript
-const filteredEquipment = useMemo(() => {
-  return equipment.filter((item) => {
-    // Solo mostrar equipos disponibles
-    if (item.status !== 'available') return false;
-    
-    const matchesSearch = /* ... */;
-    const matchesSubcategory = /* ... */;
-    return matchesSearch && matchesSubcategory;
-  });
-}, [equipment, searchTerm, selectedSubcategories]);
-```
+- **Equipos (catalogo completo):** datos operativos (precios, stock, disponibilidad) que el cache de 24hs ya maneja bien.
+- **SearchBar:** necesita datos actualizados para buscar. Ya tiene cache.
+- **Blog:** contenido editorial que cambia con frecuencia.
+- **Admin pages:** necesitan datos en tiempo real para gestion.
 
----
+## Resultado esperado
 
-## Archivos a Modificar
+- **Pagina Home:** 0 consultas a la nube (antes: 3 - gallery_images, equipment featured, home_services)
+- **Pagina Servicios:** 0 consultas (antes: 1 - home_services)  
+- **Pagina Galeria:** 0 consultas (antes: 1 via useGalleryImages)
+- **Pagina Contacto:** 0 consultas (antes: 1 via useGalleryImages)
+- **Pagina Cartoni:** 0 consultas (antes: 1 via useGalleryImages)
+- **Pagina Sala Grabacion:** 0 consultas (antes: 1 via useGalleryImages)
+- **Pagina Equipos:** se mantienen las consultas con cache (datos operativos necesarios)
 
-| Archivo | Cambios |
-|---------|---------|
-| `src/components/admin/EquipmentManager.tsx` | Agregar status al interface, consultas, modal de edición, y badges en listado |
-| `src/pages/Equipos.tsx` | Filtrar equipos no disponibles |
+## Nota importante
 
----
+Cuando el admin haga cambios en gallery_images, servicios o equipos destacados desde el panel, habra que actualizar manualmente estos archivos estaticos. Como alternativa, se puede dejar un comentario claro en cada archivo indicando de donde se sacaron los datos y como regenerarlos.
 
-## Comportamiento Esperado
+## Detalles tecnicos
 
-| Escenario | Resultado |
-|-----------|-----------|
-| Equipo con status `available` | Visible en rental y admin |
-| Equipo con status `rented` o `maintenance` | Solo visible en admin, oculto en rental |
-| Switch activado en admin | Status cambia a `available` |
-| Switch desactivado en admin | Status cambia a `maintenance` |
+- Los archivos de datos estaticos se crean en `src/data/`
+- Se mantiene la misma interfaz de los hooks para no romper ningun componente
+- Los datos se toman del response actual de la API (visible en network requests)
+- Se elimina la dependencia de `supabase` en todos los componentes de presentacion publica (no admin)
