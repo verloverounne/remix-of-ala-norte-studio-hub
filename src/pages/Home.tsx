@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Carousel, CarouselContent, CarouselItem, CarouselApi } from "@/components/ui/carousel";
+import { STATIC_FEATURED_EQUIPMENT } from "@/data/featuredEquipment";
 import { InstitutionalSlider } from "@/components/InstitutionalSlider";
 import { ProductionsSlider } from "@/components/ProductionsSlider";
 import { HomeVideoHeroSlider } from "@/components/HomeVideoHeroSlider";
@@ -248,17 +248,10 @@ const CartoniSection = () => {
 
 };
 const Home = () => {
-  const [featuredEquipment, setFeaturedEquipment] = useState<any[]>([]);
+  const featuredEquipment = STATIC_FEATURED_EQUIPMENT;
   const [equipmentApi, setEquipmentApi] = useState<CarouselApi>();
   const [currentEquipmentSlide, setCurrentEquipmentSlide] = useState(0);
   const { progress, isComplete, isLoading } = useVideoPreloader();
-  useEffect(() => {
-    const fetchFeaturedEquipment = async () => {
-      const { data } = await supabase.from("equipment").select("*").eq("featured", true).limit(6);
-      if (data) setFeaturedEquipment(data);
-    };
-    fetchFeaturedEquipment();
-  }, []);
   useEffect(() => {
     if (!equipmentApi) return;
     equipmentApi.on("select", () => {

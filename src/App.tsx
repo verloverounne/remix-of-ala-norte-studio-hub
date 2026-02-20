@@ -14,10 +14,6 @@ import { HeaderVisibilityProvider } from "./hooks/useHeaderVisibility";
 import { MainContent } from "./components/layout/MainContent";
 import { useVideoDuotone } from "./hooks/useVideoDuotone";
 import { useDuotoneTap } from "./hooks/useDuotoneTap";
-import { preloadGalleryImages } from "./hooks/useGalleryImages";
-
-// Preload gallery images early
-preloadGalleryImages();
 
 // Lazy load pages for code splitting
 const Home = lazy(() => import("./pages/Home"));
