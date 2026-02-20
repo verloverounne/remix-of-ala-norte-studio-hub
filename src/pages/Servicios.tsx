@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { ServicesHeroSlider } from "@/components/services/ServicesHeroSlider";
 import { ServiceSection } from "@/components/services/ServiceSection";
 import { WorkshopsSection } from "@/components/services/WorkshopsSection";
 import { TestimonialsSection } from "@/components/services/TestimonialsSection";
 import { ServicesCTASection } from "@/components/services/ServicesCTASection";
-import type { Json } from "@/integrations/supabase/types";
+import { STATIC_HOME_SERVICES } from "@/data/servicesData";
 
 interface HomeService {
   id: string;
@@ -23,55 +22,13 @@ interface HomeService {
   is_active: boolean;
 }
 
-const parseBullets = (bullets: Json | null): string[] => {
-  if (!bullets) return [];
-  if (Array.isArray(bullets)) {
-    return bullets.filter((b): b is string => typeof b === 'string');
-  }
-  return [];
-};
-
 const Servicios = () => {
-  const [services, setServices] = useState<HomeService[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [activeServiceId, setActiveServiceId] = useState<string | null>(null);
+  const services: HomeService[] = STATIC_HOME_SERVICES;
+  const [activeServiceId, setActiveServiceId] = useState<string | null>(
+    STATIC_HOME_SERVICES.length > 0 ? STATIC_HOME_SERVICES[0].id : null
+  );
   const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
   const lastSectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const fetchServices = async () => {
-      const { data, error } = await supabase
-        .from("home_services")
-        .select("*")
-        .eq("is_active", true)
-        .order("order_index");
-
-      if (!error && data) {
-        const parsedServices: HomeService[] = data.map(service => ({
-          id: service.id,
-          title: service.title,
-          description: service.description,
-          image_url: service.image_url,
-          hero_image_url: service.hero_image_url,
-          hero_media_type: service.hero_media_type,
-          hero_video_url: service.hero_video_url,
-          bullets: parseBullets(service.bullets),
-          cta_label: service.cta_label,
-          cta_url: service.cta_url,
-          slug: service.slug,
-          order_index: service.order_index ?? 0,
-          is_active: service.is_active ?? true,
-        }));
-        setServices(parsedServices);
-        if (parsedServices.length > 0) {
-          setActiveServiceId(parsedServices[0].id);
-        }
-      }
-      setLoading(false);
-    };
-
-    fetchServices();
-  }, []);
 
   // Track if scroll is triggered by click (to avoid fighting with IntersectionObserver)
   const isScrollingFromClick = useRef(false);
@@ -133,14 +90,6 @@ const Servicios = () => {
       sectionRefs.current.set(id, el);
     }
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse font-heading text-muted-foreground">CARGANDO SERVICIOS...</div>
-      </div>
-    );
-  }
 
   if (services.length === 0) {
     return (
