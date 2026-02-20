@@ -12,14 +12,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Edit, Trash2, Percent, Download, Upload, Calendar as CalendarIcon, X, Image as ImageIcon, GalleryHorizontal } from "lucide-react";
+import { Plus, Edit, Trash2, Percent, Download, Upload, Calendar as CalendarIcon, X, Image as ImageIcon } from "lucide-react";
 import { ImageUploader } from "@/components/ImageUploader";
 import { StorageImageSelector } from "@/components/StorageImageSelector";
 import { EquipmentImageUploader } from "@/components/EquipmentImageUploader";
-import { GalleryManager } from "@/components/GalleryManager";
 import { EquipmentImageManager } from "@/components/EquipmentImageManager";
 import { SpaceAdminEditor } from "@/components/SpaceAdminEditor";
-import { ServicesAdminPanel } from "@/components/admin/ServicesAdminPanel";
 import { EquipmentManager } from "@/components/admin/EquipmentManager";
 import { Switch } from "@/components/ui/switch";
 import { format } from "date-fns";
@@ -1021,12 +1019,7 @@ const Admin = () => {
               </TabsTrigger>
               <TabsTrigger value="prices">Precios</TabsTrigger>
               <TabsTrigger value="images">Subir</TabsTrigger>
-              <TabsTrigger value="galleries">
-                <GalleryHorizontal className="h-4 w-4 mr-1" />
-                Galerías
-              </TabsTrigger>
               <TabsTrigger value="spaces">Espacios</TabsTrigger>
-              <TabsTrigger value="services">Servicios</TabsTrigger>
               <TabsTrigger value="config">Config</TabsTrigger>
               <TabsTrigger value="backup">Backup</TabsTrigger>
             </TabsList>
@@ -1086,20 +1079,11 @@ const Admin = () => {
               <EquipmentImageUploader />
             </TabsContent>
 
-            {/* Galleries Tab */}
-            <TabsContent value="galleries">
-              <GalleryManager />
-            </TabsContent>
-
             {/* Spaces Tab */}
             <TabsContent value="spaces">
               <SpaceAdminEditor />
             </TabsContent>
 
-            {/* Services Tab */}
-            <TabsContent value="services">
-              <ServicesAdminPanel />
-            </TabsContent>
 
             {/* Config Tab */}
             <TabsContent value="config">
