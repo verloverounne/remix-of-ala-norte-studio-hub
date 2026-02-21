@@ -5,8 +5,8 @@ import {
   CarouselItem,
   CarouselApi,
   CarouselPrevious,
-  CarouselNext,
-} from "@/components/ui/carousel";
+  CarouselNext } from
+"@/components/ui/carousel";
 import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
 interface HeroSlide {
   id: string;
@@ -33,42 +33,42 @@ const STATIC_HERO_BACKGROUNDS: Record<string, HeroSlide> = {
   "4d52bbca-3bcb-4c73-ac1b-5b6d437e9163": {
     id: "static-camara",
     image_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//1768951104500_camara_fondo_blanco_gonzalo.mp4",
+    "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//1768951104500_camara_fondo_blanco_gonzalo.mp4",
     media_type: "video",
     title: null,
     description: null,
-    order_index: 1,
+    order_index: 1
   },
   // Iluminación
   "f0edceff-b3b4-4735-ab37-b9e3f4bb905a": {
     id: "static-iluminacion",
     image_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951451525_luces.mp4",
+    "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951451525_luces.mp4",
     media_type: "video",
     title: null,
     description: null,
-    order_index: 2,
+    order_index: 2
   },
   // Audio
   "bdaa1e73-8532-4b85-8495-6ef8bba5be31": {
     id: "static-audio",
     image_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951063587_sonido.mp4",
+    "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951063587_sonido.mp4",
     media_type: "video",
     title: null,
     description: null,
-    order_index: 3,
+    order_index: 3
   },
   // Grip
   "d9e6fca2-0d23-41c8-b782-8216d97e86a5": {
     id: "static-grip",
     image_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951477713_grips.mp4",
+    "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768951477713_grips.mp4",
     media_type: "video",
     title: null,
     description: null,
-    order_index: 4,
-  },
+    order_index: 4
+  }
   // Energía: no video configured, will use gradient fallback
 };
 export const HeroCarouselRental = ({ categories, activeCategory, onCategoryChange }: HeroCarouselRentalProps) => {
@@ -78,7 +78,7 @@ export const HeroCarouselRental = ({ categories, activeCategory, onCategoryChang
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: "instant",
+      behavior: "instant"
     });
   }, []);
   useEffect(() => {
@@ -118,8 +118,8 @@ export const HeroCarouselRental = ({ categories, activeCategory, onCategoryChang
     return (
       <div className="h-[75vh] bg-muted animate-pulse flex items-center justify-center">
         <span className="text-muted-foreground font-heading">CARGANDO...</span>
-      </div>
-    );
+      </div>);
+
   }
   return (
     <div ref={heroRef} className="relative">
@@ -132,58 +132,58 @@ export const HeroCarouselRental = ({ categories, activeCategory, onCategoryChang
               return (
                 <CarouselItem key={category.id} className="pl-0 basis-full max-w-screen-xl">
                   <div className="relative h-[40vh] overflow-hidden duotone-hover-group">
-                    {bg?.media_type === "video" && bg.image_url ? (
-                      <video
-                        src={bg.image_url}
-                        className="w-full h-full object-cover video-duotone"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                      />
-                    ) : bg?.image_url ? (
-                      <img
-                        src={bg.image_url}
-                        alt={category.name}
-                        className="w-full h-full object-cover image-duotone"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full" />
-                    )}
+                    {bg?.media_type === "video" && bg.image_url ?
+                    <video
+                      src={bg.image_url}
+                      className="w-full h-full object-cover video-duotone"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline /> :
+
+                    bg?.image_url ?
+                    <img
+                      src={bg.image_url}
+                      alt={category.name}
+                      className="w-full h-full object-cover image-duotone"
+                      loading="lazy" /> :
+
+
+                    <div className="w-full h-full" />
+                    }
 
                     {/* Text overlay */}
                     <div className="absolute inset-0 py-[22px] flex items-center justify-center bg-transparent border-none">
                       <div className="text-center z-10 p-4 sm:p-8 max-w-4xl my-[93px]">
-                        <h1 className="font-sans font-thin mb-2 uppercase drop-shadow-lg mx-0 text-primary px-[24px] py-[2px]" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
+                        <h1 className="font-sans mb-2 uppercase drop-shadow-lg mx-0 text-primary px-[24px] py-[2px] font-extrabold" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
                           {bg?.title || category.name.toUpperCase()}
                         </h1>
-                        {bg?.description && (
-                          <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading drop-shadow-md max-w-2xl mx-auto">
+                        {bg?.description &&
+                        <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading drop-shadow-md max-w-2xl mx-auto">
                             {bg.description}
                           </p>
-                        )}
+                        }
                       </div>
                     </div>
                   </div>
-                </CarouselItem>
-              );
+                </CarouselItem>);
+
             })}
           </CarouselContent>
 
           {/* Navigation arrows */}
-          {categories.length > 1 && (
-            <>
+          {categories.length > 1 &&
+          <>
               <CarouselPrevious className="left-2 sm:left-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
               <CarouselNext className="right-2 sm:right-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
             </>
-          )}
+          }
 
           {/* Scroll indicator */}
           <ScrollIndicator className="text-background/80 hover:text-primary" />
         </Carousel>
       </section>
-    </div>
-  );
+    </div>);
+
 };
 export default HeroCarouselRental;
