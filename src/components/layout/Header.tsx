@@ -223,7 +223,7 @@ export const Header = () => {
                       px-6
                       h-12
                       rounded-sm
-                      font-heading text-xs xl:text-sm tracking-tight font-bold
+                      font-heading text-xs xl:text-sm tracking-tight font-medium
                       transition-colors
                       ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-primary hover:text-primary-foreground"}`}>
 
