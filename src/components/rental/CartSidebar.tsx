@@ -25,7 +25,7 @@ export const CartSidebar = ({
       {/* Header */}
       <div className="p-4 bg-foreground text-background">
         <div className="flex items-center justify-between py-[8px]">
-          <h3 className="font-heading text-lg sm:text-xl uppercase">Tu presupuesto</h3>
+          <h3 className="font-heading text-lg uppercase sm:text-sm">Tu presupuesto</h3>
           <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded">
             {totalItems} {totalItems === 1 ? "ítem" : "ítems"}
           </span>
@@ -92,7 +92,7 @@ export const CartSidebar = ({
             </div>
           </div>
 
-          <Button className="w-full" size="lg" onClick={() => window.location.href = "/cotizador"}>
+          <Button className="w-full text-sm" size="lg" onClick={() => window.location.href = "/cotizador"}>
             Pedí tu presupuesto
           </Button>
         </div>}
