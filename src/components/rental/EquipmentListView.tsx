@@ -56,8 +56,8 @@ export const EquipmentListView = ({
             </Badge>
 
             {/* Add button */}
-            {item.status === 'available' ? <Button size="sm" className="h-6 w-6 p-0 flex-shrink-0 bg-primary" onClick={() => onAddToCart(item)} disabled={!canAdd}>
-                {canAdd ? <Plus className="h-[8px] w-[8px]" /> : <span className="text-[10px] font-black">MÁX</span>}
+            {item.status === 'available' ? <Button size="sm" className="h-4 w-4 p-0 flex-shrink-0 bg-primary rounded-none my-[4px] mx-[4px] px-[4px] py-[4px]" onClick={() => onAddToCart(item)} disabled={!canAdd}>
+                {canAdd ? <Plus className="h-[12px] w-[12px] mx-[2px] my-[2px]" /> : <span className="text-[10px] font-black">MÁX</span>}
               </Button> : <Button size="sm" className="h-8 w-8 p-0 flex-shrink-0" disabled>
                 <X className="h-4 w-4" />
               </Button>}
