@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, LogOut, MessageCircle } from "lucide-react";
+import { Menu, X, LogOut, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/hooks/useCart";
@@ -29,12 +29,12 @@ const navigation = [
 },
 // { name: "SERVICIOS", href: "/servicios" },
 {
-  name: "CONTACTO",
-  href: "/contacto"
+  name: "CARTONI",
+  href: "/cartoni"
 },
 {
-  name: "PRESUPUESTO",
-  href: "/cotizador"
+  name: "CONTACTO",
+  href: "/contacto"
 }];
 
 
@@ -223,7 +223,7 @@ export const Header = () => {
                       px-6
                       h-12
                       rounded-sm
-                      font-heading text-xs xl:text-sm tracking-tight
+                      font-heading text-xs xl:text-sm tracking-tight font-bold
                       transition-colors
                       ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-primary hover:text-primary-foreground"}`}>
 
@@ -235,9 +235,21 @@ export const Header = () => {
               {/* Actions Brutales */}
               <div className="flex items-center gap-2">
                 {/* Search wrapper */}
-                <div className="flex items-center justify-center h-12 px-6 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors">
+                <div className="flex items-center justify-center h-12 w-12 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors">
                   <SearchBar />
                 </div>
+
+                {/* Cart */}
+                <Link
+                  to="/cotizador"
+                  className="relative flex items-center justify-center h-12 w-12 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors">
+                  <ShoppingCart className="h-5 w-5" />
+                  {totalItems > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border border-foreground/20">
+                      {totalItems}
+                    </span>
+                  )}
+                </Link>
 
                 {/* ADMIN */}
                 {user && isAdmin &&
