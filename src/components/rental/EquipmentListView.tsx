@@ -34,7 +34,7 @@ export const EquipmentListView = ({
       return <div key={item.id} className="flex items-center max-w-screen transition-colors bg-background gap-12px] py-[6px] border-gray-light flex-wrap">
             {/* Name - clickable */}
             <div className="flex-1 min-w-0 cursor-pointer" onClick={() => onViewDetails(item)}>
-              <h3 className="font-heading text-xs normal-case line-clamp-3 hover:text-primary transition-colors sm:text-xs font-medium mx-[8px] flex flex-1">
+              <h3 className="font-heading text-xs normal-case line-clamp-2 hover:text-primary transition-colors sm:text-xs font-medium flex flex-1 mx-[12px]">
                 {formatEquipmentName(item.name)}
               </h3>
               {item.brand && <span className="text-[10px] text-muted-foreground uppercase">
