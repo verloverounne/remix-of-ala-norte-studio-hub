@@ -52,7 +52,7 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
     id: "bafcb89c-9a4f-4c41-9569-3f33c057785c",
     title: "Técnicos",
     description:
-      "Nos sumamos a tu equipo técnico\nPodemos trabajar en tu rodaje como directores de fotografía, operadores de cámara (steadycam, grúa), sonidistas o coordinadores técnicos. Si necesitás completar el equipo con otros profesionales, también te ayudamos con eso.",
+      "Nos sumamos a tu equipo técnico\nDirectores de fotografía, operadores de cámara (steadycam, grúa), sonidistas o coordinadores técnicos. Si necesitás completar el equipo con otros profesionales, también te ayudamos con eso.",
     image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
     hero_image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
     hero_media_type: "video",
