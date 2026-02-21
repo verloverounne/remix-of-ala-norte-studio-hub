@@ -28,13 +28,17 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
   {
     id: "785da322-50a4-4400-bdd7-f099fc159ba7",
     title: "Multicámara y móvil HD",
-    description: "Coordinamos producciones multicámara con unidades móviles equipadas en alta definición. Ya sea para eventos en vivo, streaming o contenido multipantalla, armamos el operativo técnico y te acompañamos en todo el proceso de captura.",
-    image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768795408801_ACNUR_CONCIERTO.mp4",
+    description:
+      "Coordinamos producciones multicámara con unidades móviles equipadas en alta definición. Ya sea para eventos en vivo, streaming o contenido multipantalla, armamos el operativo técnico y te acompañamos en todo el proceso de captura.",
+    image_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768795408801_ACNUR_CONCIERTO.mp4",
     hero_image_url: null,
     hero_media_type: "video",
-    hero_video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//multicamara.mp4",
+    hero_video_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//multicamara.mp4",
     section_media_type: "video",
-    section_video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//multicamara.mp4",
+    section_video_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//multicamara.mp4",
     button_text: null,
     button_link: null,
     bullets: [],
@@ -46,14 +50,16 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
   },
   {
     id: "bafcb89c-9a4f-4c41-9569-3f33c057785c",
-    title: "Técnicos en rodaje",
-    description: "Nos sumamos a tu equipo técnico\nPodemos trabajar en tu rodaje como directores de fotografía, operadores de cámara (steadycam, grúa), sonidistas o coordinadores técnicos. Si necesitás completar el equipo con otros profesionales, también te ayudamos con eso.",
+    title: "Técnicos",
+    description:
+      "Nos sumamos a tu equipo técnico\nPodemos trabajar en tu rodaje como directores de fotografía, operadores de cámara (steadycam, grúa), sonidistas o coordinadores técnicos. Si necesitás completar el equipo con otros profesionales, también te ayudamos con eso.",
     image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
     hero_image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
     hero_media_type: "video",
     hero_video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
     section_media_type: "video",
-    section_video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
+    section_video_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
     button_text: null,
     button_link: null,
     bullets: [
@@ -71,14 +77,18 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
   },
   {
     id: "645c5ca7-3c92-40c8-9b4b-0c52ca579c29",
-    title: "Galería de filmación",
-    description: "Espacios versátiles y completamente equipados para tus producciones. Ciclorama, sets modulares y control total de iluminación.",
-    image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768795867738_GALERIA_FAKENEWS.mp4",
+    title: "Galería",
+    description:
+      "Espacios versátiles y completamente equipados para tus producciones. Ciclorama, sets modulares y control total de iluminación.",
+    image_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768795867738_GALERIA_FAKENEWS.mp4",
     hero_image_url: null,
     hero_media_type: "video",
-    hero_video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768955828513_GALERIA_FAKENEWS_2.mp4",
+    hero_video_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768955828513_GALERIA_FAKENEWS_2.mp4",
     section_media_type: "video",
-    section_video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768874645246_GALERIA_FAKENEWS_1.mp4",
+    section_video_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768874645246_GALERIA_FAKENEWS_1.mp4",
     button_text: null,
     button_link: null,
     bullets: [],
@@ -90,14 +100,18 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
   },
   {
     id: "af28b17b-e012-4b16-8b73-dc94bbab9fef",
-    title: "Inventario curado de equipos",
-    description: "Equipos de primera línea. Mantenemos, probamos y ponemos a punto cada pieza. Cuidamos cada detalle porque sabemos que detrás de cada rodaje hay una historia por contar.",
-    image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//1768956131991_rental_vertical.mp4",
-    hero_image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//1768956131991_rental_vertical.mp4",
+    title: "Equipos",
+    description:
+      "Equipos de primera línea. Mantenemos, probamos y ponemos a punto cada pieza. Cuidamos cada detalle porque sabemos que detrás de cada rodaje hay una historia por contar.",
+    image_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//1768956131991_rental_vertical.mp4",
+    hero_image_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//1768956131991_rental_vertical.mp4",
     hero_media_type: "video",
     hero_video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
     section_media_type: "video",
-    section_video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
+    section_video_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
     button_text: null,
     button_link: null,
     bullets: [
@@ -111,8 +125,9 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
   },
   {
     id: "88db73ab-e156-44f2-88d7-b1ebf12b9d42",
-    title: "Sala de Sonido y Postproducción ",
-    description: "Suites de post-producción con estaciones de trabajo profesionales, monitoreo calibrado y ambiente acústico controlado.",
+    title: "Sala de Sonido",
+    description:
+      "Suites de post-producción con estaciones de trabajo profesionales, monitoreo calibrado y ambiente acústico controlado.",
     image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//sala.mp4",
     hero_image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//sala.mp4",
     hero_media_type: "image",
@@ -131,13 +146,16 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
   {
     id: "244d543c-51a1-4baa-b17a-3279d020f5b2",
     title: "Escuela Ala Norte",
-    description: "Workshops, masterclasses y eventos para profesionales. Un espacio de encuentro y crecimiento para la comunidad audiovisual.",
+    description:
+      "Workshops, masterclasses y eventos para profesionales. Un espacio de encuentro y crecimiento para la comunidad audiovisual.",
     image_url: null,
     hero_image_url: null,
     hero_media_type: "video",
-    hero_video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//TALLER CAMARA.mp4",
+    hero_video_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//TALLER CAMARA.mp4",
     section_media_type: "video",
-    section_video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//TALLER CAMARA.mp4",
+    section_video_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//TALLER CAMARA.mp4",
     button_text: null,
     button_link: null,
     bullets: [],
