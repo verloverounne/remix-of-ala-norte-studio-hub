@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselApi } from "@/components/ui/carousel";
-import { STATIC_FEATURED_EQUIPMENT } from "@/data/featuredEquipment";
+import { supabase } from "@/integrations/supabase/client";
 import { InstitutionalSlider } from "@/components/InstitutionalSlider";
 import { ProductionsSlider } from "@/components/ProductionsSlider";
 import { HomeVideoHeroSlider } from "@/components/HomeVideoHeroSlider";
@@ -248,10 +248,21 @@ const CartoniSection = () => {
 
 };
 const Home = () => {
-  const featuredEquipment = STATIC_FEATURED_EQUIPMENT;
+  const [featuredEquipment, setFeaturedEquipment] = useState<any[]>([]);
   const [equipmentApi, setEquipmentApi] = useState<CarouselApi>();
   const [currentEquipmentSlide, setCurrentEquipmentSlide] = useState(0);
   const { progress, isComplete, isLoading } = useVideoPreloader();
+
+  useEffect(() => {
+    supabase
+      .from("equipment")
+      .select("*")
+      .eq("featured", true)
+      .order("order_index")
+      .then(({ data }) => {
+        if (data) setFeaturedEquipment(data);
+      });
+  }, []);
   useEffect(() => {
     if (!equipmentApi) return;
     equipmentApi.on("select", () => {
