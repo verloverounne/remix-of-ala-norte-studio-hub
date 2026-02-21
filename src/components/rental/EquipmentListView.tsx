@@ -31,7 +31,7 @@ export const EquipmentListView = ({
       {equipment.map((item) => {
       const cartQty = getCartQuantity(item.id);
       const canAdd = canAddMore(item);
-      return <div key={item.id} className="flex items-center max-w-screen transition-colors bg-background gap-12px] py-[6px] border-gray-light flex-wrap">
+      return <div key={item.id} className="flex items-center max-w-screen transition-colors bg-background gap-8 px] py-[2px] border-gray-light flex-wrap">
             {/* Name - clickable */}
             <div className="flex-1 min-w-0 cursor-pointer" onClick={() => onViewDetails(item)}>
               <h3 className="font-heading text-xs normal-case line-clamp-2 hover:text-primary transition-colors sm:text-xs font-medium flex flex-1 mx-[12px]">
@@ -57,7 +57,7 @@ export const EquipmentListView = ({
 
             {/* Add button */}
             {item.status === 'available' ? <Button size="sm" className="h-6 w-6 p-0 flex-shrink-0 bg-primary" onClick={() => onAddToCart(item)} disabled={!canAdd}>
-                {canAdd ? <Plus className="h-4 w-4" /> : <span className="text-[10px] font-black">MÁX</span>}
+                {canAdd ? <Plus className="h-[8px] w-[8px]" /> : <span className="text-[10px] font-black">MÁX</span>}
               </Button> : <Button size="sm" className="h-8 w-8 p-0 flex-shrink-0" disabled>
                 <X className="h-4 w-4" />
               </Button>}
