@@ -5,15 +5,23 @@ import { Link } from "react-router-dom";
 import Viewer360 from "@/components/Viewer360";
 import { GalleryHero } from "@/components/GalleryHero";
 import { useGalleryImages } from "@/hooks/useGalleryImages";
-import { SALA_GRABACION_SPACE } from "@/data/spaces";
+import { useSpace } from "@/hooks/useSpace";
 
 const SalaGrabacion = () => {
-  const space = SALA_GRABACION_SPACE;
+  const { space, loading } = useSpace("sala-grabacion");
   const { getByPageType } = useGalleryImages();
 
   // Get featured image from gallery images
   const salaImages = getByPageType("sala-grabacion");
   const featuredMediaImage = salaImages[0]?.image_url || null;
+
+  if (loading || !space) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground font-heading">Cargando...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
@@ -26,7 +34,6 @@ const SalaGrabacion = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
             {/* Left Column: Featured Image */}
             <div className="space-y-6">
-              {/* Featured Image from Media panel */}
               <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg">
                 <img
                   src={featuredMediaImage || space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
@@ -45,7 +52,6 @@ const SalaGrabacion = () => {
                 </p>
               </div>
 
-              {/* Layout Description */}
               {space.layout_description && (
                 <div className="bg-muted p-4 rounded-lg">
                   <h3 className="font-heading font-bold mb-2">Distribución del espacio</h3>
@@ -53,7 +59,6 @@ const SalaGrabacion = () => {
                 </div>
               )}
 
-              {/* Features - 2 columns */}
               {space.features && Array.isArray(space.features) && space.features.length > 0 && (
                 <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-[48px]">
                   {(space.features as string[]).map((feature, index) => (
@@ -65,7 +70,6 @@ const SalaGrabacion = () => {
                 </div>
               )}
 
-              {/* Included Items */}
               {space.included_items && space.included_items.length > 0 && (
                 <div>
                   <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
@@ -82,14 +86,12 @@ const SalaGrabacion = () => {
                 </div>
               )}
 
-              {/* Schedule Info */}
               <div className="border-foreground p-4 rounded-lg bg-stone-200 border-0">
                 <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
                 <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekday}</p>
                 <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekend}</p>
               </div>
 
-              {/* Optional Services */}
               {space.optional_services && space.optional_services.length > 0 && (
                 <div>
                   <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>

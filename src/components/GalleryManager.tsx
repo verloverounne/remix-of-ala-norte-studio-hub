@@ -9,6 +9,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Trash2, GripVertical, Image as ImageIcon, Upload, Loader2, Video } from "lucide-react";
 import { StorageImageSelector } from "@/components/StorageImageSelector";
+import { invalidateCache } from "@/lib/cache";
 
 interface GalleryImage {
   id: string;
@@ -181,6 +182,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
     } else {
       toast({ title: "✓ MEDIA AGREGADO" });
       setNewImage({ image_url: "", media_type: "image", title: "", description: "", category_id: null, vertical_video_url: "" });
+      invalidateCache('GALLERY_IMAGES');
       fetchImages();
       onRefresh?.();
     }
@@ -198,6 +200,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "✓ IMAGEN ELIMINADA" });
+      invalidateCache('GALLERY_IMAGES');
       fetchImages();
       onRefresh?.();
     }
@@ -210,6 +213,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
       .eq('id', id);
 
     if (!error) {
+      invalidateCache('GALLERY_IMAGES');
       fetchImages();
     }
   };
@@ -224,6 +228,7 @@ export const GalleryManager = ({ onRefresh }: GalleryManagerProps) => {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "✓ ACTUALIZADO" });
+      invalidateCache('GALLERY_IMAGES');
       fetchImages();
     }
   };

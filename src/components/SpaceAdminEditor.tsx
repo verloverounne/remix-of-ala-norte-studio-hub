@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Save, Edit, X, Calendar as CalendarIcon, MapPin, Clock, DollarSign, Ruler, List, Settings, GalleryHorizontal } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { clearSpaceCache } from "@/hooks/useSpace";
 
 interface SpaceUnavailabilityPeriod {
   id: string;
@@ -106,6 +107,10 @@ export const SpaceAdminEditor = () => {
       toast({ title: "ERROR", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "✓ GUARDADO", description: "Espacio actualizado correctamente" });
+      // Invalidate cache for the edited space
+      if (editingSpace.slug) {
+        clearSpaceCache(editingSpace.slug);
+      }
       setEditingSpace(null);
       fetchSpaces();
     }
