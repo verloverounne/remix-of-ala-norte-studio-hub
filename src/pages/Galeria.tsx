@@ -21,8 +21,8 @@ const Galeria = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-pulse text-muted-foreground font-heading">Cargando...</div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -39,19 +39,19 @@ const Galeria = () => {
               {/* Featured Image from Media panel */}
               <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg">
                 <img
-                  src={featuredMediaImage || space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
+                  src={featuredMediaImage || space.featured_image || space.images && space.images[0] || "/placeholder.svg"}
                   alt={space.name}
-                  className="w-full h-full object-cover"
-                />
+                  className="w-full h-full object-cover" />
+                
               </div>
 
               {/* Floor Plan - Only visible on desktop */}
               <div className="hidden lg:block relative overflow-hidden rounded-lg">
                 <img
-                  src={planoIlustrativo}
+
                   alt="Plano ilustrativo del estudio"
-                  className="w-full h-auto object-contain bg-background"
-                />
+                  className="w-full h-auto object-contain bg-background" src="/lovable-uploads/53e26be9-d12a-4f9a-be55-1a85bb306394.png" />
+                
               </div>
             </div>
 
@@ -65,50 +65,50 @@ const Galeria = () => {
               </div>
 
               {/* Layout Description */}
-              {space.layout_description && (
-                <div className="bg-muted p-4 rounded-lg">
+              {space.layout_description &&
+              <div className="bg-muted p-4 rounded-lg">
                   <h3 className="font-heading font-bold mb-2">Plano de la galería</h3>
                   <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
                 </div>
-              )}
+              }
 
               {/* Floor Plan - Mobile only */}
               <div className="lg:hidden relative overflow-hidden rounded-lg">
                 <img
                   src={planoIlustrativo}
                   alt="Plano ilustrativo del estudio"
-                  className="w-full h-auto object-contain bg-background"
-                />
+                  className="w-full h-auto object-contain bg-background" />
+                
               </div>
 
               {/* Features - 2 columns */}
-              {space.features && Array.isArray(space.features) && space.features.length > 0 && (
-                <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-[48px]">
-                  {(space.features as string[]).map((feature, index) => (
-                    <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
+              {space.features && Array.isArray(space.features) && space.features.length > 0 &&
+              <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-[48px]">
+                  {(space.features as string[]).map((feature, index) =>
+                <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
                       <span className="text-primary">•</span>
                       {feature}
                     </p>
-                  ))}
+                )}
                 </div>
-              )}
+              }
 
               {/* Included Items */}
-              {space.included_items && space.included_items.length > 0 && (
-                <div>
+              {space.included_items && space.included_items.length > 0 &&
+              <div>
                   <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
                     INCLUIDO EN EL BLOQUE Incluido sin cargo adicional
                   </h3>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {space.included_items.map((item, index) => (
-                      <li key={index} className="flex items-center gap-2 text-muted-foreground">
+                    {space.included_items.map((item, index) =>
+                  <li key={index} className="flex items-center gap-2 text-muted-foreground">
                         <span className="text-primary">•</span>
                         <span className="font-heading">{item}</span>
                       </li>
-                    ))}
+                  )}
                   </ul>
                 </div>
-              )}
+              }
 
               {/* Schedule Info */}
               <div className="border-foreground p-4 rounded-lg bg-stone-200 border-0">
@@ -118,18 +118,18 @@ const Galeria = () => {
               </div>
 
               {/* Optional Services */}
-              {space.optional_services && space.optional_services.length > 0 && (
-                <div>
+              {space.optional_services && space.optional_services.length > 0 &&
+              <div>
                   <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
                   <div className="flex flex-wrap gap-2">
-                    {space.optional_services.map((service, index) => (
-                      <Badge key={index} variant="outline" className="font-heading">
+                    {space.optional_services.map((service, index) =>
+                  <Badge key={index} variant="outline" className="font-heading">
                         {service}
                       </Badge>
-                    ))}
+                  )}
                   </div>
                 </div>
-              )}
+              }
 
               <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
                 <Link to="/contacto">
@@ -160,8 +160,8 @@ const Galeria = () => {
               imageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//360.jpg"
               secondImageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//361.jpg"
               height="100vh"
-              mobileHeight="80vh"
-            />
+              mobileHeight="80vh" />
+            
           </div>
         </div>
       </section>
@@ -187,8 +187,8 @@ const Galeria = () => {
           </Button>
         </div>
       </section>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Galeria;
