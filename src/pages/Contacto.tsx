@@ -68,7 +68,7 @@ const Contacto = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 gap-4 bg-background flex items-start justify-center">
+      <section className="py-16 gap-4 flex items-start justify-center bg-popover-foreground">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Form */}
@@ -77,7 +77,7 @@ const Contacto = () => {
                 <CardTitle className="text-2xl px-0 py-[16px]">ENVIANOS UN MENSAJE</CardTitle>
                 <CardDescription>Completá el formulario y te respondemos a la brevedad</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="bg-muted">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="name">
