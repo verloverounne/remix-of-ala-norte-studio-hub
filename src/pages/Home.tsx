@@ -45,8 +45,8 @@ const FeaturedEquipmentSection = ({
               EQUIPOS DESTACADOS
             </h2>
             {/*          <p className="text-sm sm:text-base lg:text-sm text-muted-foreground font-heading leading-tight">
-                       TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
-                      </p> */}
+                            TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
+                           </p> */}
           </div>
         </div>
 
@@ -121,7 +121,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
                   ${equipment.price_per_day}/día
                 </span>
               </div>
-              <Button variant="hero" size="lg" className="group-hover:shadow-brutal-lg transition-shadow my-[78px]">
+              <Button variant="hero" size="lg" className="group-hover:shadow-brutal-lg transition-shadow my-[78px] bg-baground">
                 VER DETALLES <ArrowRight className="ml-2" />
               </Button>
             </div>
@@ -212,8 +212,8 @@ const CartoniSection = () => {
         }
 
         {/* Overlay para legibilidad
-                  <div className="pointer-events-none absolute inset-0 bg-background/0 z-[1]" />
-                   */}
+                       <div className="pointer-events-none absolute inset-0 bg-background/0 z-[1]" />
+                        */}
 
         {/* Contenido - superpuesto, abajo izquierda */}
         <div className="absolute inset-0 z-10 flex items-end">
@@ -254,14 +254,14 @@ const Home = () => {
   const { progress, isComplete, isLoading } = useVideoPreloader();
 
   useEffect(() => {
-    supabase
-      .from("equipment")
-      .select("*")
-      .eq("featured", true)
-      .order("order_index")
-      .then(({ data }) => {
-        if (data) setFeaturedEquipment(data);
-      });
+    supabase.
+    from("equipment").
+    select("*").
+    eq("featured", true).
+    order("order_index").
+    then(({ data }) => {
+      if (data) setFeaturedEquipment(data);
+    });
   }, []);
   useEffect(() => {
     if (!equipmentApi) return;
