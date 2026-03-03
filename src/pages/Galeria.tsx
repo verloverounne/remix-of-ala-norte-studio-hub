@@ -1,4 +1,4 @@
-import { MapPin, Calendar } from "lucide-react";
+import { Calendar } from "lucide-react";
 import planoIlustrativo from "@/assets/plano-ilustrativo.png";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -143,9 +143,9 @@ const Galeria = () => {
       </section>
 
       {/* 360° Virtual Tour Section */}
-      <section className="py-12 sm:py-16 bg-foreground">
+      <section className="py-12 sm:py-16 bg-background">
         <div className="w-full px-0">
-          <div className="container mx-auto px-4 mb-8">
+          <div className="container mx-auto mb-8 px-[6px]">
             <div className="text-left">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
                 Ya conocés la galería ALA NORTE?
@@ -181,7 +181,7 @@ const Galeria = () => {
           </p>
           <Button variant="hero" size="lg" asChild>
             <Link to="/contacto">
-              <MapPin className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+              
               CONTACTAR
             </Link>
           </Button>
