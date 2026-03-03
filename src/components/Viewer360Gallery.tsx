@@ -408,7 +408,7 @@ const Viewer360Gallery = ({
         </Button>
       </div>
 
-      {/* View indicator & toggle */}
+      {/* View indicator & toggle
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
         <Button
           onClick={() => setCurrentView(1)}
@@ -426,7 +426,7 @@ const Viewer360Gallery = ({
         >
           Comedor
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };
