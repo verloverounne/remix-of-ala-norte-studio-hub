@@ -7,15 +7,23 @@ import Viewer360Gallery from "@/components/Viewer360Gallery";
 import { GalleryHero } from "@/components/GalleryHero";
 import { ProductionsSlider } from "@/components/ProductionsSlider";
 import { useGalleryImages } from "@/hooks/useGalleryImages";
-import { GALERIA_SPACE } from "@/data/spaces";
+import { useSpace } from "@/hooks/useSpace";
 
 const Galeria = () => {
-  const space = GALERIA_SPACE;
+  const { space, loading } = useSpace("galeria");
   const { getByPageType } = useGalleryImages();
 
   // Get featured image from gallery images
   const galeriaImages = getByPageType("galeria");
   const featuredMediaImage = galeriaImages[0]?.image_url || null;
+
+  if (loading || !space) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground font-heading">Cargando...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">

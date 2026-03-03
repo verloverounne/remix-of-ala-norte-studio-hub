@@ -69,6 +69,7 @@ export const CACHE_KEYS = {
   HOME_HERO_SLIDES: 'home_hero_slides',
   HOME_SERVICES: 'home_services',
   GALLERY_IMAGES: 'gallery_images_consolidated',
+  SPACES: 'spaces',
 } as const;
 
 // Helper to clear specific cache when admin updates data
