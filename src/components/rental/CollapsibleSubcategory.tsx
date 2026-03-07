@@ -36,7 +36,7 @@ export const CollapsibleSubcategory = ({
     }
   };
   return <div className="mb-4" id={subcategoryId ? `subcategory-${subcategoryId}` : undefined}>
-      <button onClick={handleToggle} className="flex items-center gap-2 w-full border-b border-foreground/20 pb-2 mb-3 px-2 hover:text-primary transition-colors cursor-pointer bg-card py-[16px]">
+      <button onClick={handleToggle} className="flex items-center gap-2 w-full border-b border-foreground/20 pb-2 mb-3 hover:text-primary transition-colors cursor-pointer bg-card py-[16px] px-0">
         {isExpanded ? <ChevronDown className="h-3 w-3 flex-shrink-0" /> : <ChevronRight className="h-3 w-3 flex-shrink-0" />}
         <h3 className="font-heading text-xs uppercase text-muted-foreground sm:text-base">
           {name}
