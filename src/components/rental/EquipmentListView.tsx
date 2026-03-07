@@ -31,7 +31,7 @@ export const EquipmentListView = ({
       {equipment.map((item) => {
       const cartQty = getCartQuantity(item.id);
       const canAdd = canAddMore(item);
-      return <div key={item.id} className="flex items-center max-w-screen transition-colors bg-background gap-8 px] py-[2px] border-gray-light flex-wrap">
+      return <div key={item.id} className="flex items-center max-w-screen transition-colors bg-background px] py-[2px] border-gray-light flex-wrap gap-[4px]">
             {/* Name - clickable */}
             <div className="flex-1 min-w-0 cursor-pointer" onClick={() => onViewDetails(item)}>
               <h3 className="font-heading text-xs normal-case line-clamp-2 hover:text-primary transition-colors sm:text-xs font-medium flex flex-1 mx-[12px]">
