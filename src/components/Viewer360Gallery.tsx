@@ -24,40 +24,9 @@ interface Text3DItem {
 
 // View 1 labels - Galería main view (360.jpg)
 // TODOS los textos son botones clicables inmersivos
-const VIEW_1_LABELS: Text3DItem[] = [
-  { text: "GALERÍA", position: "200 72 289", rotation: "0 180 0", action: { type: "view", target: 1 } },
-  { text: "COMEDOR", position: "-6 1 -5", rotation: "0 45 0", action: { type: "view", target: 2 } },
-  {
-    text: "SALA DE GRABACIÓN",
-    position: "6 1 -5",
-    rotation: "0 -45 0",
-    action: { type: "page", target: "/sala-grabacion#view-2" },
-  },
-  {
-    text: "ESTUDIO DE POSTPRODUCCIÓN",
-    position: "0 0.5 -7",
-    rotation: "0 0 0",
-    action: { type: "page", target: "/sala-grabacion#view-1" },
-  },
-];
+const VIEW_1_LABELS: Text3DItem[] = [];
 
-// View 2 labels - Comedor view (361.jpg)
-// Navegación: Galería → Vista 1, Comedor → Vista 2, Sala → /sala#view-2, Postprod → /sala#view-1
 const VIEW_2_LABELS: Text3DItem[] = [
-  { text: "GALERÍA", position: "0 2 -8", rotation: "0 0 0", action: { type: "view", target: 1 } },
-  { text: "COMEDOR", position: "-6 1.5 -5", rotation: "0 45 0", action: { type: "view", target: 2 } },
-  {
-    text: "SALA DE GRABACIÓN",
-    position: "6 1 -5",
-    rotation: "0 -45 0",
-    action: { type: "page", target: "/sala-grabacion#view-2" },
-  },
-  {
-    text: "ESTUDIO DE POSTPRODUCCIÓN",
-    position: "0 0.5 -7",
-    rotation: "0 0 0",
-    action: { type: "page", target: "/sala-grabacion#view-1" },
-  },
 ];
 
 interface Viewer360GalleryProps {
