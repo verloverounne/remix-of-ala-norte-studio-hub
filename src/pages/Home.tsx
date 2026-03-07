@@ -45,8 +45,8 @@ const FeaturedEquipmentSection = ({
               EQUIPOS DESTACADOS
             </h2>
             {/*          <p className="text-sm sm:text-base lg:text-sm text-muted-foreground font-heading leading-tight">
-                            TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
-                           </p> */}
+                                    TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
+                                   </p> */}
           </div>
         </div>
 
@@ -155,7 +155,7 @@ const CTASection = () => {
         <div
           ref={contentParallax.ref as any}
           style={contentParallax.style}
-          className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] bg-[#423c38]/50 pt-[64px]">
+          className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] bg-[#423c38]/50 pt-[64px] max-w-2xl rounded-sm">
 
           <h2 className="mb-4 sm:mb-6 my-0 px-0 font-sans font-thin text-[#fbf2ee]" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
             ¿Tenés un rodaje en mente?
@@ -212,8 +212,8 @@ const CartoniSection = () => {
         }
 
         {/* Overlay para legibilidad
-                       <div className="pointer-events-none absolute inset-0 bg-background/0 z-[1]" />
-                        */}
+                               <div className="pointer-events-none absolute inset-0 bg-background/0 z-[1]" />
+                                */}
 
         {/* Contenido - superpuesto, abajo izquierda */}
         <div className="absolute inset-0 z-10 flex items-end">
@@ -221,7 +221,7 @@ const CartoniSection = () => {
             <div
               ref={contentParallax.ref as any}
               style={contentParallax.style}
-              className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 rounded-lg backdrop-blur-lg py-[68px] max-w-2xl mx-[16px] px-[24px]">
+              className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 backdrop-blur-lg py-[68px] max-w-2xl mx-[16px] px-[24px] rounded-sm">
 
               <h2 className="mb-4 text-foreground font-sans font-thin" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
                 SELLER & SERVICE <span className="text-foreground">OFICIAL CARTONI</span>
