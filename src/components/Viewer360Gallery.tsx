@@ -238,113 +238,66 @@ const Viewer360Gallery = ({
 <html>
 <head>
   <title>Tour 360° - Galería ALA NORTE</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
-  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"><\/script>
   <style>
-    * { font-family: 'Poppins', sans-serif; }
-    body { margin: 0; overflow: hidden; }
+    * { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
+    body { overflow: hidden; }
+    .top-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 24px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent 100%);
+    }
+    .top-bar h1 { color: white; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+    .btn {
+      padding: 10px 20px; background: rgba(0,0,0,0.85); color: white; border: none;
+      cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 700;
+      font-size: 13px; text-transform: uppercase; letter-spacing: 1px;
+      display: flex; align-items: center; gap: 8px; transition: background 0.2s;
+    }
+    .btn:hover { background: #D4A017; }
     .controls {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-      display: flex;
-      gap: 10px;
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 1000; display: flex; gap: 10px;
     }
-    .controls button {
-      padding: 12px 24px;
-      background: rgba(0,0,0,0.9);
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .controls button:hover { background: #D4A017; }
     .hint {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.8);
-      color: white;
-      padding: 10px 20px;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      font-size: 12px;
-      z-index: 1000;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.7); color: white; padding: 8px 16px;
+      font-size: 11px; z-index: 1000; text-transform: uppercase; letter-spacing: 1px;
+      opacity: 1; transition: opacity 1s;
     }
   </style>
 </head>
 <body>
-  <div class="hint">Arrastra para explorar • Haz clic en los botones para navegar</div>
-  <div class="controls">
-    <button onclick="toggleView()">Cambiar Vista</button>
-    <button onclick="openInspector()">Inspector</button>
+  <div class="top-bar">
+    <h1>Galería ALA NORTE — Tour 360°</h1>
+    <button class="btn" onclick="goBack()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      Volver
+    </button>
   </div>
-  <a-scene 
-    vr-mode-ui="enabled: true"
-    inspector="url: https://cdn.jsdelivr.net/gh/aframevr/aframe-inspector@master/dist/aframe-inspector.min.js"
-  >
+  <div class="hint" id="hint">Arrastrá para explorar el espacio</div>
+  <div class="controls">
+    <button class="btn" onclick="toggleView()">Cambiar Vista</button>
+  </div>
+  <a-scene vr-mode-ui="enabled: false" loading-screen="enabled: false">
     <a-sky id="sky" src="${currentImage}" rotation="0 -30 0" scale="-1 1 1"></a-sky>
-    ${textsHTML}
-    <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="80" position="0 1.6 0">
-      <a-cursor color="#FFFFFF" opacity="0.6" fuse="true" fuse-timeout="1200" raycaster="objects: .clickable-label"></a-cursor>
-    </a-camera>
+    <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="80" position="0 1.6 0"></a-camera>
   </a-scene>
   <script>
     const images = ['${viewImages[1]}', '${viewImages[2]}'];
     let currentIdx = ${currentView - 1};
-    
     function toggleView() {
       currentIdx = (currentIdx + 1) % images.length;
       document.getElementById('sky').setAttribute('src', images[currentIdx]);
     }
-    
-    function openInspector() {
-      const scene = document.querySelector('a-scene');
-      if (scene?.components?.inspector) scene.components.inspector.openInspector();
+    function goBack() {
+      if (window.opener) { window.close(); } else { window.location.href = '/galeria'; }
     }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        document.querySelectorAll('.clickable-label').forEach(label => {
-          label.addEventListener('click', () => {
-            const actionType = label.getAttribute('data-action-type');
-            const actionTarget = label.getAttribute('data-action-target');
-            if (actionType === 'view') {
-              currentIdx = parseInt(actionTarget) - 1;
-              document.getElementById('sky').setAttribute('src', images[currentIdx]);
-            } else if (actionType === 'page') {
-              window.location.href = actionTarget;
-            }
-          });
-          
-          // Hover effect
-          label.addEventListener('mouseenter', () => {
-            const bg = label.querySelector('.label-bg');
-            if (bg) {
-              bg.setAttribute('color', '#D4A017');
-              bg.setAttribute('opacity', '1');
-            }
-          });
-          label.addEventListener('mouseleave', () => {
-            const bg = label.querySelector('.label-bg');
-            if (bg) {
-              bg.setAttribute('color', '#000000');
-              bg.setAttribute('opacity', '0.85');
-            }
-          });
-        });
-      }, 1000);
-    });
-  </script>
+    setTimeout(() => { const h = document.getElementById('hint'); if (h) h.style.opacity = '0'; }, 4000);
+  <\/script>
 </body>
 </html>
     `;
