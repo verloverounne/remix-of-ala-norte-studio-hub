@@ -48,6 +48,17 @@ const Equipos = () => {
     }
   }, [searchParams, equipment, loading]);
 
+  // Auto-collapse subcategory filters after a peek delay
+  useEffect(() => {
+    if (!loading && categories.length > 0 && !hasAutoCollapsed) {
+      const timer = setTimeout(() => {
+        setIsFilterOpen(false);
+        setHasAutoCollapsed(true);
+      }, 1800);
+      return () => clearTimeout(timer);
+    }
+  }, [loading, categories, hasAutoCollapsed]);
+
   // Handle modal close - clear URL parameter
   const handleModalClose = (open: boolean) => {
     setModalOpen(open);
