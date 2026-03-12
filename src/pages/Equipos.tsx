@@ -29,6 +29,7 @@ const Equipos = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(true); // Default to OPEN
+  const [hasAutoCollapsed, setHasAutoCollapsed] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [sortOption, setSortOption] = useState<SortOption>("alphabetic");
   const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
