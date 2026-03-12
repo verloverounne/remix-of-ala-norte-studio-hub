@@ -392,7 +392,7 @@ const Equipos = () => {
 
                       selectedSubcategories.includes(sub.id) ?
                       "bg-primary text-primary-foreground border-primary" :
-                      "bg-transparent text-background hover:bg-background/10 border-background/20"
+                      "bg-transparent text-background hover:bg-primary hover:text-primary-foreground border-background/20"
                       )}>
                       
                           {sub.name}
