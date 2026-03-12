@@ -47,7 +47,7 @@ export const Header = () => {
   const { user, isAdmin, signOut } = useAuth();
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const autoCloseTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const autoCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Keep visible when mobile menu is open
   useEffect(() => {
