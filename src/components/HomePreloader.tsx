@@ -23,7 +23,7 @@ export const HomePreloader = ({ progress, isComplete }: HomePreloaderProps) => {
     // Random interval between 800-1200ms for natural feel
     const getRandomInterval = () => Math.random() * 400 + 800;
 
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout>;
     const scheduleNext = () => {
       timeoutId = setTimeout(() => {
         animate();

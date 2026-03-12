@@ -169,7 +169,7 @@ export const HomeVideoHeroSlider = () => {
   const [muted, setMuted] = useState(true);
   const [autoplayEnabled, setAutoplayEnabled] = useState(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const autoplayIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const autoplayIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (loading) return;
     const homeHeroImages = getByPageType("home_hero");
