@@ -181,7 +181,7 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-foreground text-foreground font-sans antialiased;
     font-weight: 400;
   }
 
