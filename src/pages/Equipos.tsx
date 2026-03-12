@@ -388,12 +388,12 @@ const Equipos = () => {
                     <button
                       key={sub.id}
                       onClick={() => toggleSubcategory(sub.id)}
-                      className={cn(
-                        "flex-1 min-w-fit text-xs font-heading uppercase transition-all text-center px-[12px] py-[4px] bg-muted border border-muted rounded-sm",
+                      className={cn("flex-1 min-w-fit font-heading uppercase transition-all text-center px-[12px] py-[4px] bg-muted border border-muted rounded-sm text-sm",
 
-                        selectedSubcategories.includes(sub.id) ?
-                        "bg-primary text-primary-foreground border-primary" :
-                        "bg-background text-foreground hover:bg-muted border-foreground/20"
+
+                      selectedSubcategories.includes(sub.id) ?
+                      "bg-primary text-primary-foreground border-primary" :
+                      "bg-background text-foreground hover:bg-muted border-foreground/20"
                       )}>
                       
                           {sub.name}
