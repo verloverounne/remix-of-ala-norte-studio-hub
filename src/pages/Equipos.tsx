@@ -29,6 +29,7 @@ const Equipos = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(true); // Default to OPEN
+  const [hasAutoCollapsed, setHasAutoCollapsed] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [sortOption, setSortOption] = useState<SortOption>("alphabetic");
   const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
@@ -46,6 +47,17 @@ const Equipos = () => {
       }
     }
   }, [searchParams, equipment, loading]);
+
+  // Auto-collapse subcategory filters after a peek delay
+  useEffect(() => {
+    if (!loading && categories.length > 0 && !hasAutoCollapsed) {
+      const timer = setTimeout(() => {
+        setIsFilterOpen(false);
+        setHasAutoCollapsed(true);
+      }, 1800);
+      return () => clearTimeout(timer);
+    }
+  }, [loading, categories, hasAutoCollapsed]);
 
   // Handle modal close - clear URL parameter
   const handleModalClose = (open: boolean) => {
