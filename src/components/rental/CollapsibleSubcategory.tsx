@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 export interface CollapsibleSubcategoryProps {
@@ -22,11 +22,42 @@ export const CollapsibleSubcategory = ({
   const isControlled = controlledExpanded !== undefined;
   const [internalExpanded, setInternalExpanded] = useState(defaultExpanded);
   const isExpanded = isControlled ? controlledExpanded : internalExpanded;
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [contentHeight, setContentHeight] = useState<number | undefined>(undefined);
+  const [shouldRender, setShouldRender] = useState(isExpanded);
+
   useEffect(() => {
     if (!isControlled) {
       setInternalExpanded(defaultExpanded);
     }
   }, [defaultExpanded, isControlled]);
+
+  useEffect(() => {
+    if (isExpanded) {
+      setShouldRender(true);
+    }
+  }, [isExpanded]);
+
+  useEffect(() => {
+    if (shouldRender && contentRef.current) {
+      if (isExpanded) {
+        const height = contentRef.current.scrollHeight;
+        setContentHeight(0);
+        requestAnimationFrame(() => {
+          setContentHeight(height);
+          setTimeout(() => setContentHeight(undefined), 300);
+        });
+      } else {
+        const height = contentRef.current.scrollHeight;
+        setContentHeight(height);
+        requestAnimationFrame(() => {
+          setContentHeight(0);
+          setTimeout(() => setShouldRender(false), 300);
+        });
+      }
+    }
+  }, [isExpanded, shouldRender]);
+
   const handleToggle = () => {
     const newState = !isExpanded;
     if (isControlled) {
@@ -43,7 +74,15 @@ export const CollapsibleSubcategory = ({
           <span className="ml-2 text-[10px]">({count})</span>
         </h3>
       </button>
-      {isExpanded && children}
+      {shouldRender && (
+        <div
+          ref={contentRef}
+          className="overflow-hidden transition-[max-height] duration-300 ease-in-out"
+          style={{ maxHeight: contentHeight !== undefined ? `${contentHeight}px` : 'none' }}
+        >
+          {children}
+        </div>
+      )}
     </div>;
 };
 export default CollapsibleSubcategory;
