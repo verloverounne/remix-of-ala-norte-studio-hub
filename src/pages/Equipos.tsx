@@ -497,8 +497,8 @@ const Equipos = () => {
         </div>
       </div>
 
-      <div className="container pb-4 sm:pb-6 ">
-        <div className="grid lg:grid-cols-4 gap-4 lg:gap-6 py-[16px] ml-0 pl-[16px] px-0">
+      <div className="pb-4 sm:pb-6">
+        <div className="grid lg:grid-cols-4 gap-4 lg:gap-6 py-[16px] ml-0 pl-[16px] pr-[16px] px-0">
           {/* Main Content - Category Sections */}
           <main ref={mainContentRef} className="lg:col-span-3 ">
             {loading ?
