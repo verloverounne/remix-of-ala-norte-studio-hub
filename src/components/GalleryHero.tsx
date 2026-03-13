@@ -80,7 +80,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
       <div className="hidden lg:grid lg:grid-cols-2 w-full max-h-screen">
         {/* Left Column: Text Content */}
         <div className="flex flex-col justify-center h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 py-[16vh] bg-background">
-          <div className="space-y-6 w-full h-full my-0 py-[24px]">
+          <div className="space-y-6 w-full h-full py-[24px] my-px">
             {/* Price Badge */}
             <div
               className="flex flex-col items-start gap-4 my-0"
@@ -99,9 +99,9 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
             </div>
 
             {/* Title + Location + Subtitle */}
-            <div className="flex flex-wrap items-center gap-[12px]">
+            <div className="flex flex-wrap items-center gap-[12px] my-[32px]">
               <h1
-                className="font-sans font-thin text-foreground"
+                className="font-sans font-thin text-foreground my-[16px] text-5xl"
                 style={{
                   fontSize: "clamp(2rem, 5vw, 4rem)",
                   lineHeight: 1.1
@@ -110,7 +110,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                 {space.hero_title || space.name}
               </h1>
               {space.location &&
-              <div className="flex items-left gap-2 px-4 py-2 border-2 bg-background border-foreground border-solid rounded-sm">
+              <div className="flex items-left gap-2 px-4 py-2 border-2 bg-background border-foreground border-solid rounded-sm my-[8px] mx-0">
                   <MapPin className="h-5 w-5 text-input" />
                   <span className="font-heading text-foreground">{space.location}</span>
                 </div>
@@ -119,7 +119,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
 
             {/* Discount */}
             {space.discount_text &&
-            <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 my-[16px] pb-[9px] mb-[48px] mt-0 rounded-sm">
+            <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 pb-[9px] mb-[48px] mt-0 rounded-sm my-[16px]">
                 <Sparkles className="h-5 w-5 text-primary" />
                 <span className="font-heading font-bold text-primary text-xl">{space.discount_text}</span>
               </div>
