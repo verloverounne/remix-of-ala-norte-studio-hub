@@ -11,7 +11,6 @@ const SalaGrabacion = () => {
   const { space, loading } = useSpace("sala-grabacion");
   const { getByPageType } = useGalleryImages();
 
-  // Get featured image from gallery images
   const salaImages = getByPageType("sala-grabacion");
   const featuredMediaImage = salaImages[0]?.image_url || null;
 
@@ -24,13 +23,13 @@ const SalaGrabacion = () => {
   }
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
+    <div className="min-h-screen bg-background">
+      {/* Hero Section - Full width */}
       <GalleryHero space={space} />
 
-      {/* Details Section with Featured Image */}
+      {/* Details Section */}
       <section className="py-12 sm:py-16">
-        <div className="container mx-auto px-4">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
             {/* Left Column: Featured Image */}
             <div className="space-y-6">
@@ -60,7 +59,7 @@ const SalaGrabacion = () => {
               )}
 
               {space.features && Array.isArray(space.features) && space.features.length > 0 && (
-                <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-[48px]">
+                <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-12">
                   {(space.features as string[]).map((feature, index) => (
                     <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
                       <span className="text-primary">•</span>
@@ -86,7 +85,7 @@ const SalaGrabacion = () => {
                 </div>
               )}
 
-              <div className="border-foreground p-4 rounded-lg bg-stone-200 border-0">
+              <div className="border-foreground p-4 rounded-lg bg-muted border-0">
                 <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
                 <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekday}</p>
                 <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekend}</p>
@@ -116,37 +115,35 @@ const SalaGrabacion = () => {
         </div>
       </section>
 
-      {/* 360° Virtual Tour Section */}
+      {/* 360° Virtual Tour Section - Full bleed */}
       <section className="py-12 sm:py-16 bg-foreground">
-        <div className="w-full px-0">
-          <div className="container mx-auto px-4 mb-8">
-            <div className="text-left">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
-                Ya conocés la sala de grabación?
-              </h2>
-              <p className="text-muted-foreground font-heading text-lg">
-                Explorá la sala antes de tu reserva. Arrastrá para moverte y conocer cada rincón del espacio.
-              </p>
-            </div>
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+          <div className="text-left">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
+              Ya conocés la sala de grabación?
+            </h2>
+            <p className="text-muted-foreground font-heading text-lg">
+              Explorá la sala antes de tu reserva. Arrastrá para moverte y conocer cada rincón del espacio.
+            </p>
           </div>
-          <div className="w-full">
-            <Viewer360
-              imageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//36-1%203.JPG"
-              secondImageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//363.jpg"
-              height="700px"
-              mobileHeight="60vh"
-            />
-          </div>
+        </div>
+        <div className="w-full">
+          <Viewer360
+            imageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//36-1%203.JPG"
+            secondImageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//363.jpg"
+            height="700px"
+            mobileHeight="60vh"
+          />
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="py-12 sm:py-16 bg-background">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4 text-center">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4">
             ¿Querés reservar la sala?
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading leading-tight text-center">
+          <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading leading-tight">
             Hablemos de tu proyecto. Te contamos disponibilidad, armamos una propuesta a medida y coordinamos todo para
             que llegues tranquilo a la sesión.
           </p>
