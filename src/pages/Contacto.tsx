@@ -175,7 +175,7 @@ const Contacto = () => {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Seguinos</CardTitle>
+                  <CardTitle>Síguenos</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex gap-4 rounded-sm">
