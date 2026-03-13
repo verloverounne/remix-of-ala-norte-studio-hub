@@ -206,11 +206,7 @@ const Nosotros = () => {
           <div className="max-w-4xl mx-auto mb-8">
             <Card className="border-2 border-border shadow-brutal overflow-hidden">
               <div className="h-96">
-                <Map 
-                  address="V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina"
-                  latitude={-34.527}
-                  longitude={-58.475}
-                />
+                <Map />
               </div>
             </Card>
           </div>
