@@ -111,21 +111,9 @@ const Contacto = () => {
                 </form>
               </CardContent>
               {/* Map */}
-              <Card className="overflow-hidden">
-                <div className="h-[400px] w-full">
-                  <Map />
-                </div>
-                <div className="p-4 text-center">
-                  <Button asChild variant="outline" className="font-heading">
-                    <a
-                      href="https://www.google.com/maps/search/?api=1&query=-34.5445,-58.4716"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <MapPin className="mr-2 h-4 w-4" />
-                      Cómo llegar
-                    </a>
-                  </Button>
+              <Card className="flex gap-4 overflow-hidden">
+                <div className="h-150">
+                  <Map address="V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina" latitude={-34.527} longitude={-58.475} />
                 </div>
               </Card>
             </Card>
@@ -191,13 +179,13 @@ const Contacto = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="flex gap-4">
-                    <a href="https://www.facebook.com/alanortecinedigital" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary-dark hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale" aria-label="Facebook">
+                    <a href="https://www.facebook.com/alanortecinedigital" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-primary-dark hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale rounded-sm" aria-label="Facebook">
                       <Facebook className="h-5 w-5 text-background" />
                     </a>
-                    <a href="https://www.instagram.com/alanortecinedigital/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary-dark hover:bg-primary flex items-center justify-center transition-all hover-scale text-background" aria-label="Instagram">
+                    <a href="https://www.instagram.com/alanortecinedigital/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-primary-dark hover:bg-primary flex items-center justify-center transition-all hover-scale text-background rounded-sm" aria-label="Instagram">
                       <Instagram className="h-5 w-5" />
                     </a>
-                    <a href="https://twitter.com/alanorte" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-primary-dark hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale" aria-label="Twitter X">
+                    <a href="https://twitter.com/alanorte" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-primary-dark hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale rounded-sm" aria-label="Twitter X">
                       <Twitter className="h-5 w-5 text-background" />
                     </a>
                   </div>
