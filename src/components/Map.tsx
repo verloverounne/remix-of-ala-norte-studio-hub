@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiMjY0NDczNDEiLCJhIjoiY21tb3p5bHI0MGN6ZzJzb2dobHV4YzJrbyJ9.3usO-yDTM7bBSjUNbt4a1g';
 
 interface MapProps {
   address: string;
@@ -13,80 +13,34 @@ interface MapProps {
 const Map: React.FC<MapProps> = ({ address, latitude, longitude }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
-  const [mapboxToken, setMapboxToken] = useState<string>('');
-  const [isMapInitialized, setIsMapInitialized] = useState(false);
 
   useEffect(() => {
-    if (!mapContainer.current || !mapboxToken || isMapInitialized) return;
+    if (!mapContainer.current || map.current) return;
 
-    try {
-      // Initialize map
-      mapboxgl.accessToken = mapboxToken;
-      
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/streets-v12',
-        center: [longitude, latitude],
-        zoom: 15,
-      });
+    mapboxgl.accessToken = MAPBOX_TOKEN;
 
-      // Add marker
-      new mapboxgl.Marker({ color: '#9b87f5' })
-        .setLngLat([longitude, latitude])
-        .setPopup(
-          new mapboxgl.Popup({ offset: 25 })
-            .setHTML(`<div style="padding: 8px;"><strong>Ala Norte Cine Digital</strong><br/>${address}</div>`)
-        )
-        .addTo(map.current);
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [longitude, latitude],
+      zoom: 15,
+    });
 
-      // Add navigation controls
-      map.current.addControl(
-        new mapboxgl.NavigationControl(),
-        'top-right'
-      );
+    new mapboxgl.Marker({ color: '#9b87f5' })
+      .setLngLat([longitude, latitude])
+      .setPopup(
+        new mapboxgl.Popup({ offset: 25 })
+          .setHTML(`<div style="padding: 8px;"><strong>Ala Norte Cine Digital</strong><br/>${address}</div>`)
+      )
+      .addTo(map.current);
 
-      setIsMapInitialized(true);
-    } catch (error) {
-      console.error('Error initializing map:', error);
-    }
+    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-    // Cleanup
     return () => {
       map.current?.remove();
+      map.current = null;
     };
-  }, [mapboxToken, address, latitude, longitude, isMapInitialized]);
-
-  if (!mapboxToken) {
-    return (
-      <div className="space-y-4 p-4 bg-muted/50 rounded-lg">
-        <div>
-          <Label htmlFor="mapbox-token" className="text-sm font-medium">
-            Mapbox Public Token
-          </Label>
-          <p className="text-xs text-muted-foreground mb-2">
-            Ingresa tu token público de Mapbox para ver el mapa. 
-            Obtén uno gratis en{' '}
-            <a 
-              href="https://mapbox.com/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              mapbox.com
-            </a>
-          </p>
-          <Input
-            id="mapbox-token"
-            type="text"
-            placeholder="pk...."
-            value={mapboxToken}
-            onChange={(e) => setMapboxToken(e.target.value)}
-            className="font-mono text-sm"
-          />
-        </div>
-      </div>
-    );
-  }
+  }, [address, latitude, longitude]);
 
   return (
     <div className="relative w-full h-full min-h-[300px]">
