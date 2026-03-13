@@ -77,7 +77,7 @@ const Contacto = () => {
                 <CardTitle className="text-2xl px-0 py-[16px]">ENVIANOS UN MENSAJE</CardTitle>
                 <CardDescription>Completá el formulario y te respondemos a la brevedad</CardDescription>
               </CardHeader>
-              <CardContent className="bg-inherit">
+              <CardContent className="bg-muted">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="name">
