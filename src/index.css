@@ -51,7 +51,7 @@ All colors MUST be HSL.
     --input: 0 0% 8%;
     --ring: 0 72.2222% 50.5882%;
 
-    --radius: 0rem; /* Bordes rectos por defecto */
+    --radius: 0.5rem; /* Bordes suavizados - digital cinematográfico */
 
     /* Border widths - editables desde tokens */
     --border-width-none: 0px;

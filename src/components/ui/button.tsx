@@ -5,14 +5,14 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap rounded-sm text-xs sm:text-sm font-heading font-bold uppercase tracking-wider transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-3 sm:[&_svg]:size-4 [&_svg]:shrink-0 border-0",
+  "inline-flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap rounded-md text-xs sm:text-sm font-heading font-bold uppercase tracking-wider transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-3 sm:[&_svg]:size-4 [&_svg]:shrink-0 border-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-background hover:shadow-brutal hover:-translate-y-0.5 hover:brightness-110",
-        hero: "bg-primary text-background shadow-brutal-lg hover:shadow-brutal-red hover:-translate-y-1 text-sm sm:text-base lg:text-lg",
+        default: "bg-primary text-foreground hover:shadow-brutal hover:-translate-y-0.5 hover:brightness-110",
+        hero: "bg-primary text-foreground shadow-brutal-lg hover:shadow-brutal-red hover:-translate-y-1 text-sm sm:text-base lg:text-lg",
         outline: "bg-transparent text-foreground border border-foreground/30 hover:bg-foreground hover:text-background hover:border-foreground",
-        secondary: "bg-primary text-background hover:shadow-brutal hover:-translate-y-0.5 hover:brightness-110",
+        secondary: "bg-primary text-foreground hover:shadow-brutal hover:-translate-y-0.5 hover:brightness-110",
         ghost: "hover:bg-primary hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline hover:text-primary-hover",
         destructive: "bg-destructive text-foreground hover:shadow-brutal-red",

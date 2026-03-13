@@ -98,9 +98,9 @@ export default {
   			}
   		},
   		borderRadius: {
-  			lg: '0',
-  			md: '0',
-  			sm: '0.25rem',
+  			lg: 'var(--radius)',
+  			md: 'var(--radius)',
+  			sm: 'var(--radius)',
   			none: '0'
   		},
   		borderWidth: {
