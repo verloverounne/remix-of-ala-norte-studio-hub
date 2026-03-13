@@ -88,7 +88,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                 marginBottom: "clamp(24px, 4vh, 64px)"
               }}>
               
-              <div className="flex items-center justify-center gap-2 text-primary px-4 py-2 rounded-none w-full max-w-fit bg-foreground">
+              <div className="flex items-center justify-center gap-2 text-primary px-4 py-2 w-full max-w-fit bg-foreground rounded-sm">
                 <span className="text-2xl font-bold font-heading text-background sm:text-xl">
                   ${(space.block_price || space.price)?.toLocaleString()}
                 </span>
