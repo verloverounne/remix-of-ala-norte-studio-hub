@@ -73,11 +73,11 @@ const Contacto = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Form */}
             <Card>
-              <CardHeader>
+              <CardHeader className="bg-card-foreground text-card">
                 <CardTitle className="text-2xl px-0 py-[16px]">ENVIANOS UN MENSAJE</CardTitle>
-                <CardDescription>Completá el formulario y te respondemos a la brevedad</CardDescription>
+                <CardDescription className="text-background">Completá el formulario y te respondemos a la brevedad</CardDescription>
               </CardHeader>
-              <CardContent className="bg-muted">
+              <CardContent className="bg-current">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="name">
