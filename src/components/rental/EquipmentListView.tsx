@@ -57,7 +57,7 @@ export const EquipmentListView = ({
               variant="secondary"
               className={cn(
                 "flex-shrink-0 text-[10px] px-2 py-0.5 font-heading border-0 mx-4 bg-transparent",
-                cartQty > 0 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+                cartQty > 0 ? "text-primary" : "bg-muted text-muted-foreground",
               )}
             >
               {cartQty}/{item.stock_quantity}
