@@ -113,7 +113,7 @@ const Contacto = () => {
               {/* Map */}
               <Card className="flex gap-4 overflow-hidden">
                 <div className="h-150">
-                  <Map address="V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina" latitude={-34.527} longitude={-58.475} />
+                  <Map />
                 </div>
               </Card>
             </Card>

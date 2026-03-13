@@ -27,7 +27,7 @@ All colors MUST be HSL.
 
     /* Primario - Rojo Brutal */
     --primary: 0 73.7089% 41.7647%; /* #DC143C Rojo Ala Norte */
-    --primary-foreground: 0 0% 3.9216%;
+    --primary-foreground: 0 0% 98%;
     --primary-hover: 343 100% 33%; /* #A7002F */
     --primary-light: 355 82% 60%; /* #EF4350 */
     --primary-dark: 343 100% 22%; /* #6E0022 */

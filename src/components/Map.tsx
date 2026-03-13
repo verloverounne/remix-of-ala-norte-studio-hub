@@ -4,13 +4,13 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiMjY0NDczNDEiLCJhIjoiY21tb3p5bHI0MGN6ZzJzb2dobHV4YzJrbyJ9.3usO-yDTM7bBSjUNbt4a1g';
 
-interface MapProps {
-  address: string;
-  latitude: number;
-  longitude: number;
-}
+const ALA_NORTE = {
+  address: 'V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina',
+  latitude: -34.5445,
+  longitude: -58.4716,
+};
 
-const Map: React.FC<MapProps> = ({ address, latitude, longitude }) => {
+const Map: React.FC = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
 
@@ -21,16 +21,16 @@ const Map: React.FC<MapProps> = ({ address, latitude, longitude }) => {
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [longitude, latitude],
+      style: 'mapbox://styles/mapbox/dark-v11',
+      center: [ALA_NORTE.longitude, ALA_NORTE.latitude],
       zoom: 15,
     });
 
-    new mapboxgl.Marker({ color: '#9b87f5' })
-      .setLngLat([longitude, latitude])
+    new mapboxgl.Marker({ color: '#DC143C' })
+      .setLngLat([ALA_NORTE.longitude, ALA_NORTE.latitude])
       .setPopup(
         new mapboxgl.Popup({ offset: 25 })
-          .setHTML(`<div style="padding: 8px;"><strong>Ala Norte Cine Digital</strong><br/>${address}</div>`)
+          .setHTML(`<div style="padding: 8px;"><strong>Ala Norte Cine Digital</strong><br/>${ALA_NORTE.address}</div>`)
       )
       .addTo(map.current);
 
@@ -40,7 +40,7 @@ const Map: React.FC<MapProps> = ({ address, latitude, longitude }) => {
       map.current?.remove();
       map.current = null;
     };
-  }, [address, latitude, longitude]);
+  }, []);
 
   return (
     <div className="relative w-full h-full min-h-[300px]">
