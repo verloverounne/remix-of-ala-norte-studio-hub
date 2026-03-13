@@ -51,15 +51,15 @@ export const EquipmentListView = ({
             </div>
 
             {/* Badge - reserved/total */}
-            <Badge variant="secondary" className={cn("flex-shrink-0 text-[10px] px-2 py-0.5 font-heading border-0 mx-4 bg-neutral-200", cartQty > 0 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
+            <Badge variant="secondary" className={cn("flex-shrink-0 text-[10px] px-2 py-0.5 font-heading border-0 mx-4 bg-transparent", cartQty > 0 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
               {cartQty}/{item.stock_quantity}
             </Badge>
 
             {/* Add button */}
             {item.status === 'available' ? <Button size="sm" className="h-4 w-4 p-0 flex-shrink-0 my-[4px] mx-[4px] px-[4px] py-[4px] rounded-sm bg-transparent text-primary text-2xl" onClick={() => onAddToCart(item)} disabled={!canAdd}>
-                {canAdd ? <Plus className="h-[12px] w-[12px] mx-[2px] my-[2px]" /> : <span className="text-[10px] font-black">MÁX</span>}
-              </Button> : <Button size="sm" className="h-8 w-8 p-0 flex-shrink-0" disabled>
-                <X className="h-4 w-4" />
+                {canAdd ? <Plus className="py-0 px-0 my-0 mx-0 w-[24px] h-[24px]" /> : <span className="text-[10px] font-black">MÁX</span>}
+              </Button> : <Button size="sm" className="h-8 w-8 p-0 flex-shrink-0 bg-transparent text-xs font-thin" disabled>
+                <X className="h-[24px] w-[24px]" />
               </Button>}
           </div>;
     })}
