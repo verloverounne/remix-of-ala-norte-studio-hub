@@ -111,8 +111,8 @@ const Contacto = () => {
                 </form>
               </CardContent>
               {/* Map */}
-              <Card className="flex gap-4 overflow-hidden">
-                <div className="h-150">
+              <Card className="overflow-hidden">
+                <div className="h-[400px] w-full">
                   <Map />
                 </div>
               </Card>
