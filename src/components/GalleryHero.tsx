@@ -83,7 +83,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
           <div className="space-y-6 w-full h-full py-[24px] my-px">
             {/* Price Badge */}
             <div
-              className="flex flex-col items-start gap-4 my-0"
+              className="items-start gap-4 my-0 rounded-sm flex flex-col"
               style={{
                 marginBottom: "clamp(24px, 4vh, 64px)"
               }}>
@@ -101,7 +101,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
             {/* Title + Location + Subtitle */}
             <div className="flex flex-wrap items-center gap-[12px] my-[32px]">
               <h1
-                className="font-sans font-thin text-foreground my-[16px] text-5xl"
+                className="font-sans font-thin text-foreground text-5xl my-[8px]"
                 style={{
                   fontSize: "clamp(2rem, 5vw, 4rem)",
                   lineHeight: 1.1
@@ -119,7 +119,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
 
             {/* Discount */}
             {space.discount_text &&
-            <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 pb-[9px] mb-[48px] mt-0 rounded-sm my-[16px]">
+            <div className="inline-flex items-center gap-2 border-2 border-primary px-4 py-2 pb-[9px] rounded-sm my-[32px] mb-[64px] mt-[32px]">
                 <Sparkles className="h-5 w-5 text-primary" />
                 <span className="font-heading font-bold text-primary text-xl">{space.discount_text}</span>
               </div>
