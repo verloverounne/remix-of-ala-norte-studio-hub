@@ -77,7 +77,7 @@ const Contacto = () => {
                 <CardTitle className="text-2xl px-0 py-[16px]">ENVIANOS UN MENSAJE</CardTitle>
                 <CardDescription>Completá el formulario y te respondemos a la brevedad</CardDescription>
               </CardHeader>
-              <CardContent className="bg-inherit">
+              <CardContent className="bg-inherit shadow-none border-0">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="name">
@@ -113,7 +113,7 @@ const Contacto = () => {
               {/* Map */}
               <Card className="flex gap-4 overflow-hidden">
                 <div className="h-150">
-                  <Map address="V. S. de Liniers 1565, Vicente López, Buenos Aires, Argentina" latitude={-34.527} longitude={-58.475} />
+                  
                 </div>
               </Card>
             </Card>
