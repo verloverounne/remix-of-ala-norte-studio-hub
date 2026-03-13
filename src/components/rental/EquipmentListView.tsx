@@ -31,7 +31,7 @@ export const EquipmentListView = ({
       {equipment.map((item) => {
       const cartQty = getCartQuantity(item.id);
       const canAdd = canAddMore(item);
-      return <div key={item.id} className="flex items-center max-w-screen transition-colors bg-background px] py-[2px] border-gray-light flex-wrap gap-[4px]">
+      return <div key={item.id} className="flex items-center max-w-screen transition-colors bg-background px] py-[2px] border-gray-light flex-wrap gap-[4px] px-[8px]">
             {/* Name - clickable */}
             <div className="flex-1 min-w-40 cursor-pointer" onClick={() => onViewDetails(item)}>
               <h3 className="font-heading text-xs normal-case line-clamp-2 hover:text-primary transition-colors sm:text-xs font-medium flex flex-1 mx-[12px]">
@@ -56,7 +56,7 @@ export const EquipmentListView = ({
             </Badge>
 
             {/* Add button */}
-            {item.status === 'available' ? <Button size="sm" className="h-4 w-4 p-0 flex-shrink-0 bg-primary rounded-none my-[4px] mx-[4px] px-[4px] py-[4px]" onClick={() => onAddToCart(item)} disabled={!canAdd}>
+            {item.status === 'available' ? <Button size="sm" className="h-4 w-4 p-0 flex-shrink-0 bg-primary my-[4px] mx-[4px] px-[4px] py-[4px] rounded-sm" onClick={() => onAddToCart(item)} disabled={!canAdd}>
                 {canAdd ? <Plus className="h-[12px] w-[12px] mx-[2px] my-[2px]" /> : <span className="text-[10px] font-black">MÁX</span>}
               </Button> : <Button size="sm" className="h-8 w-8 p-0 flex-shrink-0" disabled>
                 <X className="h-4 w-4" />
