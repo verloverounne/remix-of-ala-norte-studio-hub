@@ -115,6 +115,18 @@ const Contacto = () => {
                 <div className="h-[400px] w-full">
                   <Map />
                 </div>
+                <div className="p-4 text-center">
+                  <Button asChild variant="outline" className="font-heading">
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=-34.5445,-58.4716"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <MapPin className="mr-2 h-4 w-4" />
+                      Cómo llegar
+                    </a>
+                  </Button>
+                </div>
               </Card>
             </Card>
 
