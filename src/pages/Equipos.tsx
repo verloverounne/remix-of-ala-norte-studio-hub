@@ -32,6 +32,8 @@ const Equipos = () => {
   const [hasAutoCollapsed, setHasAutoCollapsed] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [sortOption, setSortOption] = useState<SortOption>("alphabetic");
+  const [isCartVisible, setIsCartVisible] = useState(true);
+  const [subcatHeaderBlink, setSubcatHeaderBlink] = useState(false);
   const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
   const { toast } = useToast();
   const { isMobile, isVisible } = useHeaderVisibility();
