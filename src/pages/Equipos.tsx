@@ -61,6 +61,15 @@ const Equipos = () => {
     }
   }, [loading, categories, hasAutoCollapsed]);
 
+  // Periodic blink for "Subcategorías" header
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSubcatHeaderBlink(true);
+      setTimeout(() => setSubcatHeaderBlink(false), 2000);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
+
   // Handle modal close - clear URL parameter
   const handleModalClose = (open: boolean) => {
     setModalOpen(open);
