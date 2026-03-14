@@ -32,6 +32,14 @@ export const CartSidebar = ({
           <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1">
             {totalItems} {totalItems === 1 ? "ítem" : "ítems"}
           </span>
+          {onCollapse && (
+            <button
+              onClick={onCollapse}
+              className="w-6 h-6 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors rounded-sm"
+              title="Ocultar presupuesto">
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
 
