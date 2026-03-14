@@ -17,7 +17,8 @@ export const CartSidebar = ({
   calculateSubtotal,
   updateQuantity,
   removeItem,
-  stickyTop = 370
+  stickyTop = 370,
+  onCollapse
 }: CartSidebarProps) => {
   const isMobile = useIsMobile();
   const [drawerOpen, setDrawerOpen] = useState(false);
