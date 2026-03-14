@@ -10,6 +10,7 @@ interface CartSidebarProps {
   updateQuantity: (id: string, quantity: number) => void;
   removeItem: (id: string) => void;
   stickyTop?: number;
+  onCollapse?: () => void;
 }
 export const CartSidebar = ({
   items,
