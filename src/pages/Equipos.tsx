@@ -512,9 +512,12 @@ const Equipos = () => {
       </div>
 
       <div className="pb-4 sm:pb-6">
-        <div className="grid lg:grid-cols-4 gap-4 lg:gap-6 py-[16px] ml-0 pl-[16px] pr-[16px] px-0 bg-foreground">
+        <div className={cn(
+          "grid gap-4 lg:gap-6 py-[16px] ml-0 pl-[16px] pr-[16px] px-0 bg-foreground transition-all duration-300",
+          isCartVisible ? "lg:grid-cols-4" : "lg:grid-cols-1"
+        )}>
           {/* Main Content - Category Sections */}
-          <main ref={mainContentRef} className="lg:col-span-3 ">
+          <main ref={mainContentRef} className={cn(isCartVisible ? "lg:col-span-3" : "lg:col-span-1")}>
             {loading ?
             <div className="text-center py-12 sm:py-16 border p-8 sm:p-12">
                 <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>
@@ -554,16 +557,37 @@ const Equipos = () => {
             }
           </main>
 
-          {/* Cart Sidebar - Sticky on desktop, drawer on mobile */}
-          <aside className="hidden lg:block lg:col-span-1 shadow-none pr-0">
-            <CartSidebar
-              items={items}
-              calculateSubtotal={calculateSubtotal}
-              updateQuantity={updateQuantity}
-              removeItem={removeItem}
-              stickyTop={cartStickyTop} />
-            
-          </aside>
+          {/* Cart Sidebar - Collapsible on desktop */}
+          {isCartVisible ? (
+            <aside className="hidden lg:block lg:col-span-1 shadow-none pr-0 relative">
+              <button
+                onClick={() => setIsCartVisible(false)}
+                className="absolute -left-3 top-2 z-10 bg-foreground text-background rounded-full w-6 h-6 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                title="Ocultar presupuesto"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+              <CartSidebar
+                items={items}
+                calculateSubtotal={calculateSubtotal}
+                updateQuantity={updateQuantity}
+                removeItem={removeItem}
+                stickyTop={cartStickyTop} />
+            </aside>
+          ) : (
+            <button
+              onClick={() => setIsCartVisible(true)}
+              className="hidden lg:flex fixed right-4 top-24 z-40 bg-primary text-primary-foreground p-3 rounded-sm shadow-brutal-sm hover:scale-105 transition-transform items-center gap-1"
+              title="Mostrar presupuesto"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              {items.length > 0 && (
+                <span className="bg-foreground text-background text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                  {items.reduce((sum, item) => sum + item.quantity, 0)}
+                </span>
+              )}
+            </button>
+          )}
 
           {/* Mobile cart button/drawer */}
           <div className="lg:hidden">
@@ -572,7 +596,6 @@ const Equipos = () => {
               calculateSubtotal={calculateSubtotal}
               updateQuantity={updateQuantity}
               removeItem={removeItem} />
-            
           </div>
         </div>
       </div>
