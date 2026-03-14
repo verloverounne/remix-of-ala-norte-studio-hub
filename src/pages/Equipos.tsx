@@ -513,11 +513,11 @@ const Equipos = () => {
 
       <div className="pb-4 sm:pb-6">
         <div className={cn(
-          "grid gap-4 lg:gap-6 py-[16px] ml-0 pl-[16px] pr-[16px] px-0 bg-foreground transition-all duration-300",
+          "grid gap-4 lg:gap-6 py-[16px] ml-0 pl-[16px] pr-[16px] px-0 bg-foreground transition-all duration-500",
           isCartVisible ? "lg:grid-cols-4" : "lg:grid-cols-1"
         )}>
           {/* Main Content - Category Sections */}
-          <main ref={mainContentRef} className={cn(isCartVisible ? "lg:col-span-3" : "lg:col-span-1")}>
+          <main ref={mainContentRef} className={cn("transition-all duration-500", isCartVisible ? "lg:col-span-3" : "lg:col-span-1")}>
             {loading ?
             <div className="text-center py-12 sm:py-16 border p-8 sm:p-12">
                 <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>
@@ -557,9 +557,16 @@ const Equipos = () => {
             }
           </main>
 
-          {/* Cart Sidebar - Collapsible on desktop */}
-          {isCartVisible ?
-          <aside className="hidden lg:block lg:col-span-1 shadow-none pr-0 relative">
+          {/* Cart Sidebar - Collapsible on desktop with scale animation */}
+          <aside
+            className={cn(
+              "hidden lg:block shadow-none pr-0 relative transition-all duration-500 ease-in-out origin-bottom-right",
+              isCartVisible
+                ? "lg:col-span-1 opacity-100 scale-100 pointer-events-auto"
+                : "lg:col-span-0 w-0 opacity-0 scale-0 pointer-events-none overflow-hidden"
+            )}
+            style={{ transformOrigin: "calc(100% - 24px) calc(100% - 72px)" }}
+          >
               <CartSidebar
               items={items}
               calculateSubtotal={calculateSubtotal}
@@ -567,11 +574,17 @@ const Equipos = () => {
               removeItem={removeItem}
               stickyTop={cartStickyTop}
               onCollapse={() => setIsCartVisible(false)} />
-            </aside> :
+            </aside>
 
+          {/* Floating badge - appears when sidebar is collapsed */}
           <button
             onClick={() => setIsCartVisible(true)}
-            className="hidden fixed right-6 bottom-[72px] z-40 bg-primary text-primary-foreground p-3 rounded-sm shadow-brutal-sm hover:scale-105 transition-transform items-center gap-1 lg:flex flex-col"
+            className={cn(
+              "hidden fixed right-6 bottom-[72px] z-40 bg-primary text-primary-foreground p-3 rounded-sm shadow-brutal-sm items-center gap-1 lg:flex flex-col transition-all duration-500 ease-in-out",
+              isCartVisible
+                ? "scale-0 opacity-0 pointer-events-none"
+                : "scale-100 opacity-100 pointer-events-auto"
+            )}
             title="Mostrar presupuesto">
             
               <ShoppingCart className="w-5 h-5" />
@@ -581,7 +594,6 @@ const Equipos = () => {
                 </span>
             }
             </button>
-          }
 
           {/* Mobile cart button/drawer */}
           <div className="lg:hidden">
