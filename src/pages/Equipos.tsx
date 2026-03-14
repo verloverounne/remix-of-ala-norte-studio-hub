@@ -571,12 +571,12 @@ const Equipos = () => {
 
           <button
             onClick={() => setIsCartVisible(true)}
-            className="hidden lg:flex fixed right-4 top-24 z-40 bg-primary text-primary-foreground p-3 rounded-sm shadow-brutal-sm hover:scale-105 transition-transform items-center gap-1"
+            className="hidden lg:flex fixed right-6 bottom-[72px] z-40 bg-primary text-primary-foreground p-3 rounded-sm shadow-brutal-sm hover:scale-105 transition-transform items-center gap-1"
             title="Mostrar presupuesto">
             
               <ShoppingCart className="w-5 h-5" />
               {items.length > 0 &&
-            <span className="bg-foreground text-background text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+            <span className="bg-foreground text-background text-xs font-bold w-5 h-5 flex items-center justify-center rounded-sm">
                   {items.reduce((sum, item) => sum + item.quantity, 0)}
                 </span>
             }
