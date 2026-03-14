@@ -38,7 +38,7 @@ export const EquipmentListView = ({
             
             {/* Name - clickable */}
             <div className="flex-1 min-w-40 cursor-pointer" onClick={() => onViewDetails(item)}>
-              <h3 className="font-heading text-xs normal-case line-clamp-2 hover:text-primary transition-colors font-medium flex flex-1 mx-[12px] sm:text-base">
+              <h3 className="font-heading text-xs normal-case line-clamp-2 hover:text-primary transition-colors font-medium flex flex-1 mx-[12px] sm:text-sm">
                 {formatEquipmentName(item.name)}
               </h3>
               {item.brand && <span className="text-[10px] text-muted-foreground uppercase">{item.brand}</span>}
@@ -79,7 +79,7 @@ export const EquipmentListView = ({
               </Button> :
 
             <Button size="sm" className="h-8 w-8 p-0 flex-shrink-0 bg-transparent text-xs font-thin" disabled>
-                <X className="h-[24px] w-[24px] text-muted" />
+                <X className="h-[24px] w-[24px]" />
               </Button>
             }
           </div>);
