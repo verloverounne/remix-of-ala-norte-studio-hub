@@ -28,17 +28,17 @@ export const CartSidebar = ({
       {/* Header */}
       <div className="bg-foreground text-background">
         <div className="flex items-center gap-3 py-[24px] px-[12px]">
-          {onCollapse && (
-            <button
-              onClick={onCollapse}
-              className="w-6 h-6 flex-shrink-0 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors rounded-sm"
-              title="Ocultar presupuesto">
+          {onCollapse &&
+        <button
+          onClick={onCollapse}
+          className="w-6 h-6 flex-shrink-0 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors rounded-sm"
+          title="Ocultar presupuesto">
               <ChevronRight className="w-4 h-4" />
             </button>
-          )}
+        }
           <h3
-            className="font-heading text-lg uppercase sm:text-xl text-background flex-1 cursor-pointer hover:text-primary transition-colors"
-            onClick={onCollapse}>
+          className="font-heading text-lg uppercase sm:text-xl text-background flex-1 cursor-pointer hover:text-primary transition-colors"
+          onClick={onCollapse}>
             Presupuesto
           </h3>
           <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1">
@@ -64,7 +64,7 @@ export const CartSidebar = ({
                   {/* Image */}
                   {item.imageUrl &&
             <div className="w-16 h-16 flex-shrink-0 overflow-hidden">
-                      <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
+                      
                     </div>
             }
 
