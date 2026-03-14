@@ -36,7 +36,11 @@ export const CartSidebar = ({
               <ChevronRight className="w-4 h-4" />
             </button>
           )}
-          <h3 className="font-heading text-lg uppercase sm:text-xl text-primary flex-1">Presupuesto</h3>
+          <h3
+            className="font-heading text-lg uppercase sm:text-xl text-background flex-1 cursor-pointer hover:text-primary transition-colors"
+            onClick={onCollapse}>
+            Presupuesto
+          </h3>
           <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1">
             {totalItems} {totalItems === 1 ? "ítem" : "ítems"}
           </span>
