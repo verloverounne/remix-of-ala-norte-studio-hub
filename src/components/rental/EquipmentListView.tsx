@@ -34,11 +34,11 @@ export const EquipmentListView = ({
         return (
           <div
             key={item.id}
-            className="flex items-center max-w-screen transition-colors bg-background px] py-[2px] border-gray-light flex-wrap gap-[4px] px-[8px]">
+            className="flex items-center max-w-screen transition-colors bg-background px] border-gray-light flex-wrap px-[8px] gap-0 py-0">
             
             {/* Name - clickable */}
             <div className="flex-1 min-w-40 cursor-pointer" onClick={() => onViewDetails(item)}>
-              <h3 className="font-heading text-xs normal-case line-clamp-2 hover:text-primary transition-colors sm:text-xs font-medium flex flex-1 mx-[12px]">
+              <h3 className="font-heading text-xs normal-case line-clamp-2 hover:text-primary transition-colors font-medium flex flex-1 mx-[12px] sm:text-sm">
                 {formatEquipmentName(item.name)}
               </h3>
               {item.brand && <span className="text-[10px] text-muted-foreground uppercase">{item.brand}</span>}
@@ -46,7 +46,7 @@ export const EquipmentListView = ({
 
             {/* Price */}
             <div className="flex-shrink-0 text-right">
-              <span className="font-heading text-sm sm:text-base text-primary">
+              <span className="font-heading text-sm text-primary sm:text-lg">
                 ${item.price_per_day > 0 ? (item.price_per_day / 1000).toFixed(0) + "K" : "—"}
               </span>
               <span className="text-muted-foreground font-mono text-[9px] sm:text-[10px] ml-0.5">/día</span>
@@ -55,7 +55,7 @@ export const EquipmentListView = ({
             {/* Badge - reserved/total */}
             <Badge
               variant="secondary"
-              className={cn("flex-shrink-0 text-[10px] px-2 py-0.5 font-heading border-0 mx-4 bg-transparent",
+              className={cn("flex-shrink-0 text-[10px] px-2 py-0.5 font-heading border-0 bg-transparent mx-[8px]",
 
               cartQty > 0 ? "text-primary" : "bg-muted text-muted-foreground"
               )}>
