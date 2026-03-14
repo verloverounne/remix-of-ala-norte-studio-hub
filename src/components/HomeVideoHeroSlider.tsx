@@ -247,7 +247,9 @@ export const HomeVideoHeroSlider = () => {
 
       {/* Logo centrado en la parte superior */}
       <div className={`absolute left-0 right-0 z-20 flex justify-center transition-all duration-300 ${isHeaderVisible ? 'top-20' : 'top-4'}`}>
-        <img alt="Ala Norte Logo" className="object-contain w-28 md:w-1/4 lg:w-1/5" src="/lovable-uploads/3245f3e3-446c-4ed7-a748-e60180c533bf.png" />
+        <Link to="/equipos">
+          <img alt="Ala Norte Logo" className="object-contain w-28 md:w-1/4 lg:w-1/5 cursor-pointer hover:opacity-80 transition-opacity" src="/lovable-uploads/3245f3e3-446c-4ed7-a748-e60180c533bf.png" />
+        </Link>
       </div>
 
       {/* Navigation dots */}
