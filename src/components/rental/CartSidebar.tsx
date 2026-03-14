@@ -27,19 +27,19 @@ export const CartSidebar = ({
   <>
       {/* Header */}
       <div className="bg-foreground text-background">
-        <div className="flex items-center justify-between py-[24px] px-[12px]">
-          <h3 className="font-heading text-lg uppercase sm:text-xl text-primary">Presupuesto</h3>
-          <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1">
-            {totalItems} {totalItems === 1 ? "ítem" : "ítems"}
-          </span>
+        <div className="flex items-center gap-3 py-[24px] px-[12px]">
           {onCollapse && (
             <button
               onClick={onCollapse}
-              className="w-6 h-6 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors rounded-sm"
+              className="w-6 h-6 flex-shrink-0 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors rounded-sm"
               title="Ocultar presupuesto">
               <ChevronRight className="w-4 h-4" />
             </button>
           )}
+          <h3 className="font-heading text-lg uppercase sm:text-xl text-primary flex-1">Presupuesto</h3>
+          <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1">
+            {totalItems} {totalItems === 1 ? "ítem" : "ítems"}
+          </span>
         </div>
       </div>
 
