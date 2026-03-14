@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import type { ReactNode } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 export interface CollapsibleSubcategoryProps {
   name: string;
   count: number;
@@ -66,10 +67,20 @@ export const CollapsibleSubcategory = ({
       setInternalExpanded(newState);
     }
   };
+  // Periodic blink animation
+  const [isBlinking, setIsBlinking] = useState(false);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsBlinking(true);
+      setTimeout(() => setIsBlinking(false), 2000);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
+
   return <div className="mb-4" id={subcategoryId ? `subcategory-${subcategoryId}` : undefined}>
       <button onClick={handleToggle} className="flex items-center gap-2 w-full border-b border-foreground/20 pb-2 mb-3 hover:text-primary transition-colors cursor-pointer bg-card py-[16px] px-0">
         {isExpanded ? <ChevronDown className="h-3 w-3 flex-shrink-0" /> : <ChevronRight className="h-3 w-3 flex-shrink-0" />}
-        <h3 className="font-heading text-xs uppercase text-muted-foreground sm:text-base">
+        <h3 className={cn("font-heading text-xs uppercase sm:text-base", isBlinking && "animate-subcategory-blink")}>
           {name}
           <span className="ml-2 text-[10px]">({count})</span>
         </h3>
