@@ -55,7 +55,7 @@ export const EquipmentListView = ({
             {/* Badge - reserved/total */}
             <Badge
               variant="secondary"
-              className={cn("flex-shrink-0 text-[10px] px-2 py-0.5 font-heading border-0 mx-[8px] bg-black/0",
+              className={cn("flex-shrink-0 text-[10px] px-2 py-0.5 font-heading border-0 bg-transparent mx-[8px]",
 
               cartQty > 0 ? "text-primary" : "bg-muted text-muted-foreground"
               )}>
@@ -79,7 +79,7 @@ export const EquipmentListView = ({
               </Button> :
 
             <Button size="sm" className="h-8 w-8 p-0 flex-shrink-0 bg-transparent text-xs font-thin" disabled>
-                <X className="text-muted w-[12px] h-[12px]" />
+                <X className="h-[24px] w-[24px] text-muted" />
               </Button>
             }
           </div>);
