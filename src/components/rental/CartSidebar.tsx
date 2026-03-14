@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Trash2, Plus, Minus, X, ChevronRight } from "lucide-react";
+import { ShoppingCart, Trash2, Plus, Minus, X } from "lucide-react";
 import { CartItem } from "@/hooks/useCart";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerClose } from "@/components/ui/drawer";
@@ -10,15 +10,13 @@ interface CartSidebarProps {
   updateQuantity: (id: string, quantity: number) => void;
   removeItem: (id: string) => void;
   stickyTop?: number;
-  onCollapse?: () => void;
 }
 export const CartSidebar = ({
   items,
   calculateSubtotal,
   updateQuantity,
   removeItem,
-  stickyTop = 370,
-  onCollapse
+  stickyTop = 370
 }: CartSidebarProps) => {
   const isMobile = useIsMobile();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -27,17 +25,9 @@ export const CartSidebar = ({
   <>
       {/* Header */}
       <div className="bg-foreground text-background">
-        <div className="flex items-center gap-3 py-[24px] px-[12px]">
-          {onCollapse && (
-            <button
-              onClick={onCollapse}
-              className="w-6 h-6 flex-shrink-0 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors rounded-sm"
-              title="Ocultar presupuesto">
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          )}
-          <h3 className="font-heading text-lg uppercase sm:text-xl text-primary flex-1">Presupuesto</h3>
-          <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1">
+        <div className="flex items-center justify-between py-[24px] px-[12px]">
+          <h3 className="font-heading text-lg uppercase sm:text-xl text-primary">Presupuesto</h3>
+          <span className="bg-primary text-primary-foreground text-xs font-bold py-1 px-[4px]">
             {totalItems} {totalItems === 1 ? "ítem" : "ítems"}
           </span>
         </div>
