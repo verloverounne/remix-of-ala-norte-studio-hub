@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Trash2, Plus, Minus, X } from "lucide-react";
+import { ShoppingCart, Trash2, Plus, Minus, X, ChevronRight } from "lucide-react";
 import { CartItem } from "@/hooks/useCart";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerClose } from "@/components/ui/drawer";
@@ -10,13 +10,15 @@ interface CartSidebarProps {
   updateQuantity: (id: string, quantity: number) => void;
   removeItem: (id: string) => void;
   stickyTop?: number;
+  onCollapse?: () => void;
 }
 export const CartSidebar = ({
   items,
   calculateSubtotal,
   updateQuantity,
   removeItem,
-  stickyTop = 370
+  stickyTop = 370,
+  onCollapse
 }: CartSidebarProps) => {
   const isMobile = useIsMobile();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -30,6 +32,14 @@ export const CartSidebar = ({
           <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1">
             {totalItems} {totalItems === 1 ? "ítem" : "ítems"}
           </span>
+          {onCollapse && (
+            <button
+              onClick={onCollapse}
+              className="w-6 h-6 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors rounded-sm"
+              title="Ocultar presupuesto">
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
 

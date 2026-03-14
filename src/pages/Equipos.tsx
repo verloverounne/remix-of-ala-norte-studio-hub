@@ -560,19 +560,13 @@ const Equipos = () => {
           {/* Cart Sidebar - Collapsible on desktop */}
           {isCartVisible ?
           <aside className="hidden lg:block lg:col-span-1 shadow-none pr-0 relative">
-              <button
-              onClick={() => setIsCartVisible(false)}
-              className="absolute -left-3 top-2 z-10 bg-foreground text-background w-6 h-6 hover:bg-primary hover:text-primary-foreground transition-colors items-center justify-center flex flex-row rounded-sm"
-              title="Ocultar presupuesto">
-              
-                <ChevronRight className="w-4 h-4" />
-              </button>
               <CartSidebar
               items={items}
               calculateSubtotal={calculateSubtotal}
               updateQuantity={updateQuantity}
               removeItem={removeItem}
-              stickyTop={cartStickyTop} />
+              stickyTop={cartStickyTop}
+              onCollapse={() => setIsCartVisible(false)} />
             </aside> :
 
           <button
