@@ -79,7 +79,7 @@ export const EquipmentListView = ({
               </Button> :
 
             <Button size="sm" className="h-8 w-8 p-0 flex-shrink-0 bg-transparent text-xs font-thin" disabled>
-                <X className="h-[24px] w-[24px] text-muted" />
+                <X className="text-muted w-[12px] h-[12px]" />
               </Button>
             }
           </div>);
