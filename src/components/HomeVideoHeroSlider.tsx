@@ -245,9 +245,18 @@ export const HomeVideoHeroSlider = () => {
           {muted ? <VolumeX className="h-5 w-5 text-background" /> : <Volume2 className="h-5 w-5 text-background" />}
         </button>}
 
-      {/* Logo centrado en la parte superior */}
+      {/* Logo centrado en la parte superior - click to rental */}
       <div className={`absolute left-0 right-0 z-20 flex justify-center transition-all duration-300 ${isHeaderVisible ? 'top-20' : 'top-4'}`}>
-        <img alt="Ala Norte Logo" className="object-contain w-28 md:w-1/4 lg:w-1/5" src="/lovable-uploads/3245f3e3-446c-4ed7-a748-e60180c533bf.png" />
+        <Link to="/equipos" className="group relative flex flex-col items-center cursor-pointer">
+          <img
+            alt="Ala Norte Logo"
+            className="object-contain w-28 md:w-1/4 lg:w-1/5 transition-transform duration-300 group-hover:animate-[compass-vibrate_0.15s_ease-in-out_infinite]"
+            src="/lovable-uploads/3245f3e3-446c-4ed7-a748-e60180c533bf.png"
+          />
+          <span className="absolute -bottom-6 text-xs font-heading uppercase tracking-widest text-background opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            Ir al Rental
+          </span>
+        </Link>
       </div>
 
       {/* Navigation dots */}
