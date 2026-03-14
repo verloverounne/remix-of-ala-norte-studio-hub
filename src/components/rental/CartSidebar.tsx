@@ -25,7 +25,7 @@ export const CartSidebar = ({
       {/* Header */}
       <div className="p-4 bg-foreground text-background">
         <div className="flex items-center justify-between py-[8px]">
-          <h3 className="font-heading text-lg uppercase sm:text-sm">Tu presupuesto</h3>
+          <h3 className="font-heading text-lg uppercase sm:text-sm">Presupuesto</h3>
           <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded">
             {totalItems} {totalItems === 1 ? "ítem" : "ítems"}
           </span>
