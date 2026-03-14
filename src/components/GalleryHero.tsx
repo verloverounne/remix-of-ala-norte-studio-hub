@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import type { Space } from "@/types/supabase";
 import { useParallax } from "@/hooks/useParallax";
+import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
 interface GalleryHeroProps {
   space: Space;
 }
