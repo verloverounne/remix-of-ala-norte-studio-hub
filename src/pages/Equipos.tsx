@@ -513,11 +513,11 @@ const Equipos = () => {
 
       <div className="pb-4 sm:pb-6">
         <div className={cn(
-          "grid gap-4 lg:gap-6 py-[16px] ml-0 pl-[16px] pr-[16px] px-0 bg-foreground transition-all duration-300",
+          "grid gap-4 lg:gap-6 py-[16px] ml-0 pl-[16px] pr-[16px] px-0 bg-foreground transition-all duration-500",
           isCartVisible ? "lg:grid-cols-4" : "lg:grid-cols-1"
         )}>
           {/* Main Content - Category Sections */}
-          <main ref={mainContentRef} className={cn(isCartVisible ? "lg:col-span-3" : "lg:col-span-1")}>
+          <main ref={mainContentRef} className={cn("transition-all duration-500", isCartVisible ? "lg:col-span-3" : "lg:col-span-1")}>
             {loading ?
             <div className="text-center py-12 sm:py-16 border p-8 sm:p-12">
                 <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>
