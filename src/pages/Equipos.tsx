@@ -558,36 +558,36 @@ const Equipos = () => {
           </main>
 
           {/* Cart Sidebar - Collapsible on desktop */}
-          {isCartVisible ? (
-            <aside className="hidden lg:block lg:col-span-1 shadow-none pr-0 relative">
+          {isCartVisible ?
+          <aside className="hidden lg:block lg:col-span-1 shadow-none pr-0 relative">
               <button
-                onClick={() => setIsCartVisible(false)}
-                className="absolute -left-3 top-2 z-10 bg-foreground text-background rounded-full w-6 h-6 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-                title="Ocultar presupuesto"
-              >
+              onClick={() => setIsCartVisible(false)}
+              className="absolute -left-3 top-2 z-10 bg-foreground text-background w-6 h-6 hover:bg-primary hover:text-primary-foreground transition-colors items-center justify-center flex flex-row rounded-sm"
+              title="Ocultar presupuesto">
+              
                 <ChevronRight className="w-4 h-4" />
               </button>
               <CartSidebar
-                items={items}
-                calculateSubtotal={calculateSubtotal}
-                updateQuantity={updateQuantity}
-                removeItem={removeItem}
-                stickyTop={cartStickyTop} />
-            </aside>
-          ) : (
-            <button
-              onClick={() => setIsCartVisible(true)}
-              className="hidden lg:flex fixed right-4 top-24 z-40 bg-primary text-primary-foreground p-3 rounded-sm shadow-brutal-sm hover:scale-105 transition-transform items-center gap-1"
-              title="Mostrar presupuesto"
-            >
+              items={items}
+              calculateSubtotal={calculateSubtotal}
+              updateQuantity={updateQuantity}
+              removeItem={removeItem}
+              stickyTop={cartStickyTop} />
+            </aside> :
+
+          <button
+            onClick={() => setIsCartVisible(true)}
+            className="hidden lg:flex fixed right-4 top-24 z-40 bg-primary text-primary-foreground p-3 rounded-sm shadow-brutal-sm hover:scale-105 transition-transform items-center gap-1"
+            title="Mostrar presupuesto">
+            
               <ShoppingCart className="w-5 h-5" />
-              {items.length > 0 && (
-                <span className="bg-foreground text-background text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+              {items.length > 0 &&
+            <span className="bg-foreground text-background text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                   {items.reduce((sum, item) => sum + item.quantity, 0)}
                 </span>
-              )}
+            }
             </button>
-          )}
+          }
 
           {/* Mobile cart button/drawer */}
           <div className="lg:hidden">
