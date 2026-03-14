@@ -11,7 +11,7 @@ import { CategorySection, CategorySectionRef } from "@/components/rental/Categor
 import { CartSidebar } from "@/components/rental/CartSidebar";
 import { ViewModeToggle, ViewMode } from "@/components/rental/ViewModeToggle";
 import { cn } from "@/lib/utils";
-import { Search, Filter, X, ArrowUpDown, ChevronDown, ChevronRight } from "lucide-react";
+import { Search, Filter, X, ArrowUpDown, ChevronDown, ChevronRight, ChevronLeft, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
