@@ -16,14 +16,14 @@ export const EquipmentListView = ({
   onAddToCart,
   onViewDetails,
   getCartQuantity,
-  canAddMore,
+  canAddMore
 }: EquipmentListViewProps) => {
   if (equipment.length === 0) {
     return (
       <div className="text-center py-8 sm:py-12 text-muted-foreground">
         <p className="font-heading text-lg">No hay equipos disponibles</p>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -34,8 +34,8 @@ export const EquipmentListView = ({
         return (
           <div
             key={item.id}
-            className="flex items-center max-w-screen transition-colors bg-background px] py-[2px] border-gray-light flex-wrap gap-[4px] px-[8px]"
-          >
+            className="flex items-center max-w-screen transition-colors bg-background px] py-[2px] border-gray-light flex-wrap gap-[4px] px-[8px]">
+            
             {/* Name - clickable */}
             <div className="flex-1 min-w-40 cursor-pointer" onClick={() => onViewDetails(item)}>
               <h3 className="font-heading text-xs normal-case line-clamp-2 hover:text-primary transition-colors sm:text-xs font-medium flex flex-1 mx-[12px]">
@@ -55,37 +55,37 @@ export const EquipmentListView = ({
             {/* Badge - reserved/total */}
             <Badge
               variant="secondary"
-              className={cn(
-                "flex-shrink-0 text-[10px] px-2 py-0.5 font-heading border-0 mx-4 bg-transparent",
-                cartQty > 0 ? "text-primary" : "bg-muted text-muted-foreground",
-              )}
-            >
+              className={cn("flex-shrink-0 text-[10px] px-2 py-0.5 font-heading border-0 mx-4 bg-transparent",
+
+              cartQty > 0 ? "text-primary" : "bg-muted text-muted-foreground"
+              )}>
+              
               {cartQty}/{item.stock_quantity}
             </Badge>
 
             {/* Add button */}
-            {item.status === "available" ? (
-              <Button
-                size="sm"
-                className="h-4 w-4 p-0 flex-shrink-0 rounded-sm bg-transparent text-primary text-2xl"
-                onClick={() => onAddToCart(item)}
-                disabled={!canAdd}
-              >
-                {canAdd ? (
-                  <Plus className="py-0 px-0 my-0 mx-0 w-[24px] h-[24px]" />
-                ) : (
-                  <span className="text-[10px] font-black">MÁX</span>
-                )}
-              </Button>
-            ) : (
-              <Button size="sm" className="h-8 w-8 p-0 flex-shrink-0 bg-transparent text-xs font-thin" disabled>
+            {item.status === "available" ?
+            <Button
+              size="sm"
+              className="h-4 w-4 p-0 flex-shrink-0 rounded-sm bg-transparent text-primary text-2xl"
+              onClick={() => onAddToCart(item)}
+              disabled={!canAdd}>
+              
+                {canAdd ?
+              <Plus className="py-0 px-0 my-0 mx-0 w-[24px] h-[24px]" /> :
+
+              <span className="text-[10px] font-black">MÁX</span>
+              }
+              </Button> :
+
+            <Button size="sm" className="h-8 w-8 p-0 flex-shrink-0 bg-transparent text-xs font-thin" disabled>
                 <X className="h-[24px] w-[24px]" />
               </Button>
-            )}
-          </div>
-        );
+            }
+          </div>);
+
       })}
-    </div>
-  );
+    </div>);
+
 };
 export default EquipmentListView;
