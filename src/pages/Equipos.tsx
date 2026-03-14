@@ -571,7 +571,7 @@ const Equipos = () => {
 
           <button
             onClick={() => setIsCartVisible(true)}
-            className="hidden lg:flex fixed right-4 top-24 z-40 bg-primary text-primary-foreground p-3 rounded-sm shadow-brutal-sm hover:scale-105 transition-transform items-center gap-1"
+            className="hidden fixed right-4 top-24 z-40 bg-primary text-primary-foreground p-3 rounded-sm shadow-brutal-sm hover:scale-105 transition-transform gap-1 lg:flex items-end justify-start"
             title="Mostrar presupuesto">
             
               <ShoppingCart className="w-5 h-5" />
