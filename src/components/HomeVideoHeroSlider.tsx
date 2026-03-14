@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselApi } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { Volume2, VolumeX } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParallax } from "@/hooks/useParallax";
 import { useGalleryImages } from "@/hooks/useGalleryImages";
 import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
