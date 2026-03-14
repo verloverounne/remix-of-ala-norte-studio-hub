@@ -78,6 +78,12 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
   };
   return (
     <section className="relative min-h-screen bg-foreground">
+      {/* Logo centrado */}
+      <div className={`absolute left-0 right-0 z-20 flex justify-center transition-all duration-300 ${isHeaderVisible ? 'top-20' : 'top-4'}`}>
+        <Link to="/equipos">
+          <img alt="Ala Norte Logo" className="object-contain w-28 md:w-1/4 lg:w-1/5 cursor-pointer hover:opacity-80 transition-opacity" src="/lovable-uploads/3245f3e3-446c-4ed7-a748-e60180c533bf.png" />
+        </Link>
+      </div>
       {/* Desktop: 2 Column Layout */}
       <div className="hidden lg:grid lg:grid-cols-2 w-full max-h-screen">
         {/* Left Column: Text Content */}
