@@ -390,7 +390,10 @@ const Equipos = () => {
               <div className="pb-2">
                 <button
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
-                  className="gap-1 font-heading uppercase transition-colors cursor-pointer text-base font-bold text-background flex items-center  justify-center px-[16px]">
+                  className={cn(
+                    "gap-1 font-heading uppercase transition-colors cursor-pointer text-base font-bold flex items-center justify-center px-[16px]",
+                    subcatHeaderBlink ? "text-primary" : "text-background"
+                  )}>
                   
                   {isFilterOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
                   Subcategorías
