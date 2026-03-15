@@ -78,6 +78,20 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
   };
   return (
     <section className="relative min-h-screen bg-foreground">
+      {/* Logo centrado - click to rental */}
+      <div className={`absolute left-0 right-0 z-20 flex justify-center transition-all duration-300 ${isHeaderVisible ? 'top-20' : 'top-4'}`}>
+        <Link to="/equipos" className="group relative flex flex-col items-center cursor-pointer">
+          <img
+            alt="Ala Norte Logo"
+            className="object-contain w-28 md:w-1/4 lg:w-1/5 transition-transform duration-300 group-hover:animate-[compass-vibrate_0.15s_ease-in-out_infinite]"
+            src="/lovable-uploads/3245f3e3-446c-4ed7-a748-e60180c533bf.png"
+          />
+          <span className="absolute -bottom-6 text-xs font-heading uppercase tracking-widest text-background opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            Ir al Rental
+          </span>
+        </Link>
+      </div>
+
       {/* Desktop: 2 Column Layout */}
       <div className="hidden lg:grid lg:grid-cols-2 w-full max-h-screen">
         {/* Left Column: Text Content */}
