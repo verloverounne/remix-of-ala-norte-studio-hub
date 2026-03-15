@@ -13,6 +13,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
   const [isMobile, setIsMobile] = useState(false);
   const [videoOrientation, setVideoOrientation] = useState<"horizontal" | "vertical" | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const { isVisible: isHeaderVisible } = useHeaderVisibility();
 
   // Parallax para desktop
   const videoParallax = useParallax({
