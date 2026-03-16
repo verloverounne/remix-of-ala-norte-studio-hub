@@ -47,7 +47,7 @@ export const EquipmentListView = ({
             {/* Price */}
             <div className="flex-shrink-0 text-right">
               <span className="font-heading text-sm text-primary sm:text-lg">
-                ${item.price_per_day > 0 ? (item.price_per_day / 1000).toFixed(0) + "K" : "—"}
+                $ {item.price_per_day > 0 ? (item.price_per_day / 1000).toFixed(0) + " K" : "—"}
               </span>
               <span className="text-muted-foreground font-mono text-[9px] sm:text-[10px] ml-0.5">/día</span>
             </div>
