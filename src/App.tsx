@@ -38,14 +38,14 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
-const VideoDuotoneProvider = ({ children }: {children: React.ReactNode;}) => {
+const VideoDuotoneProvider = ({ children }: { children: React.ReactNode }) => {
   useVideoDuotone();
   useDuotoneTap();
   return <>{children}</>;
 };
 
-const App = () =>
-<QueryClientProvider client={queryClient}>
+const App = () => (
+  <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <CartProvider>
         <Toaster />
@@ -57,12 +57,12 @@ const App = () =>
               <Header />
               <MainContent>
                 <Suspense
-                fallback={
-                <div className="min-h-screen bg-foreground flex items-center justify-center">
+                  fallback={
+                    <div className="w-sreen- xl min-h-screen bg-foreground flex items-center justify-center">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                     </div>
-                }>
-
+                  }
+                >
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/equipos" element={<Equipos />} />
@@ -81,22 +81,22 @@ const App = () =>
                     <Route path="/sala-grabacion" element={<SalaGrabacion />} />
                     <Route path="/auth" element={<Auth />} />
                     <Route
-                    path="/admin"
-                    element={
-                    <ProtectedRoute requireAdmin>
+                      path="/admin"
+                      element={
+                        <ProtectedRoute requireAdmin>
                           <Admin />
                         </ProtectedRoute>
-                    } />
-
+                      }
+                    />
 
                     <Route
-                    path="/admin/blog"
-                    element={
-                    <ProtectedRoute requireAdmin>
+                      path="/admin/blog"
+                      element={
+                        <ProtectedRoute requireAdmin>
                           <AdminBlog />
                         </ProtectedRoute>
-                    } />
-
+                      }
+                    />
 
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
@@ -110,7 +110,7 @@ const App = () =>
         </BrowserRouter>
       </CartProvider>
     </TooltipProvider>
-  </QueryClientProvider>;
-
+  </QueryClientProvider>
+);
 
 export default App;
