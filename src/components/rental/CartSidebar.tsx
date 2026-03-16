@@ -27,7 +27,7 @@ export const CartSidebar = ({
   <>
       {/* Header */}
       <div className="bg-foreground text-background">
-        <div className="flex items-center gap-3 px-[12px] py-[4px]">
+        <div className="flex items-center gap-3 px-[12px] py-[6px]">
           {onCollapse &&
         <button
           onClick={onCollapse}
