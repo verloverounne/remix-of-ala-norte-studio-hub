@@ -474,9 +474,9 @@ const Equipos = () => {
                 setIsSearchOpen(!isSearchOpen);
                 if (isFilterOpen) setIsFilterOpen(false);
               }}
-              className={cn(
-                "h-8 px-2 flex-shrink-0 rounded-none bg-inherit text-inherit border-0",
-                isSearchOpen && "bg-primary text-primary-foreground"
+              className={cn("h-8 px-2 flex-shrink-0 bg-inherit text-inherit border-0 rounded-sm",
+
+              isSearchOpen && "bg-primary text-primary-foreground"
               )}>
               
               <Search className="h-4 w-4" />
@@ -561,12 +561,12 @@ const Equipos = () => {
           <aside
             className={cn(
               "hidden lg:block shadow-none pr-0 relative transition-all duration-500 ease-in-out origin-bottom-right",
-              isCartVisible
-                ? "lg:col-span-1 opacity-100 scale-100 pointer-events-auto"
-                : "lg:col-span-0 w-0 opacity-0 scale-0 pointer-events-none overflow-hidden"
+              isCartVisible ?
+              "lg:col-span-1 opacity-100 scale-100 pointer-events-auto" :
+              "lg:col-span-0 w-0 opacity-0 scale-0 pointer-events-none overflow-hidden"
             )}
-            style={{ transformOrigin: "calc(100% - 24px) calc(100% - 72px)" }}
-          >
+            style={{ transformOrigin: "calc(100% - 24px) calc(100% - 72px)" }}>
+            
               <CartSidebar
               items={items}
               calculateSubtotal={calculateSubtotal}
@@ -581,9 +581,9 @@ const Equipos = () => {
             onClick={() => setIsCartVisible(true)}
             className={cn(
               "hidden fixed right-6 bottom-[72px] z-40 bg-primary text-primary-foreground p-3 rounded-sm shadow-brutal-sm items-center gap-1 lg:flex flex-col transition-all duration-500 ease-in-out",
-              isCartVisible
-                ? "scale-0 opacity-0 pointer-events-none"
-                : "scale-100 opacity-100 pointer-events-auto"
+              isCartVisible ?
+              "scale-0 opacity-0 pointer-events-none" :
+              "scale-100 opacity-100 pointer-events-auto"
             )}
             title="Mostrar presupuesto">
             
