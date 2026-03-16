@@ -174,8 +174,8 @@ export const HeroCarouselRental = ({ categories, activeCategory, onCategoryChang
           {/* Navigation arrows */}
           {categories.length > 1 &&
           <>
-              <CarouselPrevious className="left-2 sm:left-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
-              <CarouselNext className="right-2 sm:right-4 h-8 w-8 sm:h-10 sm:w-10 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
+              <CarouselPrevious className="left-2 sm:left-4" />
+              <CarouselNext className="right-2 sm:right-4" />
             </>
           }
 
