@@ -56,7 +56,7 @@ export const EquipmentListView = ({
             <Badge
               variant="secondary"
               className={cn(
-                "flex-shrink-0 text-sm px-2 py-0.5 font-heading border-0 bg-transparent mx-[8px]",
+                "flex-shrink-0 text-[10px] px-2 py-0.5 font-heading border-0 bg-transparent mx-[8px]",
 
                 cartQty > 0 ? "text-primary" : "text-muted-foreground"
               )}>
@@ -73,7 +73,7 @@ export const EquipmentListView = ({
               disabled={!canAdd}>
               
                 {canAdd ?
-              <Plus className="py-0 px-0 my-0 mx-0 w-[24px] h-[24px]" /> :
+              <Plus className="py-0 px-0 my-0 mx-0 h-[24px] w-[36px]" /> :
 
               <span className="text-[10px] font-black">MÁX</span>
               }
