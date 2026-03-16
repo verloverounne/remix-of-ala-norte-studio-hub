@@ -62,10 +62,10 @@ export const CartSidebar = ({
         <div key={item.id} className="p-3 bg-inherit">
                 <div className="flex gap-3">
                   {/* Image */}
-                  {item.imageUrl &&
-            <div className="w-16 h-16 flex-shrink-0 overflow-hidden">
-                      
-                    </div>
+                  {item.imageUrl
+
+
+
             }
 
                   {/* Info */}
