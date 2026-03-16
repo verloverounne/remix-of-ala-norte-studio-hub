@@ -85,8 +85,8 @@ export const InstitutionalSlider = ({ pageType, className = "" }: InstitutionalS
         {/* Navigation arrows */}
         {images.length > 1 && (
           <>
-            <CarouselPrevious className="left-2 sm:left-4 lg:left-8 h-10 w-10 sm:h-12 sm:w-12 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
-            <CarouselNext className="right-2 sm:right-4 lg:right-8 h-10 w-10 sm:h-12 sm:w-12 border-2 border-background bg-background/20 hover:bg-background/40 text-background" />
+            <CarouselPrevious className="left-2 sm:left-4 lg:left-8" />
+            <CarouselNext className="right-2 sm:right-4 lg:right-8" />
           </>
         )}
       </Carousel>
