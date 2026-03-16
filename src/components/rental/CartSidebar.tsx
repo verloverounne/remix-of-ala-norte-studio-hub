@@ -60,21 +60,21 @@ export const CartSidebar = ({
       <div className="space-y-3 max-h-screen overflow-scroll ">
             {items.map((item) =>
         <div key={item.id} className="p-3 bg-inherit">
-                <div className="flex gap-3">
-                  {/* Image */}
-                  {item.imageUrl
+                
 
 
 
-            }
 
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <p className="font-heading text-sm truncate">{item.name}</p>
-                    {item.brand && <p className="text-xs text-muted-foreground">{item.brand}</p>}
-                    <p className="text-xs text-muted-foreground mt-1">${item.pricePerDay.toLocaleString()}/día</p>
-                  </div>
-                </div>
+
+
+
+
+
+
+
+
+
+          
 
                 {/* Quantity controls */}
                 <div className="flex items-center justify-between mt-3 pt-3">
