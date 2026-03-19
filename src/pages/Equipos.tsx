@@ -34,6 +34,7 @@ const Equipos = () => {
   const [sortOption, setSortOption] = useState<SortOption>("alphabetic");
   const [isCartVisible, setIsCartVisible] = useState(true);
   const [subcatHeaderBlink, setSubcatHeaderBlink] = useState(false);
+  const [subcatClickedOnce, setSubcatClickedOnce] = useState(false);
   const { addItem, items, calculateSubtotal, updateQuantity, removeItem } = useCart();
   const { toast } = useToast();
   const { isMobile, isVisible } = useHeaderVisibility();
@@ -61,14 +62,15 @@ const Equipos = () => {
     }
   }, [loading, categories, hasAutoCollapsed]);
 
-  // Periodic blink for "Subcategorías" header
+  // Periodic blink for "Subcategorías" header - stops after first click
   useEffect(() => {
+    if (subcatClickedOnce) return;
     const interval = setInterval(() => {
       setSubcatHeaderBlink(true);
       setTimeout(() => setSubcatHeaderBlink(false), 2000);
     }, 6000);
     return () => clearInterval(interval);
-  }, []);
+  }, [subcatClickedOnce]);
 
   // Handle modal close - clear URL parameter
   const handleModalClose = (open: boolean) => {
@@ -389,7 +391,7 @@ const Equipos = () => {
             <Collapsible open={isFilterOpen} onOpenChange={setIsFilterOpen}>
               <div className="pb-2">
                 <button
-                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  onClick={() => { setIsFilterOpen(!isFilterOpen); setSubcatClickedOnce(true); setSubcatHeaderBlink(false); }}
                   className={cn(
                     "gap-1 font-heading uppercase transition-colors cursor-pointer text-base font-bold flex items-center justify-center px-[16px]",
                     subcatHeaderBlink ? "text-primary" : "text-background"
