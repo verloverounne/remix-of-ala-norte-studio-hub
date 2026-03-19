@@ -88,7 +88,10 @@ export const CollapsibleSubcategory = ({
       {shouldRender && (
         <div
           ref={contentRef}
-          className="overflow-hidden transition-[max-height] duration-300 ease-in-out"
+          className={cn(
+            "overflow-hidden transition-[max-height] duration-300 ease-in-out",
+            isExpanded && "animate-subcategory-reveal"
+          )}
           style={{ maxHeight: contentHeight !== undefined ? `${contentHeight}px` : 'none' }}
         >
           {children}
