@@ -279,7 +279,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
 
         {/* Equipment Grid - Collapsible with Subcategory Headers */}
         {isExpanded && (
-          <div ref={gridRef} className="border-[#201e1d] border-0 bg-background max-w-screen-xl">
+          <div ref={gridRef} key={animationKey} className="border-[#201e1d] border-0 bg-background max-w-screen-xl animate-subcategory-reveal">
             {equipment.length === 0 ? (
               <div className="text-center py-8 sm:py-12 text-muted-foreground">
                 <p className="font-heading text-lg">No hay equipos en esta categoría</p>
