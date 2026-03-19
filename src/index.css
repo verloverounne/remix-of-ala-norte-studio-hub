@@ -393,7 +393,49 @@ All colors MUST be HSL.
   animation: subcategory-blink 2s ease-in-out;
 }
 
-/* React Quill editor styles */
+@keyframes subcategory-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-subcategory-reveal {
+  animation: subcategory-reveal 0.4s ease-out forwards;
+}
+
+.animate-subcategory-reveal > * > * {
+  animation: subcategory-item-stagger 0.35s ease-out both;
+}
+
+@keyframes subcategory-item-stagger {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-subcategory-reveal > * > *:nth-child(1) { animation-delay: 0.03s; }
+.animate-subcategory-reveal > * > *:nth-child(2) { animation-delay: 0.06s; }
+.animate-subcategory-reveal > * > *:nth-child(3) { animation-delay: 0.09s; }
+.animate-subcategory-reveal > * > *:nth-child(4) { animation-delay: 0.12s; }
+.animate-subcategory-reveal > * > *:nth-child(5) { animation-delay: 0.15s; }
+.animate-subcategory-reveal > * > *:nth-child(6) { animation-delay: 0.18s; }
+.animate-subcategory-reveal > * > *:nth-child(7) { animation-delay: 0.21s; }
+.animate-subcategory-reveal > * > *:nth-child(8) { animation-delay: 0.24s; }
+.animate-subcategory-reveal > * > *:nth-child(9) { animation-delay: 0.27s; }
+.animate-subcategory-reveal > * > *:nth-child(10) { animation-delay: 0.30s; }
+.animate-subcategory-reveal > * > *:nth-child(n+11) { animation-delay: 0.33s; }
+
+
 .ql-toolbar {
   @apply border-b-2 border-foreground bg-background rounded-t-none !important;
 }
