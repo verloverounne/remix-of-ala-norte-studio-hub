@@ -31,7 +31,7 @@ export const CartSidebar = ({
           {onCollapse &&
         <button
           onClick={onCollapse}
-          className="w-6 h-6 flex-shrink-0 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors rounded-sm"
+          className="w-6 h-6 flex-shrink-0 flex items-center justify-center hover:bg-foreground hover:text-background transition-colors rounded-sm"
           title="Ocultar presupuesto">
               <ChevronRight className="w-4 h-4" />
             </button>

@@ -278,7 +278,7 @@ export const Header = () => {
                 ) : (
                   <Link
                     to="/auth"
-                    className="flex items-center justify-center h-12 px-6 rounded-sm font-heading text-xs xl:text-sm tracking-tight bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="flex items-center justify-center h-12 px-6 rounded-sm font-heading text-xs xl:text-sm tracking-tight bg-background text-foreground hover:bg-foreground hover:text-background transition-colors"
                   >
                     LOGIN
                   </Link>
