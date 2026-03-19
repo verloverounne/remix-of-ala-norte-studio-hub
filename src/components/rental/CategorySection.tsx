@@ -93,6 +93,13 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
         setAllSubcategoriesExpanded(Object.values(initialStates).every((v) => v));
       }
     }, [isExpanded, subcategories, forceExpandSubcategories, selectedSubcategories]);
+
+    // Animation key to re-trigger entrance animations when filters change
+    const animationKey = useMemo(() => 
+      selectedSubcategories.sort().join(',') + '-' + sortOption,
+      [selectedSubcategories, sortOption]
+    );
+
     const toggleAllSubcategories = () => {
       const newState = !allSubcategoriesExpanded;
       setAllSubcategoriesExpanded(newState);
