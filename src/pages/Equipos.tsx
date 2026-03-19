@@ -62,14 +62,15 @@ const Equipos = () => {
     }
   }, [loading, categories, hasAutoCollapsed]);
 
-  // Periodic blink for "Subcategorías" header
+  // Periodic blink for "Subcategorías" header - stops after first click
   useEffect(() => {
+    if (subcatClickedOnce) return;
     const interval = setInterval(() => {
       setSubcatHeaderBlink(true);
       setTimeout(() => setSubcatHeaderBlink(false), 2000);
     }, 6000);
     return () => clearInterval(interval);
-  }, []);
+  }, [subcatClickedOnce]);
 
   // Handle modal close - clear URL parameter
   const handleModalClose = (open: boolean) => {
