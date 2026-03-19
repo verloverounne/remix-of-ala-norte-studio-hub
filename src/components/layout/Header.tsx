@@ -225,7 +225,7 @@ export const Header = () => {
                       rounded-sm
                       font-heading text-xs xl:text-xs tracking-tight font-medium
                       transition-colors
-                      ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-primary-dark hover:text-primary-foreground"}`}
+                      ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-pforegroun hover:text-primary-foreground"}`}
                   >
                     {item.name}
                   </Link>
