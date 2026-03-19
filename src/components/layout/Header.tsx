@@ -242,7 +242,7 @@ export const Header = () => {
                 {/* Cart */}
                 <Link
                   to="/cotizador"
-                  className="relative flex items-center justify-center h-12 w-12 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
+                  className="relative flex items-center justify-center h-12 w-12 rounded-sm bg-background hover:bg-foreground hover:text-background transition-colors"
                 >
                   <ShoppingCart className="h-5 w-5" />
                   {totalItems > 0 && (
