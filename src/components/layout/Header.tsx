@@ -225,7 +225,7 @@ export const Header = () => {
                       rounded-sm
                       font-heading text-xs xl:text-xs tracking-tight font-medium
                       transition-colors
-                      ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-foreground hover:text-background"}`}
+                      ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-primary-dark hover:text-primary-foreground"}`}
                   >
                     {item.name}
                   </Link>
@@ -235,14 +235,14 @@ export const Header = () => {
               {/* Actions Brutales */}
               <div className="flex items-center gap-2">
                 {/* Search wrapper */}
-                <div className="flex items-center justify-center h-8 w-8 rounded-sm bg-background hover:bg-foreground hover:text-background transition-colors">
+                <div className="flex items-center justify-center h-12 w-12 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors">
                   <SearchBar />
                 </div>
 
                 {/* Cart */}
                 <Link
                   to="/cotizador"
-                  className="relative flex items-center justify-center h-8 w-8 rounded-sm bg-background hover:bg-foreground hover:text-background transition-colors"
+                  className="relative flex items-center justify-center h-12 w-12 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
                 >
                   <ShoppingCart className="h-5 w-5" />
                   {totalItems > 0 && (
@@ -256,7 +256,7 @@ export const Header = () => {
                 {user && isAdmin && (
                   <Link
                     to="/admin"
-                    className="flex items-center justify-center h-12 px-6 rounded-sm font-heading text-xs xl:text-sm tracking-tight bg-background text-foreground hover:bg-foreground hover:text-background transition-colors"
+                    className="flex items-center justify-center h-12 px-6 rounded-sm font-heading text-xs xl:text-sm tracking-tight bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
                     ADMIN
                   </Link>
@@ -270,7 +270,7 @@ export const Header = () => {
                       signOut();
                       navigate("/");
                     }}
-                    className="flex items-center justify-center h-12 px-6 rounded-sm bg-background text-foreground hover:bg-foreground hover:text-background transition-colors"
+                    className="flex items-center justify-center h-12 px-6 rounded-sm bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                     title="Cerrar sesión"
                   >
                     <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
@@ -278,7 +278,7 @@ export const Header = () => {
                 ) : (
                   <Link
                     to="/auth"
-                    className="flex items-center justify-center h-8 px-6 rounded-sm font-heading text-xs xl:text-sm tracking-tight bg-background text-foreground hover:bg-foreground hover:text-background transition-colors"
+                    className="flex items-center justify-center h-8 px-6 rounded-sm font-heading text-xs xl:text-sm tracking-tight bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
                     LOGIN
                   </Link>
