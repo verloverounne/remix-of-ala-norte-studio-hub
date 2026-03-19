@@ -235,14 +235,14 @@ export const Header = () => {
               {/* Actions Brutales */}
               <div className="flex items-center gap-2">
                 {/* Search wrapper */}
-                <div className="flex items-center justify-center h-12 w-12 rounded-sm bg-background hover:bg-foreground hover:text-background transition-colors">
+                <div className="flex items-center justify-center h-8 w-8 rounded-sm bg-background hover:bg-foreground hover:text-background transition-colors">
                   <SearchBar />
                 </div>
 
                 {/* Cart */}
                 <Link
                   to="/cotizador"
-                  className="relative flex items-center justify-center h-12 w-12 rounded-sm bg-background hover:bg-foreground hover:text-background transition-colors"
+                  className="relative flex items-center justify-center h-8 w-8 rounded-sm bg-background hover:bg-foreground hover:text-background transition-colors"
                 >
                   <ShoppingCart className="h-5 w-5" />
                   {totalItems > 0 && (
