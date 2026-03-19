@@ -225,7 +225,7 @@ export const Header = () => {
                       rounded-sm
                       font-heading text-xs xl:text-xs tracking-tight font-medium
                       transition-colors
-                      ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-pforegroun hover:text-primary-foreground"}`}
+                      ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-foregroun hover:text-background"}`}
                   >
                     {item.name}
                   </Link>
@@ -235,18 +235,18 @@ export const Header = () => {
               {/* Actions Brutales */}
               <div className="flex items-center gap-2">
                 {/* Search wrapper */}
-                <div className="flex items-center justify-center h-8 w-8 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors">
+                <div className="flex items-center justify-center h-12 w-12 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors">
                   <SearchBar />
                 </div>
 
                 {/* Cart */}
                 <Link
                   to="/cotizador"
-                  className="relative flex items-center justify-center h-8 w-8 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
+                  className="relative flex items-center justify-center h-12 w-12 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
                 >
                   <ShoppingCart className="h-5 w-5" />
                   {totalItems > 0 && (
-                    <span className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border border-foreground/20">
+                    <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold rounded-full h-8 w-8 flex items-center justify-center border border-foreground/20">
                       {totalItems}
                     </span>
                   )}
