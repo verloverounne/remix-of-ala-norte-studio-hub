@@ -373,7 +373,7 @@ const Equipos = () => {
 
                     isActive ?
                     "bg-primary text-primary-foreground shadow-brutal-sm border-primary" :
-                    "bg-background text-foreground hover:bg-muted border-foreground/20"
+                    "bg-background text-foreground hover:bg-foreground hover:text-background border-foreground/20"
                     )}>
                     
                     <span>{category.name}</span>
