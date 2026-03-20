@@ -28,13 +28,27 @@ const Cartoni = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const galleryImages = getByPageType("cartoni");
-  const slides: CartoniSlide[] = galleryImages.map((img) => ({
+  const cartoniHomeImages = getByPageType("cartoni_home");
+  
+  // Use cartoni-specific slides, falling back to cartoni_home video from Home page
+  const cartoniSlides: CartoniSlide[] = galleryImages.map((img) => ({
     id: img.id,
     title: img.title,
     description: img.description,
     image_url: img.vertical_video_url || img.image_url,
     media_type: img.media_type,
   }));
+  
+  // If no cartoni slides, use the cartoni_home video from the home page
+  const homeVideoSlides: CartoniSlide[] = cartoniHomeImages.map((img) => ({
+    id: img.id,
+    title: img.title,
+    description: img.description,
+    image_url: img.vertical_video_url || img.image_url,
+    media_type: img.media_type,
+  }));
+  
+  const slides = cartoniSlides.length > 0 ? cartoniSlides : homeVideoSlides;
 
   useEffect(() => {
     if (!api) return;
