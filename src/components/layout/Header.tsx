@@ -270,7 +270,7 @@ export const Header = () => {
                       signOut();
                       navigate("/");
                     }}
-                    className="flex items-center justify-center h-12 px-6 rounded-sm bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="flex items-center justify-center h-8 px-6 rounded-sm bg-background text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                     title="Cerrar sesión"
                   >
                     <LogOut className="h-4 w-4 xl:h-5 xl:w-5" />
