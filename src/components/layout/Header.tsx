@@ -244,9 +244,9 @@ export const Header = () => {
                   to="/cotizador"
                   className="relative flex items-center justify-center h-8 w-8 rounded-sm bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
                 >
-                  <ShoppingCart className="h-5 w-5" />
+                  <ShoppingCart className="h-4 w-4" />
                   {totalItems > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center border border-foreground/20">
+                    <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold rounded-full h-2 w-2 flex items-center justify-center border">
                       {totalItems}
                     </span>
                   )}
