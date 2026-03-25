@@ -351,7 +351,7 @@ export const ServicesSection = () => {
         <button
           onClick={scrollNext}
           className={cn(
-            "absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all px-[4px] py-[4px] text-background bg-primary border-foreground mx-[16px]",
+            "absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all px-[4px] py-[4px] text-background bg-primary border-foreground mx-[16px] rounded-sm",
             activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed",
           )}
           disabled={activeIndex === services.length - 1}
