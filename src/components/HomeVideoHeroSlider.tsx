@@ -335,7 +335,7 @@ export const HomeVideoHeroSlider = () => {
           <img
             alt="Ala Norte Logo"
             className="object-contain w-50 md:w-1/4 lg:w-1/5 transition-transform duration-500 group-hover:scale-[1.03]"
-            src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/logo_hero_blanco@4x.png"
+            src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/logoVBlanco@2x.png"
           />
           <span className="absolute -bottom-8 text-xs font-heading uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary text-primary-foreground px-4 py-1.5 rounded-sm">
             Ir al Rental
