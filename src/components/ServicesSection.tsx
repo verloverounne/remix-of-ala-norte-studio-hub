@@ -73,9 +73,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
             isVideo ? (
               <video
                 ref={videoRef}
-                src={
-                  "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//GALERIA FAKENEWS_3.mp4"
-                }
+                src={mediaUrl!}
                 className="video-duotone absolute inset-0 w-full h-full object-cover border-0 bg-[#2e2c29]"
                 style={{
                   ...mediaParallax.style,
