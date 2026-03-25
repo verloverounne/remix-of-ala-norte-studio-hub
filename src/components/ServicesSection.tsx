@@ -346,7 +346,7 @@ export const ServicesSection = () => {
           disabled={activeIndex === 0}
           aria-label="Anterior"
         >
-          <ChevronLeft className="h-[24px] w-[24px]" />
+          <ChevronLeft className="h-[24px] w-[24px] rounded-sm" />
         </button>
         <button
           onClick={scrollNext}

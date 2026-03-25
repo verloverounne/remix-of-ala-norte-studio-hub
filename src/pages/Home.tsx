@@ -155,7 +155,7 @@ const CTASection = () => {
         <div
           ref={contentParallax.ref as any}
           style={contentParallax.style}
-          className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] bg-[#423c38]/50 pt-[64px] max-w-2xl rounded-sm">
+          className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] pt-[64px] max-w-2xl rounded-sm bg-inherit">
 
           <h2 className="mb-4 sm:mb-6 my-0 px-0 font-sans font-thin text-[#fbf2ee]" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
             ¿Tenés un rodaje en mente?
