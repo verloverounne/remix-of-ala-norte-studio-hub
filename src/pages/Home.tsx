@@ -121,7 +121,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
                   ${equipment.price_per_day}/día
                 </span>
               </div>
-              <Button variant="hero" size="lg" className="group-hover:shadow-brutal-lg transition-shadow my-[78px] bg-baground">
+              <Button variant="hero" size="lg" className="group-hover:shadow-brutal-lg transition-shadow my-[78px] bg-baground bg-ring">
                 VER DETALLES <ArrowRight className="ml-2" />
               </Button>
             </div>
