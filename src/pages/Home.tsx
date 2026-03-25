@@ -41,7 +41,7 @@ const FeaturedEquipmentSection = ({
           className="container mx-auto mb-8 sm:mb-12 border-background bg-foreground ">
 
           <div>
-            <h2 className="font-sans font-thin mb-2 sm:mb-4 text-center text-primary my-[3px] py-[32px] bg-muted-foreground" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
+            <h2 className="font-sans mb-2 text-center py-[32px] bg-muted-foreground font-semibold text-muted my-[60px] sm:mb-[60px] mt-[20px]" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
               EQUIPOS DESTACADOS
             </h2>
             {/*          <p className="text-sm sm:text-base lg:text-sm text-muted-foreground font-heading leading-tight">
@@ -155,7 +155,7 @@ const CTASection = () => {
         <div
           ref={contentParallax.ref as any}
           style={contentParallax.style}
-          className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] bg-[#423c38]/50 pt-[64px] max-w-2xl rounded-sm">
+          className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] pt-[64px] max-w-2xl rounded-sm bg-inherit">
 
           <h2 className="mb-4 sm:mb-6 my-0 px-0 font-sans font-thin text-[#fbf2ee]" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
             ¿Tenés un rodaje en mente?

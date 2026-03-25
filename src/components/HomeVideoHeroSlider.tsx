@@ -98,7 +98,7 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
       {/* Desktop: 2 columnas - contenedor 100vh */}
       <div className="hidden md:grid md:grid-cols-2 h-screen bg-foreground">
         {/* Columna izquierda: Texto posicionado al 90% del alto de pantalla */}
-        <div className="sticky flex flex-col justify-end h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[16vh] px-0 text-left text-4xl gap-[24px]">
+        <div className="sticky flex flex-col justify-end h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 pb-[16vh] px-0 text-left text-4xl gap-[24px] bg-popover-foreground">
           <h1
             className="text-background mb-4 leading-tight border-0 font-sans font-thin"
             style={{
