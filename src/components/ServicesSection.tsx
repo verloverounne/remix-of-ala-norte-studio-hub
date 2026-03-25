@@ -33,7 +33,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaParallax = useParallax({
     speed: 0.6,
-    direction: "up"
+    direction: "up",
   });
 
   // Hook para scroll-driven parallax en mobile
@@ -69,37 +69,39 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
       <div className="hidden lg:grid lg:grid-cols-2 h-full">
         {/* Columna izquierda: Media con parallax y duotono */}
         <div ref={mediaParallax.ref as any} className="h-full  relative duotone-hover-group bg-muted">
-          {hasMedia ?
-          isVideo ?
-          <video
-            ref={videoRef}
-            src={mediaUrl!}
-            className="video-duotone absolute inset-0 w-full h-full object-cover border-0 bg-[#2e2c29]"
-            style={{
-              ...mediaParallax.style
-            }}
-            autoPlay
-            loop
-            muted
-            playsInline /> :
-
-
-          <img
-            src={mediaUrl!}
-            alt={service.title}
-            className="image-duotone absolute inset-0 w-full h-full object-cover"
-            style={{
-              ...mediaParallax.style
-            }} /> :
-
-
-
-          <div className="w-full h-full bg-muted flex">
+          {hasMedia ? (
+            isVideo ? (
+              <video
+                ref={videoRef}
+                src={
+                  "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//GALERIA FAKENEWS_3.mp4"
+                }
+                className="video-duotone absolute inset-0 w-full h-full object-cover border-0 bg-[#2e2c29]"
+                style={{
+                  ...mediaParallax.style,
+                }}
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <img
+                src={mediaUrl!}
+                alt={service.title}
+                className="image-duotone absolute inset-0 w-full h-full object-cover"
+                style={{
+                  ...mediaParallax.style,
+                }}
+              />
+            )
+          ) : (
+            <div className="w-full h-full bg-muted flex">
               <span className="font-heading text-6xl text-muted-foreground/30">
                 {String(index + 1).padStart(2, "0")}
               </span>
             </div>
-          }
+          )}
         </div>
 
         {/* Columna derecha: Texto con fondo - sin parallax para mantener visibilidad */}
@@ -111,34 +113,34 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
               </span>
               <h3
                 className="uppercase text-foreground font-sans font-thin"
-                style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
-
+                style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+              >
                 {service.title}
               </h3>
             </div>
 
-            {service.description &&
-            <p className="text-sm sm:text-base leading-tight text-foreground">{service.description}</p>
-            }
+            {service.description && (
+              <p className="text-sm sm:text-base leading-tight text-foreground">{service.description}</p>
+            )}
 
-            {service.bullets && service.bullets.length > 0 &&
-            <ul className="space-y-2">
-                {service.bullets.map((bullet, i) =>
-              <li key={i} className="flex items-start gap-3">
+            {service.bullets && service.bullets.length > 0 && (
+              <ul className="space-y-2">
+                {service.bullets.map((bullet, i) => (
+                  <li key={i} className="flex items-start gap-3">
                     <Check className="h-5 w-5 mt-0.5 text-primary flex-shrink-0" />
                     <span className="text-sm sm:text-base text-foreground">{bullet}</span>
                   </li>
-              )}
+                ))}
               </ul>
-            }
+            )}
 
-            {(service.cta_label || service.button_text) && (service.cta_url || service.button_link) &&
-            <div className="pt-16 pb-64 w-full mx-px items-">
+            {(service.cta_label || service.button_text) && (service.cta_url || service.button_link) && (
+              <div className="pt-16 pb-64 w-full mx-px items-">
                 <Button asChild size="lg" className="font-heading uppercase">
                   <Link to={service.cta_url || service.button_link!}>{service.cta_label || service.button_text}</Link>
                 </Button>
               </div>
-            }
+            )}
           </div>
         </div>
       </div>
@@ -146,25 +148,25 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
       <div ref={containerRef} className="lg:hidden h-[130vh] relative">
         {/* Media de fondo - sticky para mantenerse visible (z-0) */}
         <div className="sticky top-0 h-screen z-0 duotone-hover-group overflow-hidden" onClick={handleMobileTap}>
-          {hasMedia ?
-          isVideo ?
-          <video
-            ref={videoRef}
-            src={mediaUrl!}
-            className="w-full h-full video-duotone object-cover"
-            autoPlay
-            loop
-            muted
-            playsInline /> :
-
-
-          <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" /> :
-
-
-          <div className="w-full h-full bg-muted flex items-center justify-center">
+          {hasMedia ? (
+            isVideo ? (
+              <video
+                ref={videoRef}
+                src={mediaUrl!}
+                className="w-full h-full video-duotone object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" />
+            )
+          ) : (
+            <div className="w-full h-full bg-muted flex items-center justify-center">
               <span className="font-heading text-6xl text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
             </div>
-          }
+          )}
 
           {/* Overlay oscuro */}
           <div className="absolute inset-0 pointer-events-none" />
@@ -175,9 +177,9 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
           className="z-10 pointer-events-none"
           style={{
             marginTop: "-100vh",
-            ...contentStyle
-          }}>
-
+            ...contentStyle,
+          }}
+        >
           <div className="h-screen pb-8 px-4 flex items-center justify-center">
             <div className="backdrop-blur-2x1 bg-[#423c38]/70 p-6 w-1/120.8text-foreground max-h-[80vh] overflow-y-auto mx-4 mb-16 lg-32 xl-64 pointer-events-auto mb-0">
               <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
@@ -185,42 +187,42 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
               </span>
               <h3
                 className="uppercase leading-tight mb-3 text-[#fbf2ee] font-sans font-thin"
-                style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)" }}>
-
+                style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)" }}
+              >
                 {service.title}
               </h3>
-              {service.description &&
-              <p className="mb-4 leading-relaxed font-sm text-xs mb-sm lg-medium text-[#fbf2ee]">
+              {service.description && (
+                <p className="mb-4 leading-relaxed font-sm text-xs mb-sm lg-medium text-[#fbf2ee]">
                   {service.description}
                 </p>
-              }
+              )}
 
               {/* Bullets list - fully visible */}
-              {service.bullets && service.bullets.length > 0 &&
-              <ul className="space-y-2 mb-4">
-                  {service.bullets.map((bullet, i) =>
-                <li key={i} className="flex items-start gap-2">
+              {service.bullets && service.bullets.length > 0 && (
+                <ul className="space-y-2 mb-4">
+                  {service.bullets.map((bullet, i) => (
+                    <li key={i} className="flex items-start gap-2">
                       <Check className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
                       <span className="font-sm text-xs mb-sm lg-medium text-[#fbf2ee]">{bullet}</span>
                     </li>
-                )}
+                  ))}
                 </ul>
-              }
+              )}
 
-              {(service.button_text || service.cta_label) && (service.button_link || service.cta_url) &&
-              <Button asChild variant="default" size="sm">
+              {(service.button_text || service.cta_label) && (service.button_link || service.cta_url) && (
+                <Button asChild variant="default" size="sm">
                   <Link to={service.button_link || service.cta_url!}>
                     {service.button_text || service.cta_label}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-              }
+              )}
             </div>
           </div>
         </div>
       </div>
-    </div>);
-
+    </div>
+  );
 };
 export const ServicesSection = () => {
   const services: HomeService[] = STATIC_HOME_SERVICES;
@@ -231,7 +233,7 @@ export const ServicesSection = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     align: "start",
-    skipSnaps: false
+    skipSnaps: false,
   });
   const scrollTo = useCallback(
     (index: number) => {
@@ -239,7 +241,7 @@ export const ServicesSection = () => {
         emblaApi.scrollTo(index);
       }
     },
-    [emblaApi]
+    [emblaApi],
   );
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -275,8 +277,8 @@ export const ServicesSection = () => {
       <div className="pb-[24px] px-8 lg:px-16 text-foreground sm:py-[24px] py-0 pt-[32px] border-0 bg-background">
         <h2
           className="font-sans text-center font-thin text-primary my-[12px] text-3xl"
-          style={{ fontSize: "clamp(1rem, 3vw, 2rem)" }}>
-
+          style={{ fontSize: "clamp(1rem, 3vw, 2rem)" }}
+        >
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
         </h2>
 
@@ -288,40 +290,41 @@ export const ServicesSection = () => {
               value={String(activeIndex)}
               onValueChange={(value) => handleTabClick(Number(value))}
               open={dropdownOpen}
-              onOpenChange={setDropdownOpen}>
-
+              onOpenChange={setDropdownOpen}
+            >
               <SelectTrigger className="w-full bg-[#201e1d]  font-heading text-sm uppercase">
                 <SelectValue>{services[activeIndex]?.title || "Seleccionar servicio"}</SelectValue>
               </SelectTrigger>
               <SelectContent className="bg-[#201e1d] z-50">
-                {services.map((service, index) =>
-                <SelectItem
-                  key={service.id}
-                  value={String(index)}
-                  className="font-heading text-sm uppercase cursor-pointer">
-
+                {services.map((service, index) => (
+                  <SelectItem
+                    key={service.id}
+                    value={String(index)}
+                    className="font-heading text-sm uppercase cursor-pointer"
+                  >
                     {service.title}
                   </SelectItem>
-                )}
+                ))}
               </SelectContent>
             </Select>
           </div>
           {/* Desktop: horizontal row - link style */}
           <div className={cn("hidden sm:flex items-center justify-center gap-6", dropdownOpen && "hidden")}>
-            {services.map((service, index) =>
-            <button
-              key={service.id}
-              onClick={() => handleTabClick(index)}
-              className={cn("font-heading text-xs uppercase tracking-wider transition-all py-2 border-b-2 bg-transparent",
+            {services.map((service, index) => (
+              <button
+                key={service.id}
+                onClick={() => handleTabClick(index)}
+                className={cn(
+                  "font-heading text-xs uppercase tracking-wider transition-all py-2 border-b-2 bg-transparent",
 
-              activeIndex === index ?
-              "text-primary border-primary" :
-              "text-muted-foreground border-transparent hover:text-foreground hover:border-foreground/30"
-              )}>
-
+                  activeIndex === index
+                    ? "text-primary border-primary"
+                    : "text-muted-foreground border-transparent hover:text-foreground hover:border-foreground/30",
+                )}
+              >
                 {service.title}
               </button>
-            )}
+            ))}
           </div>
         </div>
       </div>
@@ -329,9 +332,9 @@ export const ServicesSection = () => {
       <div className="relative">
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex">
-            {services.map((service, index) =>
-            <ServiceSlide key={service.id} service={service} index={index} />
-            )}
+            {services.map((service, index) => (
+              <ServiceSlide key={service.id} service={service} index={index} />
+            ))}
           </div>
         </div>
 
@@ -340,27 +343,27 @@ export const ServicesSection = () => {
           onClick={scrollPrev}
           className={cn(
             "absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all py-[4px] px-[4px] text-foreground bg-primary border-foreground my-px mx-[16px]",
-            activeIndex === 0 && "opacity-50 cursor-not-allowed"
+            activeIndex === 0 && "opacity-50 cursor-not-allowed",
           )}
           disabled={activeIndex === 0}
-          aria-label="Anterior">
-
+          aria-label="Anterior"
+        >
           <ChevronLeft className="h-[24px] w-[24px]" />
         </button>
         <button
           onClick={scrollNext}
           className={cn(
             "absolute right-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all px-[4px] py-[4px] text-background bg-primary border-foreground mx-[16px]",
-            activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed"
+            activeIndex === services.length - 1 && "opacity-50 cursor-not-allowed",
           )}
           disabled={activeIndex === services.length - 1}
-          aria-label="Siguiente">
-
+          aria-label="Siguiente"
+        >
           <ChevronRight className="text-foreground mx-px h-[24px] w-[24px]" />
         </button>
         {/* Dots indicator */}
       </div>
-    </section>);
-
+    </section>
+  );
 };
 export default ServicesSection;
