@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
+import Map from "@/components/Map.tsx";
 import { useGalleryImages } from "@/hooks/useGalleryImages";
 
 const Contacto = () => {
@@ -17,7 +17,7 @@ const Contacto = () => {
     name: "",
     email: "",
     phone: "",
-    message: ""
+    message: "",
   });
 
   // Get contact video from cached gallery images
@@ -30,28 +30,28 @@ const Contacto = () => {
       toast({
         title: "Ups",
         description: "Algo no funcionó. Verificá los datos e intentá de nuevo.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
 
     toast({
       title: "¡Listo!",
-      description: "Tu consulta fue enviada. Te vamos a responder lo antes posible."
+      description: "Tu consulta fue enviada. Te vamos a responder lo antes posible.",
     });
 
     setFormData({
       name: "",
       email: "",
       phone: "",
-      message: ""
+      message: "",
     });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -60,9 +60,15 @@ const Contacto = () => {
       {/* Hero Section */}
       <section className="bg-foreground text-background py-[80px]">
         <div className="container mx-auto px-4 max-w-6xl text-left">
-          <h1 className="font-sans font-thin my-[64px] mb-[2px] mx-[64px]" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>HABLEMOS</h1>
+          <h1
+            className="font-sans font-thin my-[64px] mb-[2px] mx-[64px]"
+            style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+          >
+            HABLEMOS
+          </h1>
           <p className="max-w-3xl text-left font-medium text-base md:text-lg mx-[64px] bg-transparent">
-            Contanos tu idea, tus fechas y qué necesitás. Armamos juntos una propuesta de equipamiento y espacios a medida. Nuestro equipo te responde con asesoramiento técnico dedicado.
+            Contanos tu idea, tus fechas y qué necesitás. Armamos juntos una propuesta de equipamiento y espacios a
+            medida. Nuestro equipo te responde con asesoramiento técnico dedicado.
           </p>
         </div>
       </section>
@@ -75,7 +81,9 @@ const Contacto = () => {
             <Card>
               <CardHeader className="bg-card-foreground text-card">
                 <CardTitle className="text-2xl px-0 py-[16px]">ENVIANOS UN MENSAJE</CardTitle>
-                <CardDescription className="text-background">Completá el formulario y te respondemos a la brevedad</CardDescription>
+                <CardDescription className="text-background">
+                  Completá el formulario y te respondemos a la brevedad
+                </CardDescription>
               </CardHeader>
               <CardContent className="bg-current">
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -83,26 +91,56 @@ const Contacto = () => {
                     <Label htmlFor="name">
                       Tu nombre <span className="text-destructive">*</span>
                     </Label>
-                    <Input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Tu nombre" required />
+                    <Input
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Tu nombre"
+                      required
+                    />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="email">
                       Tu mail de contacto <span className="text-destructive">*</span>
                     </Label>
-                    <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="tu@email.com" required />
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="tu@email.com"
+                      required
+                    />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="phone">Teléfono</Label>
-                    <Input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="+54 11 1234-5678" />
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+54 11 1234-5678"
+                    />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="message">
                       ¿Qué equipo tenés en mente o qué necesitás? <span className="text-destructive">*</span>
                     </Label>
-                    <Textarea id="message" name="message" value={formData.message} onChange={handleChange} placeholder="Contanos brevemente de qué se trata tu proyecto..." rows={6} required />
+                    <Textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="Contanos brevemente de qué se trata tu proyecto..."
+                      rows={6}
+                      required
+                    />
                   </div>
 
                   <Button type="submit" variant="hero" size="lg" className="w-full">
@@ -110,20 +148,10 @@ const Contacto = () => {
                   </Button>
                 </form>
               </CardContent>
-              {/* Google Map */}
+              {/* Map */}
               <Card className="flex gap-4 overflow-hidden">
-                <div className="h-150">
-                  <iframe
-                    title="Ubicación Ala Norte"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3285.5!2d-58.4738!3d-34.5445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb1234567890%3A0x0!2sV.+S.+de+Liniers+1565%2C+Vicente+L%C3%B3pez!5e0!3m2!1ses!2sar!4v1700000000000"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="w-full h-full"
-                  />
+                <div className="">
+                  <Map />
                 </div>
               </Card>
             </Card>
@@ -131,11 +159,11 @@ const Contacto = () => {
             {/* Contact Info */}
             <div className="space-y-6">
               {/* Vertical Video */}
-              {contactVideo &&
-              <div className="aspect-[9/16] w-full rounded-lg overflow-hidden bg-muted">
+              {contactVideo && (
+                <div className="aspect-[9/16] w-full rounded-lg overflow-hidden bg-muted">
                   <video src={contactVideo} autoPlay loop muted playsInline className="w-full h-full object-cover" />
                 </div>
-              }
+              )}
 
               <Card>
                 <CardHeader>
@@ -189,13 +217,31 @@ const Contacto = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="flex gap-4">
-                    <a href="https://www.facebook.com/alanortecinedigital" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-primary-dark hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale rounded-sm" aria-label="Facebook">
+                    <a
+                      href="https://www.facebook.com/alanortecinedigital"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-12 h-12 bg-primary-dark hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale rounded-sm"
+                      aria-label="Facebook"
+                    >
                       <Facebook className="h-5 w-5 text-background" />
                     </a>
-                    <a href="https://www.instagram.com/alanortecinedigital/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-primary-dark hover:bg-primary flex items-center justify-center transition-all hover-scale text-background rounded-sm" aria-label="Instagram">
+                    <a
+                      href="https://www.instagram.com/alanortecinedigital/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-12 h-12 bg-primary-dark hover:bg-primary flex items-center justify-center transition-all hover-scale text-background rounded-sm"
+                      aria-label="Instagram"
+                    >
                       <Instagram className="h-5 w-5" />
                     </a>
-                    <a href="https://twitter.com/alanorte" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-primary-dark hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale rounded-sm" aria-label="Twitter X">
+                    <a
+                      href="https://twitter.com/alanorte"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-12 h-12 bg-primary-dark hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale rounded-sm"
+                      aria-label="Twitter X"
+                    >
                       <Twitter className="h-5 w-5 text-background" />
                     </a>
                   </div>
@@ -205,8 +251,8 @@ const Contacto = () => {
           </div>
         </div>
       </section>
-    </div>);
-
+    </div>
+  );
 };
 
 export default Contacto;
