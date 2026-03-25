@@ -110,7 +110,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
             className="absolute inset-0 flex items-center justify-center image-duotone ">
 
             <div className="text-center z-10 p-8 max-w-4xl">
-              <h3 className="mb-6 uppercase text-center text-secondary font-sans font-thin" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
+              <h3 className="mb-6 uppercase text-center text-secondary font-sans font-medium" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
                 {equipment.name}
               </h3>
               {equipment.featured_copy &&
