@@ -320,7 +320,7 @@ export const HomeVideoHeroSlider = () => {
             handleUserInteraction();
             setMuted(!muted);
           }}
-          className="absolute top-4 right-4 z-20 p-3 backdrop-blur-sm transition-colors my-[60px] bg-transparent border-0 rounded-none shadow-none"
+          className="absolute top-4 right-4 z-20 p-3 backdrop-blur-sm transition-colors my-[60px] bg-transparent border-0 rounded-none shadow-none text-transparent"
           aria-label={muted ? "Activar sonido" : "Silenciar"}
         >
           {muted ? <VolumeX className="h-5 w-5 text-background" /> : <Volume2 className="h-5 w-5 text-background" />}
@@ -329,9 +329,9 @@ export const HomeVideoHeroSlider = () => {
 
       {/* Logo centrado en la parte superior - click to rental */}
       <div
-        className={`absolute left-0 right-0 z-20 flex justify-center transition-all duration-300 ${isHeaderVisible ? "top-20" : "top-4"}`}
+        className={`absolute left-0 right-0 z-20 flex justify-center transition-all duration-300 ${isHeaderVisible ? "top-20" : "top-4"} my-0 mx-[60px]`}
       >
-        <Link to="/equipos" className="group relative flex flex-col items-center cursor-pointer">
+        <Link to="/equipos" className="group relative flex flex-col items-center cursor-pointer mx-[60px]">
           <img
             alt="Ala Norte Logo"
             className="object-contain w-50 md:w-1/4 lg:w-1/5 transition-transform duration-500 group-hover:scale-[1.03]"
