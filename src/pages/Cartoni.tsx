@@ -234,7 +234,7 @@ const Cartoni = () => {
       {/* Contact Section */}
       <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center">
+          <div className="max-w-2xl mx-auto">
             <h2 className="font-heading text-3xl md:text-5xl mb-8">CONTACTANOS</h2>
             <p className="text-sm text-muted-foreground mb-8 leading-tight">
               Para consultas sobre productos Cartoni, cotizaciones o servicio técnico
