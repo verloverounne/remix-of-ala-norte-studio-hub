@@ -58,10 +58,10 @@ const Contacto = () => {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
-      <section className="bg-foreground text-background py-[80px]">
-        <div className="container mx-auto px-4 max-w-6xl text-left">
-          <h1 className="font-sans font-thin my-[64px] mb-[2px] mx-[64px]" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>HABLEMOS</h1>
-          <p className="max-w-3xl text-left font-medium text-base md:text-lg mx-[64px] bg-transparent">
+      <section className="bg-foreground text-background py-0">
+        <div className="container mx-auto max-w-6xl text-left px-0">
+          <h1 className="font-sans font-thin my-[64px] mb-[2px] mx-0" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>Contactanos</h1>
+          <p className="max-w-3xl text-left font-medium text-base md:text-lg bg-transparent mx-0 px-[16px] py-[32px]">
             Contanos tu idea, tus fechas y qué necesitás. Armamos juntos una propuesta de equipamiento y espacios a medida. Nuestro equipo te responde con asesoramiento técnico dedicado.
           </p>
         </div>
