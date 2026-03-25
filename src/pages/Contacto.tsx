@@ -72,7 +72,7 @@ const Contacto = () => {
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Form */}
-            <Card>
+            <Card className="flex flex-col h-full">
               <CardHeader className="bg-card-foreground text-card">
                 <CardTitle className="text-2xl px-0 py-[16px]">ENVIANOS UN MENSAJE</CardTitle>
                 <CardDescription className="text-background">Completá el formulario y te respondemos a la brevedad</CardDescription>
@@ -111,8 +111,8 @@ const Contacto = () => {
                 </form>
               </CardContent>
               {/* Google Map */}
-              <Card className="flex gap-4 overflow-hidden">
-                <div className="h-150">
+              <Card className="flex-1 overflow-hidden">
+                <div className="h-full min-h-[400px]">
                   <iframe
                     title="Ubicación Ala Norte"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3285.5!2d-58.4738!3d-34.5445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb1234567890%3A0x0!2sV.+S.+de+Liniers+1565%2C+Vicente+L%C3%B3pez!5e0!3m2!1ses!2sar!4v1700000000000"
