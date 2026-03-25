@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import Map from "@/components/Map.tsx";
+
 import { useGalleryImages } from "@/hooks/useGalleryImages";
 
 const Contacto = () => {
@@ -110,10 +110,20 @@ const Contacto = () => {
                   </Button>
                 </form>
               </CardContent>
-              {/* Map */}
+              {/* Google Map */}
               <Card className="flex gap-4 overflow-hidden">
                 <div className="h-150">
-                  <Map />
+                  <iframe
+                    title="Ubicación Ala Norte"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3285.5!2d-58.4738!3d-34.5445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb1234567890%3A0x0!2sV.+S.+de+Liniers+1565%2C+Vicente+L%C3%B3pez!5e0!3m2!1ses!2sar!4v1700000000000"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="w-full h-full"
+                  />
                 </div>
               </Card>
             </Card>
