@@ -174,9 +174,12 @@ Contactar cliente para coordinar entrega/retiro.
   return (
     <div className="min-h-screen pt-14 sm:pt-16 bg-background">
       {/* Hero Section */}
-      <section className="gradient-primary text-primary-foreground py-12 sm:py-16 lg:py-20 border-b border-border px-4 sm:px-8 bg-foreground">
+      <section className="text-primary-foreground py-12 sm:py-16 lg:py-20 border-b border-border px-4 sm:px-8 bg-foreground">
         <div className="container mx-auto text-left px-0">
-          <h1 className="font-sans font-thin mb-4 sm:mb-6 px-0 my-0 mt-0 mx-0" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
+          <h1
+            className="font-sans font-thin mb-4 sm:mb-6 px-0 my-0 mt-0 mx-0"
+            style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+          >
             ARMÁ TU PRESUPUESTO
           </h1>
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl">
