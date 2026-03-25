@@ -7,7 +7,7 @@ import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
 import { SearchBar } from "@/components/SearchBar";
-import logo from "@/assets/logo-brutal.png";
+const logo = "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/Logo_Horizontal_blanco.png";
 const WHATSAPP_NUMBER = "5491126824709";
 
 const navigation = [
