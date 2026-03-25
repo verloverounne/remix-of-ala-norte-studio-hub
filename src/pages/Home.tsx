@@ -41,7 +41,7 @@ const FeaturedEquipmentSection = ({
           className="container mx-auto mb-8 sm:mb-12 border-background bg-foreground ">
 
           <div>
-            <h2 className="font-sans font-thin mb-2 sm:mb-4 text-center text-primary my-[3px] py-[32px] bg-muted-foreground" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
+            <h2 className="font-sans mb-2 text-center py-[32px] bg-muted-foreground font-semibold text-muted my-[60px] sm:mb-[60px] mt-[20px]" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
               EQUIPOS DESTACADOS
             </h2>
             {/*          <p className="text-sm sm:text-base lg:text-sm text-muted-foreground font-heading leading-tight">
