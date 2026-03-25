@@ -3,16 +3,12 @@ import { ExternalLink, Wrench, ShoppingBag, Award, Phone, Mail, MapPin, ArrowRig
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselApi,
-} from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselApi } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { useGalleryImages } from "@/hooks/useGalleryImages";
 
-const CARTONI_LOGO = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Cartoni_logo.svg/1200px-Cartoni_logo.svg.png";
+const CARTONI_LOGO =
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Cartoni_logo.svg/1200px-Cartoni_logo.svg.png";
 
 interface CartoniSlide {
   id: string;
@@ -29,7 +25,7 @@ const Cartoni = () => {
 
   const galleryImages = getByPageType("cartoni");
   const cartoniHomeImages = getByPageType("cartoni_home");
-  
+
   // Use cartoni-specific slides, falling back to cartoni_home video from Home page
   const cartoniSlides: CartoniSlide[] = galleryImages.map((img) => ({
     id: img.id,
@@ -38,7 +34,7 @@ const Cartoni = () => {
     image_url: img.vertical_video_url || img.image_url,
     media_type: img.media_type,
   }));
-  
+
   // If no cartoni slides, use the cartoni_home video from the home page
   const homeVideoSlides: CartoniSlide[] = cartoniHomeImages.map((img) => ({
     id: img.id,
@@ -47,7 +43,7 @@ const Cartoni = () => {
     image_url: img.vertical_video_url || img.image_url,
     media_type: img.media_type,
   }));
-  
+
   const slides = cartoniSlides.length > 0 ? cartoniSlides : homeVideoSlides;
 
   useEffect(() => {
@@ -78,7 +74,7 @@ const Cartoni = () => {
                 <CarouselItem key={slide.id} className="pl-0 basis-full">
                   <div className="relative h-[60vh] sm:h-[70vh] w-full overflow-hidden duotone-hover-group">
                     {/* Full-width background media */}
-                    {slide.media_type === 'video' ? (
+                    {slide.media_type === "video" ? (
                       <video
                         src={slide.image_url}
                         className="absolute inset-0 w-full h-full object-cover video-duotone"
@@ -94,43 +90,13 @@ const Cartoni = () => {
                         className="absolute inset-0 w-full h-full object-cover image-duotone"
                       />
                     )}
-                    
+
                     {/* Dark overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/30 to-transparent" />
-                    
+
                     {/* Content with blur background */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="relative z-10 text-center px-4 sm:px-8 max-w-4xl mx-auto">
-                        <div className="inline-block backdrop-blur-md bg-foreground/80 px-6 sm:px-12 py-6 sm:py-10 border border-background/20">
-                          <img
-                            src={CARTONI_LOGO}
-                            alt="Cartoni Logo"
-                            className="h-12 sm:h-16 md:h-20 mx-auto mb-4 sm:mb-6 bg-background/90 p-3 rounded"
-                          />
-                          <h1 className="font-sans font-thin mb-3 sm:mb-4 uppercase text-background" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
-                            SELLER & SERVICE
-                            <br />
-                            <span className="text-primary">OFICIAL CARTONI</span>
-                          </h1>
-                          <p className="text-sm sm:text-base md:text-lg text-background/90 font-heading mb-4 sm:mb-6 max-w-2xl mx-auto">
-                            ALA NORTE ES REPRESENTANTE OFICIAL DE CARTONI EN ARGENTINA
-                          </p>
-                          <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
-                            <Button asChild variant="hero" size="lg">
-                              <a
-                                href="https://www.cartoni.com/dealers/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                VER EN CARTONI.COM <ExternalLink className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-                              </a>
-                            </Button>
-                            <Button asChild variant="secondary" size="lg">
-                              <Link to="/contacto">CONTACTAR <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" /></Link>
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
+                      <div className="relative z-10 text-center px-4 sm:px-8 max-w-4xl mx-auto"></div>
                     </div>
                   </div>
                 </CarouselItem>
@@ -147,9 +113,7 @@ const Cartoni = () => {
                   onClick={() => api?.scrollTo(index)}
                   className={cn(
                     "h-2 rounded-full transition-all",
-                    index === currentSlide 
-                      ? "w-12 bg-primary" 
-                      : "w-2 bg-background/40 hover:bg-background/60"
+                    index === currentSlide ? "w-12 bg-primary" : "w-2 bg-background/40 hover:bg-background/60",
                   )}
                   aria-label={`Ir a slide ${index + 1}`}
                 />
@@ -179,11 +143,7 @@ const Cartoni = () => {
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button asChild variant="hero" size="lg">
-                  <a
-                    href="https://www.cartoni.com/dealers/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href="https://www.cartoni.com/dealers/" target="_blank" rel="noopener noreferrer">
                     VER EN CARTONI.COM <ExternalLink className="ml-2 h-5 w-5" />
                   </a>
                 </Button>
@@ -213,8 +173,8 @@ const Cartoni = () => {
               </div>
               <h3 className="font-heading text-2xl mb-4">VENTA</h3>
               <p className="text-muted-foreground">
-                Venta oficial de toda la línea de productos Cartoni: trípodes, cabezales fluidos,
-                dollies, pedestales y accesorios profesionales para cine y broadcast.
+                Venta oficial de toda la línea de productos Cartoni: trípodes, cabezales fluidos, dollies, pedestales y
+                accesorios profesionales para cine y broadcast.
               </p>
             </div>
 
@@ -224,8 +184,8 @@ const Cartoni = () => {
               </div>
               <h3 className="font-heading text-2xl mb-4">SERVICE TÉCNICO</h3>
               <p className="text-muted-foreground">
-                Servicio técnico autorizado con técnicos certificados. Reparación, mantenimiento
-                preventivo y calibración de equipos Cartoni con repuestos originales.
+                Servicio técnico autorizado con técnicos certificados. Reparación, mantenimiento preventivo y
+                calibración de equipos Cartoni con repuestos originales.
               </p>
             </div>
 
@@ -235,8 +195,8 @@ const Cartoni = () => {
               </div>
               <h3 className="font-heading text-2xl mb-4">GARANTÍA OFICIAL</h3>
               <p className="text-muted-foreground">
-                Todos los productos vendidos cuentan con garantía oficial Cartoni.
-                Soporte técnico directo y acceso a actualizaciones y mejoras.
+                Todos los productos vendidos cuentan con garantía oficial Cartoni. Soporte técnico directo y acceso a
+                actualizaciones y mejoras.
               </p>
             </div>
           </div>
@@ -249,26 +209,22 @@ const Cartoni = () => {
           <div className="max-w-4xl mx-auto">
             <div className="mb-12">
               <h2 className="font-heading text-3xl md:text-5xl mb-4">SOBRE CARTONI</h2>
-              <p className="text-sm text-muted-foreground font-heading leading-tight">
-                EXCELENCIA ITALIANA DESDE 1935
-              </p>
+              <p className="text-sm text-muted-foreground font-heading leading-tight">EXCELENCIA ITALIANA DESDE 1935</p>
             </div>
 
             <div className="prose prose-lg max-w-none text-foreground">
               <p className="text-sm mb-6 leading-tight">
-                <strong>Cartoni</strong> es una empresa italiana fundada en 1935, reconocida mundialmente
-                por fabricar los mejores soportes de cámara profesionales del mercado. Sus productos
-                son utilizados en las producciones cinematográficas y televisivas más importantes del mundo.
+                <strong>Cartoni</strong> es una empresa italiana fundada en 1935, reconocida mundialmente por fabricar
+                los mejores soportes de cámara profesionales del mercado. Sus productos son utilizados en las
+                producciones cinematográficas y televisivas más importantes del mundo.
               </p>
               <p className="text-sm mb-6 leading-tight">
-                Con casi 90 años de experiencia, Cartoni combina la tradición artesanal italiana con
-                la más avanzada tecnología para crear trípodes y cabezales que ofrecen precisión,
-                suavidad y durabilidad incomparables.
+                Con casi 90 años de experiencia, Cartoni combina la tradición artesanal italiana con la más avanzada
+                tecnología para crear trípodes y cabezales que ofrecen precisión, suavidad y durabilidad incomparables.
               </p>
               <p className="text-sm leading-tight">
-                Como <strong>Seller y Service Oficial</strong> en Argentina, Ala Norte garantiza el
-                acceso a productos originales, precios competitivos y servicio técnico especializado
-                para toda la línea Cartoni.
+                Como <strong>Seller y Service Oficial</strong> en Argentina, Ala Norte garantiza el acceso a productos
+                originales, precios competitivos y servicio técnico especializado para toda la línea Cartoni.
               </p>
             </div>
           </div>
