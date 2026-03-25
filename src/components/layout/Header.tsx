@@ -210,7 +210,7 @@ export const Header = () => {
             <div className="flex w-full h-12 items-center justify-between">
               {/* Logo Brutal */}
               <Link to="/" className="flex items-center h-full p pb-[4px]">
-                <img src={logo} alt="Ala Norte" className="h-full w-auto object-contain" />
+                <img src={https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/logoHblanco.png} alt="Ala Norte" className="h-full w-auto object-contain" />
               </Link>
 
               {/* Desktop Navigation Brutal */}
