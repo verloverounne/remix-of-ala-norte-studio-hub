@@ -357,7 +357,7 @@ export const ServicesSection = () => {
           disabled={activeIndex === services.length - 1}
           aria-label="Siguiente"
         >
-          <ChevronRight className="text-foreground mx-px h-[24px] w-[24px]" />
+          <ChevronRight className="text-foreground mx-px h-[24px] w-[24px] rounded-sm" />
         </button>
         {/* Dots indicator */}
       </div>
