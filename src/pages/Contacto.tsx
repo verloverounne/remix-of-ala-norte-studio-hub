@@ -72,7 +72,7 @@ const Contacto = () => {
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Form */}
-            <Card>
+            <Card className="flex flex-col h-full">
               <CardHeader className="bg-card-foreground text-card">
                 <CardTitle className="text-2xl px-0 py-[16px]">ENVIANOS UN MENSAJE</CardTitle>
                 <CardDescription className="text-background">Completá el formulario y te respondemos a la brevedad</CardDescription>
