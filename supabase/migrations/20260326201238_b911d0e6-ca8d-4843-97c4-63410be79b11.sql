@@ -1,0 +1,1 @@
+UPDATE gallery_images SET image_url = REPLACE(image_url, 'equipment-images//', 'equipment-images/'), vertical_video_url = REPLACE(vertical_video_url, 'equipment-images//', 'equipment-images/') WHERE image_url LIKE '%equipment-images//%' OR vertical_video_url LIKE '%equipment-images//%';
