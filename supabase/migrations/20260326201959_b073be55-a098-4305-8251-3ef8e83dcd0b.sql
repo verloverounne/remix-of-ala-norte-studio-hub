@@ -1,0 +1,1 @@
+UPDATE spaces SET video_url = 'https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/GALERIA FAKENEWS_3.mp4' WHERE slug = 'galeria';
