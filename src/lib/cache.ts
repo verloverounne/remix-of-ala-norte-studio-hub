@@ -68,7 +68,7 @@ export const CACHE_KEYS = {
   EQUIPMENT: 'equipment',
   HOME_HERO_SLIDES: 'home_hero_slides',
   HOME_SERVICES: 'home_services',
-  GALLERY_IMAGES: 'gallery_images_consolidated',
+  GALLERY_IMAGES: 'gallery_images_v2',
   SPACES: 'spaces',
 } as const;
 
