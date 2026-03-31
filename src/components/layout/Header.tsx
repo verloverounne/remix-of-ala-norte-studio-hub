@@ -214,7 +214,7 @@ export const Header = () => {
                 <img
                   src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/logoHblanco.png"
                   alt="Ala Norte"
-                  className="h-full w-auto object-contain"
+                  className="h-full w-auto object-contain shadow-lg opacity-100"
                 />
               </Link>
 
