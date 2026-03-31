@@ -7,7 +7,8 @@ import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 import { useHeaderVisibility } from "@/hooks/useHeaderVisibility";
 import { SearchBar } from "@/components/SearchBar";
-const logo = "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/Logo_Horizontal_blanco.png";
+const logo =
+  "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/Logo_Horizontal_blanco.png";
 const WHATSAPP_NUMBER = "5491126824709";
 
 const navigation = [
@@ -210,7 +211,11 @@ export const Header = () => {
             <div className="flex w-full h-12 items-center justify-between">
               {/* Logo Brutal */}
               <Link to="/" className="flex items-center h-full p pb-[4px]">
-                <img src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/logoHblanco.png" alt="Ala Norte" className="h-full w-auto object-contain" />
+                <img
+                  src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/logoHblanco.png"
+                  alt="Ala Norte"
+                  className="h-full w-auto object-contain"
+                />
               </Link>
 
               {/* Desktop Navigation Brutal */}
@@ -225,7 +230,7 @@ export const Header = () => {
                       rounded-sm
                       font-heading text-xs xl:text-xs tracking-tight font-medium
                       transition-colors
-                      ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-foregroun hover:text-background"}`}
+                      ${location.pathname === item.href ? "bg-primary text-primary-foreground" : "bg-background text-foreground hover:bg-foreground text-background"}`}
                   >
                     {item.name}
                   </Link>
