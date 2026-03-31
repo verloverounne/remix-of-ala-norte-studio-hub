@@ -121,7 +121,7 @@ export const Header = () => {
           ref={menuButtonRef}
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="fixed top-3 right-3 z-[60] h-10 w-10 bg-background/30 backdrop-blur-sm border border-background shadow-brutal-sm flex items-center justify-center touch-manipulation"
+          className="fixed top-3 right-3 z-[60] h-10 w-10 bg-background rounded-sm backdrop-blur-sm border border-background shadow-brutal-sm flex items-center justify-center touch-manipulation"
           aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
           style={{
             WebkitTapHighlightColor: "transparent",
@@ -207,7 +207,7 @@ export const Header = () => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <nav className="max-w-screen-xl mx-auto flex items-center justify-center px-10 py-3 backdrop-blur-sm">
+          <nav className="max-w-screen-xl mx-auto flex items-center justify-center px-10 py-3 backdrop-blur-sm bg-border/20 b">
             <div className="flex w-full h-12 items-center justify-between">
               {/* Logo Brutal */}
               <Link to="/" className="flex items-center h-full p pb-[4px]">
