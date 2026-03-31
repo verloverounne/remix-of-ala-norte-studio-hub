@@ -203,7 +203,7 @@ export const SearchBar = () => {
             setIsOpen(true);
             setTimeout(() => inputRef.current?.focus(), 100);
           }}
-          className="h-4 w-4 rounded-sm bg-primary"
+          className="h-8 w-8 rounded-0 bg-inherit rounded-sm"
           aria-label="Abrir búsqueda"
         >
           <Search className="h-4 w-4 xl:h-5 xl:w-5" />
