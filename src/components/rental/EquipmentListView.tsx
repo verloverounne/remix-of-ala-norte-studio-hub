@@ -34,7 +34,7 @@ export const EquipmentListView = ({
         return (
           <div
             key={item.id}
-            className="flex items-center max-w-screen transition-colors bg-background px] border-gray-light flex-wrap px-[8px] gap-0 py-0">
+            className={cn("flex items-center max-w-screen transition-colors bg-background px] border-gray-light flex-wrap px-[8px] gap-0 py-0", item.status !== "available" && "opacity-60")}>
             
             {/* Name - clickable */}
             <div className="flex-1 min-w-40 cursor-pointer" onClick={() => onViewDetails(item)}>
