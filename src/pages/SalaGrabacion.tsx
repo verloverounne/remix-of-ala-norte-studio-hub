@@ -130,7 +130,6 @@ const SalaGrabacion = () => {
         <div className="w-full">
           <Viewer360
             imageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//36-1%203.JPG"
-            secondImageSrc="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//363.jpg"
             height="700px"
             mobileHeight="60vh"
           />
