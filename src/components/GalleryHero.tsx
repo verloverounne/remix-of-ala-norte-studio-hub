@@ -86,7 +86,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
           <img
             alt="Ala Norte Logo"
             className="object-contain w-28 md:w-1/4 lg:w-1/5 transition-transform duration-300 group-hover:animate-[compass-vibrate_0.15s_ease-in-out_infinite]"
-            src="/lovable-uploads/4047b325-5c9b-4504-8b83-9ecfd8f23d40.png"
+            src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/logoVnegro@4x.png"
           />
           <span className="absolute -bottom-8 text-xs font-heading uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary text-primary-foreground px-4 py-1.5 rounded-sm">
             Ir al Rental
