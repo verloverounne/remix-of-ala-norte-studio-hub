@@ -1,7 +1,9 @@
-import { Calendar } from "lucide-react";
+import { useState, useRef, useCallback, useEffect } from "react";
+import { Calendar, Maximize2, Minimize2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import Viewer360Gallery from "@/components/Viewer360Gallery";
 import { GalleryHero } from "@/components/GalleryHero";
 import { ProductionsSlider } from "@/components/ProductionsSlider";
