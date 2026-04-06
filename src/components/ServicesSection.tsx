@@ -179,7 +179,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
           }}
         >
           <div className="h-screen pb-8 px-4 flex items-center justify-center">
-            <div className="backdrop-blur-2x1 bg-[#423c38]/70 p-6 w-1/120.8text-foreground max-h-[80vh] overflow-y-auto mx-4 mb-16 lg-32 xl-64 pointer-events-auto mb-0">
+            <div className="backdrop-blur-2x1 bg-[#423c38]/70 p-6 w-1/120.8text-foreground max-h-[80vh] overflow-y-auto mx-4 mb-16 lg-32 xl-64 pointer-events-auto mb-0 text-center">
               <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
@@ -208,7 +208,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
               )}
 
               {(service.button_text || service.cta_label) && (service.button_link || service.cta_url) && (
-                <Button asChild variant="default" size="sm">
+                <Button asChild variant="default" size="sm" className="text-center">
                   <Link to={service.button_link || service.cta_url!}>
                     {service.button_text || service.cta_label}
                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -283,7 +283,7 @@ export const ServicesSection = () => {
         {/* Tab Navigation - Dropdown on mobile, horizontal tabs on desktop */}
         <div className="w-full">
           {/* Mobile: Dropdown select tied to active slide */}
-          <div className="sm:hidden py-3 w-full text-background bg-[#131211]">
+          <div className="sm:hidden py-3 w-full text-primary bg-primary-foreground">
             <Select
               value={String(activeIndex)}
               onValueChange={(value) => handleTabClick(Number(value))}
