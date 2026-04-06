@@ -261,6 +261,32 @@ const Galeria = () => {
           </Button>
         </div>
       </section>
+
+      {/* 360 Tour Modal */}
+      <Dialog open={tour360Open} onOpenChange={setTour360Open}>
+        <DialogContent
+          ref={modalContentRef}
+          className="max-w-[95vw] w-[95vw] h-[85vh] p-0 border-0 bg-black overflow-hidden [&>button]:z-50 [&>button]:text-white [&>button]:bg-black/60 [&>button]:rounded-full [&>button]:p-2 [&>button]:top-3 [&>button]:right-3"
+        >
+          <DialogTitle className="sr-only">Recorrido 360° Galería</DialogTitle>
+          <div className="absolute top-3 right-14 z-50">
+            <Button
+              onClick={toggleFullscreen}
+              variant="ghost"
+              size="icon"
+              className="text-white bg-black/60 rounded-full hover:bg-primary hover:text-primary-foreground h-9 w-9"
+            >
+              {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+            </Button>
+          </div>
+          <iframe
+            srcDoc={tour360HTML}
+            className="w-full h-full border-0"
+            allow="fullscreen; xr-spatial-tracking"
+            title="Tour 360° Galería"
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
