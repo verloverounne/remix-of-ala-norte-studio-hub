@@ -4,10 +4,7 @@ import { useEffect } from "react";
  * Global hook to enable tap-to-toggle duotone on touch devices.
  *
  * Mobile behavior:
- * - Tapping a duotone media (video/image) toggles the duotone filter.
- * - Videos: tap toggles play/pause.
- *   - When playing: filter OFF
- *   - When paused: filter ON
+ * - Tapping a duotone media (video/image) toggles only the duotone/grayscale filter.
  *
  * Desktop behavior remains CSS hover-based (no JS).
  */
@@ -31,19 +28,6 @@ export const useDuotoneTap = () => {
       else target.classList.remove("duotone-tap-active");
     };
 
-    const syncVideoState = (video: HTMLVideoElement) => {
-      // Playing = colores (filtro OFF) → agregar clase
-      // Paused = duotono (filtro ON) → remover clase
-      setActive(video, !video.paused);
-    };
-
-    // Ensure autoplay videos get the correct visual state immediately.
-    const syncAllExisting = () => {
-      document.querySelectorAll("video.video-duotone").forEach((el) => {
-        syncVideoState(el as HTMLVideoElement);
-      });
-    };
-
     const onTap = (e: Event) => {
       const target = e.target as Element | null;
       if (!target) return;
@@ -55,40 +39,12 @@ export const useDuotoneTap = () => {
       const media = (video ?? img) as (HTMLVideoElement | HTMLImageElement | null);
       if (!media) return;
 
-      // Images: toggle filter only
-      if (media instanceof HTMLImageElement) {
-        const group = media.closest(".duotone-hover-group") as HTMLElement | null;
-        const holder = group ?? media;
-        holder.classList.toggle("duotone-tap-active");
-        return;
-      }
-
-      // Videos: toggle play/pause and keep filter synced with state
-      if (media.paused) {
-        media.play().catch(() => {
-          // ignore autoplay restrictions
-        });
-      } else {
-        media.pause();
-      }
+      const group = media.closest(".duotone-hover-group") as HTMLElement | null;
+      const holder = group ?? media;
+      holder.classList.toggle("duotone-tap-active");
 
       // Prevent accidental scroll double-tap zoom patterns
       e.preventDefault?.();
-    };
-
-    // Capture play/pause events (they don't bubble, but they do fire in capture phase)
-    const onPlay = (e: Event) => {
-      const el = e.target;
-      if (el instanceof HTMLVideoElement && el.classList.contains("video-duotone")) {
-        syncVideoState(el);
-      }
-    };
-
-    const onPause = (e: Event) => {
-      const el = e.target;
-      if (el instanceof HTMLVideoElement && el.classList.contains("video-duotone")) {
-        syncVideoState(el);
-      }
     };
 
     const usePointer = typeof window !== "undefined" && "PointerEvent" in window;
@@ -99,21 +55,12 @@ export const useDuotoneTap = () => {
       document.addEventListener("click", onTap, { passive: false });
     }
 
-    document.addEventListener("play", onPlay, true);
-    document.addEventListener("pause", onPause, true);
-
-    // Initial sync (including autoplay)
-    syncAllExisting();
-
     return () => {
       if (usePointer) {
         document.removeEventListener("pointerup", onTap as any);
       } else {
         document.removeEventListener("click", onTap as any);
       }
-
-      document.removeEventListener("play", onPlay, true);
-      document.removeEventListener("pause", onPause, true);
     };
   }, []);
 };

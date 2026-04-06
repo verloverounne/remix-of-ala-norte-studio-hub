@@ -19,20 +19,48 @@ export const useVideoDuotone = () => {
       if (video.dataset.duotoneApplied === "true") return;
       video.dataset.duotoneApplied = "true";
 
+      const attemptInlineAutoplay = () => {
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.catch === "function") {
+          playPromise.catch(() => {
+            // ignore autoplay restrictions from the browser
+          });
+        }
+      };
+
       // Ensure continuous playback attributes
       video.autoplay = true;
       video.loop = true;
       video.muted = true;
+      video.defaultMuted = true;
       video.playsInline = true;
+      video.preload = "auto";
+      video.controls = false;
+      video.disablePictureInPicture = true;
 
       // iOS/Safari attribute fallbacks
       video.setAttribute("autoplay", "");
       video.setAttribute("loop", "");
       video.setAttribute("muted", "");
       video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
+      video.setAttribute("preload", "auto");
+      video.setAttribute("disablePictureInPicture", "true");
+      video.removeAttribute("controls");
+
+      if ("webkitPlaysInline" in video) {
+        (video as HTMLVideoElement & { webkitPlaysInline?: boolean }).webkitPlaysInline = true;
+      }
 
       // Apply initial duotone class (hover is handled purely via CSS)
       video.classList.add("video-duotone");
+
+      video.addEventListener("loadedmetadata", attemptInlineAutoplay, { once: true });
+      video.addEventListener("canplay", attemptInlineAutoplay, { once: true });
+
+      requestAnimationFrame(() => {
+        attemptInlineAutoplay();
+      });
     };
 
     const processAllVideos = () => {

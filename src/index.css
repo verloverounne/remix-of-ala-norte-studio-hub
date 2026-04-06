@@ -466,6 +466,19 @@ All colors MUST be HSL.
   position: relative;
 }
 
+.video-duotone {
+  object-fit: cover;
+}
+
+.video-duotone::-webkit-media-controls,
+.video-duotone::-webkit-media-controls-enclosure,
+.video-duotone::-webkit-media-controls-panel,
+.video-duotone::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+  opacity: 0;
+}
+
 /* Overlay removido - solo usamos escala de grises */
 /* Desktop hover = colores originales */
 .video-duotone:hover,
