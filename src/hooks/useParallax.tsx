@@ -30,7 +30,7 @@ export const useParallax = (options: UseParallaxOptions = {}) => {
 
         const distanceFromCenter = (rect.top + rect.height / 2) - (wh / 2);
         const maxMovement = wh * 0.5;
-        const parallaxValue = Math.max(-maxMovement, Math.min(maxMovement, distanceFromCenter * speed * 0.5));
+        const parallaxValue = Math.max(-maxMovement, Math.min(maxMovement, distanceFromCenter * speed * 0.25));
         const finalValue = direction === "up" ? offset - parallaxValue : offset + parallaxValue;
 
         el.style.transform = `translate3d(0, ${finalValue}px, 0)`;
