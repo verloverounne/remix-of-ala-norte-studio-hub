@@ -227,7 +227,7 @@ const Galeria = () => {
               </div>
             )}
 
-            <div className="border-foreground p-4 rounded-lg bg-muted border-0">
+            <div className="border-foreground p-4 rounded-lg border-0 bg-inherit px-0">
               <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
               <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekday}</p>
               <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekend}</p>
