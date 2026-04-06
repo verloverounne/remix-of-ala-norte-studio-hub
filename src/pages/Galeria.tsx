@@ -29,9 +29,9 @@ const Galeria = () => {
       <GalleryHero space={space} />
 
       {/* Details Section */}
-      <section className="py-12 sm:py-16">
+      <section className="py-12 sm:py-16 my-[64px]">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-[64px]">
             {/* Left Column: Featured Image + Floor Plan */}
             <div className="space-y-6">
               <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg">
