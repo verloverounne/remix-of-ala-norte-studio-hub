@@ -283,22 +283,22 @@ export const ServicesSection = () => {
         {/* Tab Navigation - Dropdown on mobile, horizontal tabs on desktop */}
         <div className="w-full">
           {/* Mobile: Dropdown select tied to active slide */}
-          <div className="sm:hidden py-3 w-full text-primary bg-primary-foreground">
+          <div className="sm:hidden py-3 w-full">
             <Select
               value={String(activeIndex)}
               onValueChange={(value) => handleTabClick(Number(value))}
               open={dropdownOpen}
               onOpenChange={setDropdownOpen}
             >
-              <SelectTrigger className="w-full bg-[#201e1d]  font-heading text-sm uppercase">
+              <SelectTrigger className="w-full bg-background text-primary font-heading text-sm uppercase border-0 hover:bg-primary hover:text-background transition-colors">
                 <SelectValue>{services[activeIndex]?.title || "Seleccionar servicio"}</SelectValue>
               </SelectTrigger>
-              <SelectContent className="bg-[#201e1d] z-50">
+              <SelectContent className="bg-background z-50 border-0">
                 {services.map((service, index) => (
                   <SelectItem
                     key={service.id}
                     value={String(index)}
-                    className="font-heading text-sm uppercase cursor-pointer"
+                    className="font-heading text-sm uppercase cursor-pointer text-primary hover:bg-primary hover:text-background focus:bg-primary focus:text-background"
                   >
                     {service.title}
                   </SelectItem>
