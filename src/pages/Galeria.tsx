@@ -68,23 +68,11 @@ const Galeria = () => {
 </head>
 <body>
   <div class="hint" id="hint">Arrastrá para explorar el espacio</div>
-  <div class="controls">
-    <button class="btn" onclick="toggleView()">Cambiar Vista</button>
-  </div>
   <a-scene vr-mode-ui="enabled: false" loading-screen="enabled: false" embedded style="width:100%;height:100vh;">
     <a-sky id="sky" src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//360.jpg" rotation="0 -30 0" scale="-1 1 1"></a-sky>
     <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="80" position="0 1.6 0"></a-camera>
   </a-scene>
   <script>
-    const images = [
-      'https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//360.jpg',
-      'https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//361.jpg'
-    ];
-    let currentIdx = 0;
-    function toggleView() {
-      currentIdx = (currentIdx + 1) % images.length;
-      document.getElementById('sky').setAttribute('src', images[currentIdx]);
-    }
     setTimeout(() => { const h = document.getElementById('hint'); if (h) h.style.opacity = '0'; }, 4000);
   <\/script>
 </body>
