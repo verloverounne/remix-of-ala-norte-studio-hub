@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from "react";
-import { Calendar, Maximize2, Minimize2, Eye } from "lucide-react";
+import { Calendar, Maximize2, Minimize2, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
@@ -14,6 +14,7 @@ const Galeria = () => {
   const { space, loading } = useSpace("galeria");
   const { getByPageType } = useGalleryImages();
   const [tour360Open, setTour360Open] = useState(false);
+  const [carouselIndex, setCarouselIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const modalContentRef = useRef<HTMLDivElement>(null);
 
@@ -95,8 +96,9 @@ const Galeria = () => {
       {/* Details Section */}
       <section className="py-12 sm:py-16 my-[64px]">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Two-column: Featured Image + Carousel */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-[64px]">
-            {/* Left Column: Featured Image + Floor Plan */}
+            {/* Left Column: Featured Image + 360 button + Floor Plan */}
             <div className="space-y-6">
               <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg group">
                 <img
@@ -127,84 +129,129 @@ const Galeria = () => {
               </div>
             </div>
 
-            {/* Right Column: Details */}
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">El espacio</h2>
-                <p className="text-muted-foreground font-heading text-base font-medium">
-                  {space.detailed_description || space.description}
-                </p>
-              </div>
-
-              {space.layout_description && (
-                <div className="bg-muted p-4 rounded-lg">
-                  <h3 className="font-heading font-bold mb-2">Plano de la galería</h3>
-                  <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
+            {/* Right Column: Image Carousel */}
+            <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg">
+              {galeriaImages.length > 0 ? (
+                <>
+                  <img
+                    src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
+                    alt={galeriaImages[carouselIndex]?.title || `Galería ${carouselIndex + 1}`}
+                    className="w-full h-full object-cover transition-opacity duration-300"
+                  />
+                  {galeriaImages.length > 1 && (
+                    <>
+                      <button
+                        onClick={() => setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[-2px] transition-transform"
+                        aria-label="Anterior"
+                      >
+                        <ChevronLeft className="h-5 w-5" />
+                      </button>
+                      <button
+                        onClick={() => setCarouselIndex((prev) => (prev + 1) % galeriaImages.length)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[2px] transition-transform"
+                        aria-label="Siguiente"
+                      >
+                        <ChevronRight className="h-5 w-5" />
+                      </button>
+                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                        {galeriaImages.map((_, i) => (
+                          <button
+                            key={i}
+                            onClick={() => setCarouselIndex(i)}
+                            className={`w-2 h-2 rounded-full transition-all ${i === carouselIndex ? "bg-primary w-4" : "bg-white/60"}`}
+                            aria-label={`Ir a imagen ${i + 1}`}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </>
+              ) : (
+                <div className="w-full h-full bg-muted flex items-center justify-center">
+                  <p className="text-muted-foreground font-heading">Sin imágenes</p>
                 </div>
               )}
+            </div>
+          </div>
 
-              {/* Floor Plan - Mobile only */}
-              <div className="lg:hidden relative overflow-hidden rounded-lg">
-                <img
-                  src="/lovable-uploads/7a26e0e7-4882-4604-9b3b-88bda06e16c1.jpg"
-                  alt="Plano ilustrativo del estudio"
-                  className="w-full h-auto object-contain bg-background"
-                />
+          {/* Text Content - Single column below */}
+          <div className="space-y-8 max-w-4xl mt-12">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">El espacio</h2>
+              <p className="text-muted-foreground font-heading text-base font-medium">
+                {space.detailed_description || space.description}
+              </p>
+            </div>
+
+            {space.layout_description && (
+              <div className="bg-muted p-4 rounded-lg">
+                <h3 className="font-heading font-bold mb-2">Plano de la galería</h3>
+                <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
               </div>
+            )}
 
-              {space.features && Array.isArray(space.features) && space.features.length > 0 && (
-                <div className="grid grid-cols-2 gap-x-2 gap-y-1 mb-12">
-                  {(space.features as string[]).map((feature, index) => (
-                    <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
+            {/* Floor Plan - Mobile only */}
+            <div className="lg:hidden relative overflow-hidden rounded-lg">
+              <img
+                src="/lovable-uploads/7a26e0e7-4882-4604-9b3b-88bda06e16c1.jpg"
+                alt="Plano ilustrativo del estudio"
+                className="w-full h-auto object-contain bg-background"
+              />
+            </div>
+
+            {space.features && Array.isArray(space.features) && space.features.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
+                {(space.features as string[]).map((feature, index) => (
+                  <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
+                    <span className="text-primary">•</span>
+                    {feature}
+                  </p>
+                ))}
+              </div>
+            )}
+
+            {space.included_items && space.included_items.length > 0 && (
+              <div>
+                <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
+                  Incluido sin cargo adicional
+                </h3>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {space.included_items.map((item, index) => (
+                    <li key={index} className="flex items-center gap-2 text-muted-foreground">
                       <span className="text-primary">•</span>
-                      {feature}
-                    </p>
+                      <span className="font-heading">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div className="border-foreground p-4 rounded-lg bg-muted border-0">
+              <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
+              <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekday}</p>
+              <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekend}</p>
+            </div>
+
+            {space.optional_services && space.optional_services.length > 0 && (
+              <div>
+                <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
+                <div className="flex flex-wrap gap-2">
+                  {space.optional_services.map((service, index) => (
+                    <Badge key={index} variant="outline" className="font-heading">
+                      {service}
+                    </Badge>
                   ))}
                 </div>
-              )}
-
-              {space.included_items && space.included_items.length > 0 && (
-                <div>
-                  <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
-                    Incluido sin cargo adicional
-                  </h3>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {space.included_items.map((item, index) => (
-                      <li key={index} className="flex items-center gap-2 text-muted-foreground">
-                        <span className="text-primary">•</span>
-                        <span className="font-heading">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              <div className="border-foreground p-4 rounded-lg bg-muted border-0">
-                <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
-                <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekday}</p>
-                <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekend}</p>
               </div>
+            )}
 
-              {space.optional_services && space.optional_services.length > 0 && (
-                <div>
-                  <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {space.optional_services.map((service, index) => (
-                      <Badge key={index} variant="outline" className="font-heading">
-                        {service}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
-                <Link to="/contacto">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  {space.cta_text || "RESERVAR BLOQUE"}
-                </Link>
-              </Button>
-            </div>
+            <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
+              <Link to="/contacto">
+                <Calendar className="mr-2 h-5 w-5" />
+                {space.cta_text || "RESERVAR BLOQUE"}
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
