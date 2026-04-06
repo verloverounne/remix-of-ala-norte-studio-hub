@@ -283,7 +283,7 @@ export const ServicesSection = () => {
         {/* Tab Navigation - Dropdown on mobile, horizontal tabs on desktop */}
         <div className="w-full">
           {/* Mobile: Dropdown select tied to active slide */}
-          <div className="sm:hidden py-3 w-full">
+          <div className="sm:hidden py-3 w-full border-primary">
             <Select
               value={String(activeIndex)}
               onValueChange={(value) => handleTabClick(Number(value))}
