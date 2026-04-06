@@ -111,7 +111,7 @@ const Galeria = () => {
                     onClick={() => setTour360Open(true)}
                     variant="hero"
                     size="lg"
-                    className="shadow-2xl backdrop-blur-sm border-0 px-[24px] bg-transparent text-primary border-primary"
+                    className="shadow-2xl backdrop-blur-sm border-0 bg-transparent text-primary border-primary px-[16px]"
                   >
                     <Eye className="h-5 w-5 mr-2" />
                     360
