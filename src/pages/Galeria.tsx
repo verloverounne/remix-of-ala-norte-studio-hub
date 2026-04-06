@@ -13,9 +13,83 @@ import { useSpace } from "@/hooks/useSpace";
 const Galeria = () => {
   const { space, loading } = useSpace("galeria");
   const { getByPageType } = useGalleryImages();
+  const [tour360Open, setTour360Open] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const modalContentRef = useRef<HTMLDivElement>(null);
 
   const galeriaImages = getByPageType("galeria");
   const featuredMediaImage = galeriaImages[0]?.image_url || null;
+
+  const toggleFullscreen = useCallback(() => {
+    if (!document.fullscreenElement) {
+      modalContentRef.current?.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setIsFullscreen(false);
+      }
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
+
+  const tour360HTML = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"><\/script>
+  <style>
+    * { margin: 0; padding: 0; }
+    body { overflow: hidden; font-family: 'Poppins', sans-serif; }
+    .hint {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.7); color: white; padding: 8px 16px;
+      font-size: 11px; z-index: 1000; text-transform: uppercase; letter-spacing: 1px;
+      opacity: 1; transition: opacity 1s;
+    }
+    .controls {
+      position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px;
+    }
+    .btn {
+      padding: 8px 16px; background: rgba(0,0,0,0.85); color: white; border: none;
+      cursor: pointer; font-weight: 700; font-size: 12px; text-transform: uppercase;
+      letter-spacing: 1px; transition: background 0.2s;
+    }
+    .btn:hover { background: #D4A017; }
+  </style>
+</head>
+<body>
+  <div class="hint" id="hint">Arrastrá para explorar el espacio</div>
+  <div class="controls">
+    <button class="btn" onclick="toggleView()">Cambiar Vista</button>
+  </div>
+  <a-scene vr-mode-ui="enabled: false" loading-screen="enabled: false" embedded style="width:100%;height:100vh;">
+    <a-sky id="sky" src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//360.jpg" rotation="0 -30 0" scale="-1 1 1"></a-sky>
+    <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="80" position="0 1.6 0"></a-camera>
+  </a-scene>
+  <script>
+    const images = [
+      'https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//360.jpg',
+      'https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//361.jpg'
+    ];
+    let currentIdx = 0;
+    function toggleView() {
+      currentIdx = (currentIdx + 1) % images.length;
+      document.getElementById('sky').setAttribute('src', images[currentIdx]);
+    }
+    setTimeout(() => { const h = document.getElementById('hint'); if (h) h.style.opacity = '0'; }, 4000);
+  <\/script>
+</body>
+</html>
+  `;
 
   if (loading || !space) {
     return (
