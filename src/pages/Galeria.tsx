@@ -111,10 +111,10 @@ const Galeria = () => {
                     onClick={() => setTour360Open(true)}
                     variant="hero"
                     size="lg"
-                    className="shadow-2xl backdrop-blur-sm bg-black/70 text-white border-0 hover:bg-primary hover:text-primary-foreground"
+                    className="shadow-2xl backdrop-blur-sm border-0 px-[24px] bg-transparent text-primary border-primary"
                   >
                     <Eye className="h-5 w-5 mr-2" />
-                    RECORRIDO 360°
+                    360
                   </Button>
                 </div>
               </div>
