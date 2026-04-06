@@ -1,7 +1,9 @@
-import { Calendar } from "lucide-react";
+import { useState, useRef, useCallback, useEffect } from "react";
+import { Calendar, Maximize2, Minimize2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import Viewer360Gallery from "@/components/Viewer360Gallery";
 import { GalleryHero } from "@/components/GalleryHero";
 import { ProductionsSlider } from "@/components/ProductionsSlider";
@@ -11,9 +13,83 @@ import { useSpace } from "@/hooks/useSpace";
 const Galeria = () => {
   const { space, loading } = useSpace("galeria");
   const { getByPageType } = useGalleryImages();
+  const [tour360Open, setTour360Open] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const modalContentRef = useRef<HTMLDivElement>(null);
 
   const galeriaImages = getByPageType("galeria");
   const featuredMediaImage = galeriaImages[0]?.image_url || null;
+
+  const toggleFullscreen = useCallback(() => {
+    if (!document.fullscreenElement) {
+      modalContentRef.current?.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setIsFullscreen(false);
+      }
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
+
+  const tour360HTML = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"><\/script>
+  <style>
+    * { margin: 0; padding: 0; }
+    body { overflow: hidden; font-family: 'Poppins', sans-serif; }
+    .hint {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.7); color: white; padding: 8px 16px;
+      font-size: 11px; z-index: 1000; text-transform: uppercase; letter-spacing: 1px;
+      opacity: 1; transition: opacity 1s;
+    }
+    .controls {
+      position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px;
+    }
+    .btn {
+      padding: 8px 16px; background: rgba(0,0,0,0.85); color: white; border: none;
+      cursor: pointer; font-weight: 700; font-size: 12px; text-transform: uppercase;
+      letter-spacing: 1px; transition: background 0.2s;
+    }
+    .btn:hover { background: #D4A017; }
+  </style>
+</head>
+<body>
+  <div class="hint" id="hint">Arrastrá para explorar el espacio</div>
+  <div class="controls">
+    <button class="btn" onclick="toggleView()">Cambiar Vista</button>
+  </div>
+  <a-scene vr-mode-ui="enabled: false" loading-screen="enabled: false" embedded style="width:100%;height:100vh;">
+    <a-sky id="sky" src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//360.jpg" rotation="0 -30 0" scale="-1 1 1"></a-sky>
+    <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="80" position="0 1.6 0"></a-camera>
+  </a-scene>
+  <script>
+    const images = [
+      'https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//360.jpg',
+      'https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//361.jpg'
+    ];
+    let currentIdx = 0;
+    function toggleView() {
+      currentIdx = (currentIdx + 1) % images.length;
+      document.getElementById('sky').setAttribute('src', images[currentIdx]);
+    }
+    setTimeout(() => { const h = document.getElementById('hint'); if (h) h.style.opacity = '0'; }, 4000);
+  <\/script>
+</body>
+</html>
+  `;
 
   if (loading || !space) {
     return (
@@ -34,12 +110,23 @@ const Galeria = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-[64px]">
             {/* Left Column: Featured Image + Floor Plan */}
             <div className="space-y-6">
-              <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg">
+              <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg group">
                 <img
                   src={featuredMediaImage || space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
                   alt={space.name}
                   className="w-full h-full object-cover"
                 />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Button
+                    onClick={() => setTour360Open(true)}
+                    variant="hero"
+                    size="lg"
+                    className="shadow-2xl backdrop-blur-sm bg-black/70 text-white border-0 hover:bg-primary hover:text-primary-foreground"
+                  >
+                    <Eye className="h-5 w-5 mr-2" />
+                    RECORRIDO 360°
+                  </Button>
+                </div>
               </div>
 
               {/* Floor Plan - Only visible on desktop */}
@@ -174,6 +261,32 @@ const Galeria = () => {
           </Button>
         </div>
       </section>
+
+      {/* 360 Tour Modal */}
+      <Dialog open={tour360Open} onOpenChange={setTour360Open}>
+        <DialogContent
+          ref={modalContentRef}
+          className="max-w-[95vw] w-[95vw] h-[85vh] p-0 border-0 bg-black overflow-hidden [&>button]:z-50 [&>button]:text-white [&>button]:bg-black/60 [&>button]:rounded-full [&>button]:p-2 [&>button]:top-3 [&>button]:right-3"
+        >
+          <DialogTitle className="sr-only">Recorrido 360° Galería</DialogTitle>
+          <div className="absolute top-3 right-14 z-50">
+            <Button
+              onClick={toggleFullscreen}
+              variant="ghost"
+              size="icon"
+              className="text-white bg-black/60 rounded-full hover:bg-primary hover:text-primary-foreground h-9 w-9"
+            >
+              {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+            </Button>
+          </div>
+          <iframe
+            srcDoc={tour360HTML}
+            className="w-full h-full border-0"
+            allow="fullscreen; xr-spatial-tracking"
+            title="Tour 360° Galería"
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
