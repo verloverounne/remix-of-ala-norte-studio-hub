@@ -110,12 +110,23 @@ const Galeria = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-[64px]">
             {/* Left Column: Featured Image + Floor Plan */}
             <div className="space-y-6">
-              <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg">
+              <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg group">
                 <img
                   src={featuredMediaImage || space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
                   alt={space.name}
                   className="w-full h-full object-cover"
                 />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Button
+                    onClick={() => setTour360Open(true)}
+                    variant="hero"
+                    size="lg"
+                    className="shadow-2xl backdrop-blur-sm bg-black/70 text-white border-0 hover:bg-primary hover:text-primary-foreground"
+                  >
+                    <Eye className="h-5 w-5 mr-2" />
+                    RECORRIDO 360°
+                  </Button>
+                </div>
               </div>
 
               {/* Floor Plan - Only visible on desktop */}
