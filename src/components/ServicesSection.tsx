@@ -274,7 +274,7 @@ export const ServicesSection = () => {
     <section className="relative bg-background">
       <div className="pb-[24px] px-8 lg:px-16 text-foreground sm:py-[24px] py-0 pt-[32px] border-0 bg-background">
         <h2
-          className="font-sans text-center font-thin text-primary my-[12px] text-3xl"
+          className="font-sans text-center font-thin my-[12px] text-3xl text-foreground"
           style={{ fontSize: "clamp(1rem, 3vw, 2rem)" }}
         >
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
