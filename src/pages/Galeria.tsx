@@ -47,7 +47,7 @@ const Galeria = () => {
                 <img
                   alt="Plano ilustrativo del estudio"
                   className="w-full h-auto object-contain bg-background"
-                  src="/lovable-uploads/53e26be9-d12a-4f9a-be55-1a85bb306394.png"
+                  src="/lovable-uploads/7a26e0e7-4882-4604-9b3b-88bda06e16c1.jpg"
                 />
               </div>
             </div>
@@ -71,7 +71,7 @@ const Galeria = () => {
               {/* Floor Plan - Mobile only */}
               <div className="lg:hidden relative overflow-hidden rounded-lg">
                 <img
-                  src="/lovable-uploads/53e26be9-d12a-4f9a-be55-1a85bb306394.png"
+                  src="/lovable-uploads/7a26e0e7-4882-4604-9b3b-88bda06e16c1.jpg"
                   alt="Plano ilustrativo del estudio"
                   className="w-full h-auto object-contain bg-background"
                 />
