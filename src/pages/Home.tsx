@@ -216,7 +216,7 @@ const CartoniSection = () => {
                                 */}
 
         {/* Contenido - superpuesto, abajo izquierda */}
-        <div className="absolute inset-0 z-10 flex items-end">
+        <div className="absolute inset-0 z-10 flex items-end border-0">
           <div className="container mx-auto px-4 pb-16">
             <div
               ref={contentParallax.ref as any}

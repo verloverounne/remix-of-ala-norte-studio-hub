@@ -103,7 +103,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
         </div>
 
         {/* Columna derecha: Texto con fondo - sin parallax para mantener visibilidad */}
-        <div className="flex-col h-full p-8 lg:p-12 xl:p-16 overflow-y-auto flex items-center justify-center bg-secondary">
+        <div className="flex-col h-full p-8 lg:p-12 xl:p-16 overflow-y-auto flex items-center justify-center bg-background">
           <div className="max-w full mx-4 mb:mx-16 lg:mx-24 text-foreground space-y-4">
             <div className="space-y-3">
               <span className="font-heading text-sm text-muted-foreground uppercase tracking-wider">
