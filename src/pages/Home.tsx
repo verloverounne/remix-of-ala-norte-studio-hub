@@ -26,22 +26,25 @@ const FeaturedEquipmentSection = ({
   equipmentApi,
   setEquipmentApi,
   currentEquipmentSlide,
-  setCurrentEquipmentSlide
+  setCurrentEquipmentSlide,
 }: FeaturedEquipmentSectionProps) => {
   const headerParallax = useParallax({
     speed: 0.2,
-    direction: "down"
+    direction: "down",
   });
   return (
-    <section className="relative border-y border-border bg-background overflow-hidden">
+    <section className=" bg-background overflow-hidden">
       <div className="py-16 sm:py-20 bg-foreground lg:py-24">
         <div
           ref={headerParallax.ref as any}
           style={headerParallax.style}
-          className="container mx-auto mb-8 sm:mb-12 border-background bg-foreground ">
-
+          className="container mx-auto mb-8 sm:mb-12 border-background bg-foreground "
+        >
           <div>
-            <h2 className="font-sans mb-2 text-center py-[32px] bg-muted-foreground font-semibold text-muted my-[60px] sm:mb-[60px] mt-[20px]" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
+            <h2
+              className="font-sans mb-2 text-center py-[32px] bg-muted-foreground font-semibold text-muted my-[60px] sm:mb-[60px] mt-[20px]"
+              style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+            >
               EQUIPOS DESTACADOS
             </h2>
             {/*          <p className="text-sm sm:text-base lg:text-sm text-muted-foreground font-heading leading-tight">
@@ -52,26 +55,26 @@ const FeaturedEquipmentSection = ({
 
         <Carousel className="w-full" setApi={setEquipmentApi}>
           <CarouselContent className="-ml-0">
-            {featuredEquipment.map((equipment) =>
-            <EquipmentSlide key={equipment.id} equipment={equipment} />
-            )}
+            {featuredEquipment.map((equipment) => (
+              <EquipmentSlide key={equipment.id} equipment={equipment} />
+            ))}
           </CarouselContent>
         </Carousel>
 
         {/* Navigation dots */}
         <div className="flex justify-center gap-3 mt-8">
-          {featuredEquipment.map((_, index) =>
-          <button
-            key={index}
-            onClick={() => equipmentApi?.scrollTo(index)}
-            className={`h-2 rounded-full transition-all ${index === currentEquipmentSlide ? "w-12 bg-primary" : "w-2 bg-foreground/40"}`}
-            aria-label={`Ir al equipo ${index + 1}`} />
-
-          )}
+          {featuredEquipment.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => equipmentApi?.scrollTo(index)}
+              className={`h-2 rounded-full transition-all ${index === currentEquipmentSlide ? "w-12 bg-primary" : "w-2 bg-foreground/40"}`}
+              aria-label={`Ir al equipo ${index + 1}`}
+            />
+          ))}
         </div>
       </div>
-    </section>);
-
+    </section>
+  );
 };
 
 // Componente para cada slide de equipo con parallax
@@ -81,55 +84,62 @@ interface EquipmentSlideProps {
 const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   const imageParallax = useParallax({
     speed: 0.3,
-    direction: "up"
+    direction: "up",
   });
   const contentParallax = useParallax({
     speed: 0.2,
-    direction: "down"
+    direction: "down",
   });
   return (
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
-          <div className="relative h-[60vh] bg-foreground/95 overflow-hidden group cursor-pointer duotone-hover-group">
-          {equipment.image_url &&
-          <div
-            ref={imageParallax.ref as any}
-            style={imageParallax.style}
-            className="absolute inset-0 w-full h-[120%]">
-
+        <div className="relative h-[60vh] bg-foreground/95 overflow-hidden group cursor-pointer duotone-hover-group">
+          {equipment.image_url && (
+            <div
+              ref={imageParallax.ref as any}
+              style={imageParallax.style}
+              className="absolute inset-0 w-full h-[120%]"
+            >
               <img
-              src={equipment.image_url}
-              alt={equipment.name}
-              className="image-duotone w-full h-full object-cover" />
-
+                src={equipment.image_url}
+                alt={equipment.name}
+                className="image-duotone w-full h-full object-cover"
+              />
             </div>
-          }
+          )}
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="absolute inset-0 flex items-center justify-center image-duotone ">
-
+            className="absolute inset-0 flex items-center justify-center image-duotone "
+          >
             <div className="text-center z-10 p-8 max-w-4xl">
-              <h3 className="mb-6 uppercase text-center text-secondary font-sans font-medium" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
+              <h3
+                className="mb-6 uppercase text-center text-secondary font-sans font-medium"
+                style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+              >
                 {equipment.name}
               </h3>
-              {equipment.featured_copy &&
-              <p className="text-xl md:text-2xl text-background/80 mb-8 font-heading">{equipment.featured_copy}</p>
-              }
+              {equipment.featured_copy && (
+                <p className="text-xl md:text-2xl text-background/80 mb-8 font-heading">{equipment.featured_copy}</p>
+              )}
               <div className="flex items-center justify-center gap-6 mb-6">
                 <span className="font-heading px-8 py-4 shadow-brutal bg-foreground text-background text-sm">
                   ${equipment.price_per_day}/día
                 </span>
               </div>
-              <Button variant="hero" size="lg" className="group-hover:shadow-brutal-lg transition-shadow my-[78px] bg-baground bg-ring">
+              <Button
+                variant="hero"
+                size="lg"
+                className="group-hover:shadow-brutal-lg transition-shadow my-[78px] bg-baground bg-ring"
+              >
                 VER DETALLES <ArrowRight className="ml-2" />
               </Button>
             </div>
           </div>
         </div>
       </Link>
-    </CarouselItem>);
-
+    </CarouselItem>
+  );
 };
 
 // Componente para la sección CTA con parallax
@@ -137,7 +147,7 @@ import ctaBackground from "@/assets/cta-background.jpg";
 const CTASection = () => {
   const contentParallax = useParallax({
     speed: 0.5,
-    direction: "down"
+    direction: "down",
   });
   return (
     <section className="relative border-y border-border overflow-hidden min-h-[90vh] flex items-center duotone-hover-group">
@@ -146,8 +156,8 @@ const CTASection = () => {
         <img
           alt=""
           className="w-full h-full image-duotone object-cover "
-          src="/lovable-uploads/fb5916aa-2049-4f18-aa32-4bfb53fbdc4f.png" />
-
+          src="/lovable-uploads/fb5916aa-2049-4f18-aa32-4bfb53fbdc4f.png"
+        />
       </div>
 
       {/* Content overlay */}
@@ -155,9 +165,12 @@ const CTASection = () => {
         <div
           ref={contentParallax.ref as any}
           style={contentParallax.style}
-          className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] pt-[64px] max-w-2xl rounded-sm bg-inherit">
-
-          <h2 className="mb-4 sm:mb-6 my-0 px-0 font-sans font-thin text-[#fbf2ee]" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
+          className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] pt-[64px] max-w-2xl rounded-sm bg-inherit"
+        >
+          <h2
+            className="mb-4 sm:mb-6 my-0 px-0 font-sans font-thin text-[#fbf2ee]"
+            style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+          >
             ¿Tenés un rodaje en mente?
           </h2>
           <p className="text-sm mb-6 font-heading leading-tight my-[6px] sm:mb-[57px] px-0 font-normal sm:text-lg text-[#fbf2ee]">
@@ -168,8 +181,8 @@ const CTASection = () => {
           </Button>
         </div>
       </div>
-    </section>);
-
+    </section>
+  );
 };
 
 // Componente para la sección Cartoni con parallax y video de fondo
@@ -178,7 +191,7 @@ const CartoniSection = () => {
   const [videoStatus, setVideoStatus] = useState<"idle" | "loaded" | "error">("idle");
   const contentParallax = useParallax({
     speed: 0.5,
-    direction: "down"
+    direction: "down",
   });
 
   // Get cartoni_home video from consolidated gallery images
@@ -188,41 +201,41 @@ const CartoniSection = () => {
     <section className="relative border-y border-border">
       {/* Contenedor del video - el video define el alto */}
       <div className="relative w-full">
-        {backgroundVideo &&
-        <video
-          key={backgroundVideo}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          crossOrigin="anonymous"
-          onCanPlay={() => setVideoStatus("loaded")}
-          onError={() => {
-            console.warn(
-              "[CartoniSection] No se pudo reproducir el video. Recomendación: MP4 H.264 + AAC. URL:",
-              backgroundVideo
-            );
-            setVideoStatus("error");
-          }}
-          className="w-full h-auto min-h-[720px] object-cover object-top">
-
+        {backgroundVideo && (
+          <video
+            key={backgroundVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            crossOrigin="anonymous"
+            onCanPlay={() => setVideoStatus("loaded")}
+            onError={() => {
+              console.warn(
+                "[CartoniSection] No se pudo reproducir el video. Recomendación: MP4 H.264 + AAC. URL:",
+                backgroundVideo,
+              );
+              setVideoStatus("error");
+            }}
+            className="w-full h-auto min-h-[720px] object-cover object-top"
+          >
             <source src={backgroundVideo} type="video/mp4" />
           </video>
-        }
+        )}
 
         {/* Overlay para legibilidad
                                <div className="pointer-events-none absolute inset-0 bg-background/0 z-[1]" />
                                 */}
 
         {/* Contenido - superpuesto, abajo izquierda */}
-        <div className="absolute inset-0 z-10 flex items-end border-0">
+        <div className="absolute inset-0 z-10 flex items-end">
           <div className="container mx-auto px-4 pb-16">
             <div
               ref={contentParallax.ref as any}
               style={contentParallax.style}
-              className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 backdrop-blur-lg py-[68px] max-w-2xl mx-[16px] px-[24px] rounded-sm">
-
+              className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 backdrop-blur-lg py-[68px] max-w-2xl mx-[16px] px-[24px] rounded-sm"
+            >
               <h2 className="mb-4 text-foreground font-sans font-thin" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
                 SELLER & SERVICE <span className="text-foreground">OFICIAL CARTONI</span>
               </h2>
@@ -244,8 +257,8 @@ const CartoniSection = () => {
           </div>
         </div>
       </div>
-    </section>);
-
+    </section>
+  );
 };
 const Home = () => {
   const [featuredEquipment, setFeaturedEquipment] = useState<any[]>([]);
@@ -254,14 +267,14 @@ const Home = () => {
   const { progress, isComplete, isLoading } = useVideoPreloader();
 
   useEffect(() => {
-    supabase.
-    from("equipment").
-    select("*").
-    eq("featured", true).
-    order("order_index").
-    then(({ data }) => {
-      if (data) setFeaturedEquipment(data);
-    });
+    supabase
+      .from("equipment")
+      .select("*")
+      .eq("featured", true)
+      .order("order_index")
+      .then(({ data }) => {
+        if (data) setFeaturedEquipment(data);
+      });
   }, []);
   useEffect(() => {
     if (!equipmentApi) return;
@@ -292,20 +305,21 @@ const Home = () => {
       <CTASection />
 
       {/* Featured Equipment Section - Full Width Slider */}
-      {featuredEquipment.length > 0 &&
-      <FeaturedEquipmentSection
-        featuredEquipment={featuredEquipment}
-        equipmentApi={equipmentApi}
-        setEquipmentApi={setEquipmentApi}
-        currentEquipmentSlide={currentEquipmentSlide}
-        setCurrentEquipmentSlide={setCurrentEquipmentSlide} />
-
-      }
-    </div>);
+      {featuredEquipment.length > 0 && (
+        <FeaturedEquipmentSection
+          featuredEquipment={featuredEquipment}
+          equipmentApi={equipmentApi}
+          setEquipmentApi={setEquipmentApi}
+          currentEquipmentSlide={currentEquipmentSlide}
+          setCurrentEquipmentSlide={setCurrentEquipmentSlide}
+        />
+      )}
+    </div>
+  );
 
   {
-
-    /* Productions Slider Section */}
+    /* Productions Slider Section */
+  }
   <ProductionsSlider />;
 };
 export default Home;
