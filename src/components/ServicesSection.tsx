@@ -179,7 +179,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
           }}
         >
           <div className="h-screen pb-8 px-4 flex items-center justify-center">
-            <div className="backdrop-blur-2x1 bg-background/30 p-6 w-1/120.8text-foreground max-h-[80vh] overflow-y-auto mx-4 mb-16 lg-32 xl-64 pointer-events-auto mb-0 text-center">
+            <div className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 py-[68px] mx-[16px] px-[24px] rounded-sm pointer-events-auto text-center max-h-[80vh] overflow-y-auto">
               <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
@@ -208,12 +208,13 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
               )}
 
               {(service.button_text || service.cta_label) && (service.button_link || service.cta_url) && (
-                <Button asChild variant="default" size="sm" className="text-center">
-                  <Link to={service.button_link || service.cta_url!}>
-                    {service.button_text || service.cta_label}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
+                <div className="flex flex-wrap justify-start gap-2 sm:gap-4">
+                  <Button asChild variant="default" size="lg" className="flex-1 sm:flex-none">
+                    <Link to={service.button_link || service.cta_url!}>
+                      {service.button_text || service.cta_label}
+                    </Link>
+                  </Button>
+                </div>
               )}
             </div>
           </div>
@@ -290,10 +291,10 @@ export const ServicesSection = () => {
               open={dropdownOpen}
               onOpenChange={setDropdownOpen}
             >
-              <SelectTrigger className="w-full bg-background text-primary font-heading text-sm uppercase border-0 hover:bg-primary hover:text-background transition-colors">
+              <SelectTrigger className="w-full bg-background text-primary font-heading text-sm uppercase border-0 border-b-2 border-b-primary rounded-none hover:bg-primary hover:text-background transition-colors">
                 <SelectValue>{services[activeIndex]?.title || "Seleccionar servicio"}</SelectValue>
               </SelectTrigger>
-              <SelectContent className="bg-background z-50 border-0">
+              <SelectContent className="bg-background z-50 border-0 text-center">
                 {services.map((service, index) => (
                   <SelectItem
                     key={service.id}
