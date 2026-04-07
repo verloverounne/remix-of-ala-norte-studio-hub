@@ -144,7 +144,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
       </div>
       {/* Mobile/Tablet: Fondo sólido sin video */}
       <div className="lg:hidden bg-foreground">
-        <div className=" px-4 py-12 flex items-center justify-center">
+        <div className="min-h-screen px-4 py-12 flex items-center justify-center">
           <div className="max-w-2xl py-[68px] mx-[16px] px-[24px]">
             <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-background">
               Servicio {String(index + 1).padStart(2, "0")}
