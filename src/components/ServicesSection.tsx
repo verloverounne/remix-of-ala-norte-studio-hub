@@ -66,7 +66,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
   return (
     <div className="flex-[0_0_100%] min-w-0 h-dvh">
       {/* Desktop: 2 columnas - imagen izquierda, texto derecha con blur */}
-      <div className="hidden lg:grid lg:grid-cols-2 h-full">
+      <div className="hidden lg:grid lg:grid-cols-2 h-dvh">
         {/* Columna izquierda: Media con parallax y duotono */}
         <div ref={mediaParallax.ref as any} className="h-full  relative duotone-hover-group bg-muted">
           {hasMedia ? (
