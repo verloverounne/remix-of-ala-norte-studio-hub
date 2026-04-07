@@ -176,7 +176,7 @@ const Galeria = () => {
           </div>
 
           {/* Text Content - Single column below */}
-          <div className="space-y-8 max-w-4xl mt-12">
+          <div className="space-y-8 w-screen mt-12">
             <div>
               <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">El espacio</h2>
               <p className="text-muted-foreground font-heading text-base font-medium">
