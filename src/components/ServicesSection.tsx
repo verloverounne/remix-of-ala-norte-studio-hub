@@ -179,7 +179,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
           }}
         >
           <div className="h-screen pb-8 px-4 flex items-center justify-center">
-            <div className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 py-[68px] mx-[16px] px-[24px] rounded-sm pointer-events-auto text-center max-h-[80vh] overflow-y-auto">
+            <div className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 backdrop-blur-lg py-[68px] max-w-2xl mx-[16px] px-[24px] rounded-sm">
               <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
@@ -210,9 +210,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
               {(service.button_text || service.cta_label) && (service.button_link || service.cta_url) && (
                 <div className="flex flex-wrap justify-start gap-2 sm:gap-4">
                   <Button asChild variant="default" size="lg" className="flex-1 sm:flex-none">
-                    <Link to={service.button_link || service.cta_url!}>
-                      {service.button_text || service.cta_label}
-                    </Link>
+                    <Link to={service.button_link || service.cta_url!}>{service.button_text || service.cta_label}</Link>
                   </Button>
                 </div>
               )}
