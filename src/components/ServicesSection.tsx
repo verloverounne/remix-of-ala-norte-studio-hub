@@ -179,8 +179,8 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
           }}
         >
           <div className="h-screen pb-8 px-4 flex items-center justify-center">
-            <div className="max-w-2xl p-6 backdrop-blur-lg bg-background/50 py-[68px] mx-[16px] px-[24px] rounded-sm">
-              <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-primary">
+            <div className="max-w-2xl p-6 backdrop-blur-lg bg-background/20 py-[68px] mx-[16px] px-[24px] rounded-sm">
+              <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-foreground">
                 Servicio {String(index + 1).padStart(2, "0")}
               </span>
               <h3
