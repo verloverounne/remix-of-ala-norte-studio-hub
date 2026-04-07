@@ -295,17 +295,6 @@ export const ServicesSection = () => {
         </div>
 
         {/* Navigation Arrows */}
-        <button
-          onClick={scrollPrev}
-          className={cn(
-            "absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all py-[4px] px-[4px] text-foreground bg-primary border-foreground my-px mx-[16px] rounded-sm",
-            activeIndex === 0 && "opacity-50 cursor-not-allowed",
-          )}
-          disabled={activeIndex === 0}
-          aria-label="Anterior"
-        >
-          <ChevronLeft className="h-[24px] w-[24px] rounded-sm" />
-        </button>
         {/* Dots indicator */}
       </div>
     </section>
