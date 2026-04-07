@@ -190,7 +190,7 @@ const CartoniSection = () => {
   const { getByPageType } = useGalleryImages();
   const [videoStatus, setVideoStatus] = useState<"idle" | "loaded" | "error">("idle");
   const contentParallax = useParallax({
-    speed: 0.5,
+    speed: 0.2,
     direction: "down",
   });
 
@@ -234,7 +234,7 @@ const CartoniSection = () => {
             <div
               ref={contentParallax.ref as any}
               style={contentParallax.style}
-              className="max-w-2xl p-6 backdrop-blur-lg bg-rin/50 backdrop-blur-lg py-[68px] max-w-2xl mx-[16px] px-[24px] rounded-sm"
+              className="max-w-2xl p-6 backdrop-blur-lg py-[68px] max-w-2xl mx-[16px] px-[24px] rounded-sm"
             >
               <h2 className="mb-4 text-foreground font-sans font-thin" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
                 SELLER & SERVICE <span className="text-foreground">OFICIAL CARTONI</span>
