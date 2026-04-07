@@ -163,7 +163,6 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
               <ul className="space-y-2 mb-4">
                 {service.bullets.map((bullet, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <Check className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
                     <span className="text-xs text-background">{bullet}</span>
                   </li>
                 ))}
