@@ -144,7 +144,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
       </div>
       {/* Mobile/Tablet: Fondo sólido sin video */}
       <div className="lg:hidden bg-foreground">
-        <div className="min-h-screen px-4 flex items-start justify-center text-foreground bg-background py-0">
+        <div className="min-h-screen-1/2 px-4 flex items-start justify-center text-foreground bg-background py-0">
           <div className="max-w-2xl mx-0 px-0 py-0">
             <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-background">
               Servicio {String(index + 1).padStart(2, "0")}
@@ -294,14 +294,19 @@ export const ServicesSection = () => {
           </div>
         </div>
 
-        {/* ISO Badge */}
-        <div className="absolute bottom-0 right-0 z-30 translate-x-[50%] translate-y-[50%] -rotate-45 pointer-events-none">
-          <img
-            src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/solo iso@4x.png"
-            alt="ISO Certification"
-            className="w-[200px] md:w-[300px] opacity-80"
-          />
-        </div>
+        {/* Navigation Arrows */}
+        <button
+          onClick={scrollPrev}
+          className={cn(
+            "absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 border shadow-brutal transition-all py-[4px] px-[4px] text-foreground bg-primary border-foreground my-px mx-[16px] rounded-sm",
+            activeIndex === 0 && "opacity-50 cursor-not-allowed",
+          )}
+          disabled={activeIndex === 0}
+          aria-label="Anterior"
+        >
+          <ChevronLeft className="h-[24px] w-[24px] rounded-sm" />
+        </button>
+        {/* Dots indicator */}
       </div>
     </section>
   );
