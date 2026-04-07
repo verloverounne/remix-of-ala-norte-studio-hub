@@ -294,8 +294,14 @@ export const ServicesSection = () => {
           </div>
         </div>
 
-        {/* Navigation Arrows */}
-        {/* Dots indicator */}
+        {/* ISO Badge */}
+        <div className="absolute bottom-0 right-0 z-30 translate-x-[50%] translate-y-[50%] -rotate-45 pointer-events-none">
+          <img
+            src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/solo iso@4x.png"
+            alt="ISO Certification"
+            className="w-[200px] md:w-[300px] opacity-80"
+          />
+        </div>
       </div>
     </section>
   );
