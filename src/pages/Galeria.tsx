@@ -106,7 +106,7 @@ const Galeria = () => {
                   alt={space.name}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center justify-center gap-0 border-solid border-primary shadow-sm">
                   <Button
                     onClick={() => setTour360Open(true)}
                     variant="hero"
