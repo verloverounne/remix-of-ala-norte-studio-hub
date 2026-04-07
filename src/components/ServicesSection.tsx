@@ -208,12 +208,13 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
               )}
 
               {(service.button_text || service.cta_label) && (service.button_link || service.cta_url) && (
-                <Button asChild variant="default" size="sm" className="text-center">
-                  <Link to={service.button_link || service.cta_url!}>
-                    {service.button_text || service.cta_label}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
+                <div className="flex flex-wrap justify-start gap-2 sm:gap-4">
+                  <Button asChild variant="default" size="lg" className="flex-1 sm:flex-none">
+                    <Link to={service.button_link || service.cta_url!}>
+                      {service.button_text || service.cta_label}
+                    </Link>
+                  </Button>
+                </div>
               )}
             </div>
           </div>
