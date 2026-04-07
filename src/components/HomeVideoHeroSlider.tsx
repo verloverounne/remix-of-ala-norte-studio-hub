@@ -193,7 +193,7 @@ const HeroSlideComponent = ({ slide, index, videoRef, muted }: HeroSlideProps) =
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="backdrop-blur-lg bg-[#423c38]/50 text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px]"
+            className="backdrop-blur-lg bg-foreground/50 text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px]"
           >
             <h1
               className="text-background mb-2 font-sans font-thin py-[32px] pt-[32px]"
