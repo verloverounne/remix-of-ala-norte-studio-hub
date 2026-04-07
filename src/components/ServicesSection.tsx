@@ -290,10 +290,10 @@ export const ServicesSection = () => {
               open={dropdownOpen}
               onOpenChange={setDropdownOpen}
             >
-              <SelectTrigger className="w-full bg-background text-primary font-heading text-sm uppercase border-0 hover:bg-primary hover:text-background transition-colors">
+              <SelectTrigger className="w-full bg-background text-primary font-heading text-sm uppercase border-0 border-b-2 border-b-primary rounded-none hover:bg-primary hover:text-background transition-colors">
                 <SelectValue>{services[activeIndex]?.title || "Seleccionar servicio"}</SelectValue>
               </SelectTrigger>
-              <SelectContent className="bg-background z-50 border-0">
+              <SelectContent className="bg-background z-50 border-0 text-center">
                 {services.map((service, index) => (
                   <SelectItem
                     key={service.id}
