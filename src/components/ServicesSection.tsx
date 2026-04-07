@@ -144,19 +144,19 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
       </div>
       {/* Mobile/Tablet: Fondo sólido sin video */}
       <div className="lg:hidden bg-foreground">
-        <div className="min-h-screen px-4 py-12 flex items-center justify-center">
-          <div className="max-w-2xl py-[68px] mx-[16px] px-[24px]">
+        <div className="min-h-screen px-4 flex items-start justify-center text-foreground bg-background py-0">
+          <div className="max-w-2xl mx-0 px-0 py-0">
             <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-background">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
             <h3
-              className="uppercase leading-tight mb-3 text-background font-sans font-thin"
+              className="uppercase leading-tight mb-3 font-sans font-thin text-inherit"
               style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)" }}
             >
               {service.title}
             </h3>
             {service.description && (
-              <p className="mb-4 leading-relaxed text-xs text-background">{service.description}</p>
+              <p className="mb-4 leading-relaxed text-inherit text-xl">{service.description}</p>
             )}
 
             {service.bullets && service.bullets.length > 0 && (
@@ -234,7 +234,7 @@ export const ServicesSection = () => {
     <section className="relative bg-background">
       <div className="pb-[24px] px-8 lg:px-16 text-foreground sm:py-[24px] py-0 pt-[32px] border-0 bg-background">
         <h2
-          className="font-sans text-center font-thin my-[12px] text-3xl text-foreground"
+          className="font-sans text-center my-[12px] text-3xl text-foreground font-medium"
           style={{ fontSize: "clamp(1rem, 3vw, 2rem)" }}
         >
           Equipamiento, espacios y equipo técnico para que tu producción salga adelante
