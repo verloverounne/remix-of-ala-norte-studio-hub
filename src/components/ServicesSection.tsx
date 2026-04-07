@@ -142,79 +142,43 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
           </div>
         </div>
       </div>
-      {/* Mobile: Media de fondo sticky con contenido que sube por parallax basado en scroll */}
-      <div ref={containerRef} className="lg:hidden h-[50vh] relative">
-        {/* Media de fondo - sticky para mantenerse visible (z-0) */}
-        <div className="sticky top-0 h-screen z-0 duotone-hover-group overflow-hidden" onClick={handleMobileTap}>
-          {hasMedia ? (
-            isVideo ? (
-              <video
-                ref={videoRef}
-                src={mediaUrl!}
-                className="w-full h-full video-duotone object-cover"
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
-            ) : (
-              <img src={mediaUrl!} alt={service.title} className="image-duotone w-full h-full object-cover" />
-            )
-          ) : (
-            <div className="w-full h-full bg-muted flex items-center justify-center">
-              <span className="font-heading text-6xl text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
-            </div>
-          )}
+      {/* Mobile/Tablet: Fondo sólido sin video */}
+      <div className="lg:hidden bg-foreground">
+        <div className="min-h-screen px-4 py-12 flex items-center justify-center">
+          <div className="max-w-2xl py-[68px] mx-[16px] px-[24px]">
+            <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-background">
+              Servicio {String(index + 1).padStart(2, "0")}
+            </span>
+            <h3
+              className="uppercase leading-tight mb-3 text-background font-sans font-thin"
+              style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)" }}
+            >
+              {service.title}
+            </h3>
+            {service.description && (
+              <p className="mb-4 leading-relaxed text-xs text-background">
+                {service.description}
+              </p>
+            )}
 
-          {/* Overlay oscuro */}
-          <div className="absolute inset-0 pointer-events-none" />
-        </div>
+            {service.bullets && service.bullets.length > 0 && (
+              <ul className="space-y-2 mb-4">
+                {service.bullets.map((bullet, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <Check className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
+                    <span className="text-xs text-background">{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
 
-        {/* Contenido con parallax basado en scroll - z-10 para estar encima del video */}
-        <div
-          className="z-10 pointer-events-none"
-          style={{
-            marginTop: "-100vh",
-            ...contentStyle,
-          }}
-        >
-          <div className="h-screen pb-8 px-4 flex items-center justify-center">
-            <div className="max-w-2xl p-6 backdrop-blur-lg bg-background/20 py-[68px] mx-[16px] px-[24px] rounded-sm">
-              <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-foreground">
-                Servicio {String(index + 1).padStart(2, "0")}
-              </span>
-              <h3
-                className="uppercase leading-tight mb-3 text-[#fbf2ee] font-sans font-thin"
-                style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)" }}
-              >
-                {service.title}
-              </h3>
-              {service.description && (
-                <p className="mb-4 leading-relaxed font-sm text-xs mb-sm lg-medium text-[#fbf2ee]">
-                  {service.description}
-                </p>
-              )}
-
-              {/* Bullets list - fully visible */}
-              {service.bullets && service.bullets.length > 0 && (
-                <ul className="space-y-2 mb-4">
-                  {service.bullets.map((bullet, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <Check className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
-                      <span className="font-sm text-xs mb-sm lg-medium text-[#fbf2ee]">{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {(service.button_text || service.cta_label) && (service.button_link || service.cta_url) && (
-                <div className="flex flex-wrap justify-start gap-2 sm:gap-4">
-                  <Button asChild variant="default" size="lg" className="flex-1 sm:flex-none">
-                    <Link to={service.button_link || service.cta_url!}>{service.button_text || service.cta_label}</Link>
-                  </Button>
-                </div>
-              )}
-            </div>
+            {(service.button_text || service.cta_label) && (service.button_link || service.cta_url) && (
+              <div className="flex flex-wrap justify-start gap-2 sm:gap-4">
+                <Button asChild variant="default" size="lg" className="flex-1 sm:flex-none">
+                  <Link to={service.button_link || service.cta_url!}>{service.button_text || service.cta_label}</Link>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
