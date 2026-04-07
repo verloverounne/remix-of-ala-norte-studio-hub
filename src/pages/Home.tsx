@@ -190,7 +190,7 @@ const CartoniSection = () => {
   const { getByPageType } = useGalleryImages();
   const [videoStatus, setVideoStatus] = useState<"idle" | "loaded" | "error">("idle");
   const contentParallax = useParallax({
-    speed: 0.2,
+    speed: 0,
     direction: "down",
   });
 
