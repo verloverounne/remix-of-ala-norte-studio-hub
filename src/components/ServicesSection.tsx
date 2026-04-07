@@ -283,7 +283,7 @@ export const ServicesSection = () => {
         {/* Tab Navigation - Dropdown on mobile, horizontal tabs on desktop */}
         <div className="w-full">
           {/* Mobile: Dropdown select tied to active slide */}
-          <div className="sm:hidden py-3 w-full border-primary">
+          <div className="lg:hidden py-3 w-full border-primary">
             <Select
               value={String(activeIndex)}
               onValueChange={(value) => handleTabClick(Number(value))}
@@ -307,7 +307,7 @@ export const ServicesSection = () => {
             </Select>
           </div>
           {/* Desktop: horizontal row - link style */}
-          <div className={cn("hidden sm:flex items-center justify-center gap-6", dropdownOpen && "hidden")}>
+          <div className={cn("hidden lg:flex items-center justify-center gap-6", dropdownOpen && "hidden")}>
             {services.map((service, index) => (
               <button
                 key={service.id}
