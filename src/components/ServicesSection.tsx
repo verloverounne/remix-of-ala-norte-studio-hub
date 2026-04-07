@@ -230,7 +230,7 @@ export const ServicesSection = () => {
   }
   return (
     <section className="relative bg-background">
-      <div className="h-dvh pb-[24px] px-8 lg:px-16 text-foreground sm:py-[24px] py-0 pt-[32px] border-0 bg-background">
+      <div className=" pb-[24px] px-8 lg:px-16 text-foreground sm:py-[24px] py-0 pt-[32px] border-0 bg-background">
         <h2
           className="font-sans text-center my-[12px] text-3xl text-foreground font-medium"
           style={{ fontSize: "clamp(1rem, 3vw, 2rem)" }}
@@ -287,7 +287,7 @@ export const ServicesSection = () => {
       {/* Carousel Container */}
       <div className="relative">
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex">
+          <div className="h-dvh flex">
             {services.map((service, index) => (
               <ServiceSlide key={service.id} service={service} index={index} />
             ))}
