@@ -122,11 +122,6 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
               {equipment.featured_copy && (
                 <p className="text-xl md:text-2xl text-background/80 mb-8 font-heading">{equipment.featured_copy}</p>
               )}
-              <div className="flex items-center justify-center gap-6 mb-6">
-                <span className="font-heading px-8 py-4 shadow-brutal bg-foreground text-background text-sm">
-                  ${equipment.price_per_day}/día
-                </span>
-              </div>
               <Button
                 variant="hero"
                 size="lg"
