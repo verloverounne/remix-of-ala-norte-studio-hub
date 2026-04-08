@@ -78,7 +78,7 @@ export const CartSidebar = ({
 
                 {/* Quantity controls */}
                 <div className="flex items-center justify-between mt-3 pt-3 py-0 my-0">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-[4px]">
                     <button
                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
                 className="w-7 h-7 flex items-center justify-center hover:bg-foreground hover:text-background transition-colors">
@@ -89,7 +89,7 @@ export const CartSidebar = ({
                     <button
                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
                 disabled={item.stockQuantity !== undefined && item.quantity >= item.stockQuantity}
-                className="w-7 h-7 border-2 border-foreground flex items-center justify-center hover:bg-foreground hover:text-background transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-foreground">
+                className="w-7 h-7 border-foreground flex items-center justify-center hover:bg-foreground hover:text-background transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-foreground border-0">
                 
                       <Plus className="w-3 h-3" />
                     </button>
