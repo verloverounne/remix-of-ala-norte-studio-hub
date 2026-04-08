@@ -80,7 +80,7 @@ const Equipos = () => {
       const newParams = new URLSearchParams(searchParams);
       newParams.delete("id");
       setSearchParams(newParams, {
-        replace: true
+        replace: true,
       });
     }
   };
@@ -106,7 +106,7 @@ const Equipos = () => {
       const cartItem = items.find((item) => item.id === id);
       return cartItem?.quantity || 0;
     },
-    [items]
+    [items],
   );
   const canAddMore = useCallback(
     (item: EquipmentWithStock) => {
@@ -114,7 +114,7 @@ const Equipos = () => {
       const stock = item.stock_quantity ?? 1;
       return inCart < stock;
     },
-    [getCartQuantity]
+    [getCartQuantity],
   );
   const fuzzyMatch = (text: string, search: string): boolean => {
     if (!search) return true;
@@ -160,20 +160,20 @@ const Equipos = () => {
   const filteredEquipment = useMemo(() => {
     return equipment.filter((item) => {
       const matchesSearch =
-      fuzzyMatch(item.name, searchTerm) ||
-      fuzzyMatch(item.brand || "", searchTerm) ||
-      fuzzyMatch(item.model || "", searchTerm);
+        fuzzyMatch(item.name, searchTerm) ||
+        fuzzyMatch(item.brand || "", searchTerm) ||
+        fuzzyMatch(item.model || "", searchTerm);
 
       // When searching, ignore category filter - search across all
       if (isSearching) {
         const matchesSubcategory =
-        selectedSubcategories.length === 0 ||
-        item.subcategory_id && selectedSubcategories.includes(item.subcategory_id);
+          selectedSubcategories.length === 0 ||
+          (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
         return matchesSearch && matchesSubcategory;
       }
       const matchesSubcategory =
-      selectedSubcategories.length === 0 ||
-      item.subcategory_id && selectedSubcategories.includes(item.subcategory_id);
+        selectedSubcategories.length === 0 ||
+        (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
       return matchesSearch && matchesSubcategory;
     });
   }, [equipment, searchTerm, selectedSubcategories, isSearching]);
@@ -221,16 +221,16 @@ const Equipos = () => {
           return (a.price_per_day || 0) - (b.price_per_day || 0);
         case "price-desc":
           return (b.price_per_day || 0) - (a.price_per_day || 0);
-        case "available-first":{
-            const aAvail = a.status === "available" ? 0 : 1;
-            const bAvail = b.status === "available" ? 0 : 1;
-            return aAvail !== bAvail ? aAvail - bAvail : a.name.localeCompare(b.name);
-          }
-        case "unavailable-first":{
-            const aAvail = a.status === "available" ? 1 : 0;
-            const bAvail = b.status === "available" ? 1 : 0;
-            return aAvail !== bAvail ? aAvail - bAvail : a.name.localeCompare(b.name);
-          }
+        case "available-first": {
+          const aAvail = a.status === "available" ? 0 : 1;
+          const bAvail = b.status === "available" ? 0 : 1;
+          return aAvail !== bAvail ? aAvail - bAvail : a.name.localeCompare(b.name);
+        }
+        case "unavailable-first": {
+          const aAvail = a.status === "available" ? 1 : 0;
+          const bAvail = b.status === "available" ? 1 : 0;
+          return aAvail !== bAvail ? aAvail - bAvail : a.name.localeCompare(b.name);
+        }
         default:
           return a.name.localeCompare(b.name);
       }
@@ -284,7 +284,7 @@ const Equipos = () => {
       toast({
         title: "Stock máximo alcanzado",
         description: `Solo hay ${item.stock_quantity} unidades disponibles de ${item.name}`,
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -295,13 +295,13 @@ const Equipos = () => {
         brand: item.brand || undefined,
         pricePerDay: item.price_per_day,
         imageUrl: item.image_url || undefined,
-        stockQuantity: item.stock_quantity
+        stockQuantity: item.stock_quantity,
       },
-      1
+      1,
     );
     toast({
       title: "Agregado a cotización",
-      description: `${item.name} agregado`
+      description: `${item.name} agregado`,
     });
   };
   const handleViewDetails = (item: EquipmentWithStock) => {
@@ -349,16 +349,16 @@ const Equipos = () => {
       <HeroCarouselRental
         categories={categories}
         onCategoryChange={handleCategoryClick}
-        activeCategory={activeCategory} />
-      
+        activeCategory={activeCategory}
+      />
 
       {/* Sticky navigation bar - Below Hero */}
       <div
         className="sticky z-[50] backdrop-blur-sm transition-all duration-300 "
         style={{
-          top: `${stickyTop}px`
-        }}>
-        
+          top: `${stickyTop}px`,
+        }}
+      >
         <div className="container mx-auto py-0 items-center px-0 bg-foreground">
           {/* Row 1: Category chips */}
           <div className="flex items-center gap-2 mb-2">
@@ -370,18 +370,18 @@ const Equipos = () => {
                   <button
                     key={category.id}
                     onClick={() => handleCategoryClick(category.id)}
-                    className={cn("flex-wrap flex-1 py-1.5 font-heading uppercase transition-all whitespace-nowrap px-[12px] font-bold border-0 rounded-sm text-lg",
+                    className={cn(
+                      "flex-wrap flex-1 py-1.5 font-heading uppercase transition-all whitespace-nowrap px-[12px] font-bold border-0 rounded-sm text-lg",
 
-
-                    isActive ?
-                    "bg-primary text-primary-foreground shadow-brutal-sm border-primary" :
-                    "bg-background text-foreground hover:bg-foreground hover:text-background border-foreground/20"
-                    )}>
-                    
+                      isActive
+                        ? "bg-primary text-primary-foreground shadow-brutal-sm border-primary"
+                        : "bg-background text-foreground hover:bg-foreground hover:text-background border-foreground/20",
+                    )}
+                  >
                     <span>{category.name}</span>
                     {count > 0}
-                  </button>);
-
+                  </button>
+                );
               })}
             </div>
           </div>
@@ -391,43 +391,48 @@ const Equipos = () => {
             <Collapsible open={isFilterOpen} onOpenChange={setIsFilterOpen}>
               <div className="pb-2">
                 <button
-                  onClick={() => { setIsFilterOpen(!isFilterOpen); setSubcatClickedOnce(true); setSubcatHeaderBlink(false); }}
+                  onClick={() => {
+                    setIsFilterOpen(!isFilterOpen);
+                    setSubcatClickedOnce(true);
+                    setSubcatHeaderBlink(false);
+                  }}
                   className={cn(
                     "gap-1 font-heading uppercase transition-colors cursor-pointer text-base font-bold flex items-center justify-center px-[16px] text-primary",
-                    subcatHeaderBlink && "text-background"
-                  )}>
-                  
+                    subcatHeaderBlink && "text-background",
+                  )}
+                >
                   {isFilterOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
                   Subcategorías
-                  {selectedSubcategories.length > 0 &&
-                  <span className="ml-1 text-[10px] text-primary-foreground px-1.5 rounded-sm bg-accent-foreground">
+                  {selectedSubcategories.length > 0 && (
+                    <span className="ml-1 text-[10px] text-primary-foreground px-1.5 rounded-sm bg-accent-foreground">
                       {selectedSubcategories.length}
                     </span>
-                  }
+                  )}
                 </button>
               </div>
               <CollapsibleContent>
                 <div className="pb-4 mx-0">
-                  {filteredSubcategories.length === 0 ?
-                  <p className="text-xs text-muted-foreground px-4">No hay subcategorías para esta categoría</p> :
+                  {filteredSubcategories.length === 0 ? (
+                    <p className="text-xs text-muted-foreground px-4">No hay subcategorías para esta categoría</p>
+                  ) : (
+                    <div className="flex flex-wrap gap-2 px-4">
+                      {filteredSubcategories.map((sub) => (
+                        <button
+                          key={sub.id}
+                          onClick={() => toggleSubcategory(sub.id)}
+                          className={cn(
+                            "flex-1 min-w-fit font-heading uppercase transition-all text-center px-[12px] py-[4px] bg-transparent border border-transparent rounded-sm text-sm text-background font-semibold",
 
-                  <div className="flex flex-wrap gap-2 px-4">
-                      {filteredSubcategories.map((sub) =>
-                    <button
-                      key={sub.id}
-                      onClick={() => toggleSubcategory(sub.id)}
-                      className={cn("flex-1 min-w-fit font-heading uppercase transition-all text-center px-[12px] py-[4px] bg-transparent border border-transparent rounded-sm text-sm text-background font-semibold",
-
-                      selectedSubcategories.includes(sub.id) ?
-                      "bg-primary text-primary-foreground border-primary" :
-                      "bg-transparent text-background hover:bg-foreground hover:text-background border-background/20"
-                      )}>
-                      
+                            selectedSubcategories.includes(sub.id)
+                              ? "bg-primary text-primary-foreground border-primary"
+                              : "bg-transparent text-background hover:bg-foreground hover:text-background border-background/20",
+                          )}
+                        >
                           {sub.name}
                         </button>
-                    )}
+                      ))}
                     </div>
-                  }
+                  )}
                 </div>
               </CollapsibleContent>
             </Collapsible>
@@ -443,7 +448,7 @@ const Equipos = () => {
 
             {/* Sort dropdown */}
             <Select value={sortOption} onValueChange={(val) => setSortOption(val as SortOption)}>
-              <SelectTrigger className="w-[140px] sm:w-[160px] h-8 text-xs  text-background  bg-foreground font-heading">
+              <SelectTrigger className="w-[140px] sm:w-[160px] h-8 text-xs  text-background  bg-primary font-heading">
                 <ArrowUpDown className="h-3 w-3 mr-1" />
                 <SelectValue placeholder="Ordenar" />
               </SelectTrigger>
@@ -476,11 +481,12 @@ const Equipos = () => {
                 setIsSearchOpen(!isSearchOpen);
                 if (isFilterOpen) setIsFilterOpen(false);
               }}
-              className={cn("h-8 px-2 flex-shrink-0 bg-inherit text-inherit border-0 rounded-sm",
+              className={cn(
+                "h-8 px-2 flex-shrink-0 bg-inherit text-inherit border-0 rounded-sm",
 
-              isSearchOpen && "bg-primary text-primary-foreground"
-              )}>
-              
+                isSearchOpen && "bg-primary text-primary-foreground",
+              )}
+            >
               <Search className="h-4 w-4" />
               <span className="ml-1 text-xs hidden sm:inline text-inherit">Buscar</span>
             </Button>
@@ -498,14 +504,14 @@ const Equipos = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10 font-heading uppercase text-sm my-[16px] px-[32px] mx-[24px]"
-                    autoFocus />
-                  
+                    autoFocus
+                  />
 
-                  {searchTerm &&
-                  <button onClick={() => setSearchTerm("")} className="absolute right-3 top-1/2 -translate-y-1/2">
+                  {searchTerm && (
+                    <button onClick={() => setSearchTerm("")} className="absolute right-3 top-1/2 -translate-y-1/2">
                       <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
                     </button>
-                  }
+                  )}
                 </div>
               </div>
             </CollapsibleContent>
@@ -514,88 +520,92 @@ const Equipos = () => {
       </div>
 
       <div className="pb-4 sm:pb-6">
-        <div className={cn(
-          "grid gap-4 lg:gap-6 py-[16px] ml-0 pl-[16px] pr-[16px] px-0 bg-foreground transition-all duration-500",
-          isCartVisible ? "lg:grid-cols-4" : "lg:grid-cols-1"
-        )}>
+        <div
+          className={cn(
+            "grid gap-4 lg:gap-6 py-[16px] ml-0 pl-[16px] pr-[16px] px-0 bg-foreground transition-all duration-500",
+            isCartVisible ? "lg:grid-cols-4" : "lg:grid-cols-1",
+          )}
+        >
           {/* Main Content - Category Sections */}
-          <main ref={mainContentRef} className={cn("transition-all duration-500", isCartVisible ? "lg:col-span-3" : "lg:col-span-1")}>
-            {loading ?
-            <div className="text-center py-12 sm:py-16 border p-8 sm:p-12">
+          <main
+            ref={mainContentRef}
+            className={cn("transition-all duration-500", isCartVisible ? "lg:col-span-3" : "lg:col-span-1")}
+          >
+            {loading ? (
+              <div className="text-center py-12 sm:py-16 border p-8 sm:p-12">
                 <p className="text-xl sm:text-2xl font-heading">CARGANDO...</p>
-              </div> :
-
-            <div className="space-y-4 sm:space-y-6 bg-transparent">
-                {orderedCategories.
-              filter((category) => !isSearching || categoriesWithResults.has(category.id)).
-              map((category, index) =>
-              <CategorySection
-                key={category.id}
-                ref={(ref) => {
-                  if (ref) {
-                    categoryRefs.current.set(category.id, ref);
-                  } else {
-                    categoryRefs.current.delete(category.id);
-                  }
-                }}
-                category={category}
-                equipment={equipmentByCategory[category.id] || []}
-                subcategories={subcategories.filter((s) => s.category_id === category.id)}
-                onAddToCart={handleAddToCart}
-                onViewDetails={handleViewDetails}
-                getCartQuantity={getCartQuantity}
-                canAddMore={canAddMore}
-                stickyTop={categoryTitleTop}
-                defaultExpanded={isSearching ? categoriesWithResults.has(category.id) : index === 0}
-                onCategoryActivate={handleCategoryActivate}
-                viewMode={viewMode}
-                sortOption={sortOption}
-                onSubcategorySelect={toggleSubcategory}
-                selectedSubcategories={selectedSubcategories}
-                forceExpandSubcategories={isSearching ? subcategoriesWithResults : undefined} />
-
-              )}
               </div>
-            }
+            ) : (
+              <div className="space-y-4 sm:space-y-6 bg-transparent">
+                {orderedCategories
+                  .filter((category) => !isSearching || categoriesWithResults.has(category.id))
+                  .map((category, index) => (
+                    <CategorySection
+                      key={category.id}
+                      ref={(ref) => {
+                        if (ref) {
+                          categoryRefs.current.set(category.id, ref);
+                        } else {
+                          categoryRefs.current.delete(category.id);
+                        }
+                      }}
+                      category={category}
+                      equipment={equipmentByCategory[category.id] || []}
+                      subcategories={subcategories.filter((s) => s.category_id === category.id)}
+                      onAddToCart={handleAddToCart}
+                      onViewDetails={handleViewDetails}
+                      getCartQuantity={getCartQuantity}
+                      canAddMore={canAddMore}
+                      stickyTop={categoryTitleTop}
+                      defaultExpanded={isSearching ? categoriesWithResults.has(category.id) : index === 0}
+                      onCategoryActivate={handleCategoryActivate}
+                      viewMode={viewMode}
+                      sortOption={sortOption}
+                      onSubcategorySelect={toggleSubcategory}
+                      selectedSubcategories={selectedSubcategories}
+                      forceExpandSubcategories={isSearching ? subcategoriesWithResults : undefined}
+                    />
+                  ))}
+              </div>
+            )}
           </main>
 
           {/* Cart Sidebar - Collapsible on desktop with scale animation */}
           <aside
             className={cn(
               "hidden lg:block shadow-none pr-0 relative transition-all duration-500 ease-in-out origin-bottom-right",
-              isCartVisible ?
-              "lg:col-span-1 opacity-100 scale-100 pointer-events-auto" :
-              "lg:col-span-0 w-0 opacity-0 scale-0 pointer-events-none overflow-hidden"
+              isCartVisible
+                ? "lg:col-span-1 opacity-100 scale-100 pointer-events-auto"
+                : "lg:col-span-0 w-0 opacity-0 scale-0 pointer-events-none overflow-hidden",
             )}
-            style={{ transformOrigin: "calc(100% - 24px) calc(100% - 72px)" }}>
-            
-              <CartSidebar
+            style={{ transformOrigin: "calc(100% - 24px) calc(100% - 72px)" }}
+          >
+            <CartSidebar
               items={items}
               calculateSubtotal={calculateSubtotal}
               updateQuantity={updateQuantity}
               removeItem={removeItem}
               stickyTop={cartStickyTop}
-              onCollapse={() => setIsCartVisible(false)} />
-            </aside>
+              onCollapse={() => setIsCartVisible(false)}
+            />
+          </aside>
 
           {/* Floating badge - appears when sidebar is collapsed */}
           <button
             onClick={() => setIsCartVisible(true)}
             className={cn(
               "hidden fixed right-6 bottom-[72px] z-40 bg-primary text-primary-foreground p-3 rounded-sm shadow-brutal-sm items-center gap-1 lg:flex flex-col transition-all duration-500 ease-in-out",
-              isCartVisible ?
-              "scale-0 opacity-0 pointer-events-none" :
-              "scale-100 opacity-100 pointer-events-auto"
+              isCartVisible ? "scale-0 opacity-0 pointer-events-none" : "scale-100 opacity-100 pointer-events-auto",
             )}
-            title="Mostrar presupuesto">
-            
-              <ShoppingCart className="w-5 h-5" />
-              {items.length > 0 &&
-            <span className="bg-foreground text-background text-xs font-bold w-5 h-5 flex items-center justify-center rounded-sm">
-                  {items.reduce((sum, item) => sum + item.quantity, 0)}
-                </span>
-            }
-            </button>
+            title="Mostrar presupuesto"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            {items.length > 0 && (
+              <span className="bg-foreground text-background text-xs font-bold w-5 h-5 flex items-center justify-center rounded-sm">
+                {items.reduce((sum, item) => sum + item.quantity, 0)}
+              </span>
+            )}
+          </button>
 
           {/* Mobile cart button/drawer */}
           <div className="lg:hidden">
@@ -603,7 +613,8 @@ const Equipos = () => {
               items={items}
               calculateSubtotal={calculateSubtotal}
               updateQuantity={updateQuantity}
-              removeItem={removeItem} />
+              removeItem={removeItem}
+            />
           </div>
         </div>
       </div>
@@ -618,9 +629,9 @@ const Equipos = () => {
         canAddMore={canAddMore}
         onViewDetails={(item) => {
           setSelectedEquipment(item);
-        }} />
-      
-    </div>);
-
+        }}
+      />
+    </div>
+  );
 };
 export default Equipos;
