@@ -295,14 +295,14 @@ const Home = () => {
       {/* Hero Section - Video Slider with CTAs */}
       <HomeVideoHeroSlider />
 
+      {/* CTA Section */}
+      <CTASection />
+
       {/* Services Section */}
       <ServicesSection />
 
       {/* Cartoni Official Dealer Section */}
       <CartoniSection />
-
-      {/* CTA Section */}
-      <CTASection />
 
       {/* Featured Equipment Section - Full Width Slider */}
       {featuredEquipment.length > 0 && (
