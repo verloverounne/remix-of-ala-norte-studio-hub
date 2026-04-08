@@ -199,7 +199,7 @@ Contactar cliente para coordinar entrega/retiro.
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   
-                  <h2 className="font-heading text-lg sm:text-xl lg:text-2xl">SI SOS CLIENTE NUEVO</h2>
+                  
                 </div>
                 <Button asChild size="lg" className="w-full sm:w-auto">
                   <a
