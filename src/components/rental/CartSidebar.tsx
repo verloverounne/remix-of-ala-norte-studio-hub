@@ -48,7 +48,7 @@ export const CartSidebar = ({
       </div>
 
       {/* Items list with internal scroll */}
-      <div className="overflow-y-auto flex-1 p-4 rounded-sm">
+      <div className="overflow-y-auto flex-1 p-4 rounded-sm bg-transparent">
         {items.length === 0 ?
       <div className="text-center py-8">
             <ShoppingCart className="w-12 h-12 mx-auto text-muted-foreground/40 mb-3" />
