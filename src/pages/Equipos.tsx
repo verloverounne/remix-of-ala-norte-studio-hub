@@ -497,7 +497,7 @@ const Equipos = () => {
                     placeholder="Buscar equipos..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 font-heading uppercase text-sm my-[16px] px-[32px] mx-0"
+                    className="pl-10 font-heading uppercase text-sm my-[16px] px-[32px] mx-[24px]"
                     autoFocus />
                   
 
