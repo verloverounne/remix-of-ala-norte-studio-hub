@@ -114,7 +114,7 @@ export const CartSidebar = ({
 
       {/* Footer */}
       {items.length > 0 &&
-    <div className="p-4 bg-muted/30 rounded-sm">
+    <div className="p-4 bg-muted/30 rounded-sm mx-[16px]">
           <div className="space-y-2 mb-4">
             <div className="flex justify-between items-baseline">
               <span className="font-heading text-sm">Subtotal (1 día):</span>
