@@ -279,19 +279,19 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
 
         {/* Equipment Grid - Collapsible with Subcategory Headers */}
         {isExpanded && (
-          <div ref={gridRef} key={animationKey} className="border-[#201e1d] border-0 bg-background max-w-screen-xl animate-subcategory-reveal">
+          <div ref={gridRef} key={animationKey} className="border-[#201e1d] border-0 bg-background max-w-screen-xl animate-subcategory-reveal rounded-sm">
             {equipment.length === 0 ? (
               <div className="text-center py-8 sm:py-12 text-muted-foreground">
                 <p className="font-heading text-lg">No hay equipos en esta categoría</p>
               </div>
             ) : viewMode === "list" ? (
               // List view with subcategory headers
-              <div className="space-y-2">
+              <div className="space-y-2 rounded-sm">
                 {groups.map((group) => {
                   const subcatId = group.subcategory?.id || "no-subcategory";
                   const isSubcategoryExpanded = subcategoryStates[subcatId] ?? true;
                   return (
-                    <div key={group.subcategory?.id || "no-subcategory"}>
+                    <div key={group.subcategory?.id || "no-subcategory"} className="rounded-sm">
                       <CollapsibleSubcategory
                         name={group.subcategory?.name || "Sin subcategoría"}
                         count={group.items.length}
@@ -313,7 +313,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
               </div>
             ) : (
               // Card view with subcategory headers
-              <div className="space-y-2">
+              <div className="space-y-2 rounded-sm">
                 {groups.map((group) => {
                   const subcatId = group.subcategory?.id || "no-subcategory";
                   const isSubcategoryExpanded = subcategoryStates[subcatId] ?? true;
