@@ -211,7 +211,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
             top: `${stickyTop - 1}px`,
           }}
         >
-          <div className="justify-n px-2 sm:px-4 flex items-center justify-start gap-[4px] text-foreground bg-inherit">
+          <div className="justify-n px-2 sm:px-4 gap-[4px] text-foreground bg-inherit py-0 flex items-center justify-start">
             <button
               onClick={handleHeaderClick}
               className="flex items-center gap-1 sm:gap-3 cursor-pointer hover:text-primary transition-colors"
