@@ -195,7 +195,7 @@ Contactar cliente para coordinar entrega/retiro.
         <div className="container mx-auto px-4 max-w-7xl">
           {/* 1. Sección Cliente Nuevo */}
           <Card className="mb-6 sm:mb-8 border-2 border-primary bg-primary/5">
-            <CardContent className="py-4 sm:py-6 bg-foreground text-background rounded-sm">
+            <CardContent className="p-6 py-4 sm:py-6 bg-foreground text-background border-0 rounded-sm">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   
