@@ -83,7 +83,7 @@ export const CartSidebar = ({
                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
                 className="w-7 h-7 flex items-center justify-center hover:bg-foreground hover:text-background transition-colors">
                 
-                      <Minus className="w-3 h-3" />
+                      <Minus className="w-3 h-3 mx-[8px]" />
                     </button>
                     <span className="font-heading text-sm w-6 text-center">{item.quantity}</span>
                     <button
