@@ -48,7 +48,7 @@ export const CartSidebar = ({
       </div>
 
       {/* Items list with internal scroll */}
-      <div className="overflow-y-auto flex-1 p-4 rounded-sm bg-card">
+      <div className="overflow-y-auto flex-1 p-4 rounded-sm bg-card pl-0 mr-[16px]">
         {items.length === 0 ?
       <div className="text-center py-8">
             <ShoppingCart className="w-12 h-12 mx-auto text-muted-foreground/40 mb-3" />
@@ -114,7 +114,7 @@ export const CartSidebar = ({
 
       {/* Footer */}
       {items.length > 0 &&
-    <div className="p-4 bg-muted/30 rounded-sm mx-[16px]">
+    <div className="p-4 bg-muted/30 rounded-sm mx-[16px] ml-0">
           <div className="space-y-2 mb-4">
             <div className="flex justify-between items-baseline">
               <span className="font-heading text-sm">Subtotal (1 día):</span>
