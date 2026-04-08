@@ -211,7 +211,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
             top: `${stickyTop - 1}px`,
           }}
         >
-          <div className="justify-n px-2 sm:px-4 gap-[4px] text-foreground bg-inherit py-0 flex items-center justify-start">
+          <div className="justify-n px-2 sm:px-4 gap-[4px] text-foreground bg-inherit flex items-center justify-start py-[3px]">
             <button
               onClick={handleHeaderClick}
               className="flex items-center gap-1 sm:gap-3 cursor-pointer hover:text-primary transition-colors"
@@ -267,7 +267,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                   e.stopPropagation();
                   toggleAllSubcategories();
                 }}
-                className="h-8 text-xs font-heading uppercase gap-1 px-[4px] bg-transparent"
+                className="h-8 text-xs font-heading uppercase gap-1 px-[4px] bg-transparent my-[4px]"
                 title={allSubcategoriesExpanded ? "Colapsar todas" : "Expandir todas"}
               >
                 <ChevronsUpDown className="h-6 w-6" />
