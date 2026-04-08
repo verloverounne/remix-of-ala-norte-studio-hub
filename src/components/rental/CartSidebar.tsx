@@ -48,7 +48,7 @@ export const CartSidebar = ({
       </div>
 
       {/* Items list with internal scroll */}
-      <div className="overflow-y-auto flex-1 p-4">
+      <div className="overflow-y-auto flex-1 p-4 rounded-sm">
         {items.length === 0 ?
       <div className="text-center py-8">
             <ShoppingCart className="w-12 h-12 mx-auto text-muted-foreground/40 mb-3" />
@@ -178,7 +178,7 @@ export const CartSidebar = ({
   // Desktop: Sticky sidebar - responsive, no max height
   return (
     <div
-      className="z-20 bg-card shadow-brutal border-px"
+      className="z-20 bg-card shadow-brutal border-px rounded-sm"
       style={{
         top: `${stickyTop}px`
       }}>
