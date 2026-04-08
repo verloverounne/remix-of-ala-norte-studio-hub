@@ -117,10 +117,10 @@ export const CartSidebar = ({
     <div className="p-4 bg-muted/30 rounded-sm mx-[16px] ml-0">
           <div className="space-y-2 mb-4">
             <div className="flex justify-between items-baseline">
-              <span className="font-heading text-sm">Subtotal (1 día):</span>
-              <span className="font-heading text-xl">${calculateSubtotal(1).toLocaleString()}</span>
+              <span className="font-heading text-sm text-card">Subtotal (1 día):</span>
+              <span className="font-heading text-xl text-card font-bold">${calculateSubtotal(1).toLocaleString()}</span>
             </div>
-            <div className="flex justify-between items-baseline text-muted-foreground text-xs">
+            <div className="flex justify-between items-baseline text-xs text-card">
               <span>Semana (7 días):</span>
               <span>${calculateSubtotal(7).toLocaleString()}</span>
             </div>
