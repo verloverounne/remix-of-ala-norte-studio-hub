@@ -42,7 +42,7 @@ export const CartSidebar = ({
             Presupuesto
           </h3>
           <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1">
-            {totalItems} {totalItems === 1 ? "ítem" : "ítems"}
+            {totalItems}
           </span>
         </div>
       </div>
