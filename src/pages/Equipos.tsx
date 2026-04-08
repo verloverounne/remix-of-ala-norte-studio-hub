@@ -434,7 +434,7 @@ const Equipos = () => {
           </div>
 
           {/* Row 2: Filter toggle + Equipment count + Sort + View toggle + Search button */}
-          <div className="flex-wrap flex-1 obje flex items-center justify-center text-background gap-[12px]">
+          <div className="flex-wrap flex-1 obje flex items-center justify-center text-background gap-[12px] py-[12px]">
             {/* Filter button - to HIDE subcategories */}
 
             <p className="text-xs font-heading uppercas mx-0 text-background">
