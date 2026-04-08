@@ -77,7 +77,7 @@ export const CartSidebar = ({
           
 
                 {/* Quantity controls */}
-                <div className="flex items-center justify-between mt-3 pt-3 py-0 my-0">
+                <div className="flex items-center justify-between mt-3 pt-3 py-0 my-0 ml-[12px]">
                   <div className="gap-[4px] flex items-center justify-center">
                     <button
                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
