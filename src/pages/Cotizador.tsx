@@ -374,22 +374,22 @@ Contactar cliente para coordinar entrega/retiro.
                               )}
                             </div>
                             {item.brand && <p className="text-sm text-muted-foreground font-mono">{item.brand}</p>}
-                            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
-                              <div className="flex items-center gap-2 border-2 border-foreground">
+                            <div className="flex-col items-center gap-2 sm:gap-4 flex sm:flex-row">
+                              <div className="flex items-center border-foreground rounded-sm gap-0 border-0">
                                 <Button
                                   variant="ghost"
                                   size="icon"
-                                  className="h-8 w-8"
+                                  className="h-8 w-8 opacity-100"
                                   onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                   disabled={isUnavailable}
                                 >
                                   -
                                 </Button>
-                                <span className="font-heading w-8 text-center">{item.quantity}</span>
+                                <span className="font-heading w-8 pl-[8px]">{item.quantity}</span>
                                 <Button
                                   variant="ghost"
                                   size="icon"
-                                  className="h-8 w-8"
+                                  className="h-8 w-8 opacity-100"
                                   onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                   disabled={isUnavailable}
                                 >
@@ -397,7 +397,7 @@ Contactar cliente para coordinar entrega/retiro.
                                 </Button>
                               </div>
                               <div className="text-sm">
-                                <span className="text-muted-foreground">
+                                <span className="text-muted-foreground text-base">
                                   ${item.pricePerDay.toLocaleString()}/día × {item.quantity} × {days} días
                                 </span>
                               </div>
