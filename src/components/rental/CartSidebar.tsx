@@ -94,7 +94,6 @@ export const CartSidebar = ({
                       <Plus className="w-3 h-3" />
                     </button>
                     {item.stockQuantity !== undefined &&
-              <span className="text-xs text-muted-foreground ml-1">(máx: {item.stockQuantity})</span>
               }
                   </div>
 
