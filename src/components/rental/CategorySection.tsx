@@ -199,7 +199,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
       <section
         ref={sectionRef}
         id={`categoria-${category.slug}`}
-        className="relative bg-foreground"
+        className="relative bg-foreground my-[6px]"
         style={{
           scrollMarginTop: `${stickyTop + 8}px`,
         }}
@@ -211,7 +211,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
             top: `${stickyTop - 1}px`,
           }}
         >
-          <div className="justify-n px-2 sm:px-4 gap-[4px] text-foreground bg-inherit flex items-center justify-start py-[3px]">
+          <div className="justify-n px-2 sm:px-4 gap-[4px] text-foreground bg-inherit flex items-center justify-start py-0">
             <button
               onClick={handleHeaderClick}
               className="flex items-center gap-1 sm:gap-3 cursor-pointer hover:text-primary transition-colors"
