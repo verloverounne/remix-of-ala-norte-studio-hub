@@ -198,7 +198,7 @@ Contactar cliente para coordinar entrega/retiro.
             <CardContent className="py-4 sm:py-6 bg-foreground text-background">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <UserPlus className="h-6 w-6 sm:h-8 sm:w-8 text-primary flex-shrink-0" />
+                  
                   <h2 className="font-heading text-lg sm:text-xl lg:text-2xl">¿Sos cliente nuevo?</h2>
                 </div>
                 <Button asChild size="lg" className="w-full sm:w-auto">
