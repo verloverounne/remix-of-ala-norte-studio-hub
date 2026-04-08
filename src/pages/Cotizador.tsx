@@ -192,7 +192,7 @@ Contactar cliente para coordinar entrega/retiro.
 
       {/* Main Section */}
       <section className="py-8 sm:py-12 lg:py-16">
-        <div className="container mx-auto px-4 max-w-7xl">
+        <div className="container mx-auto px-4 max-w-7xl border-0">
           {/* 1. Sección Cliente Nuevo */}
           <Card className="mb-6 sm:mb-8 border-2 border-primary bg-primary/5">
             <CardContent className="p-6 py-4 sm:py-6 bg-foreground text-background border-0 rounded-sm">
@@ -559,21 +559,21 @@ Contactar cliente para coordinar entrega/retiro.
           </Card>
 
           {/* Total y Botones de Envío */}
-          <Card className="border-4 border-primary shadow-brutal-red mb-6 sm:mb-8">
-            <CardHeader className="bg-primary text-primary-foreground">
+          <Card className="rounded-lg bg-card text-card-foreground hover:shadow-brutal-lg hover:-translate-y-1 transition-all duration-300 ease-out shadow-brutal-red mb-6 sm:mb-8 border-0 border-accent-foreground">
+            <CardHeader className="text-primary-foreground bg-accent-foreground rounded-sm">
               <CardTitle className="text-2xl sm:text-3xl text-center">TOTAL APROXIMADO</CardTitle>
             </CardHeader>
-            <CardContent className="p-4 sm:p-6 shadow-none">
+            <CardContent className="p-4 sm:p-6 shadow-none bg-accent-foreground">
               <div className="text-center space-y-2 mb-6">
-                <p className="font-heading text-4xl sm:text-5xl text-primary">${totalAmount.toLocaleString()}</p>
-                <p className="text-xs text-muted-foreground uppercase">Precio tentativo - sujeto a confirmación</p>
+                <p className="font-heading text-4xl sm:text-5xl text-primary text-center">${totalAmount.toLocaleString()}</p>
+                <p className="text-xs uppercase text-card text-center my-[32px]">Precio tentativo - sujeto a confirmación</p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <div className="flex-col gap-3 sm:gap-4 my-0 py-[64px] sm:flex-row flex items-start justify-center">
                 <Button
                   onClick={(e) => handleSubmit(e, "whatsapp")}
                   size="lg"
-                  className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white border-3 border-foreground"
+                  className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white border-3 border-foreground px-0"
                   disabled={items.length === 0}
                 >
                   <Send className="mr-2 h-5 w-5" />
@@ -582,9 +582,7 @@ Contactar cliente para coordinar entrega/retiro.
 
                 <Button
                   onClick={(e) => handleSubmit(e, "email")}
-                  variant="outline"
-                  size="lg"
-                  className="w-full"
+                  className="w-full border-primary border-0 text-primary-foreground bg-primary h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-12 text-sm sm:text-base md:text-lg font-bold"
                   disabled={items.length === 0}
                 >
                   <Mail className="mr-2 h-5 w-5" />
