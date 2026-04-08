@@ -59,7 +59,7 @@ export const CartSidebar = ({
 
       <div className="space-y-3 max-h-screen overflow-scroll ">
             {items.map((item) =>
-        <div key={item.id} className="p-3 bg-inherit">
+        <div key={item.id} className="p-3 bg-inherit py-0 px-0">
                 
 
 
@@ -77,7 +77,7 @@ export const CartSidebar = ({
           
 
                 {/* Quantity controls */}
-                <div className="flex items-center justify-between mt-3 pt-3">
+                <div className="flex items-center justify-between mt-3 pt-3 py-0 my-0">
                   <div className="flex items-center gap-2">
                     <button
                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
