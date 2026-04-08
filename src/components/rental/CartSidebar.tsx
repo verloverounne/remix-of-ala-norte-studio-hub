@@ -93,8 +93,7 @@ export const CartSidebar = ({
                 
                       <Plus className="w-3 h-3" />
                     </button>
-                    {item.stockQuantity !== undefined &&
-              }
+                    
                   </div>
 
                   <div className="flex items-center gap-3">
