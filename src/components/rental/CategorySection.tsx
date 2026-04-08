@@ -390,7 +390,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                                           <>
                                             <Plus className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0 m-0" />
                                             <span className="whitespace-nowrap opacity-0 w-0 overflow-hidden transition-all duration-300 group-hover:opacity-100 group-hover:w-auto group-hover:ml-2 font-black">
-                                              AGREGAR
+                                              ​
                                             </span>
                                           </>
                                         ) : (
