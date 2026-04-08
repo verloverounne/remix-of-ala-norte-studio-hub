@@ -27,13 +27,13 @@ export const CartSidebar = ({
   <>
       {/* Header */}
       <div className="bg-foreground text-background">
-        <div className="flex items-center gap-3 py-[6px] px-[16px]">
+        <div className="flex items-center gap-3 px-[16px] py-[12px]">
           {onCollapse &&
         <button
           onClick={onCollapse}
           className="w-6 h-6 flex-shrink-0 flex items-center justify-center hover:bg-foreground hover:text-background transition-colors rounded-sm"
           title="Ocultar presupuesto">
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="h-[24px] w-[24px]" />
             </button>
         }
           <h3

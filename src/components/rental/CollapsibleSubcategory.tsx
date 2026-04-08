@@ -78,7 +78,7 @@ export const CollapsibleSubcategory = ({
   }, []);
 
   return <div className="mb-4 rounded-sm" id={subcategoryId ? `subcategory-${subcategoryId}` : undefined}>
-      <button onClick={handleToggle} className="flex items-center gap-2 w-full border-b border-foreground/20 pb-2 mb-3 hover:text-primary transition-colors cursor-pointer bg-card py-[16px] px-0 rounded-sm">
+      <button onClick={handleToggle} className="flex items-center gap-2 w-full border-b border-foreground/20 pb-2 mb-3 hover:text-primary transition-colors cursor-pointer bg-card px-0 rounded-sm py-[16px]">
         {isExpanded ? <ChevronDown className="h-3 w-3 flex-shrink-0" /> : <ChevronRight className="h-3 w-3 flex-shrink-0" />}
         <h3 className={cn("font-heading text-xs uppercase sm:text-base text-primary", !isExpanded && isBlinking && "animate-subcategory-blink")}>
           {name}
