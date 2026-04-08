@@ -41,7 +41,7 @@ export const CartSidebar = ({
           onClick={onCollapse}>
             Presupuesto
           </h3>
-          <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1">
+          <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded-sm">
             {totalItems}
           </span>
         </div>
