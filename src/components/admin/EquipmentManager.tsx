@@ -62,11 +62,9 @@ interface Equipment {
   model: string | null;
   description: string | null;
   price_per_day: number;
-  price_per_week: number | null;
   category_id: string | null;
   subcategory_id: string | null;
   featured: boolean;
-  featured_copy: string | null;
   status: 'available' | 'rented' | 'maintenance';
   stock_quantity: number;
   categories: Category | null;
