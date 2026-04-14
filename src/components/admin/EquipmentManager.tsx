@@ -645,10 +645,6 @@ export const EquipmentManager = () => {
           <div className="flex flex-wrap items-center justify-between gap-2">
             <CardTitle className="text-lg">Gestión de Equipos e Imágenes</CardTitle>
             <div className="flex flex-wrap gap-2">
-              <Button variant="outline" size="sm" onClick={handleDownloadBackup}>
-                <Download className="h-4 w-4 mr-2" />
-                Backup JSON
-              </Button>
               <Button variant={isAddFormOpen ? "outline" : "hero"} onClick={() => setIsAddFormOpen(!isAddFormOpen)}>
                 {isAddFormOpen ? (
                   <>
