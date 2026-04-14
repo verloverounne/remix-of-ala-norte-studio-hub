@@ -482,9 +482,7 @@ export const EquipmentManager = () => {
         model: editingEquipment.model || null,
         description: editingEquipment.description || null,
         price_per_day: editingEquipment.price_per_day,
-        price_per_week: editingEquipment.price_per_week || null,
         featured: editingEquipment.featured || false,
-        featured_copy: editingEquipment.featured_copy || null,
         status: editingEquipment.status,
         stock_quantity: editingEquipment.stock_quantity,
       })
@@ -1394,16 +1392,6 @@ export const EquipmentManager = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Precio por semana</Label>
-                <Input
-                  type="number"
-                  value={editingEquipment.price_per_week || ""}
-                  onChange={(e) =>
-                    setEditingEquipment({ ...editingEquipment, price_per_week: parseInt(e.target.value) || null })
-                  }
-                />
-              </div>
-              <div className="space-y-2">
                 <Label>Cantidad disponible</Label>
                 <Input
                   type="number"
@@ -1438,14 +1426,6 @@ export const EquipmentManager = () => {
                   />
                   <Label>Destacado</Label>
                 </div>
-                {editingEquipment.featured && (
-                  <Input
-                    className="flex-1"
-                    placeholder="Texto destacado"
-                    value={editingEquipment.featured_copy || ""}
-                    onChange={(e) => setEditingEquipment({ ...editingEquipment, featured_copy: e.target.value })}
-                  />
-                )}
               </div>
               <div className="md:col-span-2 flex justify-end gap-2 pt-2">
                 <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>
