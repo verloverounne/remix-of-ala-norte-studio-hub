@@ -159,6 +159,9 @@ const Equipos = () => {
   const isSearching = searchTerm.length > 0;
   const filteredEquipment = useMemo(() => {
     return equipment.filter((item) => {
+      // Hide non-available equipment from public listing
+      if (item.status !== "available") return false;
+
       const matchesSearch =
         fuzzyMatch(item.name, searchTerm) ||
         fuzzyMatch(item.brand || "", searchTerm) ||
