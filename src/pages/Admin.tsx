@@ -1308,6 +1308,37 @@ const Admin = () => {
                   Los equipos destacados aparecerán en la página principal
                 </p>
               </div>
+              <div className="space-y-2">
+                <Label>Tipo (Propiedad)</Label>
+                <Select value={(editingEquipment as any).ownership_type || ""} onValueChange={v => setEditingEquipment({
+                  ...editingEquipment,
+                  ownership_type: v
+                } as any)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sin definir" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Propio">Propio</SelectItem>
+                    <SelectItem value="Externo">Externo</SelectItem>
+                    <SelectItem value="Estacionado">Estacionado</SelectItem>
+                    <SelectItem value="Compartido">Compartido</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Estado Funcional</Label>
+                <Input value={(editingEquipment as any).functional_status || ""} onChange={e => setEditingEquipment({
+                  ...editingEquipment,
+                  functional_status: e.target.value
+                } as any)} placeholder="Si, No, Parcial..." />
+              </div>
+              <div className="space-y-2">
+                <Label>Nro. Serie</Label>
+                <Input value={(editingEquipment as any).serial_number || ""} onChange={e => setEditingEquipment({
+                  ...editingEquipment,
+                  serial_number: e.target.value
+                } as any)} placeholder="Número de serie" />
+              </div>
 
               {/* Unavailability Periods Section */}
               <div className="md:col-span-2 border-t-2 border-foreground pt-6 mt-6">
