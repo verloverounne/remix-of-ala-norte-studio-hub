@@ -601,7 +601,7 @@ const Admin = () => {
         "id", "name", "name_en", "brand", "model", "description",
         "price_per_day",
         "status", "stock_quantity", "featured", "order_index",
-        "image_url", "images", "tags", "specs", "detailed_specs",
+        "image_url", "images", "specs", "detailed_specs",
         "category_id", "category_name", "subcategory_id", "subcategory_name",
         "id_original",
         "created_at", "updated_at"
@@ -621,7 +621,7 @@ const Admin = () => {
           eq.id, eq.name, eq.name_en, eq.brand, eq.model, eq.description,
           eq.price_per_day,
           eq.status, eq.stock_quantity, eq.featured, eq.order_index,
-          eq.image_url, JSON.stringify(eq.images || []), JSON.stringify(eq.tags || []),
+          eq.image_url, JSON.stringify(eq.images || []),
           JSON.stringify(eq.specs || []), JSON.stringify(eq.detailed_specs || []),
           eq.category_id, eq.categories?.name || "", eq.subcategory_id, eq.subcategories?.name || "",
           eq.id_original,
@@ -721,7 +721,7 @@ const Admin = () => {
         order_index: parseInt(getCol(row, "order_index")) || 0,
         image_url: getCol(row, "image_url") || null,
         images: parseJSON(getCol(row, "images"), []),
-        tags: parseJSON(getCol(row, "tags"), []),
+        
         specs: parseJSON(getCol(row, "specs"), []),
         detailed_specs: parseJSON(getCol(row, "detailed_specs"), []),
         category_id: getCol(row, "category_id") || null,
@@ -925,7 +925,7 @@ const Admin = () => {
           status: cleanItem.status || "available",
           image_url: cleanItem.image_url || null,
           images: cleanItem.images || [],
-          tags: cleanItem.tags || [],
+          
           featured: cleanItem.featured || false,
           featured_copy: cleanItem.featured_copy || null,
           order_index: cleanItem.order_index || 0,

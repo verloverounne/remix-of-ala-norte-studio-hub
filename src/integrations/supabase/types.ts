@@ -233,7 +233,6 @@ export type Database = {
           status: Database["public"]["Enums"]["equipment_status"] | null
           stock_quantity: number
           subcategory_id: string | null
-          tags: string[] | null
           updated_at: string
         }
         Insert: {
@@ -256,7 +255,6 @@ export type Database = {
           status?: Database["public"]["Enums"]["equipment_status"] | null
           stock_quantity?: number
           subcategory_id?: string | null
-          tags?: string[] | null
           updated_at?: string
         }
         Update: {
@@ -279,7 +277,6 @@ export type Database = {
           status?: Database["public"]["Enums"]["equipment_status"] | null
           stock_quantity?: number
           subcategory_id?: string | null
-          tags?: string[] | null
           updated_at?: string
         }
         Relationships: [

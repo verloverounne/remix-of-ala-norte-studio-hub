@@ -40,7 +40,6 @@ export interface Equipment {
   status: EquipmentStatus;
   image_url: string | null;
   images: string[];
-  tags: string[];
   featured: boolean;
   order_index: number;
   stock_quantity: number;
