@@ -220,6 +220,7 @@ export type Database = {
           description: string | null
           detailed_specs: Json | null
           featured: boolean | null
+          functional_status: string | null
           id: string
           id_original: number | null
           image_url: string | null
@@ -228,7 +229,9 @@ export type Database = {
           name: string
           name_en: string | null
           order_index: number | null
+          ownership_type: string | null
           price_per_day: number
+          serial_number: string | null
           specs: Json | null
           status: Database["public"]["Enums"]["equipment_status"] | null
           stock_quantity: number
@@ -242,6 +245,7 @@ export type Database = {
           description?: string | null
           detailed_specs?: Json | null
           featured?: boolean | null
+          functional_status?: string | null
           id?: string
           id_original?: number | null
           image_url?: string | null
@@ -250,7 +254,9 @@ export type Database = {
           name: string
           name_en?: string | null
           order_index?: number | null
+          ownership_type?: string | null
           price_per_day: number
+          serial_number?: string | null
           specs?: Json | null
           status?: Database["public"]["Enums"]["equipment_status"] | null
           stock_quantity?: number
@@ -264,6 +270,7 @@ export type Database = {
           description?: string | null
           detailed_specs?: Json | null
           featured?: boolean | null
+          functional_status?: string | null
           id?: string
           id_original?: number | null
           image_url?: string | null
@@ -272,7 +279,9 @@ export type Database = {
           name?: string
           name_en?: string | null
           order_index?: number | null
+          ownership_type?: string | null
           price_per_day?: number
+          serial_number?: string | null
           specs?: Json | null
           status?: Database["public"]["Enums"]["equipment_status"] | null
           stock_quantity?: number
