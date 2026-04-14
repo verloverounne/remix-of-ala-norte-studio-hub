@@ -141,7 +141,7 @@ export const EquipmentManager = () => {
     const { data } = await supabase
       .from("equipment")
       .select(
-        "id, name, name_en, image_url, images, brand, model, description, price_per_day, price_per_week, category_id, subcategory_id, featured, featured_copy, status, stock_quantity, categories (*), subcategories (*)",
+        "id, name, name_en, image_url, images, brand, model, description, price_per_day, category_id, subcategory_id, featured, status, stock_quantity, serial_number, ownership_type, functional_status, categories (*), subcategories (*)",
       )
       .order("name");
     if (data) {
