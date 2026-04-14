@@ -34,17 +34,14 @@ export interface Equipment {
   brand: string | null;
   model: string | null;
   description: string | null;
-  detailed_description: string | null;
   specs: any;
   detailed_specs: any;
   price_per_day: number;
-  price_per_week: number | null;
   status: EquipmentStatus;
   image_url: string | null;
   images: string[];
   tags: string[];
   featured: boolean;
-  featured_copy: string | null;
   order_index: number;
   stock_quantity: number;
   created_at: string;
