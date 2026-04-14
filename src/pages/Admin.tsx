@@ -12,7 +12,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Edit, Trash2, Percent, Download, Upload, Calendar as CalendarIcon, X, Image as ImageIcon } from "lucide-react";
+import { Plus, Edit, Trash2, Percent, Download, Upload, Calendar as CalendarIcon, X, Image as ImageIcon, RefreshCw } from "lucide-react";
+import { RentalosSyncPanel } from "@/components/admin/RentalosSyncPanel";
 import { ImageUploader } from "@/components/ImageUploader";
 import { StorageImageSelector } from "@/components/StorageImageSelector";
 import { EquipmentImageUploader } from "@/components/EquipmentImageUploader";
@@ -1123,11 +1124,14 @@ const Admin = () => {
             </TabsContent>
 
             {/* Backup Tab */}
-            <TabsContent value="backup">
+            <TabsContent value="backup" className="space-y-6">
+              {/* Rentalos Sync - Most prominent */}
+              <RentalosSyncPanel onSyncComplete={fetchAll} />
+
               <Card>
                 <CardHeader>
                   <CardTitle>Backup y Restauración</CardTitle>
-                  <CardDescription>Gestiona copias de seguridad de la base de datos</CardDescription>
+                  <CardDescription>Exportar e importar datos de la base de datos</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-4">
@@ -1160,9 +1164,6 @@ const Admin = () => {
                         <Input type="file" accept=".csv" onChange={handleImportCSV} className="max-w-xs" disabled={isImportingCSV} />
                         {isImportingCSV && <span className="text-sm text-muted-foreground animate-pulse">Importando CSV...</span>}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-2">
-                        Formato: CSV con las mismas columnas exportadas (separado por comas, UTF-8 con BOM)
-                      </p>
                     </div>
 
                     <div className="border-l-4 border-secondary pl-4 py-2">
@@ -1170,49 +1171,30 @@ const Admin = () => {
                       <p className="text-sm text-muted-foreground mb-4">
                         Reemplaza TODOS los equipos de la base de datos con los del archivo JSON.
                         <span className="block mt-2 text-destructive font-semibold">
-                          ⚠️ ATENCIÓN: Esta acción eliminará todos los equipos existentes y los reemplazará con los del
-                          archivo.
+                          ⚠️ ATENCIÓN: Esta acción eliminará todos los equipos existentes.
                         </span>
                       </p>
                       <div className="flex items-center gap-4">
                         <Input type="file" accept=".json" onChange={handleImportEquipment} className="max-w-xs" disabled={isImporting} />
                         {isImporting && <span className="text-sm text-muted-foreground animate-pulse">Importando...</span>}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-2">
-                        Formato esperado: archivo JSON con estructura {`{ data: { equipment: [...] } }`}
-                      </p>
                     </div>
 
                     <div className="border-l-4 border-green-500 pl-4 py-2">
                       <h3 className="font-heading font-bold text-lg mb-2">Actualizar Stock desde CSV</h3>
                       <p className="text-sm text-muted-foreground mb-4">
-                        Actualiza la cantidad de stock de cada equipo usando el archivo CSV de EquipoEmpresa. Hace match
-                        por nombre normalizado y suma las cantidades de registros duplicados.
+                        Actualiza la cantidad de stock usando CSV de EquipoEmpresa. Match por nombre normalizado.
                       </p>
                       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                         <Input type="file" accept=".csv" onChange={handleUpdateStockFromCSV} className="w-full sm:max-w-xs" disabled={isUpdatingStock} />
-                        {isUpdatingStock && <span className="text-sm text-muted-foreground animate-pulse text-center sm:text-left">
-                            Actualizando stock...
-                          </span>}
+                        {isUpdatingStock && <span className="text-sm text-muted-foreground animate-pulse">Actualizando stock...</span>}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-2">
-                        Formato esperado: CSV con columnas "Nombre" y "Cantidad" separadas por punto y coma (;)
-                      </p>
                     </div>
 
                     <div className="border-l-4 border-muted pl-4 py-2 bg-muted/20">
                       <h3 className="font-heading font-bold text-lg mb-2">Código Fuente del Sitio</h3>
                       <p className="text-sm text-muted-foreground mb-4">
-                        Para obtener una copia completa del código fuente del sitio web, puedes:
-                      </p>
-                      <ul className="text-sm text-muted-foreground space-y-2 mb-4 list-disc list-inside">
-                        <li>Conectar el proyecto a GitHub desde la interfaz de Lovable</li>
-                        <li>Usar el modo Dev para ver y descargar archivos individuales</li>
-                        <li>Exportar el proyecto completo desde la configuración</li>
-                      </ul>
-                      <p className="text-xs text-muted-foreground italic">
-                        El código fuente se gestiona mejor mediante control de versiones (Git) en lugar de backups
-                        manuales.
+                        Para obtener una copia del código fuente, conectá el proyecto a GitHub desde Lovable.
                       </p>
                     </div>
                   </div>
@@ -1325,6 +1307,37 @@ const Admin = () => {
                 <p className="text-xs text-muted-foreground">
                   Los equipos destacados aparecerán en la página principal
                 </p>
+              </div>
+              <div className="space-y-2">
+                <Label>Tipo (Propiedad)</Label>
+                <Select value={(editingEquipment as any).ownership_type || ""} onValueChange={v => setEditingEquipment({
+                  ...editingEquipment,
+                  ownership_type: v
+                } as any)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sin definir" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Propio">Propio</SelectItem>
+                    <SelectItem value="Externo">Externo</SelectItem>
+                    <SelectItem value="Estacionado">Estacionado</SelectItem>
+                    <SelectItem value="Compartido">Compartido</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Estado Funcional</Label>
+                <Input value={(editingEquipment as any).functional_status || ""} onChange={e => setEditingEquipment({
+                  ...editingEquipment,
+                  functional_status: e.target.value
+                } as any)} placeholder="Si, No, Parcial..." />
+              </div>
+              <div className="space-y-2">
+                <Label>Nro. Serie</Label>
+                <Input value={(editingEquipment as any).serial_number || ""} onChange={e => setEditingEquipment({
+                  ...editingEquipment,
+                  serial_number: e.target.value
+                } as any)} placeholder="Número de serie" />
               </div>
 
               {/* Unavailability Periods Section */}
