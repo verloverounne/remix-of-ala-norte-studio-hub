@@ -14,7 +14,6 @@ export const STATIC_FEATURED_EQUIPMENT = [
     image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1769294018876_nanlux_evoke_1200b_led_bi_color_1726270.jpg",
     price_per_day: 170000,
     featured: true,
-    featured_copy: null,
     order_index: 0,
   },
   {
@@ -26,7 +25,7 @@ export const STATIC_FEATURED_EQUIPMENT = [
     image_url: null,
     price_per_day: 91000,
     featured: true,
-    featured_copy: null,
+    
     order_index: 0,
   },
 ];
