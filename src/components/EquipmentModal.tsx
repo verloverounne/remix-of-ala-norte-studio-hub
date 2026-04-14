@@ -203,12 +203,6 @@ export const EquipmentModal = ({
                 <p className="text-sm text-muted-foreground font-heading">POR DÍA</p>
                 <p className="font-heading text-3xl text-primary">${(equipment.price_per_day / 1000).toFixed(0)}K</p>
               </div>
-              {equipment.price_per_week && (
-                <div className="border-2 border-foreground p-4">
-                  <p className="text-sm text-muted-foreground font-heading">POR SEMANA</p>
-                  <p className="font-heading text-3xl text-primary">${(equipment.price_per_week / 1000).toFixed(0)}K</p>
-                </div>
-              )}
             </div>
           </div>
 

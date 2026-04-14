@@ -1,0 +1,10 @@
+ALTER TABLE public.equipment
+  DROP COLUMN descripcion_corta_es,
+  DROP COLUMN descripcion_corta_en,
+  DROP COLUMN detailed_description,
+  DROP COLUMN featured_copy,
+  DROP COLUMN observaciones_internas,
+  DROP COLUMN price_per_week,
+  DROP COLUMN sku_rentalos,
+  DROP COLUMN tamano,
+  DROP COLUMN tipo_equipo;

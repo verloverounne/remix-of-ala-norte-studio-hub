@@ -34,28 +34,18 @@ export interface Equipment {
   brand: string | null;
   model: string | null;
   description: string | null;
-  detailed_description: string | null;
   specs: any;
   detailed_specs: any;
   price_per_day: number;
-  price_per_week: number | null;
   status: EquipmentStatus;
   image_url: string | null;
   images: string[];
   tags: string[];
   featured: boolean;
-  featured_copy: string | null;
   order_index: number;
   stock_quantity: number;
   created_at: string;
   updated_at: string;
-  // New columns from CSV import
-  sku_rentalos: string | null;
-  descripcion_corta_es: string | null;
-  descripcion_corta_en: string | null;
-  tamano: string | null;
-  tipo_equipo: string | null;
-  observaciones_internas: string | null;
   id_original: number | null;
 }
 

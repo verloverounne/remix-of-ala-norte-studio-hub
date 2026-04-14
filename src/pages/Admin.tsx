@@ -53,11 +53,9 @@ const Admin = () => {
     model: "",
     description: "",
     price_per_day: "",
-    price_per_week: "",
     image_url: "",
     images: [] as string[],
     featured: false,
-    featured_copy: ""
   });
 
   // Space form state
@@ -174,12 +172,10 @@ const Admin = () => {
       model: newEquipment.model || null,
       description: newEquipment.description || null,
       price_per_day: parseInt(newEquipment.price_per_day),
-      price_per_week: newEquipment.price_per_week ? parseInt(newEquipment.price_per_week) : null,
       image_url: newEquipment.image_url || null,
       images: newEquipment.images,
       status: "available",
       featured: newEquipment.featured,
-      featured_copy: newEquipment.featured_copy || null
     });
     if (error) {
       toast({
@@ -201,11 +197,9 @@ const Admin = () => {
         model: "",
         description: "",
         price_per_day: "",
-        price_per_week: "",
         image_url: "",
         images: [],
         featured: false,
-        featured_copy: ""
       });
       fetchEquipment();
     }
@@ -328,11 +322,9 @@ const Admin = () => {
       model: editingEquipment.model || null,
       description: editingEquipment.description || null,
       price_per_day: editingEquipment.price_per_day,
-      price_per_week: editingEquipment.price_per_week || null,
       image_url: editingEquipment.image_url || null,
       images: editingEquipment.images || [],
       featured: editingEquipment.featured || false,
-      featured_copy: editingEquipment.featured_copy || null
     }).eq("id", editingEquipment.id);
     if (error) {
       toast({
@@ -606,12 +598,12 @@ const Admin = () => {
       }
 
       const csvColumns = [
-        "id", "name", "name_en", "brand", "model", "description", "detailed_description",
-        "descripcion_corta_es", "descripcion_corta_en", "price_per_day", "price_per_week",
-        "status", "stock_quantity", "featured", "featured_copy", "order_index",
+        "id", "name", "name_en", "brand", "model", "description",
+        "price_per_day",
+        "status", "stock_quantity", "featured", "order_index",
         "image_url", "images", "tags", "specs", "detailed_specs",
         "category_id", "category_name", "subcategory_id", "subcategory_name",
-        "sku_rentalos", "tamano", "tipo_equipo", "observaciones_internas", "id_original",
+        "id_original",
         "created_at", "updated_at"
       ];
 
@@ -626,13 +618,13 @@ const Admin = () => {
 
       const rows = allEquipment.map((eq: any) => {
         return [
-          eq.id, eq.name, eq.name_en, eq.brand, eq.model, eq.description, eq.detailed_description,
-          eq.descripcion_corta_es, eq.descripcion_corta_en, eq.price_per_day, eq.price_per_week,
-          eq.status, eq.stock_quantity, eq.featured, eq.featured_copy, eq.order_index,
+          eq.id, eq.name, eq.name_en, eq.brand, eq.model, eq.description,
+          eq.price_per_day,
+          eq.status, eq.stock_quantity, eq.featured, eq.order_index,
           eq.image_url, JSON.stringify(eq.images || []), JSON.stringify(eq.tags || []),
           JSON.stringify(eq.specs || []), JSON.stringify(eq.detailed_specs || []),
           eq.category_id, eq.categories?.name || "", eq.subcategory_id, eq.subcategories?.name || "",
-          eq.sku_rentalos, eq.tamano, eq.tipo_equipo, eq.observaciones_internas, eq.id_original,
+          eq.id_original,
           eq.created_at, eq.updated_at
         ].map(escapeCSV).join(",");
       });
@@ -722,15 +714,10 @@ const Admin = () => {
         brand: getCol(row, "brand") || null,
         model: getCol(row, "model") || null,
         description: getCol(row, "description") || null,
-        detailed_description: getCol(row, "detailed_description") || null,
-        descripcion_corta_es: getCol(row, "descripcion_corta_es") || null,
-        descripcion_corta_en: getCol(row, "descripcion_corta_en") || null,
         price_per_day: parseInt(getCol(row, "price_per_day")) || 0,
-        price_per_week: parseInt(getCol(row, "price_per_week")) || null,
         status: (getCol(row, "status") as any) || "available",
         stock_quantity: parseInt(getCol(row, "stock_quantity")) || 1,
         featured: getCol(row, "featured") === "true",
-        featured_copy: getCol(row, "featured_copy") || null,
         order_index: parseInt(getCol(row, "order_index")) || 0,
         image_url: getCol(row, "image_url") || null,
         images: parseJSON(getCol(row, "images"), []),
@@ -1311,13 +1298,6 @@ const Admin = () => {
               price_per_day: parseInt(e.target.value)
             })} />
               </div>
-              <div className="space-y-2">
-                <Label>Precio por semana</Label>
-                <Input type="number" value={editingEquipment.price_per_week || ""} onChange={e => setEditingEquipment({
-              ...editingEquipment,
-              price_per_week: e.target.value ? parseInt(e.target.value) : null
-            })} />
-              </div>
               <div className="space-y-2 md:col-span-2">
                 <Label>Descripción</Label>
                 <Textarea value={editingEquipment.description || ""} onChange={e => setEditingEquipment({
@@ -1346,13 +1326,6 @@ const Admin = () => {
                   Los equipos destacados aparecerán en la página principal
                 </p>
               </div>
-              {editingEquipment.featured && <div className="space-y-2 md:col-span-2">
-                  <Label>Descripción para Destacados</Label>
-                  <Textarea value={editingEquipment.featured_copy || ""} onChange={e => setEditingEquipment({
-              ...editingEquipment,
-              featured_copy: e.target.value
-            })} placeholder="Texto breve que aparecerá en la home para este equipo destacado" />
-                </div>}
 
               {/* Unavailability Periods Section */}
               <div className="md:col-span-2 border-t-2 border-foreground pt-6 mt-6">

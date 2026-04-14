@@ -119,9 +119,6 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
               >
                 {equipment.name}
               </h3>
-              {equipment.featured_copy && (
-                <p className="text-xl md:text-2xl text-background/80 mb-8 font-heading">{equipment.featured_copy}</p>
-              )}
               <Button
                 variant="hero"
                 size="lg"
