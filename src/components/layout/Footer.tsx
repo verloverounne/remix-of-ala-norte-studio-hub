@@ -76,7 +76,7 @@ export const Footer = () => {
             <h4 className="font-semibold">Seguinos</h4>
             <div className="flex gap-4">
               <a
-                href="https://taplink.cc/alanortecinedigital"
+                href="https://www.instagram.com/alanortecinedigital/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-primary transition-brutal"
@@ -85,7 +85,7 @@ export const Footer = () => {
                 <Instagram className="h-5 w-5" />
               </a>
               <a
-                href="https://linktr.ee/alanortecinedigital"
+                href="https://taplink.cc/alanortecinedigital"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-primary transition-brutal"
