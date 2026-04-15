@@ -76,7 +76,7 @@ export const Footer = () => {
             <h4 className="font-semibold">Seguinos</h4>
             <div className="flex gap-4">
               <a
-                href="https://www.instagram.com/alanortecinedigital/"
+                href="https://taplink.cc/alanortecinedigital"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-primary transition-brutal"
