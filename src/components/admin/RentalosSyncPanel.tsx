@@ -356,9 +356,12 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
           <p className="font-semibold">¿Qué hace esta sincronización?</p>
           <ul className="list-disc list-inside space-y-1 text-muted-foreground">
             <li>Actualiza <strong>precio, stock, subcategoría, nro serie, estado funcional y tipo</strong></li>
-            <li>Equipos que <strong>no están en el CSV</strong> se marcan como <strong>no disponibles</strong> (no se borran)</li>
-            <li>Equipos que <strong>vuelven a aparecer</strong> se reactivan automáticamente</li>
-            <li><strong>NO toca</strong>: imágenes, descripciones, specs ni destacados</li>
+            <li>Tipo <strong>Propio</strong> aparece primero, <strong>Compartido</strong> luego, <strong>Externo</strong> al final (vía order_index)</li>
+            <li>Tipo <strong>Estacionado</strong> = no disponible (status maintenance, no suma stock)</li>
+            <li>Unifica equipos equivalentes (ej. "200w" = "2k", "1000w" = "1k") sumando cantidades</li>
+            <li><strong>Anexos</strong> se concatenan a la descripción existente sin sobrescribirla</li>
+            <li>Equipos ausentes del CSV se marcan como no disponibles (no se borran)</li>
+            <li><strong>NO toca</strong>: imágenes, specs ni destacados</li>
           </ul>
         </div>
 
