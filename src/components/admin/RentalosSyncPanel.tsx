@@ -200,17 +200,17 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
       const { data: subcategories } = await supabase.from("subcategories").select("id, name, category_id");
       const subMap = new Map((subcategories || []).map((s) => [s.name, { id: s.id, category_id: s.category_id }]));
 
-      // Fetch all existing equipment
+      // Fetch all existing equipment (incluyendo description para append de anexos)
       addLog("Cargando equipos existentes...");
       const { data: existingEquipment, error: eqError } = await supabase
         .from("equipment")
-        .select("id, name, status")
+        .select("id, name, status, description")
         .limit(10000);
       if (eqError) throw eqError;
 
-      const existingMap = new Map<string, { id: string; name: string }>();
+      const existingMap = new Map<string, { id: string; name: string; description: string | null }>();
       for (const eq of existingEquipment || []) {
-        existingMap.set(normalizeName(eq.name), { id: eq.id, name: eq.name });
+        existingMap.set(normalizeName(eq.name), { id: eq.id, name: eq.name, description: eq.description });
       }
       addLog(`✓ ${existingMap.size} equipos existentes en la base de datos`);
 
@@ -227,14 +227,34 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
         const subcatName = CATEGORY_MAP[csvCatNorm];
         const subcatInfo = subcatName ? subMap.get(subcatName) : null;
 
+        // Mapear tipo → status + order_index priority
+        const { status, priority } = mapTipo(csvItem.tipo);
+
+        // Append anexos a la description existente sin duplicar
+        const anexosText = csvItem.anexos.filter(Boolean).join(" • ").trim();
+        let mergedDescription: string | null | undefined = undefined; // undefined = no tocar
+        if (anexosText) {
+          const existingDesc = (existing?.description || "").trim();
+          const anexoBlock = `Anexos: ${anexosText}`;
+          if (!existingDesc) {
+            mergedDescription = anexoBlock;
+          } else if (!existingDesc.includes(anexoBlock)) {
+            // Reemplazar bloque "Anexos:" anterior si existe, sino agregar
+            const cleaned = existingDesc.replace(/\n?Anexos:.*$/s, "").trim();
+            mergedDescription = `${cleaned}\n\n${anexoBlock}`;
+          }
+        }
+
         const updateFields: Record<string, unknown> = {
           price_per_day: csvItem.precioDiario,
           stock_quantity: csvItem.totalCantidad,
-          status: "available" as const,
+          status,
+          order_index: priority,
           functional_status: csvItem.funcional || null,
           ownership_type: csvItem.tipo || null,
           serial_number: csvItem.serialNumbers.join(" | ") || null,
         };
+        if (mergedDescription !== undefined) updateFields.description = mergedDescription;
 
         if (subcatInfo) {
           updateFields.subcategory_id = subcatInfo.id;
@@ -242,7 +262,7 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
         }
 
         if (existing) {
-          // UPDATE existing — preserve image_url, images, featured, description, specs
+          // UPDATE existing — preserve image_url, images, featured, specs
           const { error } = await supabase
             .from("equipment")
             .update(updateFields)
