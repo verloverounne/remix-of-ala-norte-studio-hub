@@ -58,7 +58,32 @@ interface SyncResult {
 }
 
 function normalizeName(name: string): string {
-  return name.toLowerCase().trim().replace(/\s+/g, " ");
+  let n = name.toLowerCase().trim().replace(/\s+/g, " ");
+  // Unificación: "200w" ↔ "2k", "1000w" ↔ "1k", "5000w" ↔ "5k", etc.
+  // Regla: 1k = 1000w, 2k = 2000w pero por convención de iluminación 2k ≈ 200w (LED equiv tungsteno)
+  // Implementación: normalizar variantes de potencia equivalentes
+  const powerEquivalents: Array<[RegExp, string]> = [
+    [/\b200\s?w\b/g, "2k"],
+    [/\b300\s?w\b/g, "3k"],
+    [/\b500\s?w\b/g, "5k"],
+    [/\b1000\s?w\b/g, "1k"],
+    [/\b1200\s?w\b/g, "1.2k"],
+    [/\b2000\s?w\b/g, "2k"],
+  ];
+  for (const [re, rep] of powerEquivalents) n = n.replace(re, rep);
+  // Eliminar variaciones menores de puntuación
+  n = n.replace(/[\/\-_,.]/g, " ").replace(/\s+/g, " ").trim();
+  return n;
+}
+
+// Mapea "Tipo" de Rentalos a status + prioridad de orden
+function mapTipo(tipo: string): { status: "available" | "maintenance"; priority: number } {
+  const t = tipo.toLowerCase().trim();
+  if (t === "estacionado") return { status: "maintenance", priority: 99 };
+  if (t === "propio") return { status: "available", priority: 1 };
+  if (t === "compartido") return { status: "available", priority: 2 };
+  if (t === "externo") return { status: "available", priority: 3 };
+  return { status: "available", priority: 5 };
 }
 
 function parseCSVRows(text: string): CSVRow[] {
@@ -114,19 +139,27 @@ function groupCSVRows(rows: CSVRow[]) {
     const key = normalizeName(row.nombre);
     const existing = groups.get(key);
     if (existing) {
-      existing.totalCantidad += row.cantidad;
+      // Sumar cantidad y mantener tipo dominante (Propio > Compartido > Externo > Estacionado)
+      // pero NO sumar Estacionados al stock disponible
+      const newTipoP = mapTipo(row.tipo).priority;
+      const oldTipoP = mapTipo(existing.tipo).priority;
+      // Solo sumar al stock si NO es Estacionado
+      if (row.tipo.toLowerCase().trim() !== "estacionado") {
+        existing.totalCantidad += row.cantidad;
+      }
       if (row.numeroSerie) existing.serialNumbers.push(row.numeroSerie);
       if (row.anexos) existing.anexos.push(row.anexos);
-      // Keep the first non-empty values
       if (!existing.funcional && row.funcional) existing.funcional = row.funcional;
-      if (!existing.tipo && row.tipo) existing.tipo = row.tipo;
+      // Tipo dominante = el de mayor prioridad (menor número)
+      if (newTipoP < oldTipoP) existing.tipo = row.tipo;
       if (!existing.precioDiario && row.precioDiario) existing.precioDiario = row.precioDiario;
     } else {
+      const isEstacionado = row.tipo.toLowerCase().trim() === "estacionado";
       groups.set(key, {
         nombre: row.nombre,
         categoria: row.categoria,
         precioDiario: row.precioDiario,
-        totalCantidad: row.cantidad,
+        totalCantidad: isEstacionado ? 0 : row.cantidad,
         serialNumbers: row.numeroSerie ? [row.numeroSerie] : [],
         anexos: row.anexos ? [row.anexos] : [],
         funcional: row.funcional,
@@ -167,17 +200,17 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
       const { data: subcategories } = await supabase.from("subcategories").select("id, name, category_id");
       const subMap = new Map((subcategories || []).map((s) => [s.name, { id: s.id, category_id: s.category_id }]));
 
-      // Fetch all existing equipment
+      // Fetch all existing equipment (incluyendo description para append de anexos)
       addLog("Cargando equipos existentes...");
       const { data: existingEquipment, error: eqError } = await supabase
         .from("equipment")
-        .select("id, name, status")
+        .select("id, name, status, description")
         .limit(10000);
       if (eqError) throw eqError;
 
-      const existingMap = new Map<string, { id: string; name: string }>();
+      const existingMap = new Map<string, { id: string; name: string; description: string | null }>();
       for (const eq of existingEquipment || []) {
-        existingMap.set(normalizeName(eq.name), { id: eq.id, name: eq.name });
+        existingMap.set(normalizeName(eq.name), { id: eq.id, name: eq.name, description: eq.description });
       }
       addLog(`✓ ${existingMap.size} equipos existentes en la base de datos`);
 
@@ -194,14 +227,34 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
         const subcatName = CATEGORY_MAP[csvCatNorm];
         const subcatInfo = subcatName ? subMap.get(subcatName) : null;
 
+        // Mapear tipo → status + order_index priority
+        const { status, priority } = mapTipo(csvItem.tipo);
+
+        // Append anexos a la description existente sin duplicar
+        const anexosText = csvItem.anexos.filter(Boolean).join(" • ").trim();
+        let mergedDescription: string | null | undefined = undefined; // undefined = no tocar
+        if (anexosText) {
+          const existingDesc = (existing?.description || "").trim();
+          const anexoBlock = `Anexos: ${anexosText}`;
+          if (!existingDesc) {
+            mergedDescription = anexoBlock;
+          } else if (!existingDesc.includes(anexoBlock)) {
+            // Reemplazar bloque "Anexos:" anterior si existe, sino agregar
+            const cleaned = existingDesc.replace(/\n?Anexos:.*$/s, "").trim();
+            mergedDescription = `${cleaned}\n\n${anexoBlock}`;
+          }
+        }
+
         const updateFields: Record<string, unknown> = {
           price_per_day: csvItem.precioDiario,
           stock_quantity: csvItem.totalCantidad,
-          status: "available" as const,
+          status,
+          order_index: priority,
           functional_status: csvItem.funcional || null,
           ownership_type: csvItem.tipo || null,
           serial_number: csvItem.serialNumbers.join(" | ") || null,
         };
+        if (mergedDescription !== undefined) updateFields.description = mergedDescription;
 
         if (subcatInfo) {
           updateFields.subcategory_id = subcatInfo.id;
@@ -209,7 +262,7 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
         }
 
         if (existing) {
-          // UPDATE existing — preserve image_url, images, featured, description, specs
+          // UPDATE existing — preserve image_url, images, featured, specs
           const { error } = await supabase
             .from("equipment")
             .update(updateFields)
@@ -303,9 +356,12 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
           <p className="font-semibold">¿Qué hace esta sincronización?</p>
           <ul className="list-disc list-inside space-y-1 text-muted-foreground">
             <li>Actualiza <strong>precio, stock, subcategoría, nro serie, estado funcional y tipo</strong></li>
-            <li>Equipos que <strong>no están en el CSV</strong> se marcan como <strong>no disponibles</strong> (no se borran)</li>
-            <li>Equipos que <strong>vuelven a aparecer</strong> se reactivan automáticamente</li>
-            <li><strong>NO toca</strong>: imágenes, descripciones, specs ni destacados</li>
+            <li>Tipo <strong>Propio</strong> aparece primero, <strong>Compartido</strong> luego, <strong>Externo</strong> al final (vía order_index)</li>
+            <li>Tipo <strong>Estacionado</strong> = no disponible (status maintenance, no suma stock)</li>
+            <li>Unifica equipos equivalentes (ej. "200w" = "2k", "1000w" = "1k") sumando cantidades</li>
+            <li><strong>Anexos</strong> se concatenan a la descripción existente sin sobrescribirla</li>
+            <li>Equipos ausentes del CSV se marcan como no disponibles (no se borran)</li>
+            <li><strong>NO toca</strong>: imágenes, specs ni destacados</li>
           </ul>
         </div>
 
