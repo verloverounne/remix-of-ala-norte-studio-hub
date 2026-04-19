@@ -452,6 +452,7 @@ export const EquipmentManager = () => {
         featured: data.featured || false,
         status: data.status || 'available',
         stock_quantity: data.stock_quantity ?? 1,
+        ownership_type: data.ownership_type ?? null,
         categories: data.categories as Category | null,
         subcategories: data.subcategories as Subcategory | null,
       };
