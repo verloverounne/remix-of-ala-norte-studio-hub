@@ -139,19 +139,27 @@ function groupCSVRows(rows: CSVRow[]) {
     const key = normalizeName(row.nombre);
     const existing = groups.get(key);
     if (existing) {
-      existing.totalCantidad += row.cantidad;
+      // Sumar cantidad y mantener tipo dominante (Propio > Compartido > Externo > Estacionado)
+      // pero NO sumar Estacionados al stock disponible
+      const newTipoP = mapTipo(row.tipo).priority;
+      const oldTipoP = mapTipo(existing.tipo).priority;
+      // Solo sumar al stock si NO es Estacionado
+      if (row.tipo.toLowerCase().trim() !== "estacionado") {
+        existing.totalCantidad += row.cantidad;
+      }
       if (row.numeroSerie) existing.serialNumbers.push(row.numeroSerie);
       if (row.anexos) existing.anexos.push(row.anexos);
-      // Keep the first non-empty values
       if (!existing.funcional && row.funcional) existing.funcional = row.funcional;
-      if (!existing.tipo && row.tipo) existing.tipo = row.tipo;
+      // Tipo dominante = el de mayor prioridad (menor número)
+      if (newTipoP < oldTipoP) existing.tipo = row.tipo;
       if (!existing.precioDiario && row.precioDiario) existing.precioDiario = row.precioDiario;
     } else {
+      const isEstacionado = row.tipo.toLowerCase().trim() === "estacionado";
       groups.set(key, {
         nombre: row.nombre,
         categoria: row.categoria,
         precioDiario: row.precioDiario,
-        totalCantidad: row.cantidad,
+        totalCantidad: isEstacionado ? 0 : row.cantidad,
         serialNumbers: row.numeroSerie ? [row.numeroSerie] : [],
         anexos: row.anexos ? [row.anexos] : [],
         funcional: row.funcional,
