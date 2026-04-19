@@ -1044,6 +1044,20 @@ export const EquipmentManager = () => {
                                 Dest
                               </Badge>
                             )}
+                            {eq.ownership_type && (() => {
+                              const t = eq.ownership_type.toLowerCase().trim();
+                              const cls =
+                                t === "propio" ? "bg-emerald-600 hover:bg-emerald-600 text-white border-transparent" :
+                                t === "compartido" ? "bg-sky-600 hover:bg-sky-600 text-white border-transparent" :
+                                t === "externo" ? "bg-amber-600 hover:bg-amber-600 text-white border-transparent" :
+                                t === "estacionado" ? "bg-zinc-600 hover:bg-zinc-600 text-white border-transparent" :
+                                "bg-muted text-muted-foreground border-transparent";
+                              return (
+                                <Badge className={`text-xs ${cls}`} title={`Tipo: ${eq.ownership_type}`}>
+                                  {eq.ownership_type}
+                                </Badge>
+                              );
+                            })()}
                           </div>
                         </div>
                       </div>
