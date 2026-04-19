@@ -67,6 +67,7 @@ interface Equipment {
   featured: boolean;
   status: 'available' | 'rented' | 'maintenance';
   stock_quantity: number;
+  ownership_type: string | null;
   categories: Category | null;
   subcategories: Subcategory | null;
   equipment_images?: EquipmentImage[];
