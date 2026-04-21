@@ -194,13 +194,10 @@ Contactar cliente para coordinar entrega/retiro.
       <section className="py-8 sm:py-12 lg:py-16 bg-popover-foreground">
         <div className="container mx-auto px-4 max-w-7xl border-0 bg-popover-foreground">
           {/* 1. Sección Cliente Nuevo */}
-          <Card className="mb-6 sm:mb-8 border-2 border-primary bg-primary/5">
+          <Card className="mb-6 sm:mb-8">
             <CardContent className="p-6 py-4 sm:py-6 text-background border-0 rounded-sm bg-transparent border-transparent">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  
-                  
-                </div>
+                <div className="flex items-center gap-3"></div>
                 <Button asChild size="lg" className="w-full sm:w-auto">
                   <a
                     href="https://docs.google.com/forms/d/e/1FAIpQLSf1JuBZQnlUe_-lGfKMzmaNI9386GKhpg32y54IpqBjpQk0hA/viewform"
@@ -565,8 +562,12 @@ Contactar cliente para coordinar entrega/retiro.
             </CardHeader>
             <CardContent className="p-4 sm:p-6 shadow-none bg-accent-foreground">
               <div className="text-center space-y-2 mb-6">
-                <p className="font-heading text-4xl sm:text-5xl text-primary text-center">${totalAmount.toLocaleString()}</p>
-                <p className="text-xs uppercase text-card text-center my-[32px]">Precio tentativo - sujeto a confirmación</p>
+                <p className="font-heading text-4xl sm:text-5xl text-primary text-center">
+                  ${totalAmount.toLocaleString()}
+                </p>
+                <p className="text-xs uppercase text-card text-center my-[32px]">
+                  Precio tentativo - sujeto a confirmación
+                </p>
               </div>
 
               <div className="flex-col gap-3 sm:gap-4 my-0 py-[64px] sm:flex-row flex items-start justify-center">
