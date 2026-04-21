@@ -114,7 +114,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
           >
             <div className="text-center z-10 p-8 max-w-4xl">
               <h3
-                className="mb-6 uppercase text-center text-secondary font-sans font-medium"
+                className="mb-6 uppercase text-center font-sans font-medium my-[64px] text-primary"
                 style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
               >
                 {equipment.name}
