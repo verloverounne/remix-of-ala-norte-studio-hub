@@ -195,9 +195,9 @@ Contactar cliente para coordinar entrega/retiro.
         <div className="container mx-auto px-4 max-w-7xl border-0">
           {/* 1. Sección Cliente Nuevo */}
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-[16px]">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3"></div>
-            <Button asChild size="lg" className="w-full sm:w-auto my-[32px]">
+            <Button asChild size="lg" className="w-full sm:w-auto">
               <a
                 href="https://docs.google.com/forms/d/e/1FAIpQLSf1JuBZQnlUe_-lGfKMzmaNI9386GKhpg32y54IpqBjpQk0hA/viewform"
                 target="_blank"
@@ -214,7 +214,7 @@ Contactar cliente para coordinar entrega/retiro.
               <CardHeader className="bg-primary/10">
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="font-heading text-lg sm:text-xl lg:text-2xl my-[32px]">
+                    <CardTitle className="font-heading text-lg sm:text-xl lg:text-2xl">
                       Cómo funciona el alquiler en ALA NORTE
                     </CardTitle>
                     <CardDescription>
