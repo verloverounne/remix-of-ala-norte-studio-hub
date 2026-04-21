@@ -271,7 +271,7 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
                 title={allSubcategoriesExpanded ? "Colapsar todas" : "Expandir todas"}
               >
                 <ChevronsUpDown className="h-6 w-6" />
-                <span className="hidden sm:inline">{allSubcategoriesExpanded ? "Colapsar" : "Expandir"}</span>
+                <span className="hidden sm:inline text-sm">{allSubcategoriesExpanded ? "Colapsar" : "Expandir"}</span>
               </Button>
             )}
           </div>
