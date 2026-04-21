@@ -50,9 +50,9 @@ export const CartSidebar = ({
       {/* Items list with internal scroll */}
       <div className="overflow-y-auto flex-1 p-4 rounded-sm bg-card pl-0 mr-[16px]">
         {items.length === 0 ?
-      <div className="text-center py-8">
+      <div className="text-center py-8 ml-[16px]">
             <ShoppingCart className="w-12 h-12 mx-auto text-muted-foreground/40 mb-3" />
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground ml-0">
               Todavía no hay equipos en tu lista. Explorá el catálogo y sumá lo que necesitás.
             </p>
           </div> :
