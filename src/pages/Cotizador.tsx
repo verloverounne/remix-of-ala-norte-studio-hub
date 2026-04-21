@@ -191,11 +191,11 @@ Contactar cliente para coordinar entrega/retiro.
       </section>
 
       {/* Main Section */}
-      <section className="py-8 sm:py-12 lg:py-16 bg-popover-foreground">
-        <div className="container mx-auto px-4 max-w-7xl border-0 bg-popover-foreground">
+      <section className="py-8 sm:py-12 lg:py-16">
+        <div className="container mx-auto px-4 max-w-7xl border-0">
           {/* 1. Sección Cliente Nuevo */}
           <Card className="mb-6 sm:mb-8">
-            <CardContent className="p-6 py-4 sm:py-6 text-background border-0 rounded-sm bg-transparent border-transparent">
+            <CardContent className="p-6 py-4 sm:py-6 text-background border-0 rounded-sm">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3"></div>
                 <Button asChild size="lg" className="w-full sm:w-auto">
