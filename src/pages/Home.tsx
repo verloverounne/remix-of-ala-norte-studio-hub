@@ -110,11 +110,11 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="absolute inset-0 flex items-center justify-center image-duotone "
+            className="absolute inset-0 image-duotone flex items-end justify-center"
           >
             <div className="text-center z-10 p-8 max-w-4xl">
               <h3
-                className="mb-6 uppercase text-center font-sans font-medium my-[64px] text-primary"
+                className="mb-6 uppercase text-center font-sans font-medium text-primary my-0"
                 style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
               >
                 {equipment.name}
@@ -147,7 +147,7 @@ const CTASection = () => {
       <div className="absolute inset-0 w-full h-full">
         <img
           alt=""
-          className="w-full h-full image-duotone object-cover "
+          className="w-full h-full image-duotone object-cover mx-[8px] mr-0 ml-0 px-0"
           src="/lovable-uploads/fb5916aa-2049-4f18-aa32-4bfb53fbdc4f.png"
         />
       </div>
