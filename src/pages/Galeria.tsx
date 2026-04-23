@@ -159,7 +159,7 @@ const Galeria = () => {
               {space.layout_description && (
                 <div className="bg-muted p-4 rounded-lg">
                   <h3 className="font-heading font-bold mb-2 text-background">Plano de la galería</h3>
-                  <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
+                  <p className="font-heading text-lg font-medium text-background">{space.layout_description}</p>
                 </div>
               )}
             </div>
