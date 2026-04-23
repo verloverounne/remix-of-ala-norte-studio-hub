@@ -14,6 +14,7 @@ const Galeria = () => {
   const { space, loading } = useSpace("galeria");
   const { getByPageType } = useGalleryImages();
   const [tour360Open, setTour360Open] = useState(false);
+  const [planoOpen, setPlanoOpen] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const modalContentRef = useRef<HTMLDivElement>(null);
@@ -137,7 +138,12 @@ const Galeria = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-[64px]">
             {/* Left Column: Featured Image */}
             <div className="space-y-6">
-              <div className="overflow-hidden group rounded-sm">
+              <button
+                type="button"
+                onClick={() => featuredMediaImage && setPlanoOpen(true)}
+                className="overflow-hidden group rounded-sm block w-full cursor-zoom-in"
+                aria-label="Ampliar plano"
+              >
                 <img
                   src={
                     featuredMediaImage ||
@@ -146,19 +152,24 @@ const Galeria = () => {
                     "/placeholder.svg"
                   }
                   alt={space.name}
-                  className="w-full h-auto object-contain"
+                  className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02]"
                 />
-              </div>
+              </button>
 
               {/* Floor Plan - Mobile only (shown under featured on small screens) */}
               {planoImage && (
-                <div className="lg:hidden relative overflow-hidden rounded-lg">
+                <button
+                  type="button"
+                  onClick={() => setPlanoOpen(true)}
+                  className="lg:hidden relative overflow-hidden rounded-lg block w-full cursor-zoom-in"
+                  aria-label="Ampliar plano"
+                >
                   <img
                     src={planoImage.image_url}
                     alt={planoImage.title || "Plano ilustrativo del estudio"}
                     className="w-full h-auto object-contain bg-background"
                   />
-                </div>
+                </button>
               )}
 
               {space.layout_description && (
@@ -379,6 +390,20 @@ const Galeria = () => {
             allow="fullscreen; xr-spatial-tracking"
             title="Tour 360° Galería"
           />
+        </DialogContent>
+      </Dialog>
+
+      {/* Plano Modal */}
+      <Dialog open={planoOpen} onOpenChange={setPlanoOpen}>
+        <DialogContent className="max-w-[95vw] w-[95vw] h-[90vh] p-0 border-0 bg-background overflow-auto [&>button]:z-50 [&>button]:text-foreground [&>button]:bg-background [&>button]:rounded-sm [&>button]:p-2 [&>button]:top-3 [&>button]:right-3 [&>button]:shadow-brutal-sm">
+          <DialogTitle className="sr-only">Plano ilustrativo del estudio</DialogTitle>
+          <div className="w-full h-full flex items-center justify-center p-4">
+            <img
+              src={planoImage?.image_url || featuredMediaImage || "/placeholder.svg"}
+              alt={planoImage?.title || "Plano ilustrativo del estudio"}
+              className="max-w-full max-h-full object-contain"
+            />
+          </div>
         </DialogContent>
       </Dialog>
     </div>
