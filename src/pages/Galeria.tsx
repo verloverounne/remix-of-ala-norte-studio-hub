@@ -399,7 +399,7 @@ const Galeria = () => {
           <DialogTitle className="sr-only">Plano ilustrativo del estudio</DialogTitle>
           <div className="w-full h-full flex items-center justify-center p-4">
             <img
-              src={planoImage?.image_url || featuredMediaImage || "/placeholder.svg"}
+              src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//gallery_1775335547737_plano_galeria.png"
               alt={planoImage?.title || "Plano ilustrativo del estudio"}
               className="max-w-full max-h-full object-contain"
             />
