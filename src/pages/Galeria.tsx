@@ -124,12 +124,26 @@ const Galeria = () => {
                 <img
                   alt="Plano ilustrativo del estudio"
                   className="w-full h-auto object-contain bg-background"
-                  src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//1767902810624_galeria_fotos_gaston_y_juan.jpg"
+                  src="/lovable-uploads/7a26e0e7-4882-4604-9b3b-88bda06e16c1.jpg"
                 />
               </div>
             </div>
+      {/* Text Content - Single column below */}
+          <div className="space-y-8 w-screen mt-12">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">El espacio</h2>
+              <p className="text-muted-foreground font-heading text-base font-medium">
+                {space.detailed_description || space.description}
+              </p>
+            </div>
 
-            {/* Right Column: Image Carousel */}
+            {space.layout_description && (
+              <div className="bg-muted p-4 rounded-lg">
+                <h3 className="font-heading font-bold mb-2">Plano de la galería</h3>
+                <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
+              </div>
+      
+            {/* Right Column: Image Carousel 
             <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg">
               {galeriaImages.length > 0 ? (
                 <>
@@ -173,28 +187,18 @@ const Galeria = () => {
                 </div>
               )}
             </div>
-          </div>
+          </div> 
+          
+          
+    */}
 
-          {/* Text Content - Single column below */}
-          <div className="space-y-8 w-screen mt-12">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">El espacio</h2>
-              <p className="text-muted-foreground font-heading text-base font-medium">
-                {space.detailed_description || space.description}
-              </p>
-            </div>
-
-            {space.layout_description && (
-              <div className="bg-muted p-4 rounded-lg">
-                <h3 className="font-heading font-bold mb-2">Plano de la galería</h3>
-                <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
-              </div>
+    
             )}
 
             {/* Floor Plan - Mobile only */}
             <div className="lg:hidden relative overflow-hidden rounded-lg">
               <img
-                src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//1767902810624_galeria_fotos_gaston_y_juan.jpg"
+                src="/lovable-uploads/7a26e0e7-4882-4604-9b3b-88bda06e16c1.jpg"
                 alt="Plano ilustrativo del estudio"
                 className="w-full h-auto object-contain bg-background"
               />
