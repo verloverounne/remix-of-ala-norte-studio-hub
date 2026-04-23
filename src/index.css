@@ -496,6 +496,20 @@ All colors MUST be HSL.
   filter: none !important;
 }
 
+/* Ken Burns - Slow zoom-in for slideshow images */
+@keyframes ken-burns-zoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.12);
+  }
+}
+
+.animate-ken-burns {
+  animation: ken-burns-zoom 4s ease-out forwards;
+}
+
 /* Animación parallax para contenido móvil que sube desde abajo */
 @keyframes slide-up-parallax {
   0% {
