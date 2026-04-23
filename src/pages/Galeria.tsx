@@ -111,7 +111,12 @@ const Galeria = () => {
             <div className="space-y-6">
               <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg group">
                 <img
-                  src={featuredMediaImage || space.featured_image || (space.images && space.images[0]) || "/placeholder.svg"}
+                  src={
+                    featuredMediaImage ||
+                    space.featured_image ||
+                    (space.images && space.images[0]) ||
+                    "/placeholder.svg"
+                  }
                   alt={space.name}
                   className="w-full h-full object-cover"
                 />
@@ -128,51 +133,7 @@ const Galeria = () => {
                 </div>
               </div>
 
-              {/* Image Carousel - Auto-play slideshow with Ken Burns zoom */}
-              <div className="relative aspect-video overflow-hidden rounded-lg">
-                {galeriaImages.length > 0 ? (
-                  <>
-                    <img
-                      key={carouselIndex}
-                      src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
-                      alt={galeriaImages[carouselIndex]?.title || `Galería ${carouselIndex + 1}`}
-                      className="w-full h-full object-cover animate-ken-burns"
-                    />
-                    {galeriaImages.length > 1 && (
-                      <>
-                        <button
-                          onClick={() => setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)}
-                          className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[-2px] transition-transform"
-                          aria-label="Anterior"
-                        >
-                          <ChevronLeft className="h-5 w-5" />
-                        </button>
-                        <button
-                          onClick={() => setCarouselIndex((prev) => (prev + 1) % galeriaImages.length)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[2px] transition-transform"
-                          aria-label="Siguiente"
-                        >
-                          <ChevronRight className="h-5 w-5" />
-                        </button>
-                        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                          {galeriaImages.map((_, i) => (
-                            <button
-                              key={i}
-                              onClick={() => setCarouselIndex(i)}
-                              className={`w-2 h-2 rounded-full transition-all ${i === carouselIndex ? "bg-primary w-4" : "bg-white/60"}`}
-                              aria-label={`Ir a imagen ${i + 1}`}
-                            />
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <div className="w-full h-full bg-muted flex items-center justify-center">
-                    <p className="text-muted-foreground font-heading">Sin imágenes</p>
-                  </div>
-                )}
-              </div>
+              {/* Image Carousel - Aut
 
               {/* Floor Plan - Mobile only */}
               <div className="lg:hidden relative overflow-hidden rounded-lg">
@@ -200,60 +161,60 @@ const Galeria = () => {
                 </div>
               )}
 
-            {space.features && Array.isArray(space.features) && space.features.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
-                {(space.features as string[]).map((feature, index) => (
-                  <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
-                    <span className="text-primary">•</span>
-                    {feature}
-                  </p>
-                ))}
-              </div>
-            )}
-
-            {space.included_items && space.included_items.length > 0 && (
-              <div>
-                <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
-                  Incluido sin cargo adicional
-                </h3>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                  {space.included_items.map((item, index) => (
-                    <li key={index} className="flex items-center gap-2 text-muted-foreground">
+              {space.features && Array.isArray(space.features) && space.features.length > 0 && (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
+                  {(space.features as string[]).map((feature, index) => (
+                    <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
                       <span className="text-primary">•</span>
-                      <span className="font-heading">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="border-foreground p-4 rounded-lg border-0 bg-inherit px-0">
-              <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
-              <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekday}</p>
-              <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekend}</p>
-            </div>
-
-            {space.optional_services && space.optional_services.length > 0 && (
-              <div>
-                <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
-                <div className="flex flex-wrap gap-2">
-                  {space.optional_services.map((service, index) => (
-                    <Badge key={index} variant="outline" className="font-heading">
-                      {service}
-                    </Badge>
+                      {feature}
+                    </p>
                   ))}
                 </div>
-              </div>
-            )}
+              )}
 
-            <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
-              <Link to="/contacto">
-                <Calendar className="mr-2 h-5 w-5" />
-                {space.cta_text || "RESERVAR BLOQUE"}
-              </Link>
-            </Button>
+              {space.included_items && space.included_items.length > 0 && (
+                <div>
+                  <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
+                    Incluido sin cargo adicional
+                  </h3>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                    {space.included_items.map((item, index) => (
+                      <li key={index} className="flex items-center gap-2 text-muted-foreground">
+                        <span className="text-primary">•</span>
+                        <span className="font-heading">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <div className="border-foreground p-4 rounded-lg border-0 bg-inherit px-0">
+                <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
+                <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekday}</p>
+                <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekend}</p>
+              </div>
+
+              {space.optional_services && space.optional_services.length > 0 && (
+                <div>
+                  <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {space.optional_services.map((service, index) => (
+                      <Badge key={index} variant="outline" className="font-heading">
+                        {service}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
+                <Link to="/contacto">
+                  <Calendar className="mr-2 h-5 w-5" />
+                  {space.cta_text || "RESERVAR BLOQUE"}
+                </Link>
+              </Button>
+            </div>
           </div>
-        </div>
         </div>
       </section>
 
@@ -285,9 +246,7 @@ const Galeria = () => {
       {/* CTA Section */}
       <section className="py-12 sm:py-16 bg-background">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4">
-            ¿Querés reservar la galería?
-          </h2>
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4">¿Querés reservar la galería?</h2>
           <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto font-heading leading-tight">
             Hablemos de tu proyecto. Te contamos disponibilidad, armamos una propuesta a medida y coordinamos todo para
             que llegues tranquilo al rodaje.
