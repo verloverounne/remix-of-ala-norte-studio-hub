@@ -133,9 +133,9 @@ const Galeria = () => {
 
       {/* Details Section */}
       <section className="mb-0 mt-0 sm:py-0">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 bg-muted">
           {/* Two-column: Featured Image + Carousel */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-[64px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-0">
             {/* Left Column: Featured Image */}
             <div className="space-y-6">
               <button
@@ -152,26 +152,10 @@ const Galeria = () => {
                     "/placeholder.svg"
                   }
                   alt={space.name}
-                  className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+                  className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02] py-0 my-[64px]"
                 />
               </button>
-
-              {/* Floor Plan - Mobile only (shown under featured on small screens) */}
-              {planoImage && (
-                <button
-                  type="button"
-                  onClick={() => setPlanoOpen(true)}
-                  className="lg:hidden relative overflow-hidden rounded-lg block w-full cursor-zoom-in"
-                  aria-label="Ampliar plano"
-                >
-                  <img
-                    src={planoImage.image_url}
-                    alt={planoImage.title || "Plano ilustrativo del estudio"}
-                    className="w-full h-auto object-contain bg-background"
-                  />
-                </button>
-              )}
-
+...
               {space.layout_description && (
                 <div className="bg-muted p-4 rounded-lg">
                   <h3 className="font-heading font-bold mb-2">Plano de la galería</h3>
@@ -180,7 +164,7 @@ const Galeria = () => {
               )}
             </div>
             {/* Right Column: Text Content */}
-            <div className="space-y-6 py-[64px]">
+            <div className="space-y-6 py-0">
               <div>
                 <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl">El espacio</h2>
                 <p className="text-muted-foreground font-heading text-base font-medium">
