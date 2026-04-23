@@ -195,8 +195,8 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
         )}
       </div>
 
-      {/* Mobile: Video background with overlaid content - pattern from HomeVideoHeroSlider */}
-      <div className="lg:hidden h-screen relative">
+      {/* Mobile: Video on top, text content below */}
+      <div className="lg:hidden relative">
         {/* Video de fondo completo */}
         {space.video_url && (
           <div
@@ -221,12 +221,12 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
           </div>
         )}
 
-        {/* Content overlay with backdrop-blur */}
-        <div className="absolute inset-0 pb-[64px] flex items-end justify-center">
+        {/* Content below video - full width, no rounded corners */}
+        <div className="w-full bg-background">
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="backdrop-blur-lg bg-[#423c38]/50 text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px]"
+            className="text-left px-8 py-12 w-full"
           >
             {/* Price Badge */}
 
