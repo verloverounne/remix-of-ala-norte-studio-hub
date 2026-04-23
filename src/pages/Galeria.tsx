@@ -120,20 +120,8 @@ const Galeria = () => {
                   alt={space.name}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 flex items-center justify-center gap-0 border-solid border-primary shadow-sm">
-                  <Button
-                    onClick={() => setTour360Open(true)}
-                    variant="hero"
-                    size="lg"
-                    className="shadow-2xl backdrop-blur-sm border-0 bg-transparent text-primary border-primary px-[16px]"
-                  >
-                    <Eye className="h-5 w-5 mr-2" />
-                    360
-                  </Button>
-                </div>
+                <div className="absolute inset-0 flex items-center justify-center gap-0 border-solid border-primary shadow-sm"></div>
               </div>
-
-              {/* Image Carousel - Aut
 
               {/* Floor Plan - Mobile only */}
               <div className="lg:hidden relative overflow-hidden rounded-lg">
@@ -256,6 +244,51 @@ const Galeria = () => {
           </Button>
         </div>
       </section>
+      {/* Image Carousel - Auto-play slideshow with Ken Burns zoom */}
+      <div className="relative aspect-video overflow-hidden rounded-lg">
+        {galeriaImages.length > 0 ? (
+          <>
+            <img
+              key={carouselIndex}
+              src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
+              alt={galeriaImages[carouselIndex]?.title || `Galería ${carouselIndex + 1}`}
+              className="w-full h-full object-cover animate-ken-burns"
+            />
+            {galeriaImages.length > 1 && (
+              <>
+                <button
+                  onClick={() => setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[-2px] transition-transform"
+                  aria-label="Anterior"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => setCarouselIndex((prev) => (prev + 1) % galeriaImages.length)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[2px] transition-transform"
+                  aria-label="Siguiente"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                  {galeriaImages.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCarouselIndex(i)}
+                      className={`w-2 h-2 rounded-full transition-all ${i === carouselIndex ? "bg-primary w-4" : "bg-white/60"}`}
+                      aria-label={`Ir a imagen ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </>
+        ) : (
+          <div className="w-full h-full bg-muted flex items-center justify-center">
+            <p className="text-muted-foreground font-heading">Sin imágenes</p>
+          </div>
+        )}
+      </div>
 
       {/* 360 Tour Modal */}
       <Dialog open={tour360Open} onOpenChange={setTour360Open}>
