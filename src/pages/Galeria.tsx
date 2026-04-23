@@ -158,7 +158,7 @@ const Galeria = () => {
 ...
               {space.layout_description && (
                 <div className="bg-muted p-4 rounded-lg">
-                  <h3 className="font-heading font-bold mb-2">Plano de la galería</h3>
+                  <h3 className="font-heading font-bold mb-2 text-background">Plano de la galería</h3>
                   <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
                 </div>
               )}
@@ -166,8 +166,8 @@ const Galeria = () => {
             {/* Right Column: Text Content */}
             <div className="space-y-6 py-0">
               <div>
-                <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl">El espacio</h2>
-                <p className="text-muted-foreground font-heading text-base font-medium">
+                <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px]">El espacio</h2>
+                <p className="text-muted-foreground font-heading font-medium text-xl">
                   {space.detailed_description || space.description}
                 </p>
               </div>
