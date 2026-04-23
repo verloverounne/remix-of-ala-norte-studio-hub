@@ -167,6 +167,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                 position: "absolute",
                 top: "0",
                 left: "0",
+                ...videoParallax.style,
               }}
               autoPlay
               loop
@@ -222,7 +223,11 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
 
         {/* Content below video - full width, no rounded corners */}
         <div className="w-full bg-background">
-          <div ref={contentParallax.ref as any} style={contentParallax.style} className="text-left px-8 py-12 w-full">
+          <div
+            ref={contentParallax.ref as any}
+            style={contentParallax.style}
+            className="text-left px-8 py-12 w-full"
+          >
             {/* Price Badge */}
 
             {/* Title */}
