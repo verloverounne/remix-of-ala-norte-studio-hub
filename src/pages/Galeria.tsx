@@ -18,8 +18,13 @@ const Galeria = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const modalContentRef = useRef<HTMLDivElement>(null);
 
-  const galeriaImages = getByPageType("galeria");
+  const allGaleriaImages = getByPageType("galeria");
+  // Plano image must literally contain "plano" in its URL
+  const planoImage = allGaleriaImages.find((img) => img.image_url?.toLowerCase().includes("plano"));
+  // Slideshow excludes the plano (it's shown separately as floor plan)
+  const galeriaImages = allGaleriaImages.filter((img) => !img.image_url?.toLowerCase().includes("plano"));
   const featuredMediaImage = galeriaImages[0]?.image_url || null;
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
   const toggleFullscreen = useCallback(() => {
     if (!document.fullscreenElement) {
@@ -46,9 +51,30 @@ const Galeria = () => {
     if (galeriaImages.length <= 1) return;
     const interval = setInterval(() => {
       setCarouselIndex((prev) => (prev + 1) % galeriaImages.length);
-    }, 2200);
+    }, 2800);
     return () => clearInterval(interval);
   }, [galeriaImages.length]);
+
+  // Buffered preload: load current + next 3 images in advance
+  useEffect(() => {
+    if (galeriaImages.length === 0) return;
+    const indicesToPreload = [0, 1, 2, 3].map((offset) => (carouselIndex + offset) % galeriaImages.length);
+    indicesToPreload.forEach((idx) => {
+      if (loadedImages.has(idx)) return;
+      const url = galeriaImages[idx]?.image_url;
+      if (!url) return;
+      const img = new Image();
+      img.src = url;
+      img.onload = () => {
+        setLoadedImages((prev) => {
+          if (prev.has(idx)) return prev;
+          const next = new Set(prev);
+          next.add(idx);
+          return next;
+        });
+      };
+    });
+  }, [carouselIndex, galeriaImages, loadedImages]);
 
   const tour360HTML = `
 <!DOCTYPE html>
@@ -107,7 +133,7 @@ const Galeria = () => {
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
           {/* Two-column: Featured Image + Carousel */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-[64px]">
-            {/* Left Column: Featured Image + 360 button + Carousel */}
+            {/* Left Column: Featured Image */}
             <div className="space-y-6">
               <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg group">
                 <img
@@ -120,17 +146,18 @@ const Galeria = () => {
                   alt={space.name}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 flex items-center justify-center gap-0 border-solid border-primary shadow-sm"></div>
+              </div>
 
-                {/* Floor Plan - Mobile only */}
+              {/* Floor Plan - Mobile only (shown under featured on small screens) */}
+              {planoImage && (
                 <div className="lg:hidden relative overflow-hidden rounded-lg">
                   <img
-                    src="gallery_1775335547737_plano_galeria.png"
-                    alt="Plano ilustrativo del estudio"
+                    src={planoImage.image_url}
+                    alt={planoImage.title || "Plano ilustrativo del estudio"}
                     className="w-full h-auto object-contain bg-background"
                   />
                 </div>
-              </div>
+              )}
             </div>
             {/* Right Column: Text Content */}
             <div className="space-y-6">
@@ -175,25 +202,6 @@ const Galeria = () => {
                 </div>
               )}
 
-              <div className="border-foreground p-4 rounded-lg border-0 bg-inherit px-0">
-                <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
-                <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekday}</p>
-                <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekend}</p>
-              </div>
-
-              {space.optional_services && space.optional_services.length > 0 && (
-                <div>
-                  <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {space.optional_services.map((service, index) => (
-                      <Badge key={index} variant="outline" className="font-heading">
-                        {service}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
                 <Link to="/contacto">
                   <Calendar className="mr-2 h-5 w-5" />
@@ -201,6 +209,104 @@ const Galeria = () => {
                 </Link>
               </Button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Slideshow Block - Between details and 360 tour. Includes schedule + optional services below. */}
+      <section className="py-12 sm:py-16 bg-background">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+          {/* Image Carousel - Auto-play slideshow with Ken Burns zoom + crossfade */}
+          <div className="relative aspect-video overflow-hidden rounded-lg bg-foreground">
+            {galeriaImages.length > 0 ? (
+              <>
+                {/* Blur-up background of current slide to mask any white flash */}
+                <img
+                  src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-60 z-0"
+                />
+                {galeriaImages.map((img, i) => (
+                  <img
+                    key={img.id || i}
+                    src={img.image_url || "/placeholder.svg"}
+                    alt={img.title || `Galería ${i + 1}`}
+                    onLoad={() =>
+                      setLoadedImages((prev) => {
+                        if (prev.has(i)) return prev;
+                        const next = new Set(prev);
+                        next.add(i);
+                        return next;
+                      })
+                    }
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1600ms] ease-in-out ${
+                      i === carouselIndex && loadedImages.has(i)
+                        ? "opacity-100 animate-ken-burns z-[1]"
+                        : "opacity-0 z-0"
+                    }`}
+                  />
+                ))}
+                {galeriaImages.length > 1 && (
+                  <>
+                    <button
+                      onClick={() =>
+                        setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)
+                      }
+                      className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[-2px] transition-transform"
+                      aria-label="Anterior"
+                    >
+                      <ChevronLeft className="h-5 w-5" />
+                    </button>
+                    <button
+                      onClick={() => setCarouselIndex((prev) => (prev + 1) % galeriaImages.length)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[2px] transition-transform"
+                      aria-label="Siguiente"
+                    >
+                      <ChevronRight className="h-5 w-5" />
+                    </button>
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                      {galeriaImages.map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setCarouselIndex(i)}
+                          className={`w-2 h-2 rounded-full transition-all ${
+                            i === carouselIndex ? "bg-primary w-4" : "bg-white/60"
+                          }`}
+                          aria-label={`Ir a imagen ${i + 1}`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <div className="w-full h-full bg-muted flex items-center justify-center">
+                <p className="text-muted-foreground font-heading">Sin imágenes</p>
+              </div>
+            )}
+          </div>
+
+          {/* Schedule + Optional Services - two columns under the slideshow */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
+              <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekday}</p>
+              <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekend}</p>
+            </div>
+
+            {space.optional_services && space.optional_services.length > 0 && (
+              <div>
+                <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
+                <div className="flex flex-wrap gap-2">
+                  {space.optional_services.map((service, index) => (
+                    <Badge key={index} variant="outline" className="font-heading">
+                      {service}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -243,55 +349,6 @@ const Galeria = () => {
           </Button>
         </div>
       </section>
-      {/* Image Carousel - Auto-play slideshow with Ken Burns zoom + crossfade */}
-      <div className="relative aspect-video overflow-hidden rounded-lg bg-foreground">
-        {galeriaImages.length > 0 ? (
-          <>
-            {galeriaImages.map((img, i) => (
-              <img
-                key={img.id || i}
-                src={img.image_url || "/placeholder.svg"}
-                alt={img.title || `Galería ${i + 1}`}
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1200ms] ease-in-out ${
-                  i === carouselIndex ? "opacity-100 animate-ken-burns z-[1]" : "opacity-0 z-0"
-                }`}
-              />
-            ))}
-            {galeriaImages.length > 1 && (
-              <>
-                <button
-                  onClick={() => setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[-2px] transition-transform"
-                  aria-label="Anterior"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </button>
-                <button
-                  onClick={() => setCarouselIndex((prev) => (prev + 1) % galeriaImages.length)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[2px] transition-transform"
-                  aria-label="Siguiente"
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </button>
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                  {galeriaImages.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setCarouselIndex(i)}
-                      className={`w-2 h-2 rounded-full transition-all ${i === carouselIndex ? "bg-primary w-4" : "bg-white/60"}`}
-                      aria-label={`Ir a imagen ${i + 1}`}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          </>
-        ) : (
-          <div className="w-full h-full bg-muted flex items-center justify-center">
-            <p className="text-muted-foreground font-heading">Sin imágenes</p>
-          </div>
-        )}
-      </div>
 
       {/* 360 Tour Modal */}
       <Dialog open={tour360Open} onOpenChange={setTour360Open}>
