@@ -54,7 +54,7 @@ const Galeria = () => {
     if (galeriaImages.length <= 1) return;
     const interval = setInterval(() => {
       setCarouselIndex((prev) => (prev + 1) % galeriaImages.length);
-    }, 2800);
+    }, 6000);
     return () => clearInterval(interval);
   }, [galeriaImages.length]);
 
@@ -237,7 +237,10 @@ const Galeria = () => {
                         return next;
                       })
                     }
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[5600ms] ease-in-out ${
+                    style={{
+                      transitionTimingFunction: "cubic-bezier(0.4, 0.0, 0.2, 1)",
+                    }}
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[3500ms] will-change-[opacity] ${
                       i === carouselIndex && loadedImages.has(i)
                         ? "opacity-100 animate-ken-burns z-[1]"
                         : "opacity-0 z-0"
