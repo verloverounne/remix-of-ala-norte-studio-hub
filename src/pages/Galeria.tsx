@@ -237,7 +237,7 @@ const Galeria = () => {
                         return next;
                       })
                     }
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[160ms] ease-in-out ${
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[5600ms] ease-in-out ${
                       i === carouselIndex && loadedImages.has(i)
                         ? "opacity-100 animate-ken-burns z-[1]"
                         : "opacity-0 z-0"
