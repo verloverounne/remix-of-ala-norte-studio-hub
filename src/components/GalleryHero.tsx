@@ -77,7 +77,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
         };
   };
   return (
-    <section className="relative min-h-screen bg-foreground">
+    <section className="relative min-h-screen bg-inherit">
       {/* Logo centrado - click to rental */}
       <div
         className={`absolute left-0 right-0 z-20 flex justify-center transition-all duration-300 ${isHeaderVisible ? "top-20" : "top-4"}`}
@@ -97,8 +97,8 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
       {/* Desktop: 2 Column Layout */}
       <div className="hidden lg:grid lg:grid-cols-2 w-full max-h-screen">
         {/* Left Column: Text Content */}
-        <div className="flex flex-col justify-center h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 py-[16vh] bg-background">
-          <div className="space-y-6 w-full h-full py-[24px] my-px">
+        <div className="flex-col h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 bg-background py-0 flex items-start justify-center">
+          <div className="space-y-6 w-full h-full py-[24px] pt-[64px] my-0">
             {/* Price Badge */}
             <div
               className="items-start gap-4 my-0 rounded-sm flex flex-col"
