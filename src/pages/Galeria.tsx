@@ -188,7 +188,7 @@ const Galeria = () => {
 
               {space.included_items && space.included_items.length > 0 && (
                 <div>
-                  <h3 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
+                  <h3 className="text-xl font-heading font-bold flex items-center gap-16">
                     Incluido sin cargo adicional
                   </h3>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
