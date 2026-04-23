@@ -128,7 +128,52 @@ const Galeria = () => {
                 </div>
               </div>
 
-              {/* Floor Plan moved below; carousel relocated to full-width block */}
+              {/* Image Carousel - Auto-play slideshow with Ken Burns zoom */}
+              <div className="relative aspect-video overflow-hidden rounded-lg">
+                {galeriaImages.length > 0 ? (
+                  <>
+                    <img
+                      key={carouselIndex}
+                      src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
+                      alt={galeriaImages[carouselIndex]?.title || `Galería ${carouselIndex + 1}`}
+                      className="w-full h-full object-cover animate-ken-burns"
+                    />
+                    {galeriaImages.length > 1 && (
+                      <>
+                        <button
+                          onClick={() => setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)}
+                          className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[-2px] transition-transform"
+                          aria-label="Anterior"
+                        >
+                          <ChevronLeft className="h-5 w-5" />
+                        </button>
+                        <button
+                          onClick={() => setCarouselIndex((prev) => (prev + 1) % galeriaImages.length)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[2px] transition-transform"
+                          aria-label="Siguiente"
+                        >
+                          <ChevronRight className="h-5 w-5" />
+                        </button>
+                        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                          {galeriaImages.map((_, i) => (
+                            <button
+                              key={i}
+                              onClick={() => setCarouselIndex(i)}
+                              className={`w-2 h-2 rounded-full transition-all ${i === carouselIndex ? "bg-primary w-4" : "bg-white/60"}`}
+                              aria-label={`Ir a imagen ${i + 1}`}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <div className="w-full h-full bg-muted flex items-center justify-center">
+                    <p className="text-muted-foreground font-heading">Sin imágenes</p>
+                  </div>
+                )}
+              </div>
+
               {/* Floor Plan - Mobile only */}
               <div className="lg:hidden relative overflow-hidden rounded-lg">
                 <img
@@ -209,54 +254,6 @@ const Galeria = () => {
             </Button>
           </div>
         </div>
-        </div>
-      </section>
-
-      {/* Full-width Image Carousel - Auto-play Ken Burns slideshow */}
-      <section className="w-full">
-        <div className="relative w-screen h-[60vh] sm:h-[75vh] lg:h-[85vh] overflow-hidden">
-          {galeriaImages.length > 0 ? (
-            <>
-              <img
-                key={carouselIndex}
-                src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
-                alt={galeriaImages[carouselIndex]?.title || `Galería ${carouselIndex + 1}`}
-                className="w-full h-full object-cover animate-ken-burns"
-              />
-              {galeriaImages.length > 1 && (
-                <>
-                  <button
-                    onClick={() => setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-3 shadow-brutal hover:translate-x-[-2px] transition-transform"
-                    aria-label="Anterior"
-                  >
-                    <ChevronLeft className="h-6 w-6" />
-                  </button>
-                  <button
-                    onClick={() => setCarouselIndex((prev) => (prev + 1) % galeriaImages.length)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-3 shadow-brutal hover:translate-x-[2px] transition-transform"
-                    aria-label="Siguiente"
-                  >
-                    <ChevronRight className="h-6 w-6" />
-                  </button>
-                  <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                    {galeriaImages.map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setCarouselIndex(i)}
-                        className={`h-2 rounded-full transition-all ${i === carouselIndex ? "bg-primary w-6" : "bg-white/60 w-2"}`}
-                        aria-label={`Ir a imagen ${i + 1}`}
-                      />
-                    ))}
-                  </div>
-                </>
-              )}
-            </>
-          ) : (
-            <div className="w-full h-full bg-muted flex items-center justify-center">
-              <p className="text-muted-foreground font-heading">Sin imágenes</p>
-            </div>
-          )}
         </div>
       </section>
 
