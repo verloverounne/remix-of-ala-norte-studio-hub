@@ -199,7 +199,7 @@ export const STATIC_GALLERY_IMAGES: StaticGalleryImage[] = [
   {
     id: "0eda0300-0ac7-49e6-8b41-823b964b4b7a",
     page_type: "galeria",
-    image_url: "/lovable-uploads/62f8b2b4-ab5e-494c-bdff-32973159c1c3.jpg",
+    image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//gallery_1775335547737_plano_galeria.png",
     media_type: "image",
     vertical_video_url: null,
     title: "Galeria",
