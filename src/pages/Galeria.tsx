@@ -214,7 +214,7 @@ const Galeria = () => {
       </section>
 
       {/* Slideshow Block - Between details and 360 tour. Includes schedule + optional services below. */}
-      <section className="py-12 sm:py-16 bg-background space-y-8">
+      <section className="py-12 sm:py-16 space-y-8 bg-foreground text-background">
         <div className="w-full">
           {/* Image Carousel - Full bleed, auto-play with Ken Burns + crossfade */}
           <div className="relative aspect-video overflow-hidden bg-foreground">
@@ -293,8 +293,8 @@ const Galeria = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
-              <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekday}</p>
-              <p className="text-sm text-muted-foreground font-heading">{space.schedule_weekend}</p>
+              <p className="text-sm font-heading text-background">{space.schedule_weekday}</p>
+              <p className="font-heading text-lg font-bold text-primary-light">{space.schedule_weekend}</p>
             </div>
 
             {space.optional_services && space.optional_services.length > 0 && (
