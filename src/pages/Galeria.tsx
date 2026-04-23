@@ -135,7 +135,7 @@ const Galeria = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-[64px]">
             {/* Left Column: Featured Image */}
             <div className="space-y-6">
-              <div className="aspect-square overflow-hidden group rounded-sm">
+              <div className="overflow-hidden group rounded-sm">
                 <img
                   src={
                     featuredMediaImage ||
@@ -144,7 +144,7 @@ const Galeria = () => {
                     "/placeholder.svg"
                   }
                   alt={space.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto object-contain"
                 />
               </div>
 
