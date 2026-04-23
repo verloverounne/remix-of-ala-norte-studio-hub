@@ -128,14 +128,15 @@ const Galeria = () => {
                 </div>
               </div>
 
-              {/* Image Carousel */}
+              {/* Image Carousel - Auto-play slideshow with Ken Burns zoom */}
               <div className="relative aspect-video overflow-hidden rounded-lg">
                 {galeriaImages.length > 0 ? (
                   <>
                     <img
+                      key={carouselIndex}
                       src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
                       alt={galeriaImages[carouselIndex]?.title || `Galería ${carouselIndex + 1}`}
-                      className="w-full h-full object-cover transition-opacity duration-300"
+                      className="w-full h-full object-cover animate-ken-burns"
                     />
                     {galeriaImages.length > 1 && (
                       <>
