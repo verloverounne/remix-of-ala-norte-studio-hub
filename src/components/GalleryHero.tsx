@@ -157,7 +157,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
         </div>
         {/* Right Column: Video with Parallax */}
         {space.video_url ? (
-          <div ref={videoParallax.ref as any} className="h-screen overflow-hidden relative duotone-hover-group">
+          <div className="h-screen relative duotone-hover-group">
             <video
               ref={videoRef}
               src={space.video_url}
@@ -167,7 +167,6 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
                 position: "absolute",
                 top: "0",
                 left: "0",
-                ...videoParallax.style,
               }}
               autoPlay
               loop
@@ -175,18 +174,6 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               playsInline
               onLoadedMetadata={handleLoadedMetadata}
             />
-
-            <button
-              onClick={() => setMuted(!muted)}
-              className="absolute top-4 right-4 z-20 p-3 backdrop-blur-sm rounded-full transition-colors my-[64px] bg-transparent border-0 text-background"
-              aria-label={muted ? "Activar sonido" : "Silenciar"}
-            >
-              {muted ? (
-                <VolumeX className="h-5 w-5 text-foreground" />
-              ) : (
-                <Volume2 className="h-5 w-5 text-foreground" />
-              )}
-            </button>
           </div>
         ) : (
           <div className="relative w-full h-full bg-muted flex items-center justify-center">
@@ -223,11 +210,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
 
         {/* Content below video - full width, no rounded corners */}
         <div className="w-full bg-background">
-          <div
-            ref={contentParallax.ref as any}
-            style={contentParallax.style}
-            className="text-left px-8 py-12 w-full"
-          >
+          <div ref={contentParallax.ref as any} style={contentParallax.style} className="text-left px-8 py-12 w-full">
             {/* Price Badge */}
 
             {/* Title */}
