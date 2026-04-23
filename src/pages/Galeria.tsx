@@ -138,7 +138,12 @@ const Galeria = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-[64px]">
             {/* Left Column: Featured Image */}
             <div className="space-y-6">
-              <div className="overflow-hidden group rounded-sm">
+              <button
+                type="button"
+                onClick={() => featuredMediaImage && setPlanoOpen(true)}
+                className="overflow-hidden group rounded-sm block w-full cursor-zoom-in"
+                aria-label="Ampliar plano"
+              >
                 <img
                   src={
                     featuredMediaImage ||
@@ -147,19 +152,24 @@ const Galeria = () => {
                     "/placeholder.svg"
                   }
                   alt={space.name}
-                  className="w-full h-auto object-contain"
+                  className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02]"
                 />
-              </div>
+              </button>
 
               {/* Floor Plan - Mobile only (shown under featured on small screens) */}
               {planoImage && (
-                <div className="lg:hidden relative overflow-hidden rounded-lg">
+                <button
+                  type="button"
+                  onClick={() => setPlanoOpen(true)}
+                  className="lg:hidden relative overflow-hidden rounded-lg block w-full cursor-zoom-in"
+                  aria-label="Ampliar plano"
+                >
                   <img
                     src={planoImage.image_url}
                     alt={planoImage.title || "Plano ilustrativo del estudio"}
                     className="w-full h-auto object-contain bg-background"
                   />
-                </div>
+                </button>
               )}
 
               {space.layout_description && (
