@@ -163,7 +163,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
               src={space.video_url}
               className="video-duotone w-full object-cover"
               style={{
-                height: "130%",
+                height: "100%",
                 position: "absolute",
                 top: "0",
                 left: "0",
