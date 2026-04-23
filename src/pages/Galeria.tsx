@@ -158,6 +158,13 @@ const Galeria = () => {
                   />
                 </div>
               )}
+
+              {space.layout_description && (
+                <div className="bg-muted p-4 rounded-lg">
+                  <h3 className="font-heading font-bold mb-2">Plano de la galería</h3>
+                  <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
+                </div>
+              )}
             </div>
             {/* Right Column: Text Content */}
             <div className="space-y-6">
@@ -167,13 +174,6 @@ const Galeria = () => {
                   {space.detailed_description || space.description}
                 </p>
               </div>
-
-              {space.layout_description && (
-                <div className="bg-muted p-4 rounded-lg">
-                  <h3 className="font-heading font-bold mb-2">Plano de la galería</h3>
-                  <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
-                </div>
-              )}
 
               {space.features && Array.isArray(space.features) && space.features.length > 0 && (
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
