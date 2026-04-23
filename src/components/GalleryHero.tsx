@@ -232,30 +232,30 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
 
             {/* Title */}
             <h1
-              className="font-sans font-thin mb-2 mt-8 text-background"
-              style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+              className="font-sans font-thin mb-2 mt-0 text-foreground"
+              style={{ fontSize: "clamp(2rem, 5vw, 4rem)", lineHeight: 1.1 }}
             >
               {space.hero_title || space.name}
             </h1>
 
             {/* Location */}
             {space.location && (
-              <div className="flex items-center gap-2 rounded-none border-2 border-foreground px-3 py-1 mb-4 w-fit bg-foreground text-background">
+              <div className="flex items-center gap-2 rounded-sm border-2 border-foreground px-3 py-1 mb-4 w-fit bg-foreground text-background">
                 <MapPin className="h-4 w-4 text-background" />
                 <span className="font-heading text-sm text-background">{space.location}</span>
               </div>
             )}
 
             {/* Subtitle */}
-            <p className="font-heading leading-tight font-medium text-base mb-4 text-background">
+            <p className="font-heading leading-tight font-medium text-base mb-4 text-foreground">
               {space.hero_subtitle || space.description}
             </p>
 
             {/* Features - 2 columns */}
             {space.features && Array.isArray(space.features) && space.features.length > 0 && (
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1 mb-4 text-background">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1 mb-4 text-foreground">
                 {(space.features as string[]).map((feature, index) => (
-                  <p key={index} className="text-xs font-heading flex items-start gap-2 text-background">
+                  <p key={index} className="text-xs font-heading flex items-start gap-2 text-foreground">
                     <span className="text-primary">•</span>
                     {feature}
                   </p>
@@ -265,7 +265,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
 
             {/* Discount */}
             {space.discount_text && (
-              <div className="inline-flex items- gap-2 border-2 border-primary px-3 py-1.5 rounded-none mb-4">
+              <div className="inline-flex items- gap-2 border-2 border-primary px-3 py-1.5 rounded-sm mb-4">
                 <Sparkles className="h-4 w-4 text-primary" />
                 <span className="font-heading font-bold text-primary text-lg">{space.discount_text}</span>
               </div>
