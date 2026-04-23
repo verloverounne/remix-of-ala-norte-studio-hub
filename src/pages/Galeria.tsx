@@ -127,7 +127,7 @@ const Galeria = () => {
                   src="/lovable-uploads/7a26e0e7-4882-4604-9b3b-88bda06e16c1.jpg"
                 />
               </div>
-            </div>
+          </div>
       {/* Text Content - Single column below */}
           <div className="space-y-8 w-screen mt-12">
             <div>
@@ -142,57 +142,6 @@ const Galeria = () => {
                 <h3 className="font-heading font-bold mb-2">Plano de la galería</h3>
                 <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
               </div>
-      
-            {/* Right Column: Image Carousel 
-            <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg">
-              {galeriaImages.length > 0 ? (
-                <>
-                  <img
-                    src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
-                    alt={galeriaImages[carouselIndex]?.title || `Galería ${carouselIndex + 1}`}
-                    className="w-full h-full object-cover transition-opacity duration-300"
-                  />
-                  {galeriaImages.length > 1 && (
-                    <>
-                      <button
-                        onClick={() => setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[-2px] transition-transform"
-                        aria-label="Anterior"
-                      >
-                        <ChevronLeft className="h-5 w-5" />
-                      </button>
-                      <button
-                        onClick={() => setCarouselIndex((prev) => (prev + 1) % galeriaImages.length)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[2px] transition-transform"
-                        aria-label="Siguiente"
-                      >
-                        <ChevronRight className="h-5 w-5" />
-                      </button>
-                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                        {galeriaImages.map((_, i) => (
-                          <button
-                            key={i}
-                            onClick={() => setCarouselIndex(i)}
-                            className={`w-2 h-2 rounded-full transition-all ${i === carouselIndex ? "bg-primary w-4" : "bg-white/60"}`}
-                            aria-label={`Ir a imagen ${i + 1}`}
-                          />
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </>
-              ) : (
-                <div className="w-full h-full bg-muted flex items-center justify-center">
-                  <p className="text-muted-foreground font-heading">Sin imágenes</p>
-                </div>
-              )}
-            </div>
-          </div> 
-          
-          
-    */}
-
-    
             )}
 
             {/* Floor Plan - Mobile only */}
@@ -256,6 +205,7 @@ const Galeria = () => {
                 {space.cta_text || "RESERVAR BLOQUE"}
               </Link>
             </Button>
+          </div>
           </div>
         </div>
       </section>
