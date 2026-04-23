@@ -46,7 +46,7 @@ const Galeria = () => {
     if (galeriaImages.length <= 1) return;
     const interval = setInterval(() => {
       setCarouselIndex((prev) => (prev + 1) % galeriaImages.length);
-    }, 1500);
+    }, 2200);
     return () => clearInterval(interval);
   }, [galeriaImages.length]);
 
@@ -244,16 +244,20 @@ const Galeria = () => {
           </Button>
         </div>
       </section>
-      {/* Image Carousel - Auto-play slideshow with Ken Burns zoom */}
-      <div className="relative aspect-video overflow-hidden rounded-lg">
+      {/* Image Carousel - Auto-play slideshow with Ken Burns zoom + crossfade */}
+      <div className="relative aspect-video overflow-hidden rounded-lg bg-foreground">
         {galeriaImages.length > 0 ? (
           <>
-            <img
-              key={carouselIndex}
-              src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
-              alt={galeriaImages[carouselIndex]?.title || `Galería ${carouselIndex + 1}`}
-              className="w-full h-full object-cover animate-ken-burns"
-            />
+            {galeriaImages.map((img, i) => (
+              <img
+                key={img.id || i}
+                src={img.image_url || "/placeholder.svg"}
+                alt={img.title || `Galería ${i + 1}`}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1200ms] ease-in-out ${
+                  i === carouselIndex ? "opacity-100 animate-ken-burns z-[1]" : "opacity-0 z-0"
+                }`}
+              />
+            ))}
             {galeriaImages.length > 1 && (
               <>
                 <button
