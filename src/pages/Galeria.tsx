@@ -98,7 +98,7 @@ const Galeria = () => {
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
           {/* Two-column: Featured Image + Carousel */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-[64px]">
-            {/* Left Column: Featured Image + 360 button + Floor Plan */}
+            {/* Left Column: Featured Image + 360 button + Carousel */}
             <div className="space-y-6">
               <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg group">
                 <img
@@ -119,83 +119,76 @@ const Galeria = () => {
                 </div>
               </div>
 
- 
-      {/* Text Content - EX Single column below */}
-          <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg">
-            
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">El espacio</h2>
-              <p className="text-muted-foreground font-heading text-base font-medium">
-                {space.detailed_description || space.description}
-              </p>
+              {/* Image Carousel */}
+              <div className="relative aspect-video overflow-hidden rounded-lg">
+                {galeriaImages.length > 0 ? (
+                  <>
+                    <img
+                      src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
+                      alt={galeriaImages[carouselIndex]?.title || `Galería ${carouselIndex + 1}`}
+                      className="w-full h-full object-cover transition-opacity duration-300"
+                    />
+                    {galeriaImages.length > 1 && (
+                      <>
+                        <button
+                          onClick={() => setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)}
+                          className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[-2px] transition-transform"
+                          aria-label="Anterior"
+                        >
+                          <ChevronLeft className="h-5 w-5" />
+                        </button>
+                        <button
+                          onClick={() => setCarouselIndex((prev) => (prev + 1) % galeriaImages.length)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[2px] transition-transform"
+                          aria-label="Siguiente"
+                        >
+                          <ChevronRight className="h-5 w-5" />
+                        </button>
+                        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                          {galeriaImages.map((_, i) => (
+                            <button
+                              key={i}
+                              onClick={() => setCarouselIndex(i)}
+                              className={`w-2 h-2 rounded-full transition-all ${i === carouselIndex ? "bg-primary w-4" : "bg-white/60"}`}
+                              aria-label={`Ir a imagen ${i + 1}`}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <div className="w-full h-full bg-muted flex items-center justify-center">
+                    <p className="text-muted-foreground font-heading">Sin imágenes</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Floor Plan - Mobile only */}
+              <div className="lg:hidden relative overflow-hidden rounded-lg">
+                <img
+                  src="/lovable-uploads/7a26e0e7-4882-4604-9b3b-88bda06e16c1.jpg"
+                  alt="Plano ilustrativo del estudio"
+                  className="w-full h-auto object-contain bg-background"
+                />
+              </div>
             </div>
 
-            {space.layout_description && (
-              <div className="bg-muted p-4 rounded-lg">
-                <h3 className="font-heading font-bold mb-2">Plano de la galería</h3>
-                <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
+            {/* Right Column: Text Content */}
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">El espacio</h2>
+                <p className="text-muted-foreground font-heading text-base font-medium">
+                  {space.detailed_description || space.description}
+                </p>
               </div>
-      
-            {/* EX Right Column: Image Carousel     */}
-        <div className="space-y-8 w-screen mt-12"> 
-              {galeriaImages.length > 0 ? (
-                <>
-                  <img
-                    src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
-                    alt={galeriaImages[carouselIndex]?.title || `Galería ${carouselIndex + 1}`}
-                    className="w-full h-full object-cover transition-opacity duration-300"
-                  />
-                  {galeriaImages.length > 1 && (
-                    <>
-                      <button
-                        onClick={() => setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[-2px] transition-transform"
-                        aria-label="Anterior"
-                      >
-                        <ChevronLeft className="h-5 w-5" />
-                      </button>
-                      <button
-                        onClick={() => setCarouselIndex((prev) => (prev + 1) % galeriaImages.length)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[2px] transition-transform"
-                        aria-label="Siguiente"
-                      >
-                        <ChevronRight className="h-5 w-5" />
-                      </button>
-                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                        {galeriaImages.map((_, i) => (
-                          <button
-                            key={i}
-                            onClick={() => setCarouselIndex(i)}
-                            className={`w-2 h-2 rounded-full transition-all ${i === carouselIndex ? "bg-primary w-4" : "bg-white/60"}`}
-                            aria-label={`Ir a imagen ${i + 1}`}
-                          />
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </>
-              ) : (
-                <div className="w-full h-full bg-muted flex items-center justify-center">
-                  <p className="text-muted-foreground font-heading">Sin imágenes</p>
+
+              {space.layout_description && (
+                <div className="bg-muted p-4 rounded-lg">
+                  <h3 className="font-heading font-bold mb-2">Plano de la galería</h3>
+                  <p className="text-sm text-muted-foreground font-heading">{space.layout_description}</p>
                 </div>
               )}
-            </div>
-          </div> 
-          
-          
-
-
-    
-            )}
-
-            {/* Floor Plan - Mobile only */}
-            <div className="lg:hidden relative overflow-hidden rounded-lg">
-              <img
-                src="/lovable-uploads/7a26e0e7-4882-4604-9b3b-88bda06e16c1.jpg"
-                alt="Plano ilustrativo del estudio"
-                className="w-full h-auto object-contain bg-background"
-              />
-            </div>
 
             {space.features && Array.isArray(space.features) && space.features.length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
