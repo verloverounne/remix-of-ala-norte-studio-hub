@@ -392,6 +392,20 @@ const Galeria = () => {
           />
         </DialogContent>
       </Dialog>
+
+      {/* Plano Modal */}
+      <Dialog open={planoOpen} onOpenChange={setPlanoOpen}>
+        <DialogContent className="max-w-[95vw] w-[95vw] h-[90vh] p-0 border-0 bg-background overflow-auto [&>button]:z-50 [&>button]:text-foreground [&>button]:bg-background [&>button]:rounded-sm [&>button]:p-2 [&>button]:top-3 [&>button]:right-3 [&>button]:shadow-brutal-sm">
+          <DialogTitle className="sr-only">Plano ilustrativo del estudio</DialogTitle>
+          <div className="w-full h-full flex items-center justify-center p-4">
+            <img
+              src={planoImage?.image_url || featuredMediaImage || "/placeholder.svg"}
+              alt={planoImage?.title || "Plano ilustrativo del estudio"}
+              className="max-w-full max-h-full object-contain"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
