@@ -124,7 +124,7 @@ const Galeria = () => {
                 <img
                   alt="Plano ilustrativo del estudio"
                   className="w-full h-auto object-contain bg-background"
-                  src="/lovable-uploads/7a26e0e7-4882-4604-9b3b-88bda06e16c1.jpg"
+                  src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//1767902810624_galeria_fotos_gaston_y_juan.jpg"
                 />
               </div>
             </div>
@@ -194,7 +194,7 @@ const Galeria = () => {
             {/* Floor Plan - Mobile only */}
             <div className="lg:hidden relative overflow-hidden rounded-lg">
               <img
-                src="/lovable-uploads/7a26e0e7-4882-4604-9b3b-88bda06e16c1.jpg"
+                src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//1767902810624_galeria_fotos_gaston_y_juan.jpg"
                 alt="Plano ilustrativo del estudio"
                 className="w-full h-auto object-contain bg-background"
               />
