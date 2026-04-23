@@ -507,7 +507,7 @@ All colors MUST be HSL.
 }
 
 .animate-ken-burns {
-  animation: ken-burns-zoom 5s ease-out forwards;
+  animation: ken-burns-zoom 6s ease-out forwards;
 }
 
 /* Animación parallax para contenido móvil que sube desde abajo */
