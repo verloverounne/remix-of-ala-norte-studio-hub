@@ -206,6 +206,7 @@ const Galeria = () => {
               </Link>
             </Button>
           </div>
+          </div>
         </div>
       </section>
 
