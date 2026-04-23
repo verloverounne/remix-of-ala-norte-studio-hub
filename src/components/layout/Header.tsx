@@ -121,13 +121,13 @@ export const Header = () => {
           ref={menuButtonRef}
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="fixed top-3 right-3 z-[60] h-10 w-10 bg-background rounded-sm backdrop-blur-sm border border-background shadow-brutal-sm flex items-center justify-center touch-manipulation"
+          className="fixed top-3 right-3 z-[60] h-10 w-10 rounded-sm backdrop-blur-sm border border-background shadow-brutal-sm flex items-center justify-center touch-manipulation bg-primary text-primary-foreground"
           aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
           style={{
             WebkitTapHighlightColor: "transparent",
           }}
         >
-          {mobileMenuOpen ? <X className="h-5 w-5 text-foreground" /> : <Menu className="h-5 w-5 text-foreground" />}
+          {mobileMenuOpen ? <X className="h-5 w-5 text-primary-foreground" /> : <Menu className="h-5 w-5 text-primary-foreground" />}
         </button>
       )}
 

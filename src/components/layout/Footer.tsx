@@ -103,7 +103,7 @@ export const Footer = () => {
         </div>
 
         <div className="mt-8 pt-8 border-t border-background/20 text-center text-sm opacity-70">
-          <p>&copy; {new Date().getFullYear()} Ala Norte. Todos los derechos reservados. Diseño: verlovero</p>
+          <p>&copy; {new Date().getFullYear()} Ala Norte. Todos los derechos reservados. Diseño: Verónica Seniquel</p>
         </div>
       </div>
     </footer>
