@@ -286,8 +286,10 @@ const Galeria = () => {
               </div>
             )}
           </div>
+        </div>
 
-          {/* Schedule + Optional Services - two columns under the slideshow */}
+        {/* Schedule + Optional Services - two columns under the slideshow */}
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
