@@ -50,6 +50,26 @@ const Galeria = () => {
     return () => clearInterval(interval);
   }, [galeriaImages.length]);
 
+  // Track which images have finished loading (for blur-up effect)
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
+
+  // Preload next image to avoid flashes during transition
+  useEffect(() => {
+    if (galeriaImages.length <= 1) return;
+    const nextIndex = (carouselIndex + 1) % galeriaImages.length;
+    const nextUrl = galeriaImages[nextIndex]?.image_url;
+    if (!nextUrl || loadedImages.has(nextIndex)) return;
+    const img = new Image();
+    img.src = nextUrl;
+    img.onload = () => {
+      setLoadedImages((prev) => {
+        const next = new Set(prev);
+        next.add(nextIndex);
+        return next;
+      });
+    };
+  }, [carouselIndex, galeriaImages, loadedImages]);
+
   const tour360HTML = `
 <!DOCTYPE html>
 <html>
