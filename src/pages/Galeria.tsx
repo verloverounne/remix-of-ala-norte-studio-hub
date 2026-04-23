@@ -227,7 +227,7 @@ const Galeria = () => {
       </section>
 
       {/* Slideshow Block - Between details and 360 tour. Includes schedule + optional services below. */}
-      <section className="py-12 space-y-8 bg-foreground text-background sm:py-0">
+      <section className="py-12 space-y-8 bg-foreground text-background sm:py-0 pb-[64px]">
         <div className="w-full">
           {/* Image Carousel - Full bleed, auto-play with Ken Burns + crossfade */}
           <div className="relative aspect-video overflow-hidden bg-foreground">
