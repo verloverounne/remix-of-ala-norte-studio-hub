@@ -46,7 +46,7 @@ const Galeria = () => {
     if (galeriaImages.length <= 1) return;
     const interval = setInterval(() => {
       setCarouselIndex((prev) => (prev + 1) % galeriaImages.length);
-    }, 1500);
+    }, 2200);
     return () => clearInterval(interval);
   }, [galeriaImages.length]);
 
