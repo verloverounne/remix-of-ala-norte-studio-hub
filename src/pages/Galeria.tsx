@@ -19,11 +19,13 @@ const Galeria = () => {
   const modalContentRef = useRef<HTMLDivElement>(null);
 
   const allGaleriaImages = getByPageType("galeria");
-  // Plano image must literally contain "plano" in its URL
-  const planoImage = allGaleriaImages.find((img) => img.image_url?.toLowerCase().includes("plano"));
+  // Plano image: match by URL or title containing "plano"
+  const isPlano = (img: { image_url?: string; title?: string | null }) =>
+    img.image_url?.toLowerCase().includes("plano") || img.title?.toLowerCase().includes("plano");
+  const planoImage = allGaleriaImages.find(isPlano);
   // Slideshow excludes the plano (it's shown separately as floor plan)
-  const galeriaImages = allGaleriaImages.filter((img) => !img.image_url?.toLowerCase().includes("plano"));
-  const featuredMediaImage = galeriaImages[0]?.image_url || null;
+  const galeriaImages = allGaleriaImages.filter((img) => !isPlano(img));
+  const featuredMediaImage = planoImage?.image_url || galeriaImages[0]?.image_url || null;
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
   const toggleFullscreen = useCallback(() => {
