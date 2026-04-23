@@ -214,10 +214,10 @@ const Galeria = () => {
       </section>
 
       {/* Slideshow Block - Between details and 360 tour. Includes schedule + optional services below. */}
-      <section className="py-12 sm:py-16 bg-background">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-          {/* Image Carousel - Auto-play slideshow with Ken Burns zoom + crossfade */}
-          <div className="relative aspect-video overflow-hidden rounded-lg bg-foreground">
+      <section className="py-12 sm:py-16 bg-background space-y-8">
+        <div className="w-full">
+          {/* Image Carousel - Full bleed, auto-play with Ken Burns + crossfade */}
+          <div className="relative aspect-video overflow-hidden bg-foreground">
             {galeriaImages.length > 0 ? (
               <>
                 {/* Blur-up background of current slide to mask any white flash */}
