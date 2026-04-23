@@ -306,8 +306,8 @@ const Galeria = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
-              <p className="text-sm font-heading text-background">{space.schedule_weekday}</p>
-              <p className="font-heading text-lg font-bold text-primary-light">{space.schedule_weekend}</p>
+              <p className="font-heading text-2xl font-bold text-primary-light">{space.schedule_weekday}</p>
+              <p className="font-heading text-lg text-inherit font-light">{space.schedule_weekend}</p>
             </div>
 
             {space.optional_services && space.optional_services.length > 0 && (
@@ -315,7 +315,7 @@ const Galeria = () => {
                 <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
                 <div className="flex flex-wrap gap-2">
                   {space.optional_services.map((service, index) => (
-                    <Badge key={index} variant="outline" className="font-heading">
+                    <Badge key={index} variant="outline" className="inline-flex items-center rounded-md border px-3 py-1 text-xs uppercase tracking-wider transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer font-heading font-medium bg-foreground text-background border-primary-light">
                       {service}
                     </Badge>
                   ))}
