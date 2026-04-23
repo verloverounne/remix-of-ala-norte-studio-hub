@@ -216,8 +216,8 @@ Contactar cliente para coordinar entrega/retiro.
 
           {/* 2. Cómo funciona - Collapsible */}
           <Collapsible open={isHowItWorksOpen} onOpenChange={setIsHowItWorksOpen}>
-            <Card className="mb-6 sm:mb-8 border border-primary">
-              <CardHeader className="bg-primary/10">
+            <Card className="hover:-translate-y-1 transition-all duration-300 ease-out mb-6 sm:mb-8 border border-transparent rounded-none shadow-none text-inherit bg-transparent">
+              <CardHeader className="bg-inherit">
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="font-heading text-lg sm:text-xl lg:text-2xl">
