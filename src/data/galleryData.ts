@@ -20,7 +20,7 @@ export const STATIC_GALLERY_IMAGES: StaticGalleryImage[] = [
     id: "2fe9e08b-3f72-42f1-b431-725e57660144",
     page_type: "galeria",
     image_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1767902731672_editada_fondo_blanco_45_grados.jpg",
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/49b8d45a-a1ba-4c89-9a0e-a53be01f4780.png",
     media_type: "image",
     vertical_video_url: null,
     title: null,
