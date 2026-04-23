@@ -155,7 +155,7 @@ const Galeria = () => {
                   className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02] py-0 my-[64px]"
                 />
               </button>
-...
+              ...
               {space.layout_description && (
                 <div className="bg-muted p-4 rounded-lg">
                   <h3 className="font-heading font-bold mb-2 text-background">Plano de la galería</h3>
@@ -237,7 +237,7 @@ const Galeria = () => {
                         return next;
                       })
                     }
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1600ms] ease-in-out ${
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[160ms] ease-in-out ${
                       i === carouselIndex && loadedImages.has(i)
                         ? "opacity-100 animate-ken-burns z-[1]"
                         : "opacity-0 z-0"
@@ -299,7 +299,11 @@ const Galeria = () => {
                 <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
                 <div className="flex flex-wrap gap-2">
                   {space.optional_services.map((service, index) => (
-                    <Badge key={index} variant="outline" className="inline-flex items-center rounded-md border px-3 py-1 text-xs uppercase tracking-wider transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer font-heading font-medium bg-foreground text-background border-primary-light">
+                    <Badge
+                      key={index}
+                      variant="outline"
+                      className="inline-flex items-center rounded-md border px-3 py-1 text-xs uppercase tracking-wider transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer font-heading font-medium bg-foreground text-background border-primary-light"
+                    >
                       {service}
                     </Badge>
                   ))}
