@@ -135,7 +135,7 @@ const Galeria = () => {
       <section className="mb-0 mt-0 sm:py-0">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
           {/* Two-column: Featured Image + Carousel */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-[64px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-0">
             {/* Left Column: Featured Image */}
             <div className="space-y-6">
               <button
@@ -227,7 +227,7 @@ const Galeria = () => {
       </section>
 
       {/* Slideshow Block - Between details and 360 tour. Includes schedule + optional services below. */}
-      <section className="py-12 sm:py-16 space-y-8 bg-foreground text-background">
+      <section className="py-12 space-y-8 bg-foreground text-background sm:py-0">
         <div className="w-full">
           {/* Image Carousel - Full bleed, auto-play with Ken Burns + crossfade */}
           <div className="relative aspect-video overflow-hidden bg-foreground">
