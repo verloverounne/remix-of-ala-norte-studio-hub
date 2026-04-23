@@ -41,6 +41,15 @@ const Galeria = () => {
     return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
+  // Auto-advance carousel with slow zoom transition
+  useEffect(() => {
+    if (galeriaImages.length <= 1) return;
+    const interval = setInterval(() => {
+      setCarouselIndex((prev) => (prev + 1) % galeriaImages.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [galeriaImages.length]);
+
   const tour360HTML = `
 <!DOCTYPE html>
 <html>
