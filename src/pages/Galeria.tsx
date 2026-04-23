@@ -244,6 +244,7 @@ const Galeria = () => {
             </Button>
           </div>
         </div>
+        </div>
       </section>
 
       {/* 360° Virtual Tour Section - Full bleed */}
