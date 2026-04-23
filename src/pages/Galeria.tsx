@@ -199,7 +199,7 @@ const Galeria = () => {
                 </div>
               )}
 
-              <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
+              <Button variant="hero" size="lg" asChild className="w-full sm:w-auto my-[32px]">
                 <Link to="/contacto">
                   <Calendar className="mr-2 h-5 w-5" />
                   {space.cta_text || "RESERVAR BLOQUE"}
