@@ -176,7 +176,7 @@ const Galeria = () => {
               </div>
 
               {space.features && Array.isArray(space.features) && space.features.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
+                <div className="grid grid-cols-2 gap-x-2 gap-y-1">
                   {(space.features as string[]).map((feature, index) => (
                     <p key={index} className="text-sm text-muted-foreground font-heading flex items-start gap-2">
                       <span className="text-primary">•</span>
