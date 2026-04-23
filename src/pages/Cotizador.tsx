@@ -185,31 +185,26 @@ Contactar cliente para coordinar entrega/retiro.
           <h1 className="font-sans font-thin mb-4 sm:mb-6" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
             ARMÁ TU PRESUPUESTO
           </h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-3xl mb-6">
             {totalItems > 0
               ? `Tienes ${totalItems} ${totalItems === 1 ? "equipo" : "equipos"} en tu carrito`
               : "Agregá equipos desde el catálogo para comenzar"}
           </p>
+          <Button asChild size="lg" className="w-full sm:w-auto self-start">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSf1JuBZQnlUe_-lGfKMzmaNI9386GKhpg32y54IpqBjpQk0hA/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              SI ALQUILÁS POR PRIMERA VEZ, REGISTRATE
+            </a>
+          </Button>
         </div>
       </section>
 
       {/* Main Section */}
       <section className="py-8 sm:py-12 lg:py-16">
         <div className="container mx-auto px-4 max-w-7xl border-0">
-          {/* 1. Sección Cliente Nuevo */}
-
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3"></div>
-            <Button asChild size="lg" className="w-full sm:w-auto">
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSf1JuBZQnlUe_-lGfKMzmaNI9386GKhpg32y54IpqBjpQk0hA/viewform"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                SI ALQUILÁS POR PRIMERA VEZ, REGISTRATE
-              </a>
-            </Button>
-          </div>
 
           {/* 2. Cómo funciona - Collapsible */}
           <Collapsible open={isHowItWorksOpen} onOpenChange={setIsHowItWorksOpen}>
