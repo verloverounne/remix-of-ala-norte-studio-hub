@@ -51,9 +51,30 @@ const Galeria = () => {
     if (galeriaImages.length <= 1) return;
     const interval = setInterval(() => {
       setCarouselIndex((prev) => (prev + 1) % galeriaImages.length);
-    }, 2200);
+    }, 2800);
     return () => clearInterval(interval);
   }, [galeriaImages.length]);
+
+  // Buffered preload: load current + next 3 images in advance
+  useEffect(() => {
+    if (galeriaImages.length === 0) return;
+    const indicesToPreload = [0, 1, 2, 3].map((offset) => (carouselIndex + offset) % galeriaImages.length);
+    indicesToPreload.forEach((idx) => {
+      if (loadedImages.has(idx)) return;
+      const url = galeriaImages[idx]?.image_url;
+      if (!url) return;
+      const img = new Image();
+      img.src = url;
+      img.onload = () => {
+        setLoadedImages((prev) => {
+          if (prev.has(idx)) return prev;
+          const next = new Set(prev);
+          next.add(idx);
+          return next;
+        });
+      };
+    });
+  }, [carouselIndex, galeriaImages, loadedImages]);
 
   const tour360HTML = `
 <!DOCTYPE html>
