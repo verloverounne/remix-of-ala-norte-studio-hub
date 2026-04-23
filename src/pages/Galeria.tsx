@@ -268,13 +268,32 @@ const Galeria = () => {
       <div className="relative aspect-video overflow-hidden rounded-lg bg-foreground">
         {galeriaImages.length > 0 ? (
           <>
+            {/* Blurred backdrop of current image to avoid white/empty flashes */}
+            <img
+              key={`bg-${carouselIndex}`}
+              src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-60 z-0"
+            />
             {galeriaImages.map((img, i) => (
               <img
                 key={img.id || i}
                 src={img.image_url || "/placeholder.svg"}
                 alt={img.title || `Galería ${i + 1}`}
+                loading={i === 0 ? "eager" : "lazy"}
+                onLoad={() =>
+                  setLoadedImages((prev) => {
+                    if (prev.has(i)) return prev;
+                    const next = new Set(prev);
+                    next.add(i);
+                    return next;
+                  })
+                }
                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1200ms] ease-in-out ${
-                  i === carouselIndex ? "opacity-100 animate-ken-burns z-[1]" : "opacity-0 z-0"
+                  i === carouselIndex && loadedImages.has(i)
+                    ? "opacity-100 animate-ken-burns z-[1]"
+                    : "opacity-0 z-0"
                 }`}
               />
             ))}
