@@ -100,11 +100,7 @@ export const GalleryHero = ({ space }: GalleryHeroProps) => {
         <div className="flex-col h-screen pl-8 pr-8 lg:pl-16 lg:pr-16 py-0 flex bg-background">
           <div className="space-y-6 w-full h-full py-[24px] my-0 pb-0 pt-[80px]">
             {/* Price Badge */}
-            <div
-              className="items-start gap-4 my-0 rounded-sm flex flex-col"
-          
-              }}
-            >
+            <div className="items-start gap-4 my-0 rounded-sm flex flex-col">
               <div className="flex items-center justify-center gap-2 text-primary px-4 py-2 w-full max-w-fit bg-foreground rounded-sm">
                 <span className="text-2xl font-bold font-heading text-background sm:text-xl">
                   ${(space.block_price || space.price)?.toLocaleString()}
