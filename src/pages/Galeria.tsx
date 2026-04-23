@@ -349,55 +349,6 @@ const Galeria = () => {
           </Button>
         </div>
       </section>
-      {/* Image Carousel - Auto-play slideshow with Ken Burns zoom + crossfade */}
-      <div className="relative aspect-video overflow-hidden rounded-lg bg-foreground">
-        {galeriaImages.length > 0 ? (
-          <>
-            {galeriaImages.map((img, i) => (
-              <img
-                key={img.id || i}
-                src={img.image_url || "/placeholder.svg"}
-                alt={img.title || `Galería ${i + 1}`}
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1200ms] ease-in-out ${
-                  i === carouselIndex ? "opacity-100 animate-ken-burns z-[1]" : "opacity-0 z-0"
-                }`}
-              />
-            ))}
-            {galeriaImages.length > 1 && (
-              <>
-                <button
-                  onClick={() => setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[-2px] transition-transform"
-                  aria-label="Anterior"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </button>
-                <button
-                  onClick={() => setCarouselIndex((prev) => (prev + 1) % galeriaImages.length)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[2px] transition-transform"
-                  aria-label="Siguiente"
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </button>
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                  {galeriaImages.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setCarouselIndex(i)}
-                      className={`w-2 h-2 rounded-full transition-all ${i === carouselIndex ? "bg-primary w-4" : "bg-white/60"}`}
-                      aria-label={`Ir a imagen ${i + 1}`}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          </>
-        ) : (
-          <div className="w-full h-full bg-muted flex items-center justify-center">
-            <p className="text-muted-foreground font-heading">Sin imágenes</p>
-          </div>
-        )}
-      </div>
 
       {/* 360 Tour Modal */}
       <Dialog open={tour360Open} onOpenChange={setTour360Open}>
