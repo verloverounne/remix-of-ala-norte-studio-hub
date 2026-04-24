@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import navBarLogo from "@/assets/navBarLogo.png";
+import navBarLogo from "@/assets/f7882fe8-2361-4ca6-812c-9081debb582b.png";
 
 interface HomePreloaderProps {
   progress: number;
