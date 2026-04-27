@@ -139,7 +139,7 @@ export const CartSidebar = ({
     return (
       <>
         {/* Floating button */}
-        <div className="fixed bottom-4 center z-40">
+        <div className="fixed bottom-4 left-4 z-40">
           <button
             onClick={() => setDrawerOpen(true)}
             className="relative bg-primary text-primary-foreground p-4 shadow-brutal-sm hover:scale-105 transition-transform py-[12px] px-[12px] my-[8px] rounded-sm">
