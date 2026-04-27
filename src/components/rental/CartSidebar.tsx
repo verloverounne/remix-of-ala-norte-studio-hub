@@ -34,7 +34,7 @@ export const CartSidebar = ({
   stickyTop = 370,
   onCollapse
 }: CartSidebarProps) => {
-  const isMobile = useIsMobile();
+  const isMobile = useIsCompact();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const CartContent = () =>
