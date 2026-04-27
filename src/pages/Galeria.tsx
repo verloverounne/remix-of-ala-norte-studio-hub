@@ -166,7 +166,9 @@ const Galeria = () => {
             {/* Right Column: Text Content */}
             <div className="space-y-6 h-full py-[64px] pt-0">
               <div>
-                <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px] pt-0 mt-0 px-0">El espacio</h2>
+                <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px] pt-0 mt-0 px-0">
+                  El espacio
+                </h2>
                 <p className="text-muted-foreground font-heading font-medium text-xl">
                   {space.detailed_description || space.description}
                 </p>
@@ -210,6 +212,33 @@ const Galeria = () => {
         </div>
       </section>
 
+      {/* Schedule + Optional Services - two columns under the slideshow */}
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 my-[32px] mb-[64px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-[32px]">
+          <div>
+            <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
+            <p className="font-heading text-2xl font-bold text-primary-light">{space.schedule_weekday}</p>
+            <p className="font-heading text-lg text-inherit font-light">{space.schedule_weekend}</p>
+          </div>
+
+          {space.optional_services && space.optional_services.length > 0 && (
+            <div>
+              <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
+              <div className="flex flex-wrap gap-2">
+                {space.optional_services.map((service, index) => (
+                  <Badge
+                    key={index}
+                    variant="outline"
+                    className="inline-flex items-center rounded-md border px-3 py-1 text-xs uppercase tracking-wider transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer font-heading font-medium bg-foreground text-background border-primary-light"
+                  >
+                    {service}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
       {/* Slideshow Block - Between details and 360 tour. Includes schedule + optional services below. */}
       <section className="py-12 space-y-8 bg-foreground text-background sm:py-0 pb-[64px]">
         <div className="w-full">
@@ -283,34 +312,6 @@ const Galeria = () => {
             ) : (
               <div className="w-full h-full bg-muted flex items-center justify-center">
                 <p className="text-muted-foreground font-heading">Sin imágenes</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Schedule + Optional Services - two columns under the slideshow */}
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 my-[32px] mb-[64px]">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-[32px]">
-            <div>
-              <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
-              <p className="font-heading text-2xl font-bold text-primary-light">{space.schedule_weekday}</p>
-              <p className="font-heading text-lg text-inherit font-light">{space.schedule_weekend}</p>
-            </div>
-
-            {space.optional_services && space.optional_services.length > 0 && (
-              <div>
-                <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
-                <div className="flex flex-wrap gap-2">
-                  {space.optional_services.map((service, index) => (
-                    <Badge
-                      key={index}
-                      variant="outline"
-                      className="inline-flex items-center rounded-md border px-3 py-1 text-xs uppercase tracking-wider transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer font-heading font-medium bg-foreground text-background border-primary-light"
-                    >
-                      {service}
-                    </Badge>
-                  ))}
-                </div>
               </div>
             )}
           </div>
