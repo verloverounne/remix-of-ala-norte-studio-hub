@@ -1,9 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Trash2, Plus, Minus, X, ChevronRight } from "lucide-react";
 import { CartItem } from "@/hooks/useCart";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerClose } from "@/components/ui/drawer";
+
+// Treat anything below the desktop breakpoint (lg = 1024px) as a compact
+// layout that should use the floating button + drawer (mobile + tablet).
+const DESKTOP_BREAKPOINT = 1024;
+function useIsCompact() {
+  const [isCompact, setIsCompact] = useState<boolean | undefined>(undefined);
+  useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${DESKTOP_BREAKPOINT - 1}px)`);
+    const onChange = () => setIsCompact(window.innerWidth < DESKTOP_BREAKPOINT);
+    mql.addEventListener("change", onChange);
+    onChange();
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+  return !!isCompact;
+}
 interface CartSidebarProps {
   items: CartItem[];
   calculateSubtotal: (days: number) => number;
