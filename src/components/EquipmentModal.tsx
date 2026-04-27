@@ -4,9 +4,10 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, X } from "lucide-react";
+import { Plus, X, Edit } from "lucide-react";
 import { cn, formatEquipmentName } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import type { EquipmentWithCategory } from "@/types/supabase";
 import { RelatedEquipment } from "./RelatedEquipment";
 
