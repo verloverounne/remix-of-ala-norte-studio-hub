@@ -201,12 +201,18 @@ const Galeria = () => {
                 </div>
               )}
 
-              <Button variant="hero" size="lg" asChild className="w-full sm:w-auto my-[64px] mb-0 mt-[78px]">
-                <Link to="/contacto">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  {space.cta_text || "RESERVAR BLOQUE"}
-                </Link>
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-4 my-[64px] mb-0 mt-[78px]">
+                <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
+                  <Link to="/contacto">
+                    <Calendar className="mr-2 h-5 w-5" />
+                    {space.cta_text || "RESERVAR BLOQUE"}
+                  </Link>
+                </Button>
+                <Button variant="hero" size="lg" onClick={() => setTour360Open(true)} className="w-full sm:w-auto">
+                  <Eye className="mr-2 h-5 w-5" />
+                  RECORRIDO VIRTUAL
+                </Button>
+              </div>
             </div>
           </div>
         </div>
