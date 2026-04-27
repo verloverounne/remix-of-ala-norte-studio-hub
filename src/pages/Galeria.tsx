@@ -223,7 +223,7 @@ const Galeria = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-[32px]">
           <div>
             <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
-            <p className="font-heading text-2xl font-bold text-primary">{space.schedule_weekday}</p>
+            <p className="font-heading text-2xl font-bold text-primary-light">{space.schedule_weekday}</p>
             <p className="font-heading text-lg text-inherit font-light">{space.schedule_weekend}</p>
           </div>
 
@@ -235,7 +235,7 @@ const Galeria = () => {
                   <Badge
                     key={index}
                     variant="outline"
-                    className="inline-flex items-center rounded-md border px-3 py-1 text-xs uppercase tracking-wider transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer font-heading font-medium border-primary-light text-foreground bg-background"
+                    className="inline-flex items-center rounded-md border px-3 py-1 text-xs uppercase tracking-wider transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer font-heading font-medium bg-foreground text-background border-primary-light"
                   >
                     {service}
                   </Badge>
