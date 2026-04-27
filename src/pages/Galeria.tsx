@@ -157,7 +157,7 @@ const Galeria = () => {
               </button>
               ...
               {space.layout_description && (
-                <div className="bg-muted p-4 rounded-lg">
+                <div className="bg-muted p-4 rounded-lg py-[16px] px-0">
                   <h3 className="font-heading font-bold mb-2 text-background">Plano de la galería</h3>
                   <p className="font-heading text-lg font-medium text-background">{space.layout_description}</p>
                 </div>
