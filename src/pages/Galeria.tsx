@@ -133,7 +133,7 @@ const Galeria = () => {
 
       {/* Details Section */}
       <section className="mb-0 mt-0 sm:py-0">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 bg-muted">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 bg-muted py-0 pt-[64px]">
           {/* Two-column: Featured Image + Carousel */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-0">
             {/* Left Column: Featured Image */}
@@ -152,21 +152,21 @@ const Galeria = () => {
                     "/placeholder.svg"
                   }
                   alt={space.name}
-                  className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02] py-0 my-[64px]"
+                  className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02] py-0 my-[64px] mb-0"
                 />
               </button>
               ...
               {space.layout_description && (
-                <div className="bg-muted p-4 rounded-lg">
+                <div className="bg-muted p-4 rounded-lg py-[16px] px-0">
                   <h3 className="font-heading font-bold mb-2 text-background">Plano de la galería</h3>
                   <p className="font-heading text-lg font-medium text-background">{space.layout_description}</p>
                 </div>
               )}
             </div>
             {/* Right Column: Text Content */}
-            <div className="space-y-6 py-0 h-full">
+            <div className="space-y-6 h-full py-[64px] pt-0">
               <div>
-                <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px] mt-[64px] pt-0">El espacio</h2>
+                <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px] pt-0 mt-0 px-0">El espacio</h2>
                 <p className="text-muted-foreground font-heading font-medium text-xl">
                   {space.detailed_description || space.description}
                 </p>
@@ -199,7 +199,7 @@ const Galeria = () => {
                 </div>
               )}
 
-              <Button variant="hero" size="lg" asChild className="w-full sm:w-auto my-[64px]">
+              <Button variant="hero" size="lg" asChild className="w-full sm:w-auto my-[64px] mb-0 mt-[78px]">
                 <Link to="/contacto">
                   <Calendar className="mr-2 h-5 w-5" />
                   {space.cta_text || "RESERVAR BLOQUE"}
