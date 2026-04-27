@@ -97,6 +97,24 @@ const Admin = () => {
   useEffect(() => {
     fetchAll();
   }, []);
+
+  // Auto-abrir modal de edición desde query param ?editEquipment=<id>
+  useEffect(() => {
+    if (!equipment.length) return;
+    const params = new URLSearchParams(window.location.search);
+    const editId = params.get("editEquipment");
+    if (editId) {
+      const target = equipment.find((e) => e.id === editId);
+      if (target) {
+        handleEditEquipment(target);
+        // limpia el query param sin recargar
+        const url = new URL(window.location.href);
+        url.searchParams.delete("editEquipment");
+        window.history.replaceState({}, "", url.toString());
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [equipment]);
   const fetchAll = async () => {
     setLoading(true);
     await Promise.all([fetchEquipment(), fetchCategories(), fetchSubcategories(), fetchSpaces(), fetchContactInfo()]);

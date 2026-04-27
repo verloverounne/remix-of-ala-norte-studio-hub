@@ -4,9 +4,10 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, X } from "lucide-react";
+import { Plus, X, Edit } from "lucide-react";
 import { cn, formatEquipmentName } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import type { EquipmentWithCategory } from "@/types/supabase";
 import { RelatedEquipment } from "./RelatedEquipment";
 
@@ -30,6 +31,7 @@ export const EquipmentModal = ({
   onViewDetails,
 }: EquipmentModalProps) => {
   const [equipmentImages, setEquipmentImages] = useState<string[]>([]);
+  const { isAdmin } = useAuth();
 
   // Fetch images from equipment_images table
   useEffect(() => {
@@ -88,8 +90,18 @@ export const EquipmentModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl w-[90vw] md:w-[50vw] max-h-[90vh] overflow-y-auto">
           <DialogHeader className="flex flex-row items-start justify-between gap-4">
-          <DialogTitle className="flex items-center justify-between gap-2 w-full normal-case">
-            {formatEquipmentName(equipment.name)}
+          <DialogTitle className="flex items-center justify-between gap-2 w-full normal-case pr-8">
+            <span>{formatEquipmentName(equipment.name)}</span>
+            {isAdmin && (
+              <a
+                href={`/admin?editEquipment=${equipment.id}`}
+                className="inline-flex items-center gap-1 px-2 py-1 text-[10px] font-heading uppercase tracking-wider border border-foreground/40 rounded-sm hover:bg-foreground hover:text-background transition-colors"
+                title="Editar equipo en panel admin"
+              >
+                <Edit className="h-3 w-3" />
+                Editar
+              </a>
+            )}
           </DialogTitle>
         </DialogHeader>
 
