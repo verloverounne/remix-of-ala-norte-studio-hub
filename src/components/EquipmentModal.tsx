@@ -31,6 +31,7 @@ export const EquipmentModal = ({
   onViewDetails,
 }: EquipmentModalProps) => {
   const [equipmentImages, setEquipmentImages] = useState<string[]>([]);
+  const { isAdmin } = useAuth();
 
   // Fetch images from equipment_images table
   useEffect(() => {
