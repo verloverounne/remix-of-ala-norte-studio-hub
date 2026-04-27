@@ -152,7 +152,7 @@ const Galeria = () => {
                     "/placeholder.svg"
                   }
                   alt={space.name}
-                  className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02] py-0 my-[64px] mb-0"
+                  className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02] py-0 mb-0 my-0"
                 />
               </button>
               ...
