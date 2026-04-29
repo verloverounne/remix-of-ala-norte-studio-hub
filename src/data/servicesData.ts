@@ -26,6 +26,26 @@ export interface StaticHomeService {
 
 export const STATIC_HOME_SERVICES: StaticHomeService[] = [
   {
+    id: "produccion-integral-static",
+    title: "Producción Integral",
+    description:
+      "Armamos proyectos desde cero, presentación a fondos, asesorías de proyectos en desarrollo, armado de equipo completo.",
+    image_url: null,
+    hero_image_url: null,
+    hero_media_type: null,
+    hero_video_url: null,
+    section_media_type: null,
+    section_video_url: null,
+    button_text: null,
+    button_link: null,
+    bullets: [],
+    cta_label: "Contactanos",
+    cta_url: "/contacto",
+    slug: "produccion-integral",
+    order_index: -1,
+    is_active: true,
+  },
+  {
     id: "785da322-50a4-4400-bdd7-f099fc159ba7",
     title: "Multicámara y móvil HD",
     description:
