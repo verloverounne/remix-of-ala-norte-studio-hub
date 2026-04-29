@@ -163,10 +163,10 @@ const CTASection = () => {
             className="mb-4 sm:mb-6 my-0 px-0 font-sans font-thin text-[#fbf2ee]"
             style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
           >
-            ¿Tenés un rodaje en mente?
+            ¿TENÉS UN PROYECTO EN MENTE?
           </h2>
           <p className="text-sm mb-6 font-heading leading-tight my-[6px] sm:mb-[57px] px-0 font-normal sm:text-lg text-[#fbf2ee]">
-            Contanos qué querés filmar y armamos una propuesta de equipamiento a medida.
+            Contá con AL NORTE para la producción integral, armamos proyecots desde cero, presentación a fondos, asesorías de poryectos en desarrollo, armado de equipo completo.
           </p>
           <Button asChild variant="default" size="lg">
             <Link to="/cotizador">Hablemos de tu proyecto</Link>
