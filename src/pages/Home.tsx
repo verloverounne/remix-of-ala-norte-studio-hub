@@ -166,7 +166,7 @@ const CTASection = () => {
             ¿TENÉS UN PROYECTO EN MENTE?
           </h2>
           <p className="text-sm mb-6 font-heading leading-tight my-[6px] sm:mb-[57px] px-0 font-normal sm:text-lg text-[#fbf2ee]">
-            Contá con AL NORTE para la producción integral, armamos proyecots desde cero, presentación a fondos, asesorías de poryectos en desarrollo, armado de equipo completo.
+            Contá con AL NORTE para la producción integral, armamos proyectos desde cero, presentación a fondos, asesorías de proyectos en desarrollo, armado de equipo completo.
           </p>
           <Button asChild variant="default" size="lg">
             <Link to="/cotizador">Hablemos de tu proyecto</Link>
