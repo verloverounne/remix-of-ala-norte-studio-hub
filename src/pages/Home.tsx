@@ -122,7 +122,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
               <Button
                 variant="hero"
                 size="lg"
-                className="group-hover:shadow-brutal-lg transition-shadow my-[78px] bg-baground bg-ring"
+                className="group-hover:shadow-brutal-lg transition-shadow my-[78px]"
               >
                 VER DETALLES <ArrowRight className="ml-2" />
               </Button>
