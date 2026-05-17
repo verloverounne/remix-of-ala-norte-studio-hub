@@ -60,7 +60,7 @@ export function useEquipmentData(): UseEquipmentDataReturn {
         : supabase.from('subcategories').select('*').order('order_index'),
       cachedEquipment
         ? Promise.resolve({ data: cachedEquipment, error: null })
-        : supabase.from('equipment').select(`*, categories (*), subcategories (*)`).order('order_index'),
+        : supabase.from('equipment').select(`*, categories (*), subcategories (*)`).in('ownership_type', ['Propio', 'Estacionado']).order('order_index'),
     ]);
 
     // Process categories
