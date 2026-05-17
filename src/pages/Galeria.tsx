@@ -164,7 +164,7 @@ const Galeria = () => {
               )}
             </div>
             {/* Right Column: Text Content */}
-            <div className="space-y-6 h-full py-[64px] pt-0">
+            <div className="flex flex-col justify-between h-full py-[64px] pt-0">
               <div>
                 <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px] pt-0 mt-0 px-0">
                   El espacio
