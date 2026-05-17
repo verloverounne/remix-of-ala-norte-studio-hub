@@ -14,12 +14,12 @@ export const ViewModeToggle = ({ viewMode, onViewModeChange }: ViewModeTogglePro
         size="sm"
         onClick={() => onViewModeChange("cards")}
         className={cn(
-          "h-8 w-8 p-0 rounded-sm text-foreground hover:bg-transparent",
+          "h-8 w-8 p-0 rounded-sm text-foreground bg-[#ba1c1c]",
           viewMode === "cards" && "bg-primary text-primary-foreground",
         )}
         aria-label="Vista de tarjetas"
       >
-        <LayoutGrid className="h-4 w-4" />
+        <LayoutGrid className="h-4 w-4 text-neutral-100" />
       </Button>
       <Button
         variant="ghost"
@@ -27,7 +27,7 @@ export const ViewModeToggle = ({ viewMode, onViewModeChange }: ViewModeTogglePro
         onClick={() => onViewModeChange("list")}
         className={cn(
           "h-8 w-8 p-0 rounded-sm text-primary-foreground bg-destructive",
-          viewMode === "list" && "bg-primary-dark text-primary-foreground",
+          viewMode === "list" && "bg-primary-dark text-primary-foreground bg-neutral-900",
         )}
         aria-label="Vista de lista"
       >
