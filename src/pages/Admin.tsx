@@ -1004,12 +1004,6 @@ const Admin = () => {
               <p className="text-lg">Gestiona equipos, espacios y configuraciones</p>
             </div>
             <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-              <Button asChild variant="outline" size="lg" className="font-heading w-full sm:w-auto">
-                
-              </Button>
-              <Button asChild variant="outline" size="lg" className="font-heading w-full sm:w-auto">
-                <a href="/admin/design-tokens">Design Tokens</a>
-              </Button>
             </div>
           </div>
         </div>
