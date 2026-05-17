@@ -561,6 +561,7 @@ export const EquipmentManager = () => {
       status: "available",
       featured: newEquipment.featured,
       featured_copy: newEquipment.featured_copy || null,
+      ownership_type: newEquipment.ownership_type,
     });
 
     if (error) {
@@ -579,6 +580,7 @@ export const EquipmentManager = () => {
         price_per_week: "",
         featured: false,
         featured_copy: "",
+        ownership_type: "Propio",
       });
       setIsAddFormOpen(false);
       fetchEquipment();
