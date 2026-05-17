@@ -115,6 +115,7 @@ export const EquipmentManager = () => {
     price_per_week: "",
     featured: false,
     featured_copy: "",
+    ownership_type: "Propio" as "Propio" | "Estacionado" | "Externo",
   });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
