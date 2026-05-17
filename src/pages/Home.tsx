@@ -290,12 +290,6 @@ const Home = () => {
       {/* CTA Section */}
       <CTASection />
 
-      {/* Services Section */}
-      <ServicesSection />
-
-      {/* Cartoni Official Dealer Section */}
-      <CartoniSection />
-
       {/* Featured Equipment Section - Full Width Slider */}
       {featuredEquipment.length > 0 && (
         <FeaturedEquipmentSection
@@ -308,6 +302,13 @@ const Home = () => {
       )}
     </div>
   );
+
+  
+      {/* Services Section */}
+      <ServicesSection />
+
+      {/* Cartoni Official Dealer Section */}
+      <CartoniSection />
 
   {
     /* Productions Slider Section */
