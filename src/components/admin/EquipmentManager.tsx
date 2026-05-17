@@ -1416,6 +1416,21 @@ export const EquipmentManager = () => {
                 />
               </div>
               <div className="space-y-2">
+                <Label>Tipo *</Label>
+                <Select
+                  value={editingEquipment.ownership_type || "Propio"}
+                  onValueChange={(v) => setEditingEquipment({ ...editingEquipment, ownership_type: v })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Propio">Propio</SelectItem>
+                    <SelectItem value="Estacionado">Estacionado</SelectItem>
+                    <SelectItem value="Externo">Externo (oculto del público)</SelectItem>
+                  </SelectContent>
+                </Select>
+              <div className="space-y-2">
                 <Label>Precio por día *</Label>
                 <Input
                   type="number"
