@@ -488,6 +488,7 @@ export const EquipmentManager = () => {
         featured: editingEquipment.featured || false,
         status: editingEquipment.status,
         stock_quantity: editingEquipment.stock_quantity,
+        ownership_type: editingEquipment.ownership_type || "Propio",
       })
       .eq("id", editingEquipment.id);
 
