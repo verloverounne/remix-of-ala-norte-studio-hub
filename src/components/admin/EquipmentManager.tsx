@@ -1430,6 +1430,7 @@ export const EquipmentManager = () => {
                     <SelectItem value="Externo">Externo (oculto del público)</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
               <div className="space-y-2">
                 <Label>Precio por día *</Label>
                 <Input
