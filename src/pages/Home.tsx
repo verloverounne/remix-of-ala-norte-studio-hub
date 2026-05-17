@@ -299,9 +299,6 @@ const Home = () => {
           currentEquipmentSlide={currentEquipmentSlide}
           setCurrentEquipmentSlide={setCurrentEquipmentSlide}
         />
-      )}
-    </div>
-  );
 
   
       {/* Services Section */}
@@ -310,9 +307,11 @@ const Home = () => {
       {/* Cartoni Official Dealer Section */}
       <CartoniSection />
 
-  {
-    /* Productions Slider Section */
-  }
-  <ProductionsSlider />;
+      {/* Productions Slider Section */}
+    <ProductionsSlider />;
+            )}
+    </div>
+  );
+
 };
 export default Home;
