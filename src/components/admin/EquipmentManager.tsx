@@ -761,6 +761,24 @@ export const EquipmentManager = () => {
                   onChange={(e) => setNewEquipment({ ...newEquipment, description: e.target.value })}
                 />
               </div>
+              <div className="space-y-2">
+                <Label>Tipo *</Label>
+                <Select
+                  value={newEquipment.ownership_type}
+                  onValueChange={(v) =>
+                    setNewEquipment({ ...newEquipment, ownership_type: v as "Propio" | "Estacionado" | "Externo" })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Propio">Propio</SelectItem>
+                    <SelectItem value="Estacionado">Estacionado</SelectItem>
+                    <SelectItem value="Externo">Externo (oculto)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="md:col-span-2 flex items-center gap-4">
                 <div className="flex items-center gap-2">
                   <Switch
