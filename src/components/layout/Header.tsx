@@ -127,7 +127,11 @@ export const Header = () => {
             WebkitTapHighlightColor: "transparent",
           }}
         >
-          {mobileMenuOpen ? <X className="h-5 w-5 text-primary-foreground" /> : <Menu className="h-5 w-5 text-primary-foreground" />}
+          {mobileMenuOpen ? (
+            <X className="h-5 w-5 text-primary-foreground" />
+          ) : (
+            <Menu className="h-5 w-5 text-primary-foreground" />
+          )}
         </button>
       )}
 
@@ -135,7 +139,7 @@ export const Header = () => {
       {isMobile && mobileMenuOpen && (
         <div
           ref={menuRef}
-          className="fixed top-14 right-3 z-[70] w-64 bg-background border border-foreground shadow-brutal pointer-events-auto"
+          className="fixed  right-3 z-[70] w-screen bg-background border border-foreground shadow-brutal pointer-events-auto"
           onTouchStart={resetAutoCloseTimer}
           onMouseMove={resetAutoCloseTimer}
         >
