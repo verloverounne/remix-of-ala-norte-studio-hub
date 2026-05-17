@@ -516,7 +516,7 @@ const Equipos = () => {
         </div>
       </div>
 
-      <div className="pb-4 sm:pb-6">
+      <div className="pb-4 sm:pb-6 bg-[#151719]">
         <div
           className={cn(
             "grid gap-4 lg:gap-6 py-[16px] ml-0 pl-[16px] pr-[16px] px-0 bg-foreground transition-all duration-500",
