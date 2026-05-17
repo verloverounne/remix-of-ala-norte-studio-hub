@@ -1069,10 +1069,9 @@ export const EquipmentManager = () => {
                             {eq.ownership_type && (() => {
                               const t = eq.ownership_type.toLowerCase().trim();
                               const cls =
-                                t === "propio" ? "bg-emerald-600 hover:bg-emerald-600 text-white border-transparent" :
-                                t === "compartido" ? "bg-sky-600 hover:bg-sky-600 text-white border-transparent" :
-                                t === "externo" ? "bg-amber-600 hover:bg-amber-600 text-white border-transparent" :
-                                t === "estacionado" ? "bg-zinc-600 hover:bg-zinc-600 text-white border-transparent" :
+                                t === "propio" ? "bg-primary text-primary-foreground hover:bg-primary border-transparent" :
+                                t === "estacionado" ? "bg-primary/70 text-primary-foreground hover:bg-primary/70 border-transparent" :
+                                t === "externo" ? "bg-foreground text-background hover:bg-foreground border-transparent" :
                                 "bg-muted text-muted-foreground border-transparent";
                               return (
                                 <Badge className={`text-xs ${cls}`} title={`Tipo: ${eq.ownership_type}`}>
