@@ -229,7 +229,7 @@ export type Database = {
           name: string
           name_en: string | null
           order_index: number | null
-          ownership_type: string | null
+          ownership_type: string
           price_per_day: number
           serial_number: string | null
           specs: Json | null
@@ -254,7 +254,7 @@ export type Database = {
           name: string
           name_en?: string | null
           order_index?: number | null
-          ownership_type?: string | null
+          ownership_type?: string
           price_per_day: number
           serial_number?: string | null
           specs?: Json | null
@@ -279,7 +279,7 @@ export type Database = {
           name?: string
           name_en?: string | null
           order_index?: number | null
-          ownership_type?: string | null
+          ownership_type?: string
           price_per_day?: number
           serial_number?: string | null
           specs?: Json | null

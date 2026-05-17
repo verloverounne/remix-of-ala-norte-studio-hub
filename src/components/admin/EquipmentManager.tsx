@@ -115,6 +115,7 @@ export const EquipmentManager = () => {
     price_per_week: "",
     featured: false,
     featured_copy: "",
+    ownership_type: "Propio" as "Propio" | "Estacionado" | "Externo",
   });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -487,6 +488,7 @@ export const EquipmentManager = () => {
         featured: editingEquipment.featured || false,
         status: editingEquipment.status,
         stock_quantity: editingEquipment.stock_quantity,
+        ownership_type: editingEquipment.ownership_type || "Propio",
       })
       .eq("id", editingEquipment.id);
 
@@ -560,6 +562,7 @@ export const EquipmentManager = () => {
       status: "available",
       featured: newEquipment.featured,
       featured_copy: newEquipment.featured_copy || null,
+      ownership_type: newEquipment.ownership_type,
     });
 
     if (error) {
@@ -578,6 +581,7 @@ export const EquipmentManager = () => {
         price_per_week: "",
         featured: false,
         featured_copy: "",
+        ownership_type: "Propio",
       });
       setIsAddFormOpen(false);
       fetchEquipment();
@@ -757,6 +761,24 @@ export const EquipmentManager = () => {
                   value={newEquipment.description}
                   onChange={(e) => setNewEquipment({ ...newEquipment, description: e.target.value })}
                 />
+              </div>
+              <div className="space-y-2">
+                <Label>Tipo *</Label>
+                <Select
+                  value={newEquipment.ownership_type}
+                  onValueChange={(v) =>
+                    setNewEquipment({ ...newEquipment, ownership_type: v as "Propio" | "Estacionado" | "Externo" })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Propio">Propio</SelectItem>
+                    <SelectItem value="Estacionado">Estacionado</SelectItem>
+                    <SelectItem value="Externo">Externo (oculto)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="md:col-span-2 flex items-center gap-4">
                 <div className="flex items-center gap-2">
@@ -1047,10 +1069,9 @@ export const EquipmentManager = () => {
                             {eq.ownership_type && (() => {
                               const t = eq.ownership_type.toLowerCase().trim();
                               const cls =
-                                t === "propio" ? "bg-emerald-600 hover:bg-emerald-600 text-white border-transparent" :
-                                t === "compartido" ? "bg-sky-600 hover:bg-sky-600 text-white border-transparent" :
-                                t === "externo" ? "bg-amber-600 hover:bg-amber-600 text-white border-transparent" :
-                                t === "estacionado" ? "bg-zinc-600 hover:bg-zinc-600 text-white border-transparent" :
+                                t === "propio" ? "bg-primary text-primary-foreground hover:bg-primary border-transparent" :
+                                t === "estacionado" ? "bg-primary/70 text-primary-foreground hover:bg-primary/70 border-transparent" :
+                                t === "externo" ? "bg-foreground text-background hover:bg-foreground border-transparent" :
                                 "bg-muted text-muted-foreground border-transparent";
                               return (
                                 <Badge className={`text-xs ${cls}`} title={`Tipo: ${eq.ownership_type}`}>
@@ -1392,6 +1413,22 @@ export const EquipmentManager = () => {
                   value={editingEquipment.model || ""}
                   onChange={(e) => setEditingEquipment({ ...editingEquipment, model: e.target.value })}
                 />
+              </div>
+              <div className="space-y-2">
+                <Label>Tipo *</Label>
+                <Select
+                  value={editingEquipment.ownership_type || "Propio"}
+                  onValueChange={(v) => setEditingEquipment({ ...editingEquipment, ownership_type: v })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Propio">Propio</SelectItem>
+                    <SelectItem value="Estacionado">Estacionado</SelectItem>
+                    <SelectItem value="Externo">Externo (oculto del público)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
                 <Label>Precio por día *</Label>
