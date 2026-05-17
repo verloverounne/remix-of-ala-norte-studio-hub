@@ -1331,9 +1331,8 @@ const Admin = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="Propio">Propio</SelectItem>
-                    <SelectItem value="Externo">Externo</SelectItem>
                     <SelectItem value="Estacionado">Estacionado</SelectItem>
-                    <SelectItem value="Compartido">Compartido</SelectItem>
+                    <SelectItem value="Externo">Externo (oculto del público)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
