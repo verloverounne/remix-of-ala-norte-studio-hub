@@ -119,11 +119,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
               >
                 {equipment.name}
               </h3>
-              <Button
-                variant="hero"
-                size="lg"
-                className="group-hover:shadow-brutal-lg transition-shadow my-[78px]"
-              >
+              <Button variant="hero" size="lg" className="group-hover:shadow-brutal-lg transition-shadow my-[78px]">
                 VER DETALLES <ArrowRight className="ml-2" />
               </Button>
             </div>
@@ -166,7 +162,8 @@ const CTASection = () => {
             ¿TENÉS UN PROYECTO EN MENTE?
           </h2>
           <p className="text-sm mb-6 font-heading leading-tight my-[6px] sm:mb-[57px] px-0 font-normal sm:text-lg text-[#fbf2ee]">
-            Contá con AL NORTE para la producción integral, armamos proyectos desde cero, presentación a fondos, asesorías de proyectos en desarrollo, armado de equipo completo.
+            Contá con AL NORTE para la producción integral, armamos proyectos desde cero, presentación a fondos,
+            asesorías de proyectos en desarrollo, armado de equipo completo.
           </p>
           <Button asChild variant="default" size="lg">
             <Link to="/cotizador">Hablemos de tu proyecto</Link>
@@ -287,9 +284,6 @@ const Home = () => {
       {/* Hero Section - Video Slider with CTAs */}
       <HomeVideoHeroSlider />
 
-      {/* CTA Section */}
-      <CTASection />
-
       {/* Featured Equipment Section - Full Width Slider */}
       {featuredEquipment.length > 0 && (
         <FeaturedEquipmentSection
@@ -303,7 +297,8 @@ const Home = () => {
 
       {/* Services Section */}
       <ServicesSection />
-
+      {/* CTA Section */}
+      <CTASection />
       {/* Cartoni Official Dealer Section */}
       <CartoniSection />
 
@@ -311,6 +306,5 @@ const Home = () => {
       <ProductionsSlider />
     </div>
   );
-
 };
 export default Home;
