@@ -299,8 +299,8 @@ const Home = () => {
           currentEquipmentSlide={currentEquipmentSlide}
           setCurrentEquipmentSlide={setCurrentEquipmentSlide}
         />
+      )}
 
-  
       {/* Services Section */}
       <ServicesSection />
 
@@ -308,8 +308,7 @@ const Home = () => {
       <CartoniSection />
 
       {/* Productions Slider Section */}
-    <ProductionsSlider />;
-            )}
+      <ProductionsSlider />
     </div>
   );
 
