@@ -160,7 +160,7 @@ const Contacto = () => {
                     <Phone className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                     <div>
                       <p className="font-semibold">Teléfono</p>
-                      <p className="text-muted-foreground">+54 (11) 4718-0732</p>
+                      <p className="text-muted-foreground whitespace-pre-line">54 11 4718 0732<br />54 9 11 2682 4709</p>
                     </div>
                   </div>
 
