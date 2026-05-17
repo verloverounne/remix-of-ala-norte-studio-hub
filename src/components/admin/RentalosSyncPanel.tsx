@@ -251,7 +251,17 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
           status,
           order_index: priority,
           functional_status: csvItem.funcional || null,
-          ownership_type: csvItem.tipo || null,
+          ownership_type: (() => {
+            const raw = (csvItem.tipo || "").trim();
+            const t = raw.toLowerCase();
+            if (t === "propio") return "Propio";
+            if (t === "estacionado") return "Estacionado";
+            if (t === "externo") return "Externo";
+            if (raw) {
+              syncResult.errors.push(`Tipo no válido "${raw}" en "${csvItem.nombre}" → usando 'Propio'`);
+            }
+            return "Propio";
+          })(),
           serial_number: csvItem.serialNumbers.join(" | ") || null,
         };
         if (mergedDescription !== undefined) updateFields.description = mergedDescription;
