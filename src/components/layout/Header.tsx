@@ -139,7 +139,7 @@ export const Header = () => {
       {isMobile && mobileMenuOpen && (
         <div
           ref={menuRef}
-          className="fixed  right-3 z-[70] w-screen bg-background border border-foreground shadow-brutal pointer-events-auto"
+          className="fixed  px-8 z-[70] w-screen bg-background border border-foreground shadow-brutal pointer-events-auto"
           onTouchStart={resetAutoCloseTimer}
           onMouseMove={resetAutoCloseTimer}
         >
