@@ -465,12 +465,6 @@ const Equipos = () => {
                 <SelectItem value="price-desc" className="font-heading text-xs">
                   Precio: mayor a menor
                 </SelectItem>
-                <SelectItem value="available-first" className="font-heading text-xs">
-                  Disponibles primero
-                </SelectItem>
-                <SelectItem value="unavailable-first" className="font-heading text-xs">
-                  No disponibles primero
-                </SelectItem>
               </SelectContent>
             </Select>
 
