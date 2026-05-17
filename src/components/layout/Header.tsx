@@ -164,7 +164,7 @@ export const Header = () => {
               <Link
                 to="/admin"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-4 py-3 font-heading text-sm bg-primary text-primary-foreground touch-manipulation border-b border-foreground/20 text-left"
+                className="block px-4 py-3 font-heading text-sm bg-primary text-primary-foreground touch-manipulation border-b border-foreground/20 text-left bg-neutral-800"
                 style={{
                   WebkitTapHighlightColor: "rgba(0,0,0,0.1)",
                 }}
