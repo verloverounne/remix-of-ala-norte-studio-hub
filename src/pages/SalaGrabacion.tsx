@@ -186,6 +186,9 @@ const SalaGrabacion = () => {
               </div>
             </div>
           )}
+        </div>
+      </div>
+
       {/* Details Section */}
       <section className="mb-0 mt-0 sm:py-0">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 bg-muted py-0 pt-[64px]">
@@ -242,10 +245,11 @@ const SalaGrabacion = () => {
                   ))}
                 </div>
               )}
-
-    
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
 
       {/* Slideshow Block */}
       <section className="py-12 space-y-8 bg-foreground text-background sm:py-0 pb-[64px]">
