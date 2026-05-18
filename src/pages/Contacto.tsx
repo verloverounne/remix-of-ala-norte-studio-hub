@@ -229,7 +229,7 @@ const Contacto = () => {
                 <CardContent>
                   <div className="flex gap-4">
                     <a
-                      href="https://www.facebook.com/alanortecinedigital"
+                      href="https://www.facebook.com/AlaNorteCineDigitalHD/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-12 h-12 bg-primary-dark hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover-scale rounded-sm"
