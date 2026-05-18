@@ -126,38 +126,40 @@ const SalaGrabacion = () => {
     <div className="min-h-screen bg-background">
       {/* Hero Section - Full width */}
       <GalleryHero space={space} />
-          {space.included_items && space.included_items.length > 0 && (
-                <div>
-                  <h3 className="text-xl font-heading font-bold flex items-center gap-16 py-[32px]">
-                    Incluido sin cargo adicional
-                  </h3>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {space.included_items.map((item, index) => (
-                      <li key={index} className="flex items-center gap-2 text-muted-foreground text-base">
-                        <span className="text-primary">•</span>
-                        <span className="font-heading">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
 
-              <div className="flex flex-col gap-4 my-[64px] mb-0 mt-[78px]">
-                <Button variant="hero" size="lg" onClick={() => setTour360Open(true)} className="w-full sm:w-auto">
-                  <Eye className="mr-2 h-5 w-5" />
-                  RECORRIDO VIRTUAL
-                </Button>
-                <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
-                  <Link to="/contacto">
-                    <Calendar className="mr-2 h-5 w-5" />
-                    {space.cta_text || "RESERVAR BLOQUE"}
-                  </Link>
-                </Button>
-              </div>
+      <section className="py-12">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          {space.included_items && space.included_items.length > 0 && (
+            <div>
+              <h3 className="text-xl font-heading font-bold flex items-center gap-16 py-[32px]">
+                Incluido sin cargo adicional
+              </h3>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {space.included_items.map((item, index) => (
+                  <li key={index} className="flex items-center gap-2 text-muted-foreground text-base">
+                    <span className="text-primary">•</span>
+                    <span className="font-heading">{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
+          )}
+
+          <div className="flex flex-col gap-4 my-[64px] mb-0 mt-[78px]">
+            <Button variant="hero" size="lg" onClick={() => setTour360Open(true)} className="w-full sm:w-auto">
+              <Eye className="mr-2 h-5 w-5" />
+              RECORRIDO VIRTUAL
+            </Button>
+            <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
+              <Link to="/contacto">
+                <Calendar className="mr-2 h-5 w-5" />
+                {space.cta_text || "RESERVAR BLOQUE"}
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
+
 
       {/* Schedule + Optional Services */}
       <div className="mx-auto px-4 sm:px-6 lg:px-8 my-[32px] mb-[64px]">
