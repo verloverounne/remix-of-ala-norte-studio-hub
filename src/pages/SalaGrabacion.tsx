@@ -127,68 +127,6 @@ const SalaGrabacion = () => {
       {/* Hero Section - Full width */}
       <GalleryHero space={space} />
 
-      <section className="py-12">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8">
-          {space.included_items && space.included_items.length > 0 && (
-            <div>
-              <h3 className="text-xl font-heading font-bold flex items-center gap-16 py-[32px]">
-                Incluido sin cargo adicional
-              </h3>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {space.included_items.map((item, index) => (
-                  <li key={index} className="flex items-center gap-2 text-muted-foreground text-base">
-                    <span className="text-primary">•</span>
-                    <span className="font-heading">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <div className="flex flex-col gap-4 my-[64px] mb-0 mt-[78px]">
-            <Button variant="hero" size="lg" onClick={() => setTour360Open(true)} className="w-full sm:w-auto">
-              <Eye className="mr-2 h-5 w-5" />
-              RECORRIDO VIRTUAL
-            </Button>
-            <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
-              <Link to="/contacto">
-                <Calendar className="mr-2 h-5 w-5" />
-                {space.cta_text || "RESERVAR BLOQUE"}
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-
-      {/* Schedule + Optional Services */}
-      <div className="mx-auto px-4 sm:px-6 lg:px-8 my-[32px] mb-[64px]">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-[32px]">
-          <div>
-            <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
-            <p className="font-heading text-2xl font-bold text-primary">{space.schedule_weekday}</p>
-            <p className="font-heading text-lg text-inherit font-light">{space.schedule_weekend}</p>
-          </div>
-
-          {space.optional_services && space.optional_services.length > 0 && (
-            <div>
-              <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
-              <div className="flex flex-wrap gap-2">
-                {space.optional_services.map((service, index) => (
-                  <Badge
-                    key={index}
-                    variant="outline"
-                    className="inline-flex items-center rounded-md border px-3 py-1 text-xs uppercase tracking-wider transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer font-heading font-medium border-primary-light text-foreground bg-background"
-                  >
-                    {service}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
       {/* Details Section */}
       <section className="mb-0 mt-0 sm:py-0">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 bg-muted py-0 pt-[64px]">
@@ -245,11 +183,67 @@ const SalaGrabacion = () => {
                   ))}
                 </div>
               )}
+
+              {space.included_items && space.included_items.length > 0 && (
+                <div>
+                  <h3 className="text-xl font-heading font-bold flex items-center gap-16 py-[32px]">
+                    Incluido sin cargo adicional
+                  </h3>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {space.included_items.map((item, index) => (
+                      <li key={index} className="flex items-center gap-2 text-muted-foreground text-base">
+                        <span className="text-primary">•</span>
+                        <span className="font-heading">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <div className="flex flex-col gap-4 my-[64px] mb-0 mt-[78px]">
+                <Button variant="hero" size="lg" onClick={() => setTour360Open(true)} className="w-full sm:w-auto">
+                  <Eye className="mr-2 h-5 w-5" />
+                  RECORRIDO VIRTUAL
+                </Button>
+                <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
+                  <Link to="/contacto">
+                    <Calendar className="mr-2 h-5 w-5" />
+                    {space.cta_text || "RESERVAR BLOQUE"}
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Schedule + Optional Services */}
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 my-[32px] mb-[64px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-[32px]">
+          <div>
+            <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
+            <p className="font-heading text-2xl font-bold text-primary">{space.schedule_weekday}</p>
+            <p className="font-heading text-lg text-inherit font-light">{space.schedule_weekend}</p>
+          </div>
+
+          {space.optional_services && space.optional_services.length > 0 && (
+            <div>
+              <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
+              <div className="flex flex-wrap gap-2">
+                {space.optional_services.map((service, index) => (
+                  <Badge
+                    key={index}
+                    variant="outline"
+                    className="inline-flex items-center rounded-md border px-3 py-1 text-xs uppercase tracking-wider transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer font-heading font-medium border-primary-light text-foreground bg-background"
+                  >
+                    {service}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Slideshow Block */}
       <section className="py-12 space-y-8 bg-foreground text-background sm:py-0 pb-[64px]">
