@@ -108,7 +108,7 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
       "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768955828513_GALERIA_FAKENEWS_2.mp4",
     section_media_type: "video",
     section_video_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768874645246_GALERIA_FAKENEWS_1.mp4",
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/servicios//GALERIA FAKENEWS_1.mp4",
     button_text: null,
     button_link: null,
     bullets: [],
