@@ -126,65 +126,7 @@ const SalaGrabacion = () => {
     <div className="min-h-screen bg-background">
       {/* Hero Section - Full width */}
       <GalleryHero space={space} />
-
-      {/* Details Section */}
-      <section className="mb-0 mt-0 sm:py-0">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 bg-muted py-0 pt-[64px]">
-          {/* Two-column: Featured Image + Text */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-0">
-            {/* Left Column: Featured Image */}
-            <div className="space-y-6">
-              <button
-                type="button"
-                onClick={() => featuredMediaImage && setPlanoOpen(true)}
-                className="overflow-hidden group rounded-sm block w-full cursor-zoom-in"
-                aria-label="Ampliar plano"
-              >
-                <img
-                  src={
-                    featuredMediaImage ||
-                    space.featured_image ||
-                    (space.images && space.images[0]) ||
-                    "/placeholder.svg"
-                  }
-                  alt={space.name}
-                  className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02] py-0 mb-0 my-0"
-                />
-              </button>
-              {space.layout_description && (
-                <div className="bg-muted p-4 rounded-lg py-[16px] px-0">
-                  <h3 className="font-heading font-bold mb-2 text-background">Plano de la sala</h3>
-                  <p className="font-heading text-lg font-medium text-background">{space.layout_description}</p>
-                </div>
-              )}
-            </div>
-
-            {/* Right Column: Text Content */}
-            <div className="space-y-6 h-full py-[64px] pt-0">
-              <div>
-                <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px] pt-0 mt-0 px-0">
-                  El espacio
-                </h2>
-                <p className="text-muted-foreground font-heading font-medium text-xl">
-                  {space.detailed_description || space.description}
-                </p>
-              </div>
-
-              {space.features && Array.isArray(space.features) && space.features.length > 0 && (
-                <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-lg">
-                  {(space.features as string[]).map((feature, index) => (
-                    <p
-                      key={index}
-                      className="text-muted-foreground font-heading flex items-start gap-2 text-xl font-thin"
-                    >
-                      <span className="text-primary">•</span>
-                      {feature}
-                    </p>
-                  ))}
-                </div>
-              )}
-
-              {space.included_items && space.included_items.length > 0 && (
+          {space.included_items && space.included_items.length > 0 && (
                 <div>
                   <h3 className="text-xl font-heading font-bold flex items-center gap-16 py-[32px]">
                     Incluido sin cargo adicional
@@ -242,6 +184,64 @@ const SalaGrabacion = () => {
               </div>
             </div>
           )}
+      {/* Details Section */}
+      <section className="mb-0 mt-0 sm:py-0">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 bg-muted py-0 pt-[64px]">
+          {/* Two-column: Featured Image + Text */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-0">
+            {/* Left Column: Featured Image */}
+            <div className="space-y-6">
+              <button
+                type="button"
+                onClick={() => featuredMediaImage && setPlanoOpen(true)}
+                className="overflow-hidden group rounded-sm block w-full cursor-zoom-in"
+                aria-label="Ampliar plano"
+              >
+                <img
+                  src={
+                    featuredMediaImage ||
+                    space.featured_image ||
+                    (space.images && space.images[0]) ||
+                    "/placeholder.svg"
+                  }
+                  alt={space.name}
+                  className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02] py-0 mb-0 my-0"
+                />
+              </button>
+              {space.layout_description && (
+                <div className="bg-muted p-4 rounded-lg py-[16px] px-0">
+                  <h3 className="font-heading font-bold mb-2 text-background">Plano de la sala</h3>
+                  <p className="font-heading text-lg font-medium text-background">{space.layout_description}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Right Column: Text Content */}
+            <div className="space-y-6 h-full py-[64px] pt-0">
+              <div>
+                <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px] pt-0 mt-0 px-0">
+                  El espacio
+                </h2>
+                <p className="text-muted-foreground font-heading font-medium text-xl">
+                  {space.detailed_description || space.description}
+                </p>
+              </div>
+
+              {space.features && Array.isArray(space.features) && space.features.length > 0 && (
+                <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-lg">
+                  {(space.features as string[]).map((feature, index) => (
+                    <p
+                      key={index}
+                      className="text-muted-foreground font-heading flex items-start gap-2 text-xl font-thin"
+                    >
+                      <span className="text-primary">•</span>
+                      {feature}
+                    </p>
+                  ))}
+                </div>
+              )}
+
+    
         </div>
       </div>
 
