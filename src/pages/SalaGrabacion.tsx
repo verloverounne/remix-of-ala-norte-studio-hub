@@ -102,7 +102,7 @@ const SalaGrabacion = () => {
 <body>
   <div class="hint" id="hint">Arrastrá para explorar el espacio</div>
   <a-scene vr-mode-ui="enabled: false" loading-screen="enabled: false" embedded style="width:100%;height:100vh;">
-    <a-sky id="sky" src="${SALA_360_IMAGE}" rotation="0 150 0" scale="-1 1 1"></a-sky>
+    <a-sky id="sky" src="${SALA_360_IMAGE}" rotation="180 0 0" scale="-1 1 1"></a-sky>
     <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="80" position="0 1.6 0"></a-camera>
   </a-scene>
   <script>
@@ -171,7 +171,10 @@ const SalaGrabacion = () => {
               {space.features && Array.isArray(space.features) && space.features.length > 0 && (
                 <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-lg">
                   {(space.features as string[]).map((feature, index) => (
-                    <p key={index} className="text-muted-foreground font-heading flex items-start gap-2 text-xl font-thin">
+                    <p
+                      key={index}
+                      className="text-muted-foreground font-heading flex items-start gap-2 text-xl font-thin"
+                    >
                       <span className="text-primary">•</span>
                       {feature}
                     </p>
@@ -278,9 +281,7 @@ const SalaGrabacion = () => {
                 {salaImages.length > 1 && (
                   <>
                     <button
-                      onClick={() =>
-                        setCarouselIndex((prev) => (prev - 1 + salaImages.length) % salaImages.length)
-                      }
+                      onClick={() => setCarouselIndex((prev) => (prev - 1 + salaImages.length) % salaImages.length)}
                       className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[-2px] transition-transform"
                       aria-label="Anterior"
                     >
