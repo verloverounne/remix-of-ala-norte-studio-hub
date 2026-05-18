@@ -26,10 +26,12 @@ const SalaGrabacion = () => {
   // Plano image: match by URL or title containing "plano"
   const isPlano = (img: { image_url?: string; title?: string | null }) =>
     img.image_url?.toLowerCase().includes("plano") || img.title?.toLowerCase().includes("plano");
-  const planoImage = allSalaImages.find(isPlano);
+  const GALERIA_PLANO_URL =
+    "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//gallery_1775335547737_plano_galeria.png";
+  const planoImage = { image_url: GALERIA_PLANO_URL, title: "Plano" };
   // Slideshow excludes the plano (it's shown separately as floor plan)
   const salaImages = allSalaImages.filter((img) => !isPlano(img));
-  const featuredMediaImage = planoImage?.image_url || salaImages[0]?.image_url || null;
+  const featuredMediaImage = GALERIA_PLANO_URL;
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
   const toggleFullscreen = useCallback(() => {
