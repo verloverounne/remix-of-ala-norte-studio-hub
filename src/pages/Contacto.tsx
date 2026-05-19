@@ -36,9 +36,18 @@ const Contacto = () => {
       return;
     }
 
+    const phoneNumber = "5491126824709";
+    const text =
+      `Hola, soy ${formData.name}.\n` +
+      `Email: ${formData.email}\n` +
+      (formData.phone ? `Teléfono: ${formData.phone}\n` : "") +
+      `\nConsulta:\n${formData.message}`;
+    const message = encodeURIComponent(text);
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
+
     toast({
       title: "¡Listo!",
-      description: "Tu consulta fue enviada. Te vamos a responder lo antes posible.",
+      description: "Te redirigimos a WhatsApp con tu consulta.",
     });
 
     setFormData({
