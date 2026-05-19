@@ -1,3 +1,4 @@
+import { Seo } from "@/components/Seo";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -166,6 +167,11 @@ const Comunidad = () => {
 
   return (
     <div className="min-h-screen pt-14 sm:pt-16 lg:pt-20">
+      <Seo
+        title="Comunidad — Iniciativas audiovisuales | Ala Norte"
+        description="Apoyamos a la comunidad audiovisual independiente: festivales, escuelas, premios y proyectos colaborativos junto a equipos de cine y publicidad."
+        path="/comunidad"
+      />
       {/* Hero Section */}
       <section className="py-12 sm:py-16 bg-background">
         <div className="container mx-auto px-4">

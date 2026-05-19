@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from "react";
+import { Seo } from "@/components/Seo";
 import { Calendar, Maximize2, Minimize2, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -124,6 +125,11 @@ const SalaGrabacion = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Sala de Sonido y Postproducción | Ala Norte"
+        description="Sala de grabación y postproducción de audio con tour 360°. Equipamiento profesional para doblaje, foley, mezcla y diseño sonoro en Buenos Aires."
+        path="/sala-grabacion"
+      />
       {/* Hero Section - Full width */}
       <GalleryHero space={space} />
 

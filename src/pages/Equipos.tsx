@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from "react";
+import { Seo } from "@/components/Seo";
 import { useSearchParams } from "react-router-dom";
 import type { EquipmentWithCategory } from "@/types/supabase";
 import { useCart } from "@/hooks/useCart";
@@ -348,6 +349,11 @@ const Equipos = () => {
   const cartStickyTop = 80;
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Rental de equipos audiovisuales — Cámaras, ópticas, luces | Ala Norte"
+        description="Catálogo completo de cámaras, ópticas, iluminación, grip y sonido para alquiler. Equipamiento profesional curado para cine, publicidad y contenidos."
+        path="/equipos"
+      />
       {/* Hero Carousel - Now simplified, only shows slides */}
       <HeroCarouselRental
         categories={categories}

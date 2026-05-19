@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Seo } from "@/components/Seo";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -78,6 +79,11 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen pt-20">
+      <Seo
+        title="Blog — Notas técnicas y novedades audiovisuales | Ala Norte"
+        description="Notas, tutoriales y novedades del mundo audiovisual: cámaras, ópticas, iluminación, sonido y producción. Comunidad y conocimiento de Ala Norte."
+        path="/blog"
+      />
       {/* Hero Section */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">

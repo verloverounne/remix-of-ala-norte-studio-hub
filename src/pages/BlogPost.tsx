@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Seo } from "@/components/Seo";
 import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
@@ -130,6 +131,22 @@ const BlogPost = () => {
 
   return (
     <div className="min-h-screen pt-20 pb-16">
+      <Seo
+        title={`${article.title} | Blog Ala Norte`}
+        description={(article.excerpt || article.title).slice(0, 160)}
+        path={`/blog/${article.slug}`}
+        ogType="article"
+        ogImage={article.image_url || undefined}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: article.title,
+          description: article.excerpt,
+          image: article.image_url,
+          datePublished: article.created_at,
+          author: { "@type": "Person", name: article.profiles?.display_name || "Ala Norte" },
+        }}
+      />
       <article className="container mx-auto px-4 max-w-4xl">
         <Button asChild variant="ghost" className="mb-6">
           <Link to="/blog">

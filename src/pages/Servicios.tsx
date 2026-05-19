@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { Seo } from "@/components/Seo";
 import { ServicesHeroSlider } from "@/components/services/ServicesHeroSlider";
 import { ServiceSection } from "@/components/services/ServiceSection";
 import { WorkshopsSection } from "@/components/services/WorkshopsSection";
@@ -104,6 +105,11 @@ const Servicios = () => {
 
   return (
     <div className="min-h-screen">
+      <Seo
+        title="Servicios de producción audiovisual y sala de sonido | Ala Norte"
+        description="Producción audiovisual integral, postproducción, sala de sonido y workshops. Equipo técnico con asesoramiento dedicado en Buenos Aires."
+        path="/servicios"
+      />
       <ServicesHeroSlider 
         services={services}
         activeServiceId={activeServiceId}

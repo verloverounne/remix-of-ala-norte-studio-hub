@@ -12,6 +12,7 @@ import { useParallax } from "@/hooks/useParallax";
 import { useGalleryImages } from "@/hooks/useGalleryImages";
 import { HomePreloader } from "@/components/HomePreloader";
 import { useVideoPreloader } from "@/hooks/useVideoPreloader";
+import { Seo } from "@/components/Seo";
 
 // Componente para la sección de equipos destacados con parallax
 interface FeaturedEquipmentSectionProps {
@@ -278,6 +279,11 @@ const Home = () => {
   }
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Ala Norte — Rental audiovisual y productora en Buenos Aires"
+        description="Rental de cámaras, ópticas, iluminación y grip. Estudios, sala de sonido y producción audiovisual integral en Vicente López, Buenos Aires."
+        path="/"
+      />
       {/* Institutional Slider - Before Hero */}
       <InstitutionalSlider pageType="home" />
 

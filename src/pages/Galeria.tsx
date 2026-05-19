@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from "react";
+import { Seo } from "@/components/Seo";
 import { Calendar, Maximize2, Minimize2, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -128,6 +129,11 @@ const Galeria = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Galería — Espacio fotográfico y de rodaje | Ala Norte"
+        description="Galería de Ala Norte: espacio profesional para fotografía y rodaje con tour 360° y plano. Reservá tu producción en Vicente López, Buenos Aires."
+        path="/galeria"
+      />
       {/* Hero Section - Full width */}
       <GalleryHero space={space} />
 
