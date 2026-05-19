@@ -286,7 +286,8 @@ const SalaGrabacion = () => {
                     }`}
                   />
                 ))}
-        
+              </>
+            ) : null}
           </div>
         </div>
       </section>
