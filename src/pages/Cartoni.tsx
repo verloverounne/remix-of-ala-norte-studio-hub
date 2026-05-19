@@ -90,7 +90,7 @@ const Cartoni = () => {
                     )}
 
                     {/* Dark overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/30 to-transparent" />
+                    <div className="absolute inset-0 opacity-60 bg-gradient-to-t from-foreground/70 via-foreground/30 to-transparent" />
 
                     {/* Content with blur background */}
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -165,8 +165,8 @@ const Cartoni = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="border border-foreground p-8 bg-card hover:shadow-brutal transition-shadow">
-              <div className="h-16 w-16 bg-primary text-primary-foreground flex items-center justify-center mb-6 border border-foreground">
+            <div className="border border-foreground p-8 bg-card hover:shadow-brutal transition-shadow rounded-sm">
+              <div className="h-16 w-16 bg-primary text-primary-foreground flex items-center justify-center mb-6 border border-foreground rounded-sm">
                 <ShoppingBag className="h-8 w-8" />
               </div>
               <h3 className="font-heading text-2xl mb-4">VENTA</h3>
@@ -176,8 +176,8 @@ const Cartoni = () => {
               </p>
             </div>
 
-            <div className="border border-foreground p-8 bg-card hover:shadow-brutal transition-shadow">
-              <div className="h-16 w-16 bg-primary text-primary-foreground flex items-center justify-center mb-6 border border-foreground">
+            <div className="border border-foreground p-8 bg-card hover:shadow-brutal transition-shadow rounded-sm">
+              <div className="h-16 w-16 bg-primary text-primary-foreground flex items-center justify-center mb-6 border border-foreground rounded-sm">
                 <Wrench className="h-8 w-8" />
               </div>
               <h3 className="font-heading text-2xl mb-4">SERVICE TÉCNICO</h3>
@@ -187,8 +187,8 @@ const Cartoni = () => {
               </p>
             </div>
 
-            <div className="border border-foreground p-8 bg-card hover:shadow-brutal transition-shadow">
-              <div className="h-16 w-16 bg-primary text-primary-foreground flex items-center justify-center mb-6 border border-foreground">
+            <div className="border border-foreground p-8 bg-card hover:shadow-brutal transition-shadow rounded-sm">
+              <div className="h-16 w-16 bg-primary text-primary-foreground flex items-center justify-center mb-6 border border-foreground rounded-sm">
                 <Award className="h-8 w-8" />
               </div>
               <h3 className="font-heading text-2xl mb-4">GARANTÍA OFICIAL</h3>
@@ -238,16 +238,16 @@ const Cartoni = () => {
               Para consultas sobre productos Cartoni, cotizaciones o servicio técnico
             </p>
 
-            <div className="space-y-4 mb-8">
-              <div className="flex items-center justify-center gap-3">
+            <div className="space-y-4 mb-8 text-left">
+              <div className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-primary" />
                 <span>+54 (11) 4718-0732</span>
               </div>
-              <div className="flex items-center justify-center gap-3">
+              <div className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-primary" />
                 <span>info@alanortecinedigital.com</span>
               </div>
-              <div className="flex items-center justify-center gap-3">
+              <div className="flex items-center gap-3">
                 <MapPin className="h-5 w-5 text-primary" />
                 <span>Virrey Liniers 1565, Florida, Buenos Aires</span>
               </div>
