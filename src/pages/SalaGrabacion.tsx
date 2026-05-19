@@ -285,8 +285,8 @@ const SalaGrabacion = () => {
                         : "opacity-0 z-0"
                     }`}
                   />
-                ))}
-        
+              </>
+            ) : null}
           </div>
         </div>
       </section>
