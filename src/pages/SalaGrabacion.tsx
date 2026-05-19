@@ -105,7 +105,7 @@ const SalaGrabacion = () => {
 <body>
   <div class="hint" id="hint">Arrastrá para explorar el espacio</div>
   <a-scene vr-mode-ui="enabled: false" loading-screen="enabled: false" embedded style="width:100%;height:100vh;">
-    <a-sky id="sky" src="${SALA_360_IMAGE}" rotation="180 0 0" scale="-1 1 1"></a-sky>
+    <a-sky id="sky" src="${SALA_360_IMAGE}" rotation="90 0 0" scale="-1 1 1"></a-sky>
     <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="80" position="0 1.6 0"></a-camera>
   </a-scene>
   <script>
@@ -257,9 +257,7 @@ const SalaGrabacion = () => {
       <section className="py-12 sm:py-16 bg-background bg-[#171a21] text-neutral-100">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-8">
           <div className="text-left">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
-              Ya conocés la sala?
-            </h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">Ya conocés la sala?</h2>
             <p className="text-muted-foreground font-heading text-lg text-neutral-100">
               Explorá la sala antes de tu reserva. Arrastrá para moverte y conocer cada rincón del espacio.
             </p>
