@@ -123,7 +123,7 @@ export const STATIC_GALLERY_IMAGES: StaticGalleryImage[] = [
     id: "c670b537-7bb3-4e4a-9062-a622fca53883",
     page_type: "galeria_hero",
     image_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768673990346_gente.mp4",
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//GALERIA FAKENEWS_3.mp4",
     media_type: "video",
     vertical_video_url: null,
     title: null,
