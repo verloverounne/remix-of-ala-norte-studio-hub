@@ -129,7 +129,8 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
     hero_image_url:
       "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//1768956131991_rental_vertical.mp4",
     hero_media_type: "video",
-    hero_video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
+    hero_video_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//1768956131991_rental_vertical.mp4",
     section_media_type: "video",
     section_video_url:
       "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
