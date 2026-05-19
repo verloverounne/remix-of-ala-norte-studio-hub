@@ -271,6 +271,7 @@ const Galeria = () => {
                     key={img.id || i}
                     src={img.image_url || "/placeholder.svg"}
                     alt={img.title || `Galería ${i + 1}`}
+                    onClick={() => i === carouselIndex && setLightboxOpen(true)}
                     onLoad={() =>
                       setLoadedImages((prev) => {
                         if (prev.has(i)) return prev;
@@ -284,8 +285,8 @@ const Galeria = () => {
                     }}
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[6000ms] will-change-[opacity] ${
                       i === carouselIndex && loadedImages.has(i)
-                        ? "opacity-100 animate-ken-burns z-[1]"
-                        : "opacity-0 z-0"
+                        ? "opacity-100 animate-ken-burns z-[1] cursor-zoom-in"
+                        : "opacity-0 z-0 pointer-events-none"
                     }`}
                   />
                 ))}
