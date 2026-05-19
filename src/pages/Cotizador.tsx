@@ -186,7 +186,7 @@ Contactar cliente para coordinar entrega/retiro.
           alt="Armá tu presupuesto"
           className="absolute inset-0 w-full h-full object-cover image-duotone"
         />
-        <div className="absolute inset-0" />
+        <div className="absolute inset-0 opacity-60" />
         <div className="relative z-10 h-full container mx-auto flex flex-col justify-end px-4 sm:px-8 pb-12 sm:pb-16 lg:pb-20 text-primary-foreground">
           <h1 className="font-sans font-thin mb-4 sm:mb-6" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
             ARMÁ TU PRESUPUESTO
