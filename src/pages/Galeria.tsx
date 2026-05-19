@@ -17,6 +17,7 @@ const Galeria = () => {
   const [tour360Open, setTour360Open] = useState(false);
   const [planoOpen, setPlanoOpen] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const modalContentRef = useRef<HTMLDivElement>(null);
 
@@ -270,6 +271,7 @@ const Galeria = () => {
                     key={img.id || i}
                     src={img.image_url || "/placeholder.svg"}
                     alt={img.title || `Galería ${i + 1}`}
+                    onClick={() => i === carouselIndex && setLightboxOpen(true)}
                     onLoad={() =>
                       setLoadedImages((prev) => {
                         if (prev.has(i)) return prev;
@@ -283,8 +285,8 @@ const Galeria = () => {
                     }}
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[6000ms] will-change-[opacity] ${
                       i === carouselIndex && loadedImages.has(i)
-                        ? "opacity-100 animate-ken-burns z-[1]"
-                        : "opacity-0 z-0"
+                        ? "opacity-100 animate-ken-burns z-[1] cursor-zoom-in"
+                        : "opacity-0 z-0 pointer-events-none"
                     }`}
                   />
                 ))}
@@ -407,6 +409,40 @@ const Galeria = () => {
               alt={planoImage?.title || "Plano ilustrativo del estudio"}
               className="max-w-full max-h-full object-contain"
             />
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Lightbox Modal - Carousel image fullscreen */}
+      <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
+        <DialogContent className="max-w-[100vw] w-screen h-screen p-0 border-0 bg-black/95 overflow-hidden rounded-none [&>button]:z-50 [&>button]:text-white [&>button]:bg-black/60 [&>button]:rounded-sm [&>button]:p-2 [&>button]:top-4 [&>button]:right-4">
+          <DialogTitle className="sr-only">Imagen ampliada</DialogTitle>
+          <div className="w-full h-full flex items-center justify-center p-4 relative">
+            <img
+              src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
+              alt={galeriaImages[carouselIndex]?.title || `Galería ${carouselIndex + 1}`}
+              className="max-w-full max-h-full object-contain"
+            />
+            {galeriaImages.length > 1 && (
+              <>
+                <button
+                  onClick={() =>
+                    setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)
+                  }
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-3 shadow-brutal hover:translate-x-[-2px] transition-transform"
+                  aria-label="Anterior"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+                <button
+                  onClick={() => setCarouselIndex((prev) => (prev + 1) % galeriaImages.length)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-3 shadow-brutal hover:translate-x-[2px] transition-transform"
+                  aria-label="Siguiente"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+              </>
+            )}
           </div>
         </DialogContent>
       </Dialog>
