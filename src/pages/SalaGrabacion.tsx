@@ -286,42 +286,7 @@ const SalaGrabacion = () => {
                     }`}
                   />
                 ))}
-                {salaImages.length > 1 && (
-                  <>
-                    <button
-                      onClick={() => setCarouselIndex((prev) => (prev - 1 + salaImages.length) % salaImages.length)}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[-2px] transition-transform"
-                      aria-label="Anterior"
-                    >
-                      <ChevronLeft className="h-5 w-5" />
-                    </button>
-                    <button
-                      onClick={() => setCarouselIndex((prev) => (prev + 1) % salaImages.length)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:translate-x-[2px] transition-transform"
-                      aria-label="Siguiente"
-                    >
-                      <ChevronRight className="h-5 w-5" />
-                    </button>
-                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                      {salaImages.map((_, i) => (
-                        <button
-                          key={i}
-                          onClick={() => setCarouselIndex(i)}
-                          className={`w-2 h-2 rounded-full transition-all ${
-                            i === carouselIndex ? "bg-primary w-4" : "bg-white/60"
-                          }`}
-                          aria-label={`Ir a imagen ${i + 1}`}
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
-              </>
-            ) : (
-              <div className="w-full h-full bg-muted flex items-center justify-center">
-                <p className="text-muted-foreground font-heading">Sin imágenes</p>
-              </div>
-            )}
+        
           </div>
         </div>
       </section>
