@@ -514,7 +514,7 @@ export const EquipmentManager = () => {
   // Inline quick update for status, featured, price, stock_quantity, name, image_url, category_id, subcategory_id
   const handleInlineUpdate = async (
     equipmentId: string,
-    field: 'status' | 'featured' | 'price_per_day' | 'stock_quantity' | 'name' | 'image_url' | 'category_id' | 'subcategory_id',
+    field: 'status' | 'featured' | 'price_per_day' | 'stock_quantity' | 'name' | 'image_url' | 'category_id' | 'subcategory_id' | 'ownership_type',
     value: string | boolean | number | null
   ) => {
     const updateData: Record<string, any> = {};
