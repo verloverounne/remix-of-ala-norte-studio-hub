@@ -152,7 +152,7 @@ const Viewer360 = ({
           loading-screen="enabled: true"
           inspector="url: https://cdn.jsdelivr.net/gh/aframevr/aframe-inspector@master/dist/aframe-inspector.min.js"
         >
-          <a-sky src="${currentImage}" rotation="0 180 0" scale="-1 1 1"></a-sky>
+          <a-sky src="${currentImage}" rotation="0 0 0" scale="-1 1 1"></a-sky>
           ${textsHTML}
           <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="70" position="0 1.6 0">
             <a-cursor color="#FFFFFF" opacity="0.6" fuse="true" fuse-timeout="1200" raycaster="objects: .clickable-label"></a-cursor>
@@ -284,7 +284,7 @@ const Viewer360 = ({
     <button class="btn" onclick="toggleView()">Cambiar Vista</button>
   </div>
   <a-scene vr-mode-ui="enabled: false" loading-screen="enabled: false">
-    <a-sky id="sky" src="${currentImage}" rotation="0 120 0" scale="-1 1 1"></a-sky>
+    <a-sky id="sky" src="${currentImage}" rotation="0 0 90" scale="-1 1 1"></a-sky>
     <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="70" position="0 1.6 0"></a-camera>
   </a-scene>
   <script>
