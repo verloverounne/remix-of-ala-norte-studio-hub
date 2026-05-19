@@ -412,6 +412,40 @@ const Galeria = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Lightbox Modal - Carousel image fullscreen */}
+      <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
+        <DialogContent className="max-w-[100vw] w-screen h-screen p-0 border-0 bg-black/95 overflow-hidden rounded-none [&>button]:z-50 [&>button]:text-white [&>button]:bg-black/60 [&>button]:rounded-sm [&>button]:p-2 [&>button]:top-4 [&>button]:right-4">
+          <DialogTitle className="sr-only">Imagen ampliada</DialogTitle>
+          <div className="w-full h-full flex items-center justify-center p-4 relative">
+            <img
+              src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
+              alt={galeriaImages[carouselIndex]?.title || `Galería ${carouselIndex + 1}`}
+              className="max-w-full max-h-full object-contain"
+            />
+            {galeriaImages.length > 1 && (
+              <>
+                <button
+                  onClick={() =>
+                    setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)
+                  }
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-3 shadow-brutal hover:translate-x-[-2px] transition-transform"
+                  aria-label="Anterior"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+                <button
+                  onClick={() => setCarouselIndex((prev) => (prev + 1) % galeriaImages.length)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-3 shadow-brutal hover:translate-x-[2px] transition-transform"
+                  aria-label="Siguiente"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+              </>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
