@@ -88,10 +88,10 @@ export const STATIC_GALLERY_IMAGES: StaticGalleryImage[] = [
     id: "60f4be2f-e38f-4eb4-9018-d50fddd711b9",
     page_type: "home_hero",
     image_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/servicios//GALERIA FAKENEWS_1.mp4",
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//GALERIA FAKENEWS_3.mp4",
     media_type: "video",
     vertical_video_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/servicios//GALERIA FAKENEWS_1.mp4",
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//GALERIA FAKENEWS_3.mp4",
     title: "GALERÍA ALA NORTE",
     description:
       "Un espacio pensado para quienes buscan más que un set: comodidad, flexibilidad y apoyo profesional. Reservas por bloques de 4hs para tu producción.",
