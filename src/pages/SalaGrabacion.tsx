@@ -252,45 +252,6 @@ const SalaGrabacion = () => {
       </div>
 
       {/* Slideshow Block */}
-      <section className="py-12 space-y-8 bg-foreground text-background sm:py-0 pb-[64px]">
-        <div className="w-full">
-          <div className="relative aspect-video overflow-hidden bg-foreground">
-            {salaImages.length > 0 ? (
-              <>
-                <img
-                  src={salaImages[carouselIndex]?.image_url || "/placeholder.svg"}
-                  alt=""
-                  aria-hidden="true"
-                  className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-60 z-0"
-                />
-                {salaImages.map((img, i) => (
-                  <img
-                    key={img.id || i}
-                    src={img.image_url || "/placeholder.svg"}
-                    alt={img.title || `Sala de grabación ${i + 1}`}
-                    onLoad={() =>
-                      setLoadedImages((prev) => {
-                        if (prev.has(i)) return prev;
-                        const next = new Set(prev);
-                        next.add(i);
-                        return next;
-                      })
-                    }
-                    style={{
-                      transitionTimingFunction: "cubic-bezier(0.45, 0.0, 0.25, 1)",
-                    }}
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[6000ms] will-change-[opacity] ${
-                      i === carouselIndex && loadedImages.has(i)
-                        ? "opacity-100 animate-ken-burns z-[1]"
-                        : "opacity-0 z-0"
-                    }`}
-                  />
-                ))}
-              </>
-            ) : null}
-          </div>
-        </div>
-      </section>
 
       {/* 360° Virtual Tour Section */}
       <section className="py-12 sm:py-16 bg-background">
