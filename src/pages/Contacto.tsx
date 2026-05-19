@@ -58,6 +58,11 @@ const Contacto = () => {
 
   return (
     <div className="min-h-screen pt-16">
+      <Seo
+        title="Contacto — Ala Norte rental y productora audiovisual"
+        description="Escribinos para cotizar tu producción o reservar equipos. Vicente López, Buenos Aires. Tel +54 11 4718 0732 — info@alanortecinedigital.com."
+        path="/contacto"
+      />
       {/* Hero Section */}
       <section className="bg-foreground text-background py-0">
         <div className="container mx-auto max-w-6xl text-left px-0">
