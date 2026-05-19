@@ -174,6 +174,11 @@ Contactar cliente para coordinar entrega/retiro.
   };
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Cotizador online de rental audiovisual | Ala Norte"
+        description="Armá tu presupuesto de alquiler de cámaras, ópticas, iluminación y grip online. Pedí tu cotización en minutos con Ala Norte."
+        path="/cotizador"
+      />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] w-full overflow-hidden border-b border-border">
         <img
