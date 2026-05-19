@@ -1,0 +1,20 @@
+# Ala Norte
+
+> Rental de equipos audiovisuales profesionales y productora en Vicente López, Buenos Aires. Cámaras, ópticas, iluminación, grip, estudios y sala de sonido.
+
+Ala Norte es un estudio y rental audiovisual con base en Buenos Aires. Ofrecemos equipamiento curado, espacios profesionales (galería y sala de sonido), asesoramiento técnico dedicado y servicios de producción integral para cine, publicidad y contenidos.
+
+## Pages
+
+- [Inicio](/): Presentación general del estudio, servicios y rental.
+- [Rental](/equipos): Catálogo completo de cámaras, ópticas, iluminación, grip y sonido para alquiler.
+- [Servicios](/servicios): Producción audiovisual, post, sala de sonido y workshops.
+- [Galería](/galeria): Espacio fotográfico y de rodaje con plano y tour 360°.
+- [Sala de Sonido](/sala-grabacion): Estudio de grabación y postproducción de audio con tour 360°.
+- [Cartoni](/cartoni): Cabezales fluidos Cartoni y soportes profesionales.
+- [Nosotros](/nosotros): Equipo, historia y enfoque de Ala Norte.
+- [Comunidad](/comunidad): Iniciativas con la comunidad audiovisual independiente.
+- [Soporte](/soporte): Preguntas frecuentes y asistencia.
+- [Blog](/blog): Notas técnicas y novedades.
+- [Cotizador](/cotizador): Armá un presupuesto de rental online.
+- [Contacto](/contacto): Formulario, ubicación y datos de contacto.
