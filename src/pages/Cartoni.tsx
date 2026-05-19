@@ -90,7 +90,7 @@ const Cartoni = () => {
                     )}
 
                     {/* Dark overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/30 to-transparent" />
+                    <div className="absolute inset-0 opacity-60 bg-gradient-to-t from-foreground/70 via-foreground/30 to-transparent" />
 
                     {/* Content with blur background */}
                     <div className="absolute inset-0 flex items-center justify-center">
