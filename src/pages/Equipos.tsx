@@ -348,6 +348,11 @@ const Equipos = () => {
   const cartStickyTop = 80;
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Rental de equipos audiovisuales — Cámaras, ópticas, luces | Ala Norte"
+        description="Catálogo completo de cámaras, ópticas, iluminación, grip y sonido para alquiler. Equipamiento profesional curado para cine, publicidad y contenidos."
+        path="/equipos"
+      />
       {/* Hero Carousel - Now simplified, only shows slides */}
       <HeroCarouselRental
         categories={categories}
