@@ -138,6 +138,22 @@ const Soporte = () => {
 
   return (
     <div className="min-h-screen pt-20">
+      <Seo
+        title="Soporte y preguntas frecuentes | Ala Norte"
+        description="Respuestas a las consultas más frecuentes sobre alquiler, seguros, envíos, devoluciones y uso del equipamiento audiovisual de Ala Norte."
+        path="/soporte"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqCategories.flatMap((c) =>
+            c.faqs.map((f) => ({
+              "@type": "Question",
+              name: f.question,
+              acceptedAnswer: { "@type": "Answer", text: f.answer },
+            })),
+          ),
+        }}
+      />
       {/* Hero Section */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
