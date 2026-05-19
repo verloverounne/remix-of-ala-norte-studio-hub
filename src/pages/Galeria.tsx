@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Seo } from "@/components/Seo";
-import { Calendar, Maximize2, Minimize2, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, Maximize2, Minimize2, Eye, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
@@ -415,8 +415,19 @@ const Galeria = () => {
 
       {/* Lightbox Modal - Carousel image fullscreen */}
       <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
-        <DialogContent className="max-w-[100vw] w-screen h-screen p-0 border-0 bg-black/95 overflow-hidden rounded-none [&>button]:z-50 [&>button]:text-white [&>button]:bg-black/60 [&>button]:rounded-sm [&>button]:p-2 [&>button]:top-4 [&>button]:right-4">
+        <DialogContent
+          className="max-w-[100vw] w-screen h-screen p-0 border-0 bg-black/95 overflow-hidden rounded-none [&>button]:hidden"
+          onPointerDownOutside={() => setLightboxOpen(false)}
+          onEscapeKeyDown={() => setLightboxOpen(false)}
+        >
           <DialogTitle className="sr-only">Imagen ampliada</DialogTitle>
+          <button
+            onClick={() => setLightboxOpen(false)}
+            className="absolute top-4 right-4 z-50 bg-primary text-primary-foreground rounded-sm p-2 shadow-brutal hover:bg-foreground hover:text-background transition-colors"
+            aria-label="Cerrar"
+          >
+            <X className="h-5 w-5" />
+          </button>
           <div className="w-full h-full flex items-center justify-center p-4 relative">
             <img
               src={galeriaImages[carouselIndex]?.image_url || "/placeholder.svg"}
