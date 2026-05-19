@@ -17,6 +17,7 @@ const Galeria = () => {
   const [tour360Open, setTour360Open] = useState(false);
   const [planoOpen, setPlanoOpen] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const modalContentRef = useRef<HTMLDivElement>(null);
 
