@@ -180,7 +180,7 @@ Contactar cliente para coordinar entrega/retiro.
         path="/cotizador"
       />
       {/* Hero Section */}
-      <section className="relative h-[60vh] min-h-[400px] w-full overflow-hidden border-b border-border">
+      <section className="relative h-[30vh] min-h-[400px] w-full overflow-hidden border-b border-border">
         <img
           src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/heros/presupeusto.jpeg"
           alt="Armá tu presupuesto"
