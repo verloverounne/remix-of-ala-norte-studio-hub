@@ -185,7 +185,7 @@ const Galeria = () => {
                   {(space.features as string[]).map((feature, index) => (
                     <p key={index} className="text-muted-foreground font-heading flex items-start gap-2 text-xl font-thin text-neutral-100">
                       <span className="text-primary">•</span>
-                      {feature}
+                      <span className="whitespace-pre-line">{feature}</span>
                     </p>
                   ))}
                 </div>
