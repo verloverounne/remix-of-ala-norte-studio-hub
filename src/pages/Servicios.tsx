@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { Seo } from "@/components/Seo";
 import { ServicesHeroSlider } from "@/components/services/ServicesHeroSlider";
 import { ServiceSection } from "@/components/services/ServiceSection";
 import { WorkshopsSection } from "@/components/services/WorkshopsSection";
