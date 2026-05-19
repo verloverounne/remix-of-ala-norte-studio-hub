@@ -331,7 +331,7 @@ const Galeria = () => {
       </section>
 
       {/* 360° Virtual Tour Section - Full bleed */}
-      <section className="py-12 sm:py-16 bg-background">
+      <section className="py-12 sm:py-16 bg-background bg-neutral-300">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-8">
           <div className="text-left">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
@@ -356,7 +356,7 @@ const Galeria = () => {
       <ProductionsSlider />
 
       {/* CTA Section */}
-      <section className="py-12 sm:py-16 bg-background">
+      <section className="py-12 sm:py-16 bg-background bg-neutral-300">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4 text-center">
             ¿Querés reservar la galería?
