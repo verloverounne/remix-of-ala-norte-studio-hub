@@ -514,7 +514,7 @@ export const EquipmentManager = () => {
   // Inline quick update for status, featured, price, stock_quantity, name, image_url, category_id, subcategory_id
   const handleInlineUpdate = async (
     equipmentId: string,
-    field: 'status' | 'featured' | 'price_per_day' | 'stock_quantity' | 'name' | 'image_url' | 'category_id' | 'subcategory_id',
+    field: 'status' | 'featured' | 'price_per_day' | 'stock_quantity' | 'name' | 'image_url' | 'category_id' | 'subcategory_id' | 'ownership_type',
     value: string | boolean | number | null
   ) => {
     const updateData: Record<string, any> = {};
@@ -1066,19 +1066,39 @@ export const EquipmentManager = () => {
                                 Dest
                               </Badge>
                             )}
-                            {eq.ownership_type && (() => {
-                              const t = eq.ownership_type.toLowerCase().trim();
+                            {(() => {
+                              const current = eq.ownership_type || "Propio";
+                              const t = current.toLowerCase().trim();
                               const cls =
                                 t === "propio" ? "bg-primary text-primary-foreground hover:bg-primary border-transparent" :
                                 t === "estacionado" ? "bg-primary/70 text-primary-foreground hover:bg-primary/70 border-transparent" :
                                 t === "externo" ? "bg-foreground text-background hover:bg-foreground border-transparent" :
                                 "bg-muted text-muted-foreground border-transparent";
                               return (
-                                <Badge className={`text-xs ${cls}`} title={`Tipo: ${eq.ownership_type}`}>
-                                  {eq.ownership_type}
-                                </Badge>
+                                <Select
+                                  value={current}
+                                  onValueChange={(v) => {
+                                    setEquipment(prev => prev.map(item =>
+                                      item.id === eq.id ? { ...item, ownership_type: v } : item
+                                    ));
+                                    handleInlineUpdate(eq.id, 'ownership_type', v);
+                                  }}
+                                >
+                                  <SelectTrigger
+                                    className={`h-auto py-0.5 px-2 w-auto gap-1 border-0 rounded-md text-xs font-semibold ${cls}`}
+                                    title={`Tipo: ${current}`}
+                                  >
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="Propio">Propio</SelectItem>
+                                    <SelectItem value="Estacionado">Estacionado</SelectItem>
+                                    <SelectItem value="Externo">Externo</SelectItem>
+                                  </SelectContent>
+                                </Select>
                               );
                             })()}
+
                           </div>
                         </div>
                       </div>
