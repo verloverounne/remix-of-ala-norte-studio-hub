@@ -139,7 +139,7 @@ const Galeria = () => {
 
       {/* Details Section */}
       <section className="mb-0 mt-0 sm:py-0">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 bg-muted py-0 pt-[64px]">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 bg-muted py-0 pt-[64px] bg-[#171a21]">
           {/* Two-column: Featured Image + Carousel */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-0">
             {/* Left Column: Featured Image */}
@@ -170,12 +170,12 @@ const Galeria = () => {
               )}
             </div>
             {/* Right Column: Text Content */}
-            <div className="flex flex-col justify-between h-full py-[64px] pt-0 pb-[24px] my-0">
+            <div className="flex flex-col justify-between h-full py-[64px] pt-0 pb-[24px] my-0 text-neutral-100">
               <div>
-                <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px] pt-0 mt-0 px-0">
+                <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px] pt-0 mt-0 px-0 text-neutral-100">
                   El espacio
                 </h2>
-                <p className="text-muted-foreground font-heading font-medium text-xl">
+                <p className="text-muted-foreground font-heading font-medium text-xl text-neutral-100">
                   {space.detailed_description || space.description}
                 </p>
               </div>
@@ -183,9 +183,9 @@ const Galeria = () => {
               {space.features && Array.isArray(space.features) && space.features.length > 0 && (
                 <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-lg">
                   {(space.features as string[]).map((feature, index) => (
-                    <p key={index} className="text-muted-foreground font-heading flex items-start gap-2 text-xl font-thin">
+                    <p key={index} className="text-muted-foreground font-heading flex items-start gap-2 text-xl font-thin text-neutral-100">
                       <span className="text-primary">•</span>
-                      {feature}
+                      <span className="whitespace-pre-line">{feature}</span>
                     </p>
                   ))}
                 </div>
@@ -196,11 +196,11 @@ const Galeria = () => {
                   <h3 className="text-xl font-heading font-bold flex items-center gap-16 py-[32px]">
                     Incluido sin cargo adicional
                   </h3>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-neutral-100">
                     {space.included_items.map((item, index) => (
-                      <li key={index} className="flex items-center gap-2 text-muted-foreground text-base">
+                      <li key={index} className="flex items-center gap-2 text-muted-foreground text-base text-neutral-100">
                         <span className="text-primary">•</span>
-                        <span className="font-heading">{item}</span>
+                        <span className="font-heading text-neutral-100">{item}</span>
                       </li>
                     ))}
                   </ul>
