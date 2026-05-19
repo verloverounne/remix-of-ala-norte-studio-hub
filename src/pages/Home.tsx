@@ -278,6 +278,11 @@ const Home = () => {
   }
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Ala Norte — Rental audiovisual y productora en Buenos Aires"
+        description="Rental de cámaras, ópticas, iluminación y grip. Estudios, sala de sonido y producción audiovisual integral en Vicente López, Buenos Aires."
+        path="/"
+      />
       {/* Institutional Slider - Before Hero */}
       <InstitutionalSlider pageType="home" />
 
