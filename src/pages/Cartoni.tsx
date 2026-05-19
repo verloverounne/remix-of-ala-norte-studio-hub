@@ -238,16 +238,16 @@ const Cartoni = () => {
               Para consultas sobre productos Cartoni, cotizaciones o servicio técnico
             </p>
 
-            <div className="space-y-4 mb-8">
-              <div className="flex items-center justify-center gap-3">
+            <div className="space-y-4 mb-8 text-left">
+              <div className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-primary" />
                 <span>+54 (11) 4718-0732</span>
               </div>
-              <div className="flex items-center justify-center gap-3">
+              <div className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-primary" />
                 <span>info@alanortecinedigital.com</span>
               </div>
-              <div className="flex items-center justify-center gap-3">
+              <div className="flex items-center gap-3">
                 <MapPin className="h-5 w-5 text-primary" />
                 <span>Virrey Liniers 1565, Florida, Buenos Aires</span>
               </div>
