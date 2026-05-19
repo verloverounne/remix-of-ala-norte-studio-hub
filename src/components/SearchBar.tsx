@@ -210,7 +210,7 @@ export const SearchBar = () => {
         </Button>
       ) : (
         <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 top-20 sm:top-0 w-auto sm:w-80 md:w-96 border border-foreground shadow-brutal-lg z-50 bg-transparent">
-          <div className="flex items-center gap-2 p-3 border-b border-foreground bg-transparent">
+          <div className="flex items-center gap-2 p-3 border-b border-foreground bg-neutral-100">
             <Search className="h-4 w-4 shrink-0 text-background" />
             <Input
               ref={inputRef}
