@@ -67,6 +67,11 @@ const Nosotros = () => {
 
   return (
     <div className="min-h-screen pt-14 sm:pt-16 lg:pt-20">
+      <Seo
+        title="Nosotros — Equipo y historia de Ala Norte"
+        description="Conocé a Ala Norte: equipo, historia y enfoque. Acompañamos a productoras y equipos independientes con equipamiento curado y trato humano."
+        path="/nosotros"
+      />
       {/* Hero Section */}
       <section className="py-12 sm:py-16 bg-background">
         <div className="container mx-auto px-4">
