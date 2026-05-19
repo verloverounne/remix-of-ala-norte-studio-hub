@@ -37,8 +37,8 @@ const defaultSlides: Omit<HeroSlide, "id" | "order_index">[] = [
     cta_link: "/galeria",
   },
   {
-    media_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//sala.mp4",
-    media_type: "video",
+    media_url: "",
+    media_type: "image",
     title: "SALA DE SONIDO / POSTPRODUCCIÓN",
     subtitle:
       "Suites de post-producción con estaciones de trabajo profesionales, monitoreo calibrado y ambiente acústico controlado.",
