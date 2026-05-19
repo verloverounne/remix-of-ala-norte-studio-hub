@@ -1,3 +1,4 @@
+import { Seo } from "@/components/Seo";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, Users, Award, Target, MapPin } from "lucide-react";
