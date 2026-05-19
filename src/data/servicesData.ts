@@ -35,7 +35,8 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
     hero_media_type: null,
     hero_video_url: null,
     section_media_type: null,
-    section_video_url: null,
+    section_video_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
     button_text: null,
     button_link: null,
     bullets: [],
