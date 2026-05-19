@@ -165,8 +165,8 @@ const Cartoni = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="border border-foreground p-8 bg-card hover:shadow-brutal transition-shadow">
-              <div className="h-16 w-16 bg-primary text-primary-foreground flex items-center justify-center mb-6 border border-foreground">
+            <div className="border border-foreground p-8 bg-card hover:shadow-brutal transition-shadow rounded-sm">
+              <div className="h-16 w-16 bg-primary text-primary-foreground flex items-center justify-center mb-6 border border-foreground rounded-sm">
                 <ShoppingBag className="h-8 w-8" />
               </div>
               <h3 className="font-heading text-2xl mb-4">VENTA</h3>
