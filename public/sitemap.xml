@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://ala-norte-studio.lovable.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://ala-norte-studio.lovable.app/equipos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ala-norte-studio.lovable.app/servicios</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ala-norte-studio.lovable.app/galeria</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ala-norte-studio.lovable.app/sala-grabacion</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ala-norte-studio.lovable.app/cartoni</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ala-norte-studio.lovable.app/comunidad</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ala-norte-studio.lovable.app/nosotros</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ala-norte-studio.lovable.app/soporte</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ala-norte-studio.lovable.app/blog</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ala-norte-studio.lovable.app/cotizador</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ala-norte-studio.lovable.app/contacto</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+</urlset>
