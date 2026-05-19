@@ -170,8 +170,9 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
     title: "Escuela Ala Norte",
     description:
       "Workshops, masterclasses y eventos para profesionales. Un espacio de encuentro y crecimiento para la comunidad audiovisual.",
-    image_url: null,
-    hero_image_url: null,
+    image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//TALLER CAMARA.mp4",
+    hero_image_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//TALLER CAMARA.mp4",
     hero_media_type: "video",
     hero_video_url:
       "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//TALLER CAMARA.mp4",
