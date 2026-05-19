@@ -244,7 +244,7 @@ export const SearchBar = () => {
                   <button
                     key={index}
                     onClick={() => handleResultClick(result.url)}
-                    className={`w-full text-left p-3 border-b border-foreground/20 last:border-0 transition-colors ${selectedIndex === index ? "bg-muted" : "hover:bg-muted/50"}`}
+                    className={`w-full text-left p-3 border-b border-foreground/20 last:border-0 transition-colors ${selectedIndex === index ? "bg-muted" : "hover:bg-muted/50 bg-neutral-100"}`}
                   >
                     <div className="flex items-start gap-3">
                       {isEquipment && result.imageUrl && (
