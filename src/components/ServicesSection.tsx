@@ -32,7 +32,7 @@ interface ServiceSlideProps {
 const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaParallax = useParallax({
-    speed: 0.6,
+    speed: 0.1,
     direction: "up",
   });
 
@@ -293,7 +293,6 @@ export const ServicesSection = () => {
             ))}
           </div>
         </div>
-
       </div>
     </section>
   );
