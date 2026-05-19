@@ -125,6 +125,11 @@ const SalaGrabacion = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Sala de Sonido y Postproducción | Ala Norte"
+        description="Sala de grabación y postproducción de audio con tour 360°. Equipamiento profesional para doblaje, foley, mezcla y diseño sonoro en Buenos Aires."
+        path="/sala-grabacion"
+      />
       {/* Hero Section - Full width */}
       <GalleryHero space={space} />
 
