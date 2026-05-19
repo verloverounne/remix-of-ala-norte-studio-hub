@@ -24,11 +24,16 @@ interface Text3DItem {
 
 // View 1 labels - Main studio view (Sala de Grabación)
 // TODOS los textos son botones clicables inmersivos
-const VIEW_1_LABELS: Text3DItem[] = [];
+//const VIEW_1_LABELS: Text3DItem[] = [];
 
 // View 2 labels - 363.jpg (Vista desde Estudio de Postproducción)
 // Navegación: Sala → Vista 2, Estudio Postprod → Vista 1, Galería → /galeria#view-1
-const VIEW_2_LABELS: Text3DItem[] = [];
+//const VIEW_2_LABELS: Text3DItem[] = [
+  // { text: "SALA DE GRABACIÓN", position: "0 1.5 -8", rotation: "180 0 0", action: { type: 'view', target: 2 } },
+  //  { text: "ESTUDIO DE POSTPRODUCCIÓN", position: "-6 1 -5", rotation: "0 45 0", action: { type: 'view', target: 1 } },
+  //  { text: "GALERÍA", position: "6 1 -5", rotation: "0 -45 0", action: { type: 'page', target: '/galeria#view-1' } },
+  //  { text: "COMEDOR", position: "7 0 -4", rotation: "0 -60 0", action: { type: 'page', target: '/galeria#view-2' } },
+];
 
 interface Viewer360Props {
   imageSrc: string;
@@ -284,7 +289,7 @@ const Viewer360 = ({
     <button class="btn" onclick="toggleView()">Cambiar Vista</button>
   </div>
   <a-scene vr-mode-ui="enabled: false" loading-screen="enabled: false">
-    <a-sky id="sky" src="${currentImage}" rotation="0 -30 0" scale="-1 1 1"></a-sky>
+    <a-sky id="sky" src="${currentImage}" rotation="120 -30 0" scale="-1 1 1"></a-sky>
     <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="70" position="0 1.6 0"></a-camera>
   </a-scene>
   <script>
