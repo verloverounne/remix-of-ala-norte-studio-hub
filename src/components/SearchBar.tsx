@@ -285,7 +285,7 @@ export const SearchBar = () => {
           )}
 
           {query.trim().length < 2 && (
-            <div className="p-6 text-center text-muted-foreground text-s bg-neutral-100">
+            <div className="p-6 text-center text-muted-foreground text-s bg-neutral-100 rounded-sm">
               Escribe al menos 2 caracteres para buscar
             </div>
           )}
