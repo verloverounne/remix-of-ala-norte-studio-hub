@@ -12,6 +12,7 @@ import { useParallax } from "@/hooks/useParallax";
 import { useGalleryImages } from "@/hooks/useGalleryImages";
 import { HomePreloader } from "@/components/HomePreloader";
 import { useVideoPreloader } from "@/hooks/useVideoPreloader";
+import { Seo } from "@/components/Seo";
 
 // Componente para la sección de equipos destacados con parallax
 interface FeaturedEquipmentSectionProps {
