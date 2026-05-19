@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet";
+import { Seo } from "@/components/Seo";
 import { ExternalLink, Wrench, ShoppingBag, Award, Phone, Mail, MapPin, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
