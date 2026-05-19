@@ -57,13 +57,11 @@ const Cartoni = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-        <title>Cartoni - Seller y Service Oficial | Ala Norte</title>
-        <meta
-          name="description"
-          content="Ala Norte es Seller y Service Oficial de Cartoni en Argentina. Venta, reparación y mantenimiento de trípodes y cabezales profesionales Cartoni."
-        />
-      </Helmet>
+      <Seo
+        title="Cartoni — Seller y Service oficial en Argentina | Ala Norte"
+        description="Ala Norte es Seller y Service oficial de Cartoni en Argentina. Venta, reparación y mantenimiento de trípodes y cabezales fluidos profesionales Cartoni."
+        path="/cartoni"
+      />
 
       {/* Hero Section with Carousel */}
       {hasSlides ? (
