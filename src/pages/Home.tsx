@@ -35,15 +35,15 @@ const FeaturedEquipmentSection = ({
   });
   return (
     <section className=" bg-background overflow-hidden">
-      <div className="py-16 sm:py-20 bg-foreground lg:py-24">
+      <div className="py-16 sm:py-20 bg-foreground lg:py-[32px]">
         <div
           ref={headerParallax.ref as any}
           style={headerParallax.style}
           className="container mx-auto mb-8 sm:mb-12 border-background bg-foreground "
         >
-          <div>
+          <div className="bg-[#171a21]">
             <h2
-              className="font-sans mb-2 text-center py-[32px] bg-muted-foreground font-semibold text-muted my-[60px] sm:mb-[60px] mt-[20px]"
+              className="font-sans mb-2 text-center bg-muted-foreground font-semibold text-muted my-[60px] sm:mb-[60px] mt-[20px] py-0"
               style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
             >
               EQUIPOS DESTACADOS
