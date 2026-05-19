@@ -84,7 +84,7 @@ interface EquipmentSlideProps {
 }
 const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   const imageParallax = useParallax({
-    speed: 0.3,
+    speed: 0.1,
     direction: "up",
   });
   const contentParallax = useParallax({
