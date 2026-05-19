@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from "react";
+import { Seo } from "@/components/Seo";
 import { useSearchParams } from "react-router-dom";
 import type { EquipmentWithCategory } from "@/types/supabase";
 import { useCart } from "@/hooks/useCart";
