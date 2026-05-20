@@ -44,7 +44,7 @@ const Servicios = () => {
           }
         });
       },
-      { rootMargin: "-50% 0px -50% 0px", threshold: 0 }
+      { rootMargin: "-50% 0px -50% 0px", threshold: 0 },
     );
 
     panelRefs.current.forEach((el) => el && observer.observe(el));
@@ -82,8 +82,8 @@ const Servicios = () => {
               service.section_media_type === "video" && service.section_video_url
                 ? service.section_video_url
                 : service.hero_media_type === "video" && service.hero_video_url
-                ? service.hero_video_url
-                : null;
+                  ? service.hero_video_url
+                  : null;
             const imageUrl = service.hero_image_url || service.image_url || "";
             return (
               <div key={service.id} className="absolute inset-0 duotone-hover-group">
@@ -119,7 +119,7 @@ const Servicios = () => {
                 onClick={() => panelRefs.current[idx]?.scrollIntoView({ behavior: "smooth", block: "start" })}
                 className={cn(
                   "h-2 rounded-full transition-all",
-                  idx === activeIndex ? "w-12 bg-primary" : "w-2 bg-background/50 hover:bg-background/80"
+                  idx === activeIndex ? "w-12 bg-primary" : "w-2 bg-background/50 hover:bg-background/80",
                 )}
                 aria-label={`Ir a ${services[idx].title}`}
               />
@@ -148,9 +148,7 @@ const Servicios = () => {
                   {service.title}
                 </h2>
                 {service.description && (
-                  <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-                    {service.description}
-                  </p>
+                  <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">{service.description}</p>
                 )}
                 {service.bullets && service.bullets.length > 0 && (
                   <ul className="space-y-2 pt-2">
@@ -177,10 +175,10 @@ const Servicios = () => {
         </div>
       </section>
 
-      {/* Final sections */}
+      {/* Final sections
       <WorkshopsSection />
       <TestimonialsSection />
-      <ServicesCTASection />
+      <ServicesCTASection /> */}
     </div>
   );
 };
