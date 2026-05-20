@@ -105,7 +105,7 @@ const SalaGrabacion = () => {
 <body>
   <div class="hint" id="hint">Arrastrá para explorar el espacio</div>
   <a-scene vr-mode-ui="enabled: false" loading-screen="enabled: false" embedded style="width:100%;height:100vh;">
-    <a-sky id="sky" src="${SALA_360_IMAGE}" rotation="0 90 0" scale="-1 1 1"></a-sky>
+    <a-sky id="sky" src="${SALA_360_IMAGE}" rotation="0 45 0" scale="-1 1 1"></a-sky>
     <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="80" position="0 1.6 0"></a-camera>
   </a-scene>
   <script>
