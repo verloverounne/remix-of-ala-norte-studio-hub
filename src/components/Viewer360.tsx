@@ -284,7 +284,7 @@ const Viewer360 = ({
     <button class="btn" onclick="toggleView()">Cambiar Vista</button>
   </div>
   <a-scene vr-mode-ui="enabled: false" loading-screen="enabled: false">
-    <a-sky id="sky" src="${currentImage}" rotation="0 170 0" scale="-1 1 1"></a-sky>
+    <a-sky id="sky" src="${currentImage}" rotation="0 80 0" scale="-1 1 1"></a-sky>
     <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="70" position="0 1.6 0"></a-camera>
   </a-scene>
   <script>
