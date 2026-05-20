@@ -90,11 +90,11 @@ const Cartoni = () => {
                     )}
 
                     {/* Dark overlay */}
-                    <div className="absolute inset-0 opacity-60 bg-gradient-to-t from-foreground/70 via-foreground/30 to-transparent" />
+                    <div className="absolute inset-0 opacity-30 bg-gradient-to-t from-foreground/70 via-foreground/30 to-transparent" />
 
                     {/* Content with blur background */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="relative z-10 text-center px-4 sm:px-8 max-w-4xl mx-auto"></div>
+                      <div className="relative z-10 text-center px-4 sm:px-8  mx-auto"></div>
                     </div>
                   </div>
                 </CarouselItem>
@@ -202,7 +202,7 @@ const Cartoni = () => {
       </section>
 
       {/* About Cartoni */}
-      <section className="py-16 lg:py-24 bg-background border-y border-foreground bg-[#e6e6e6]">
+      <section className="py-16 lg:py-24 bg-background border-y border-foreground">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="mb-12">
