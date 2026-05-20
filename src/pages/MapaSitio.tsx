@@ -20,15 +20,6 @@ const sections: Section[] = [
     ],
   },
   {
-    title: "Información",
-    links: [
-      { path: "/nosotros", label: "Nosotros" },
-      { path: "/comunidad", label: "Comunidad" },
-      { path: "/blog", label: "Blog" },
-      { path: "/soporte", label: "Soporte" },
-    ],
-  },
-  {
     title: "Marcas y Productos",
     links: [
       { path: "/cartoni", label: "Cartoni — Seller & Service Oficial" },
