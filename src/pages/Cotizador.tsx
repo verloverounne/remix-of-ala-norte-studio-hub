@@ -317,7 +317,7 @@ Contactar cliente para coordinar entrega/retiro.
                 )}
               </div>
             </CardHeader>
-            <CardContent className="space-y-4 bg-background">
+            <CardContent className="p-6 pt-0 space-y-4 bg-background bg-[#e6e6e6]">
               {items.length === 0 ? (
                 <div className="text-center py-12 border border-dashed border-foreground/20">
                   <ShoppingCart className="h-16 w-16 mx-auto mb-4 opacity-20" />
