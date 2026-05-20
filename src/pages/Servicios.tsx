@@ -17,6 +17,8 @@ interface HomeService {
   hero_image_url: string | null;
   hero_media_type?: string | null;
   hero_video_url?: string | null;
+  section_media_type?: string | null;
+  section_video_url?: string | null;
   bullets: string[];
   cta_label: string | null;
   cta_url: string | null;
