@@ -29,6 +29,14 @@ const Galeria = () => {
   // Slideshow excludes the plano (it's shown separately as floor plan)
   const galeriaImages = allGaleriaImages.filter((img) => !isPlano(img));
   const featuredMediaImage = planoImage?.image_url || galeriaImages[0]?.image_url || null;
+
+  // Sync hero video with Home's "galería" slide (page_type='home_hero', position 1 / title contains GALERÍA)
+  const homeHeroSlides = getByPageType("home_hero");
+  const galeriaHomeSlide =
+    homeHeroSlides.find((s) => (s.title || "").toUpperCase().includes("GALER")) || homeHeroSlides[1];
+  const heroVideoUrl =
+    galeriaHomeSlide?.vertical_video_url || galeriaHomeSlide?.image_url || space?.video_url;
+  const spaceForHero = space ? { ...space, video_url: heroVideoUrl } : space;
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
   const toggleFullscreen = useCallback(() => {
@@ -136,7 +144,7 @@ const Galeria = () => {
         path="/galeria"
       />
       {/* Hero Section - Full width */}
-      <GalleryHero space={space} />
+      <GalleryHero space={spaceForHero} />
 
       {/* Details Section */}
       <section className="mb-0 mt-0 sm:py-0">
