@@ -75,7 +75,7 @@ const Cartoni = () => {
                     {slide.media_type === "video" ? (
                       <video
                         src={slide.image_url}
-                        className="absolute inset-0 w-full h-full object-cover video-duotone"
+                        className="absolute inset-0 w-full  object-cover video-duotone"
                         autoPlay
                         loop
                         muted
@@ -85,7 +85,7 @@ const Cartoni = () => {
                       <img
                         src={slide.image_url}
                         alt={slide.title || "Cartoni"}
-                        className="absolute inset-0 w-full h-full object-cover image-duotone"
+                        className="absolute inset-0  h-full object-cover image-duotone"
                       />
                     )}
 
