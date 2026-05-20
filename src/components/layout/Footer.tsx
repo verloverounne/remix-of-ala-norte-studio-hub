@@ -106,8 +106,11 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-background/20 text-center text-sm opacity-70">
+        <div className="mt-8 pt-8 border-t border-background/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm opacity-70">
           <p>&copy; {new Date().getFullYear()} Ala Norte. Todos los derechos reservados. Diseño: Verónica Seniquel</p>
+          <Link to="/mapa-sitio" className="hover:text-primary transition-brutal">
+            Mapa de sitio
+          </Link>
         </div>
       </div>
     </footer>
