@@ -56,7 +56,7 @@ const Cartoni = () => {
   const hasSlides = slides.length > 0;
 
   return (
-    <div className="h-screen bg-background">
+    <div className="min-h-screen bg-background">
       <Seo
         title="Cartoni — Seller y Service oficial en Argentina | Ala Norte"
         description="Ala Norte es Seller y Service oficial de Cartoni en Argentina. Venta, reparación y mantenimiento de trípodes y cabezales fluidos profesionales Cartoni."
