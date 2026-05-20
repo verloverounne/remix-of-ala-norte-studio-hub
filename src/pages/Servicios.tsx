@@ -17,6 +17,8 @@ interface HomeService {
   hero_image_url: string | null;
   hero_media_type?: string | null;
   hero_video_url?: string | null;
+  section_media_type?: string | null;
+  section_video_url?: string | null;
   bullets: string[];
   cta_label: string | null;
   cta_url: string | null;
@@ -72,26 +74,23 @@ const Servicios = () => {
 
       {/* Split hero: sticky media left, scrollable content right */}
       <section className="relative grid grid-cols-1 lg:grid-cols-2">
-        {/* LEFT: sticky media */}
-        <div className="relative lg:sticky lg:top-0 lg:h-screen h-[50vh] overflow-hidden order-1">
-          {services.map((service, idx) => {
-            const isActive = idx === activeIndex;
-            const mediaUrl =
-              service.hero_media_type === "video" && service.hero_video_url
+        {/* LEFT: sticky media (hard cut, no fade) */}
+        <div className="relative lg:sticky lg:top-0 lg:h-screen h-[50vh] overflow-hidden order-1 bg-foreground">
+          {(() => {
+            const service = services[activeIndex];
+            const videoUrl =
+              service.section_media_type === "video" && service.section_video_url
+                ? service.section_video_url
+                : service.hero_media_type === "video" && service.hero_video_url
                 ? service.hero_video_url
                 : null;
             const imageUrl = service.hero_image_url || service.image_url || "";
             return (
-              <div
-                key={service.id}
-                className={cn(
-                  "absolute inset-0 transition-opacity duration-700 duotone-hover-group",
-                  isActive ? "opacity-100" : "opacity-0 pointer-events-none"
-                )}
-              >
-                {mediaUrl ? (
+              <div key={service.id} className="absolute inset-0 duotone-hover-group">
+                {videoUrl ? (
                   <video
-                    src={mediaUrl}
+                    key={videoUrl}
+                    src={videoUrl}
                     className="absolute inset-0 w-full h-full object-cover video-duotone"
                     autoPlay
                     loop
@@ -110,7 +109,7 @@ const Servicios = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/10 to-transparent" />
               </div>
             );
-          })}
+          })()}
 
           {/* Slide indicator */}
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-10">
