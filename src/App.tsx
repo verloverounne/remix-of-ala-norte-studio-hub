@@ -34,6 +34,7 @@ const Cartoni = lazy(() => import("./pages/Cartoni"));
 const MergeEquipment = lazy(() => import("./pages/MergeEquipment"));
 const Galeria = lazy(() => import("./pages/Galeria"));
 const SalaGrabacion = lazy(() => import("./pages/SalaGrabacion"));
+const MapaSitio = lazy(() => import("./pages/MapaSitio"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
