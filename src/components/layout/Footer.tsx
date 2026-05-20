@@ -54,7 +54,11 @@ export const Footer = () => {
 
           {/* Contact */}
           <div className="space-y-4">
-            <h4 className="font-semibold">Contacto</h4>
+            <h4 className="font-semibold">
+              <Link to="/contacto" className="hover:text-primary transition-brutal">
+                Contacto
+              </Link>
+            </h4>
             <ul className="space-y-2">
               <li className="flex items-center gap-2 text-sm">
                 <Phone className="h-4 w-4 text-primary" />
