@@ -154,7 +154,7 @@ const Viewer360 = ({
         >
           <a-sky src="${currentImage}" rotation="0 80 0" scale="-1 1 1"></a-sky>
           ${textsHTML}
-          <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="70" position="0 1.6 0">
+          <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="50" position="0 1.6 0">
             <a-cursor color="#FFFFFF" opacity="0.6" fuse="true" fuse-timeout="1200" raycaster="objects: .clickable-label"></a-cursor>
           </a-camera>
         </a-scene>
@@ -285,7 +285,7 @@ const Viewer360 = ({
   </div>
   <a-scene vr-mode-ui="enabled: false" loading-screen="enabled: false">
     <a-sky id="sky" src="${currentImage}" rotation="0 80 0" scale="-1 1 1"></a-sky>
-    <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="70" position="0 1.6 0"></a-camera>
+    <a-camera look-controls="reverseMouseDrag: true; touchEnabled: true" fov="50" position="0 1.6 0"></a-camera>
   </a-scene>
   <script>
     const images = ['${viewImages[1]}', '${viewImages[2]}'];
