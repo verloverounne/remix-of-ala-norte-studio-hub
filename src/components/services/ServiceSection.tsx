@@ -32,10 +32,10 @@ export const ServiceSection = forwardRef<HTMLElement, ServiceSectionProps>(
             {/* Text content */}
             <div className={`space-y-6 pb-8 flex flex-col justify-center ${isEven ? "" : "md:col-start-2"}`}>
               <div className="space-y-4">
-                <span className="font-heading text-sm text-muted-foreground uppercase tracking-wider">
+                <span className="font-sans text-sm text-muted-foreground uppercase tracking-wider">
                   Servicio {String(index + 1).padStart(2, "0")}
                 </span>
-                <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase">{title}</h2>
+                <h2 className="font-sans font-thin uppercase" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)" }}>{title}</h2>
               </div>
 
               {description && <p className="text-sm sm:text-base text-muted-foreground leading-tight">{description}</p>}

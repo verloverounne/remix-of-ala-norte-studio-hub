@@ -9,11 +9,11 @@ export const ServicesCTASection = () => {
   return (
     <section className="py-16 lg:py-24 px-8 bg-primary text-primary-foreground">
       <div className="max-w-3xl mx-auto text-center space-y-6">
-        <h2 className="font-heading text-3xl lg:text-4xl font-bold">¿NECESITÁS UN SERVICIO ESPECÍFICO?</h2>
+        <h2 className="font-sans font-thin uppercase" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)" }}>¿NECESITÁS UN SERVICIO ESPECÍFICO?</h2>
         <p className="text-lg opacity-90">
           Cada producción es única. Contanos qué necesitás y armamos una solución a tu medida.
         </p>
-        <Button variant="secondary" size="lg" className="mt-4" onClick={() => window.open(whatsappUrl, "_blank")}>
+        <Button variant="secondary" size="lg" className="mt-4 rounded-sm" onClick={() => window.open(whatsappUrl, "_blank")}>
           <MessageCircle className="w-5 h-5 mr-2" />
           CONTACTANOS
         </Button>

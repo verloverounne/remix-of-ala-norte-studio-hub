@@ -63,9 +63,9 @@ const pastWorkshops: Workshop[] = [
 ];
 
 const WorkshopCard = ({ workshop }: { workshop: Workshop }) => (
-  <Card className="bg-card border-0 shadow-lg hover:shadow-xl transition-shadow">
+  <Card className="bg-card border border-border/20 rounded-sm shadow-brutal hover:shadow-brutal-lg transition-all">
     <CardContent className="p-6 space-y-4">
-      <h4 className="font-heading text-xl font-bold text-foreground">
+      <h4 className="font-sans font-thin text-2xl text-foreground uppercase">
         {workshop.title}
       </h4>
       <div className="space-y-2 text-muted-foreground">
@@ -80,7 +80,7 @@ const WorkshopCard = ({ workshop }: { workshop: Workshop }) => (
       </div>
       <Button 
         variant={workshop.buttonVariant || "default"} 
-        className="w-full mt-4"
+        className="w-full mt-4 rounded-sm"
       >
         {workshop.buttonLabel}
       </Button>
@@ -92,9 +92,8 @@ export const WorkshopsSection = () => {
   return (
     <section className="py-16 lg:py-24 px-8 bg-background">
       <div className="max-w-6xl mx-auto space-y-16">
-        {/* Próximos Talleres */}
         <div className="space-y-8">
-          <h2 className="font-heading text-3xl lg:text-4xl font-bold text-foreground text-center">
+          <h2 className="font-sans font-thin text-foreground text-center" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)" }}>
             PRÓXIMOS TALLERES
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -104,9 +103,8 @@ export const WorkshopsSection = () => {
           </div>
         </div>
 
-        {/* Talleres Realizados */}
         <div className="space-y-8">
-          <h2 className="font-heading text-3xl lg:text-4xl font-bold text-foreground text-center">
+          <h2 className="font-sans font-thin text-foreground text-center" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)" }}>
             TALLERES REALIZADOS
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
