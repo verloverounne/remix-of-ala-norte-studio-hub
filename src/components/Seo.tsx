@@ -13,7 +13,7 @@ const SITE_URL = "https://ala-norte-studio.lovable.app";
 
 export const Seo = ({ title, description, path = "", ogType = "website", ogImage, jsonLd }: SeoProps) => {
   const url = `${SITE_URL}${path}`;
-  const image = ogImage ?? `${SITE_URL}/og-default.jpg`;
+  const image = ogImage ?? `${SITE_URL}/og-image.png`;
   const ldArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 
   return (
