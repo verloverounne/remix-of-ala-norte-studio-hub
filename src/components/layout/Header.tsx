@@ -29,10 +29,11 @@ const navigation = [
     href: "/sala-grabacion",
   },
   // { name: "SERVICIOS", href: "/servicios" },
-  {
-    name: "CARTONI",
-    href: "/cartoni",
-  },
+
+  // {
+  //   name: "CARTONI",
+  //   href: "/cartoni",
+  // },
   {
     name: "CONTACTO",
     href: "/contacto",
