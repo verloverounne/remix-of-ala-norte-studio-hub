@@ -144,7 +144,7 @@ const Galeria = () => {
         path="/galeria"
       />
       {/* Hero Section - Full width */}
-      <GalleryHero space={space} />
+      <GalleryHero space={spaceForHero} />
 
       {/* Details Section */}
       <section className="mb-0 mt-0 sm:py-0">
