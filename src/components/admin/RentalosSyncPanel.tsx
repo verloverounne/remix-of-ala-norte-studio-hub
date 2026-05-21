@@ -62,24 +62,6 @@ interface SyncResult {
   details: string[];
 }
 
-function normalizeName(name: string): string {
-  let n = name.toLowerCase().trim().replace(/\s+/g, " ");
-  // Unificación: "200w" ↔ "2k", "1000w" ↔ "1k", "5000w" ↔ "5k", etc.
-  // Regla: 1k = 1000w, 2k = 2000w pero por convención de iluminación 2k ≈ 200w (LED equiv tungsteno)
-  // Implementación: normalizar variantes de potencia equivalentes
-  const powerEquivalents: Array<[RegExp, string]> = [
-    [/\b200\s?w\b/g, "2k"],
-    [/\b300\s?w\b/g, "3k"],
-    [/\b500\s?w\b/g, "5k"],
-    [/\b1000\s?w\b/g, "1k"],
-    [/\b1200\s?w\b/g, "1.2k"],
-    [/\b2000\s?w\b/g, "2k"],
-  ];
-  for (const [re, rep] of powerEquivalents) n = n.replace(re, rep);
-  // Eliminar variaciones menores de puntuación
-  n = n.replace(/[\/\-_,.]/g, " ").replace(/\s+/g, " ").trim();
-  return n;
-}
 
 // Mapea "Tipo" de Rentalos a status + prioridad de orden.
 // Propio = disponible y aparece primero.
