@@ -81,21 +81,39 @@ function normalizeName(name: string): string {
   return n;
 }
 
-// Mapea "Tipo" de Rentalos a status + prioridad de orden
+// Mapea "Tipo" de Rentalos a status + prioridad de orden.
+// Propio = disponible y aparece primero.
+// Estacionado = compartido que duerme en Ala Norte → disponible, segundo lugar.
+// Compartido = disponible, tercer lugar.
+// Externo = NO disponible (maintenance), último.
 function mapTipo(tipo: string): { status: "available" | "maintenance"; priority: number } {
   const t = tipo.toLowerCase().trim();
-  if (t === "estacionado") return { status: "maintenance", priority: 99 };
   if (t === "propio") return { status: "available", priority: 1 };
-  if (t === "compartido") return { status: "available", priority: 2 };
-  if (t === "externo") return { status: "available", priority: 3 };
+  if (t === "estacionado") return { status: "available", priority: 2 };
+  if (t === "compartido") return { status: "available", priority: 3 };
+  if (t === "externo") return { status: "maintenance", priority: 4 };
   return { status: "available", priority: 5 };
+}
+
+// Parsea el campo "Funcional" del CSV y devuelve la cantidad efectivamente
+// disponible para el cotizador a partir de la cantidad declarada en la fila.
+// - "Funcional" / "Si" / vacío → toda la cantidad disponible.
+// - "Parcial (n/m)" → solo n unidades cuentan como disponibles.
+// - "No" u otro valor → 0 disponibles.
+function parseFuncional(funcional: string, cantidad: number): number {
+  const f = (funcional || "").toLowerCase().trim();
+  if (!f || f === "funcional" || f === "si" || f === "sí") return cantidad;
+  const parcial = f.match(/parcial\s*\(\s*(\d+)\s*\/\s*\d+\s*\)/);
+  if (parcial) return Math.max(0, parseInt(parcial[1], 10) || 0);
+  if (f === "no") return 0;
+  // valores desconocidos: conservador, usar cantidad declarada
+  return cantidad;
 }
 
 function parseCSVRows(text: string): CSVRow[] {
   const lines = text.split("\n");
   if (lines.length < 2) return [];
 
-  // Detect separator
   const header = lines[0];
   const sep = header.includes(";") ? ";" : ",";
 
@@ -124,6 +142,21 @@ function parseCSVRows(text: string): CSVRow[] {
   return rows;
 }
 
+function normalizeName(name: string): string {
+  let n = name.toLowerCase().trim().replace(/\s+/g, " ");
+  const powerEquivalents: Array<[RegExp, string]> = [
+    [/\b200\s?w\b/g, "2k"],
+    [/\b300\s?w\b/g, "3k"],
+    [/\b500\s?w\b/g, "5k"],
+    [/\b1000\s?w\b/g, "1k"],
+    [/\b1200\s?w\b/g, "1.2k"],
+    [/\b2000\s?w\b/g, "2k"],
+  ];
+  for (const [re, rep] of powerEquivalents) n = n.replace(re, rep);
+  n = n.replace(/[\/\-_,.]/g, " ").replace(/\s+/g, " ").trim();
+  return n;
+}
+
 // Group CSV rows by normalized name, summing quantities and collecting serial numbers
 function groupCSVRows(rows: CSVRow[]) {
   const groups = new Map<
@@ -142,16 +175,15 @@ function groupCSVRows(rows: CSVRow[]) {
 
   for (const row of rows) {
     const key = normalizeName(row.nombre);
+    // Cantidad efectiva: Externo no suma stock; el resto suma según el campo Funcional.
+    const isExterno = row.tipo.toLowerCase().trim() === "externo";
+    const effectiveQty = isExterno ? 0 : parseFuncional(row.funcional, row.cantidad);
+
     const existing = groups.get(key);
     if (existing) {
-      // Sumar cantidad y mantener tipo dominante (Propio > Compartido > Externo > Estacionado)
-      // pero NO sumar Estacionados al stock disponible
       const newTipoP = mapTipo(row.tipo).priority;
       const oldTipoP = mapTipo(existing.tipo).priority;
-      // Solo sumar al stock si NO es Estacionado
-      if (row.tipo.toLowerCase().trim() !== "estacionado") {
-        existing.totalCantidad += row.cantidad;
-      }
+      existing.totalCantidad += effectiveQty;
       if (row.numeroSerie) existing.serialNumbers.push(row.numeroSerie);
       if (row.anexos) existing.anexos.push(row.anexos);
       if (!existing.funcional && row.funcional) existing.funcional = row.funcional;
@@ -159,12 +191,11 @@ function groupCSVRows(rows: CSVRow[]) {
       if (newTipoP < oldTipoP) existing.tipo = row.tipo;
       if (!existing.precioDiario && row.precioDiario) existing.precioDiario = row.precioDiario;
     } else {
-      const isEstacionado = row.tipo.toLowerCase().trim() === "estacionado";
       groups.set(key, {
         nombre: row.nombre,
         categoria: row.categoria,
         precioDiario: row.precioDiario,
-        totalCantidad: isEstacionado ? 0 : row.cantidad,
+        totalCantidad: effectiveQty,
         serialNumbers: row.numeroSerie ? [row.numeroSerie] : [],
         anexos: row.anexos ? [row.anexos] : [],
         funcional: row.funcional,
