@@ -38,6 +38,11 @@ const CATEGORY_MAP: Record<string, string> = {
   "insumos": "Grip General",
 };
 
+// ID fijo de la categoría Sonido (antes "Audio"). Se usa como fallback para
+// que cualquier fila CSV con categoría "sonido" termine bajo Sonido aunque
+// la subcategoría no exista.
+const SONIDO_CATEGORY_ID = "bdaa1e73-8532-4b85-8495-6ef8bba5be31";
+
 interface CSVRow {
   nombre: string;
   categoria: string;
