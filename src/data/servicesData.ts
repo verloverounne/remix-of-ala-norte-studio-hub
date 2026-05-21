@@ -26,6 +26,29 @@ export interface StaticHomeService {
 
 export const STATIC_HOME_SERVICES: StaticHomeService[] = [
   {
+    id: "645c5ca7-3c92-40c8-9b4b-0c52ca579c29",
+    title: "Galería",
+    description:
+      "Espacios versátiles y completamente equipados para tus producciones. Ciclorama, sets modulares y control total de iluminación.",
+    image_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768795867738_GALERIA_FAKENEWS.mp4",
+    hero_image_url: null,
+    hero_media_type: "video",
+    hero_video_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768955828513_GALERIA_FAKENEWS_2.mp4",
+    section_media_type: "video",
+    section_video_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/servicios//GALERIA FAKENEWS_1.mp4",
+    button_text: null,
+    button_link: null,
+    bullets: [],
+    cta_label: "Descubrila",
+    cta_url: "/galeria",
+    slug: "galera-de-filmacin",
+    order_index: 2,
+    is_active: true,
+  },
+  {
     id: "produccion-integral-static",
     title: "Producción Integral",
     description:
@@ -96,29 +119,7 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
     order_index: 1,
     is_active: true,
   },
-  {
-    id: "645c5ca7-3c92-40c8-9b4b-0c52ca579c29",
-    title: "Galería",
-    description:
-      "Espacios versátiles y completamente equipados para tus producciones. Ciclorama, sets modulares y control total de iluminación.",
-    image_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768795867738_GALERIA_FAKENEWS.mp4",
-    hero_image_url: null,
-    hero_media_type: "video",
-    hero_video_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768955828513_GALERIA_FAKENEWS_2.mp4",
-    section_media_type: "video",
-    section_video_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/servicios//GALERIA FAKENEWS_1.mp4",
-    button_text: null,
-    button_link: null,
-    bullets: [],
-    cta_label: "Descubrila",
-    cta_url: "/galeria",
-    slug: "galera-de-filmacin",
-    order_index: 2,
-    is_active: true,
-  },
+
   {
     id: "af28b17b-e012-4b16-8b73-dc94bbab9fef",
     title: "Equipos",
