@@ -122,13 +122,15 @@ export const SearchBar = () => {
     const timer = setTimeout(() => {
       const fuse = new Fuse(searchData, {
         keys: ["title", "description"],
-        threshold: 0.3,
+        threshold: 0.45,
+        ignoreLocation: true,
+        minMatchCharLength: 2,
         includeScore: true,
       });
       const searchResults = fuse.search(query);
       setResults(searchResults.slice(0, 8).map((r) => r.item));
       setSelectedIndex(-1);
-    }, 300); // 300ms debounce
+    }, 200); // debounce
 
     return () => clearTimeout(timer);
   }, [query, searchData]);
