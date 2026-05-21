@@ -139,9 +139,9 @@ const CTASection = () => {
     direction: "down",
   });
   return (
-    <section className="relative border-y border-border overflow-hidden min-h-[90vh] flex items-center duotone-hover-group">
+    <section className="relative border-y border-border overflow-hidden flex items-center duotone-hover-group">
       {/* Background image with duotone treatment */}
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full">
         <img
           alt=""
           className="w-full h-full image-duotone object-cover mx-[8px] mr-0 ml-0 px-0"
