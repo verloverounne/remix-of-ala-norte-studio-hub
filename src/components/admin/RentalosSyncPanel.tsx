@@ -274,6 +274,7 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
             const t = raw.toLowerCase();
             if (t === "propio") return "Propio";
             if (t === "estacionado") return "Estacionado";
+            if (t === "compartido") return "Compartido";
             if (t === "externo") return "Externo";
             if (raw) {
               syncResult.errors.push(`Tipo no válido "${raw}" en "${csvItem.nombre}" → usando 'Propio'`);
@@ -287,6 +288,10 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
         if (subcatInfo) {
           updateFields.subcategory_id = subcatInfo.id;
           updateFields.category_id = subcatInfo.category_id;
+        } else if (csvCatNorm === "sonido") {
+          // Fallback: si no hay subcategoría mapeada pero el CSV lo declara
+          // como "sonido", al menos garantizamos la categoría Sonido.
+          updateFields.category_id = SONIDO_CATEGORY_ID;
         }
 
         if (existing) {
