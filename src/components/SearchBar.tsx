@@ -93,7 +93,7 @@ export const SearchBar = () => {
           type: "equipment" as const,
           title: `${e.name}${e.brand ? ` - ${e.brand}` : ""}${e.model ? ` ${e.model}` : ""}`,
           description: e.description || undefined,
-          url: `/equipos?item=${e.id}`,
+          url: `/equipos?id=${e.id}`,
           imageUrl: e.image_url || undefined,
           price: e.price_per_day,
           availability: e.status,
