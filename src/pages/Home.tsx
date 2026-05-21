@@ -145,7 +145,7 @@ const CTASection = () => {
         <img
           alt=""
           className="w-full h-full image-duotone object-cover mx-[8px] mr-0 ml-0 px-0"
-          src="/lovable-uploads/fb5916aa-2049-4f18-aa32-4bfb53fbdc4f.png"
+          src="/lovable-uploads/7fc2168e-0efa-4479-96f7-31ea0af80766.jpg"
         />
       </div>
 
