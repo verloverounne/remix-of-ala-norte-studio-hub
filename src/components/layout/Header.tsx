@@ -145,6 +145,10 @@ export const Header = () => {
           onMouseMove={resetAutoCloseTimer}
         >
           <div className="flex flex-col">
+            <div className="px-4 py-3 border-b border-foreground/20 bg-background flex items-center gap-2">
+              <SearchBar />
+              <span className="font-heading text-xs text-foreground/60">BUSCAR</span>
+            </div>
             {navigation.map((item) => (
               <Link
                 key={item.name}
