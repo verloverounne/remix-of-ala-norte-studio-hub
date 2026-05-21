@@ -151,7 +151,7 @@ export const categoryNames: Record<string, string> = {
   cameras: "Cámaras",
   lenses: "Lentes",
   lighting: "Iluminación",
-  audio: "Audio",
+  audio: "Sonido",
   accessories: "Accesorios",
   grip: "Grip",
 };
