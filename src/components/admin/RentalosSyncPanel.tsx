@@ -363,16 +363,18 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
       </CardHeader>
       <CardContent className="space-y-4 pt-4">
         <div className="bg-muted/50 rounded-lg p-4 space-y-2 text-sm">
-          <p className="font-semibold">¿Qué hace esta sincronización?</p>
-          <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-            <li>Actualiza <strong>precio, stock, subcategoría, nro serie, estado funcional y tipo</strong></li>
-            <li>Tipo <strong>Propio</strong> aparece primero, <strong>Compartido</strong> luego, <strong>Externo</strong> al final (vía order_index)</li>
-            <li>Tipo <strong>Estacionado</strong> = no disponible (status maintenance, no suma stock)</li>
-            <li>Unifica equipos equivalentes (ej. "200w" = "2k", "1000w" = "1k") sumando cantidades</li>
-            <li><strong>Anexos</strong> se concatenan a la descripción existente sin sobrescribirla</li>
-            <li>Equipos ausentes del CSV se marcan como no disponibles (no se borran)</li>
-            <li><strong>NO toca</strong>: imágenes, specs ni destacados</li>
-          </ul>
+          <p className="font-semibold">¿Qué hace exactamente esta sincronización?</p>
+          <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
+            <li>Lee el CSV de Rentalos y agrupa filas por <strong>nombre normalizado</strong> (mismo equipo en varias filas se unifica en un solo registro).</li>
+            <li>Suma <strong>cantidades</strong> de las filas agrupadas para calcular el <code>stock_quantity</code>. Las filas con tipo <strong>Estacionado</strong> no suman stock.</li>
+            <li>Para cada equipo agrupado actualiza en la base: <strong>precio (price_per_day)</strong>, <strong>stock_quantity</strong>, <strong>status</strong>, <strong>order_index</strong> (según prioridad de tipo), <strong>functional_status</strong>, <strong>ownership_type</strong> y <strong>serial_number</strong> (concatenando todos los números de serie con " | ").</li>
+            <li>Mapea la categoría del CSV a una <strong>subcategoría</strong> existente y, si encuentra match, actualiza <code>subcategory_id</code> y <code>category_id</code>.</li>
+            <li>El <strong>tipo dominante</strong> se decide por prioridad: Propio &gt; Compartido &gt; Externo &gt; Estacionado. Tipos no reconocidos se guardan como "Propio" y se reportan como error.</li>
+            <li>Los <strong>Anexos</strong> del CSV se unen con " • " y se agregan a la descripción existente como bloque <code>Anexos: ...</code>. Si ya había un bloque previo lo reemplaza; el resto de la descripción se conserva.</li>
+            <li>Si el equipo <strong>no existe</strong> en la base, lo <strong>crea</strong> con todos esos campos.</li>
+            <li>Los equipos existentes que <strong>no aparecen en el CSV</strong> se marcan en <code>status = maintenance</code> (no se borran). Los que ya estaban en maintenance no se tocan.</li>
+            <li><strong>No modifica</strong>: <code>image_url</code>, <code>images</code>, <code>specs</code>, <code>detailed_specs</code> ni <code>featured</code>.</li>
+          </ol>
         </div>
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
