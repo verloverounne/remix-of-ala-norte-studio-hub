@@ -92,12 +92,13 @@ export const Footer = () => {
                 href="https://taplink.cc/alanortecinedigital"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-primary transition-brutal"
+                className="flex items-center gap-2 hover:text-primary transition-brutal"
                 aria-label="Linktree"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M13.5108 5.85343L17.5158 1.73642L19.8404 4.11701L15.6393 8.12199H21.5488V11.4268H15.6113L19.8404 15.5345L17.5158 17.8684L11.7744 12.099L6.03299 17.8684L3.70842 15.5438L7.93745 11.4361H2V8.12199H7.90944L3.70842 4.11701L6.03299 1.73642L10.038 5.85343V0H13.5108V5.85343ZM10.038 16.16H13.5108V24H10.038V16.16Z" />
                 </svg>
+                <span className="text-sm">Tap link</span>
               </a>
             </div>
             <p className="text-xs text-background/70 mt-2">
