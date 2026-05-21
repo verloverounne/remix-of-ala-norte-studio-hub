@@ -38,6 +38,11 @@ const CATEGORY_MAP: Record<string, string> = {
   "insumos": "Grip General",
 };
 
+// ID fijo de la categoría Sonido (antes "Audio"). Se usa como fallback para
+// que cualquier fila CSV con categoría "sonido" termine bajo Sonido aunque
+// la subcategoría no exista.
+const SONIDO_CATEGORY_ID = "bdaa1e73-8532-4b85-8495-6ef8bba5be31";
+
 interface CSVRow {
   nombre: string;
   categoria: string;
@@ -57,40 +62,40 @@ interface SyncResult {
   details: string[];
 }
 
-function normalizeName(name: string): string {
-  let n = name.toLowerCase().trim().replace(/\s+/g, " ");
-  // Unificación: "200w" ↔ "2k", "1000w" ↔ "1k", "5000w" ↔ "5k", etc.
-  // Regla: 1k = 1000w, 2k = 2000w pero por convención de iluminación 2k ≈ 200w (LED equiv tungsteno)
-  // Implementación: normalizar variantes de potencia equivalentes
-  const powerEquivalents: Array<[RegExp, string]> = [
-    [/\b200\s?w\b/g, "2k"],
-    [/\b300\s?w\b/g, "3k"],
-    [/\b500\s?w\b/g, "5k"],
-    [/\b1000\s?w\b/g, "1k"],
-    [/\b1200\s?w\b/g, "1.2k"],
-    [/\b2000\s?w\b/g, "2k"],
-  ];
-  for (const [re, rep] of powerEquivalents) n = n.replace(re, rep);
-  // Eliminar variaciones menores de puntuación
-  n = n.replace(/[\/\-_,.]/g, " ").replace(/\s+/g, " ").trim();
-  return n;
-}
 
-// Mapea "Tipo" de Rentalos a status + prioridad de orden
+// Mapea "Tipo" de Rentalos a status + prioridad de orden.
+// Propio = disponible y aparece primero.
+// Estacionado = compartido que duerme en Ala Norte → disponible, segundo lugar.
+// Compartido = disponible, tercer lugar.
+// Externo = NO disponible (maintenance), último.
 function mapTipo(tipo: string): { status: "available" | "maintenance"; priority: number } {
   const t = tipo.toLowerCase().trim();
-  if (t === "estacionado") return { status: "maintenance", priority: 99 };
   if (t === "propio") return { status: "available", priority: 1 };
-  if (t === "compartido") return { status: "available", priority: 2 };
-  if (t === "externo") return { status: "available", priority: 3 };
+  if (t === "estacionado") return { status: "available", priority: 2 };
+  if (t === "compartido") return { status: "available", priority: 3 };
+  if (t === "externo") return { status: "maintenance", priority: 4 };
   return { status: "available", priority: 5 };
+}
+
+// Parsea el campo "Funcional" del CSV y devuelve la cantidad efectivamente
+// disponible para el cotizador a partir de la cantidad declarada en la fila.
+// - "Funcional" / "Si" / vacío → toda la cantidad disponible.
+// - "Parcial (n/m)" → solo n unidades cuentan como disponibles.
+// - "No" u otro valor → 0 disponibles.
+function parseFuncional(funcional: string, cantidad: number): number {
+  const f = (funcional || "").toLowerCase().trim();
+  if (!f || f === "funcional" || f === "si" || f === "sí") return cantidad;
+  const parcial = f.match(/parcial\s*\(\s*(\d+)\s*\/\s*\d+\s*\)/);
+  if (parcial) return Math.max(0, parseInt(parcial[1], 10) || 0);
+  if (f === "no") return 0;
+  // valores desconocidos: conservador, usar cantidad declarada
+  return cantidad;
 }
 
 function parseCSVRows(text: string): CSVRow[] {
   const lines = text.split("\n");
   if (lines.length < 2) return [];
 
-  // Detect separator
   const header = lines[0];
   const sep = header.includes(";") ? ";" : ",";
 
@@ -119,6 +124,21 @@ function parseCSVRows(text: string): CSVRow[] {
   return rows;
 }
 
+function normalizeName(name: string): string {
+  let n = name.toLowerCase().trim().replace(/\s+/g, " ");
+  const powerEquivalents: Array<[RegExp, string]> = [
+    [/\b200\s?w\b/g, "2k"],
+    [/\b300\s?w\b/g, "3k"],
+    [/\b500\s?w\b/g, "5k"],
+    [/\b1000\s?w\b/g, "1k"],
+    [/\b1200\s?w\b/g, "1.2k"],
+    [/\b2000\s?w\b/g, "2k"],
+  ];
+  for (const [re, rep] of powerEquivalents) n = n.replace(re, rep);
+  n = n.replace(/[\/\-_,.]/g, " ").replace(/\s+/g, " ").trim();
+  return n;
+}
+
 // Group CSV rows by normalized name, summing quantities and collecting serial numbers
 function groupCSVRows(rows: CSVRow[]) {
   const groups = new Map<
@@ -137,16 +157,15 @@ function groupCSVRows(rows: CSVRow[]) {
 
   for (const row of rows) {
     const key = normalizeName(row.nombre);
+    // Cantidad efectiva: Externo no suma stock; el resto suma según el campo Funcional.
+    const isExterno = row.tipo.toLowerCase().trim() === "externo";
+    const effectiveQty = isExterno ? 0 : parseFuncional(row.funcional, row.cantidad);
+
     const existing = groups.get(key);
     if (existing) {
-      // Sumar cantidad y mantener tipo dominante (Propio > Compartido > Externo > Estacionado)
-      // pero NO sumar Estacionados al stock disponible
       const newTipoP = mapTipo(row.tipo).priority;
       const oldTipoP = mapTipo(existing.tipo).priority;
-      // Solo sumar al stock si NO es Estacionado
-      if (row.tipo.toLowerCase().trim() !== "estacionado") {
-        existing.totalCantidad += row.cantidad;
-      }
+      existing.totalCantidad += effectiveQty;
       if (row.numeroSerie) existing.serialNumbers.push(row.numeroSerie);
       if (row.anexos) existing.anexos.push(row.anexos);
       if (!existing.funcional && row.funcional) existing.funcional = row.funcional;
@@ -154,12 +173,11 @@ function groupCSVRows(rows: CSVRow[]) {
       if (newTipoP < oldTipoP) existing.tipo = row.tipo;
       if (!existing.precioDiario && row.precioDiario) existing.precioDiario = row.precioDiario;
     } else {
-      const isEstacionado = row.tipo.toLowerCase().trim() === "estacionado";
       groups.set(key, {
         nombre: row.nombre,
         categoria: row.categoria,
         precioDiario: row.precioDiario,
-        totalCantidad: isEstacionado ? 0 : row.cantidad,
+        totalCantidad: effectiveQty,
         serialNumbers: row.numeroSerie ? [row.numeroSerie] : [],
         anexos: row.anexos ? [row.anexos] : [],
         funcional: row.funcional,
@@ -256,6 +274,7 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
             const t = raw.toLowerCase();
             if (t === "propio") return "Propio";
             if (t === "estacionado") return "Estacionado";
+            if (t === "compartido") return "Compartido";
             if (t === "externo") return "Externo";
             if (raw) {
               syncResult.errors.push(`Tipo no válido "${raw}" en "${csvItem.nombre}" → usando 'Propio'`);
@@ -269,6 +288,10 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
         if (subcatInfo) {
           updateFields.subcategory_id = subcatInfo.id;
           updateFields.category_id = subcatInfo.category_id;
+        } else if (csvCatNorm === "sonido") {
+          // Fallback: si no hay subcategoría mapeada pero el CSV lo declara
+          // como "sonido", al menos garantizamos la categoría Sonido.
+          updateFields.category_id = SONIDO_CATEGORY_ID;
         }
 
         if (existing) {
@@ -366,10 +389,12 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
           <p className="font-semibold">¿Qué hace exactamente esta sincronización?</p>
           <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
             <li>Lee el CSV de Rentalos y agrupa filas por <strong>nombre normalizado</strong> (mismo equipo en varias filas se unifica en un solo registro).</li>
-            <li>Suma <strong>cantidades</strong> de las filas agrupadas para calcular el <code>stock_quantity</code>. Las filas con tipo <strong>Estacionado</strong> no suman stock.</li>
-            <li>Para cada equipo agrupado actualiza en la base: <strong>precio (price_per_day)</strong>, <strong>stock_quantity</strong>, <strong>status</strong>, <strong>order_index</strong> (según prioridad de tipo), <strong>functional_status</strong>, <strong>ownership_type</strong> y <strong>serial_number</strong> (concatenando todos los números de serie con " | ").</li>
-            <li>Mapea la categoría del CSV a una <strong>subcategoría</strong> existente y, si encuentra match, actualiza <code>subcategory_id</code> y <code>category_id</code>.</li>
-            <li>El <strong>tipo dominante</strong> se decide por prioridad: Propio &gt; Compartido &gt; Externo &gt; Estacionado. Tipos no reconocidos se guardan como "Propio" y se reportan como error.</li>
+            <li><strong>Disponibilidad por tipo:</strong> <em>Propio</em> y <em>Estacionado</em> (compartido que duerme en Ala Norte) quedan <code>available</code>; <em>Compartido</em> también <code>available</code>; solo <em>Externo</em> pasa a <code>maintenance</code> (no disponible).</li>
+            <li><strong>Orden de aparición</strong> (<code>order_index</code>): 1 = Propio, 2 = Estacionado, 3 = Compartido, 4 = Externo. Así los Propios aparecen primero y los Estacionados en segundo lugar.</li>
+            <li><strong>Stock disponible</strong> (<code>stock_quantity</code>): suma de cantidades por nombre, descontando las filas <em>Externo</em>. El campo <strong>Funcional</strong> ajusta la cantidad de cada fila: <code>Funcional</code> / <code>Si</code> / vacío usa la cantidad declarada; <code>Parcial (n/m)</code> cuenta solo <code>n</code> unidades (ej. 2/4 = 2 disponibles en el cotizador); <code>No</code> cuenta 0.</li>
+            <li>Actualiza también: <strong>price_per_day</strong>, <strong>functional_status</strong>, <strong>ownership_type</strong> (Propio/Estacionado/Compartido/Externo) y <strong>serial_number</strong> (concatenando todos los números de serie con " | ").</li>
+            <li>Mapea la categoría del CSV a una <strong>subcategoría</strong> existente. El tipo <strong>"sonido"</strong> del CSV cae bajo la categoría <strong>Sonido</strong> (antes "Audio") — si no hay subcategoría mapeada, igual fuerza la categoría Sonido.</li>
+            <li>El <strong>tipo dominante</strong> de un grupo se decide por prioridad: Propio &gt; Estacionado &gt; Compartido &gt; Externo. Tipos no reconocidos se guardan como "Propio" y se reportan como error.</li>
             <li>Los <strong>Anexos</strong> del CSV se unen con " • " y se agregan a la descripción existente como bloque <code>Anexos: ...</code>. Si ya había un bloque previo lo reemplaza; el resto de la descripción se conserva.</li>
             <li>Si el equipo <strong>no existe</strong> en la base, lo <strong>crea</strong> con todos esos campos.</li>
             <li>Los equipos existentes que <strong>no aparecen en el CSV</strong> se marcan en <code>status = maintenance</code> (no se borran). Los que ya estaban en maintenance no se tocan.</li>
