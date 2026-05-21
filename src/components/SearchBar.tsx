@@ -93,7 +93,7 @@ export const SearchBar = () => {
           type: "equipment" as const,
           title: `${e.name}${e.brand ? ` - ${e.brand}` : ""}${e.model ? ` ${e.model}` : ""}`,
           description: e.description || undefined,
-          url: `/equipos?item=${e.id}`,
+          url: `/equipos?id=${e.id}`,
           imageUrl: e.image_url || undefined,
           price: e.price_per_day,
           availability: e.status,
@@ -122,13 +122,15 @@ export const SearchBar = () => {
     const timer = setTimeout(() => {
       const fuse = new Fuse(searchData, {
         keys: ["title", "description"],
-        threshold: 0.3,
+        threshold: 0.45,
+        ignoreLocation: true,
+        minMatchCharLength: 2,
         includeScore: true,
       });
       const searchResults = fuse.search(query);
       setResults(searchResults.slice(0, 8).map((r) => r.item));
       setSelectedIndex(-1);
-    }, 300); // 300ms debounce
+    }, 200); // debounce
 
     return () => clearTimeout(timer);
   }, [query, searchData]);
