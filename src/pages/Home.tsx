@@ -157,7 +157,7 @@ const CTASection = () => {
           className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] pt-[64px] max-w-2xl rounded-sm bg-inherit"
         >
           <h2
-            className="mb-4 sm:mb-6 my-0 px-0 font-sans font-thin text-[#fbf2ee]"
+            className="mb-4 sm:mb-6 my-0 px-0 font-sans my-[64px] mb-[2px] mx-0 font-semibold text-[#fbf2ee]"
             style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
           >
             ¿TENÉS UN PROYECTO EN MENTE?
