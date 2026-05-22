@@ -254,7 +254,7 @@ Contactar cliente para coordinar entrega/retiro.
                     <li className="flex items-start gap-3">
                       <span className="font-bold text-primary text-xl">1.</span>
                       <div>
-                        <span className="font-bold">Contanos tu proyecto</span>
+                        <span className="font-bold">Contanos tu proyecto (si es la primera vez que alquilás, registrate como cliente)</span>
                         <p className="font-sans text-sm text-muted-foreground">
                           Compartinos qué querés filmar, fechas, locaciones y equipo que tenés o necesitás.
                         </p>
