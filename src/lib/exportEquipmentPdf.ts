@@ -19,26 +19,26 @@ const LOGO_URL =
 
 async function fetchLogoAsDataUrl(): Promise<{ data: string; w: number; h: number } | null> {
   try {
-    const res = await fetch(LOGO_URL);
-    const blob = await res.blob();
-    const dataUrl: string = await new Promise((resolve, reject) => {
-      const r = new FileReader();
-      r.onload = () => resolve(r.result as string);
-      r.onerror = reject;
-      r.readAsDataURL(blob);
-    });
-    // On a dark logo we need a dark bg; we'll invert by drawing on dark rectangle.
     const img = new Image();
-    img.src = dataUrl;
-    await new Promise<void>((resolve) => {
+    img.crossOrigin = "anonymous";
+    img.src = LOGO_URL;
+    await new Promise<void>((resolve, reject) => {
       img.onload = () => resolve();
-      img.onerror = () => resolve();
+      img.onerror = () => reject(new Error("logo load failed"));
     });
-    return { data: dataUrl, w: img.naturalWidth || 600, h: img.naturalHeight || 120 };
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+    ctx.drawImage(img, 0, 0);
+    const dataUrl = canvas.toDataURL("image/png");
+    return { data: dataUrl, w: canvas.width, h: canvas.height };
   } catch {
     return null;
   }
 }
+
 
 function formatPrice(value: number | null | undefined): string {
   if (!value || value <= 0 || value === 1000) return "";
