@@ -76,7 +76,14 @@ export const Footer = () => {
               </li>
               <li className="flex items-center gap-2 text-sm">
                 <MapPin className="h-4 w-4 text-primary" />
-                <span>V. S. de Liniers 1565 - Vte. Lopez - BA</span>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=V.%20S.%20de%20Liniers%201565%2C%20Vicente%20Lopez%2C%20Buenos%20Aires%2C%20Argentina"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-primary transition-colors"
+                >
+                  V. S. de Liniers 1565 - Vte. Lopez
+                </a>
               </li>
             </ul>
           </div>
