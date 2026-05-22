@@ -142,21 +142,30 @@ export const EquipmentManager = () => {
   };
 
   const fetchEquipment = async () => {
-    const { data } = await supabase
-      .from("equipment")
-      .select(
-        "id, name, name_en, image_url, images, brand, model, description, price_per_day, category_id, subcategory_id, featured, status, stock_quantity, serial_number, ownership_type, functional_status, categories (*), subcategories (*)",
-      )
-      .order("name");
-    if (data) {
-      const transformed = data.map((item: any) => ({
-        ...item,
-        images: Array.isArray(item.images) ? item.images : [],
-        status: item.status || 'available',
-        stock_quantity: item.stock_quantity ?? 1,
-      }));
-      setEquipment(transformed);
+    const PAGE_SIZE = 1000;
+    const all: any[] = [];
+    let from = 0;
+    // Paginate to bypass PostgREST default row limit and fetch all rows
+    while (true) {
+      const { data, error } = await supabase
+        .from("equipment")
+        .select(
+          "id, name, name_en, image_url, images, brand, model, description, price_per_day, category_id, subcategory_id, featured, status, stock_quantity, serial_number, ownership_type, functional_status, categories (*), subcategories (*)",
+        )
+        .order("name")
+        .range(from, from + PAGE_SIZE - 1);
+      if (error || !data) break;
+      all.push(...data);
+      if (data.length < PAGE_SIZE) break;
+      from += PAGE_SIZE;
     }
+    const transformed = all.map((item: any) => ({
+      ...item,
+      images: Array.isArray(item.images) ? item.images : [],
+      status: item.status || 'available',
+      stock_quantity: item.stock_quantity ?? 1,
+    }));
+    setEquipment(transformed);
   };
 
   const fetchEquipmentImages = async (equipmentId: string) => {
