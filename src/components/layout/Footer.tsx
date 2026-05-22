@@ -5,14 +5,14 @@ export const Footer = () => {
     <footer className="bg-foreground text-background border-t border-foreground">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand */}
+          {/* Brand 
           <div className="space-y-4">
             <h3 className="text-2xl font-heading font-bold text-primary">ALA NORTE</h3>
-            <p className="opacity-80 font-light text-xs">
+         <p className="opacity-80 font-light text-xs">
               Espacios profesionales, asesoramiento técnico dedicado y formación continua. Desde el norte hasta el
               sur,acompañamos a proyectos con trato humano, calidad y empatía.
             </p>
-          </div>
+          </div> */}
 
           {/* Links */}
           <div className="space-y-2">
