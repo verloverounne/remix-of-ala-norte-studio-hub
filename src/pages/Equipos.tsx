@@ -12,7 +12,8 @@ import { CategorySection, CategorySectionRef } from "@/components/rental/Categor
 import { CartSidebar } from "@/components/rental/CartSidebar";
 import { ViewModeToggle, ViewMode } from "@/components/rental/ViewModeToggle";
 import { cn } from "@/lib/utils";
-import { Search, Filter, X, ArrowUpDown, ChevronDown, ChevronRight, ChevronLeft, ShoppingCart } from "lucide-react";
+import { Search, Filter, X, ArrowUpDown, ChevronDown, ChevronRight, ChevronLeft, ShoppingCart, Download } from "lucide-react";
+import { exportEquipmentPdf } from "@/lib/exportEquipmentPdf";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -492,6 +493,17 @@ const Equipos = () => {
             >
               <Search className="h-4 w-4" />
               <span className="ml-1 text-xs hidden sm:inline text-inherit">Buscar</span>
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => exportEquipmentPdf(equipment, categories, subcategories)}
+              className="h-8 px-2 flex-shrink-0 bg-inherit text-inherit border-0 rounded-sm"
+              title="Descargar lista completa en PDF"
+            >
+              <Download className="h-4 w-4" />
+              <span className="ml-1 text-xs hidden sm:inline text-inherit">Descargar PDF</span>
             </Button>
           </div>
 

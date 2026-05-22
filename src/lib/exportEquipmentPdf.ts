@@ -1,0 +1,218 @@
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import type { EquipmentWithCategory } from "@/types/supabase";
+
+interface Category {
+  id: string;
+  name: string;
+  order_index?: number;
+}
+interface Subcategory {
+  id: string;
+  name: string;
+  category_id: string;
+  order_index?: number;
+}
+
+const LOGO_URL =
+  "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/Logo_Horizontal_blanco.png";
+
+async function fetchLogoAsDataUrl(): Promise<{ data: string; w: number; h: number } | null> {
+  try {
+    const res = await fetch(LOGO_URL);
+    const blob = await res.blob();
+    const dataUrl: string = await new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result as string);
+      r.onerror = reject;
+      r.readAsDataURL(blob);
+    });
+    // On a dark logo we need a dark bg; we'll invert by drawing on dark rectangle.
+    const img = new Image();
+    img.src = dataUrl;
+    await new Promise<void>((resolve) => {
+      img.onload = () => resolve();
+      img.onerror = () => resolve();
+    });
+    return { data: dataUrl, w: img.naturalWidth || 600, h: img.naturalHeight || 120 };
+  } catch {
+    return null;
+  }
+}
+
+function formatPrice(value: number | null | undefined): string {
+  if (!value || value <= 0 || value === 1000) return "";
+  return `$ ${value.toLocaleString("es-AR")}`;
+}
+
+export async function exportEquipmentPdf(
+  equipment: EquipmentWithCategory[],
+  categories: Category[],
+  subcategories: Subcategory[],
+) {
+  const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const marginX = 48;
+
+  // --- Header ---
+  const logo = await fetchLogoAsDataUrl();
+  const headerHeight = 90;
+  // Dark bg behind logo
+  doc.setFillColor(15, 17, 19);
+  doc.rect(0, 0, pageWidth, headerHeight, "F");
+
+  if (logo) {
+    const targetH = 36;
+    const ratio = logo.w / logo.h;
+    const targetW = targetH * ratio;
+    doc.addImage(logo.data, "PNG", marginX, 24, targetW, targetH);
+  }
+
+  // Title + date on right
+  doc.setTextColor(255, 255, 255);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(14);
+  doc.text("Lista de equipos", pageWidth - marginX, 42, { align: "right" });
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  const today = new Date().toLocaleDateString("es-AR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+  doc.text(today, pageWidth - marginX, 60, { align: "right" });
+
+  // Reset text color
+  doc.setTextColor(20, 20, 20);
+
+  // --- Group equipment ---
+  const sortedCats = [...categories].sort(
+    (a, b) => (a.order_index ?? 999) - (b.order_index ?? 999),
+  );
+
+  type Row = { name: string; qty: string; price: string };
+  type SubGroup = { sub: Subcategory | null; rows: Row[] };
+  type CatGroup = { cat: Category; subs: SubGroup[] };
+
+  const groups: CatGroup[] = [];
+
+  for (const cat of sortedCats) {
+    const catItems = equipment.filter((e) => e.category_id === cat.id);
+    if (catItems.length === 0) continue;
+
+    const catSubs = subcategories
+      .filter((s) => s.category_id === cat.id)
+      .sort((a, b) => (a.order_index ?? 999) - (b.order_index ?? 999));
+
+    const subGroups: SubGroup[] = [];
+
+    const sortRows = (items: EquipmentWithCategory[]): Row[] =>
+      [...items]
+        .sort((a, b) => {
+          const an = (a.name || "").trim();
+          const bn = (b.name || "").trim();
+          if (!an && !bn) return 0;
+          if (!an) return 1;
+          if (!bn) return -1;
+          return an.localeCompare(bn, "es", { sensitivity: "base" });
+        })
+        .map((e) => ({
+          name: e.name || "",
+          qty: e.stock_quantity != null ? String(e.stock_quantity) : "",
+          price: formatPrice(e.price_per_day),
+        }));
+
+    for (const sub of catSubs) {
+      const subItems = catItems.filter((e) => e.subcategory_id === sub.id);
+      if (subItems.length === 0) continue;
+      subGroups.push({ sub, rows: sortRows(subItems) });
+    }
+
+    const orphan = catItems.filter(
+      (e) => !e.subcategory_id || !catSubs.find((s) => s.id === e.subcategory_id),
+    );
+    if (orphan.length > 0) {
+      subGroups.push({ sub: null, rows: sortRows(orphan) });
+    }
+
+    if (subGroups.length > 0) groups.push({ cat, subs: subGroups });
+  }
+
+  // --- Render ---
+  let cursorY = headerHeight + 28;
+
+  const ensureSpace = (needed: number) => {
+    if (cursorY + needed > pageHeight - 48) {
+      doc.addPage();
+      cursorY = 56;
+    }
+  };
+
+  for (const group of groups) {
+    ensureSpace(40);
+    // Category title
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.setTextColor(20, 20, 20);
+    doc.text(group.cat.name.toUpperCase(), marginX, cursorY);
+    cursorY += 6;
+    // Thin accent underline
+    doc.setDrawColor(20, 20, 20);
+    doc.setLineWidth(0.6);
+    doc.line(marginX, cursorY, pageWidth - marginX, cursorY);
+    cursorY += 14;
+
+    for (const sg of group.subs) {
+      ensureSpace(30);
+      if (sg.sub) {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(11);
+        doc.setTextColor(80, 80, 80);
+        doc.text(sg.sub.name.toUpperCase(), marginX, cursorY);
+        cursorY += 10;
+      }
+
+      autoTable(doc, {
+        startY: cursorY,
+        margin: { left: marginX, right: marginX },
+        body: sg.rows.map((r) => [r.name, r.qty, r.price]),
+        theme: "plain",
+        styles: {
+          font: "helvetica",
+          fontSize: 10,
+          textColor: [30, 30, 30],
+          cellPadding: { top: 3, right: 6, bottom: 3, left: 0 },
+          lineWidth: 0,
+        },
+        columnStyles: {
+          0: { cellWidth: "auto" },
+          1: { cellWidth: 60, halign: "right" },
+          2: { cellWidth: 90, halign: "right" },
+        },
+        didDrawPage: () => {
+          // no header redraw on subsequent pages (clean editorial look)
+        },
+      });
+
+      // @ts-expect-error lastAutoTable
+      cursorY = (doc.lastAutoTable?.finalY ?? cursorY) + 16;
+    }
+
+    cursorY += 6;
+  }
+
+  // Footer page numbers
+  const pageCount = doc.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(140, 140, 140);
+    doc.text(`${i} / ${pageCount}`, pageWidth - marginX, pageHeight - 24, {
+      align: "right",
+    });
+  }
+
+  doc.save("equipos-ala-norte.pdf");
+}
