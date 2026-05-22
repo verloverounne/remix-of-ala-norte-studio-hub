@@ -111,19 +111,18 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="absolute inset-0 image-duotone flex items-end justify-center py-[64px]"
-          >
-            <div className="text-center z-10 p-8 max-w-4xl">
-              <h3
-                className="mb-6 uppercase text-center font-sans font-medium text-primary my-[64px]"
-                style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
-              >
-                {equipment.name}
-              </h3>
-              <Button variant="hero" size="lg" className="group-hover:shadow-brutal-lg transition-shadow my-[78px]">
-                VER DETALLES <ArrowRight className="ml-2" />
-              </Button>
-            </div>
+            className="absolute inset-0 image-duotone flex items-end justify-center"
+          ></div>
+          <div className="text-center z-10 p-8 max-w-4xl">
+            <h3
+              className="mb-6 uppercase text-center font-sans font-medium text-primary my-0"
+              style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+            >
+              {equipment.name}
+            </h3>
+            <Button variant="hero" size="lg" className="group-hover:shadow-brutal-lg transition-shadow my-[78px]">
+              VER DETALLES <ArrowRight className="ml-2" />
+            </Button>
           </div>
         </div>
       </Link>
@@ -272,20 +271,6 @@ const Home = () => {
       setCurrentEquipmentSlide(equipmentApi.selectedScrollSnap());
     });
   }, [equipmentApi]);
-
-  // Auto-play featured equipment slider
-  useEffect(() => {
-    if (!equipmentApi || featuredEquipment.length <= 1) return;
-    const interval = setInterval(() => {
-      if (equipmentApi.canScrollNext()) {
-        equipmentApi.scrollNext();
-      } else {
-        equipmentApi.scrollTo(0);
-      }
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [equipmentApi, featuredEquipment.length]);
-
 
   // Show preloader while videos are loading
   if (isLoading) {
