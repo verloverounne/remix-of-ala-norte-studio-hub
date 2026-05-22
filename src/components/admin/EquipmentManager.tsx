@@ -80,6 +80,7 @@ interface StorageFile {
 
 type ImageFilter = "all" | "with" | "without";
 type PriceSort = "none" | "asc" | "desc";
+type FeaturedFilter = "all" | "featured" | "not_featured";
 
 export const EquipmentManager = () => {
   const [equipment, setEquipment] = useState<Equipment[]>([]);
@@ -95,6 +96,7 @@ export const EquipmentManager = () => {
   const [imageFilter, setImageFilter] = useState<ImageFilter>("all");
   const [priceSort, setPriceSort] = useState<PriceSort>("none");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [featuredFilter, setFeaturedFilter] = useState<FeaturedFilter>("all");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingEquipment, setEditingEquipment] = useState<Equipment | null>(null);
   const [savingEquipment, setSavingEquipment] = useState(false);
@@ -299,8 +301,14 @@ export const EquipmentManager = () => {
     return eq.category_id === categoryFilter;
   };
 
+  const matchesFeaturedFilter = (eq: Equipment): boolean => {
+    if (featuredFilter === "featured") return !!eq.featured;
+    if (featuredFilter === "not_featured") return !eq.featured;
+    return true;
+  };
+
   const filteredEquipment = equipment
-    .filter((e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e))
+    .filter((e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e) && matchesFeaturedFilter(e))
     .sort((a, b) => {
       if (priceSort === "asc") return a.price_per_day - b.price_per_day;
       if (priceSort === "desc") return b.price_per_day - a.price_per_day;
@@ -849,7 +857,7 @@ export const EquipmentManager = () => {
               </div>
 
               {/* Filters */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <div className="space-y-1">
                   <Label className="text-xs text-muted-foreground flex items-center gap-1">
                     <Filter className="h-3 w-3" />
@@ -882,6 +890,22 @@ export const EquipmentManager = () => {
                           {cat.name}
                         </SelectItem>
                       ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Star className="h-3 w-3" />
+                    Destacados
+                  </Label>
+                  <Select value={featuredFilter} onValueChange={(v) => setFeaturedFilter(v as FeaturedFilter)}>
+                    <SelectTrigger className="h-9 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos</SelectItem>
+                      <SelectItem value="featured">Destacados</SelectItem>
+                      <SelectItem value="not_featured">No destacados</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
