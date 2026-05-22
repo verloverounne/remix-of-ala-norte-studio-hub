@@ -10,7 +10,7 @@ export const Footer = () => {
             <h3 className="text-2xl font-heading font-bold text-primary">ALA NORTE</h3>
             <p className="opacity-80 font-light text-xs">
               Equipamiento curado, espacios profesionales, asesoramiento técnico dedicado y formación continua. Desde el
-              norte hasta el sur, acompañamos a equipos independientes con trato humano, calidad y empatía.
+              norte hasta el sur,acompañamos a equipos independientes con trato humano, calidad y empatía.
             </p>
           </div>
 
