@@ -80,6 +80,7 @@ interface StorageFile {
 
 type ImageFilter = "all" | "with" | "without";
 type PriceSort = "none" | "asc" | "desc";
+type FeaturedFilter = "all" | "featured" | "not_featured";
 
 export const EquipmentManager = () => {
   const [equipment, setEquipment] = useState<Equipment[]>([]);
