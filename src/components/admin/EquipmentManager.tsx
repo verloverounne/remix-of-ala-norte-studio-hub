@@ -893,6 +893,22 @@ export const EquipmentManager = () => {
                     </SelectContent>
                   </Select>
                 </div>
+                <div className="space-y-1">
+                  <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Star className="h-3 w-3" />
+                    Destacados
+                  </Label>
+                  <Select value={featuredFilter} onValueChange={(v) => setFeaturedFilter(v as FeaturedFilter)}>
+                    <SelectTrigger className="h-9 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos</SelectItem>
+                      <SelectItem value="featured">Destacados</SelectItem>
+                      <SelectItem value="not_featured">No destacados</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div className="space-y-1 col-span-2 sm:col-span-1">
                   <Label className="text-xs text-muted-foreground flex items-center gap-1">
                     <ArrowUpDown className="h-3 w-3" />
