@@ -273,6 +273,20 @@ const Home = () => {
     });
   }, [equipmentApi]);
 
+  // Auto-play featured equipment slider
+  useEffect(() => {
+    if (!equipmentApi || featuredEquipment.length <= 1) return;
+    const interval = setInterval(() => {
+      if (equipmentApi.canScrollNext()) {
+        equipmentApi.scrollNext();
+      } else {
+        equipmentApi.scrollTo(0);
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [equipmentApi, featuredEquipment.length]);
+
+
   // Show preloader while videos are loading
   if (isLoading) {
     return <HomePreloader progress={progress} isComplete={isComplete} />;
