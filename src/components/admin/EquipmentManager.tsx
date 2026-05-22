@@ -301,8 +301,14 @@ export const EquipmentManager = () => {
     return eq.category_id === categoryFilter;
   };
 
+  const matchesFeaturedFilter = (eq: Equipment): boolean => {
+    if (featuredFilter === "featured") return !!eq.featured;
+    if (featuredFilter === "not_featured") return !eq.featured;
+    return true;
+  };
+
   const filteredEquipment = equipment
-    .filter((e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e))
+    .filter((e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e) && matchesFeaturedFilter(e))
     .sort((a, b) => {
       if (priceSort === "asc") return a.price_per_day - b.price_per_day;
       if (priceSort === "desc") return b.price_per_day - a.price_per_day;
