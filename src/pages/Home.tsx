@@ -94,7 +94,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   return (
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
-        <div className="relative h-[60vh] bg-foreground/95 overflow-hidden group cursor-pointer duotone-hover-group">
+        <div className="relative h-[60vh] bg-foreground/95 overflow-hidden group cursor-pointer bg-white duotone-hover-group">
           {equipment.image_url && (
             <div
               ref={imageParallax.ref as any}
@@ -104,7 +104,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
               <img
                 src={equipment.image_url}
                 alt={equipment.name}
-                className="image-duotone h-full object-fill py-32 bg-background"
+                className="image-duotone h-full object-fill py-32 bg-white"
               />
             </div>
           )}
