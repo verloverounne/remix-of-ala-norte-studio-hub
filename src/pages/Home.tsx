@@ -101,7 +101,11 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
               style={imageParallax.style}
               className="absolute inset-0 w-full h-[120%]"
             >
-              <img src={equipment.image_url} alt={equipment.name} className="image-duotone h-full object-fill" />
+              <img
+                src={equipment.image_url}
+                alt={equipment.name}
+                className="image-duotone h-full object-fill py-32 bg-background"
+              />
             </div>
           )}
           <div
