@@ -163,31 +163,32 @@ export const SpaceAdminEditor = () => {
   if (editingSpace) {
     return (
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-heading font-bold">Editar: {editingSpace.name}</h2>
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={() => setEditingSpace(null)}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <h2 className="text-xl sm:text-2xl font-heading font-bold break-words">Editar: {editingSpace.name}</h2>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => setEditingSpace(null)} className="flex-1 sm:flex-initial">
               <X className="mr-2 h-4 w-4" /> Cancelar
             </Button>
-            <Button variant="hero" onClick={handleSave} disabled={saving}>
+            <Button variant="hero" onClick={handleSave} disabled={saving} className="flex-1 sm:flex-initial">
               <Save className="mr-2 h-4 w-4" /> {saving ? "Guardando..." : "Guardar Todo"}
             </Button>
           </div>
         </div>
 
         <Tabs defaultValue="hero" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-7">
-            <TabsTrigger value="hero">Hero</TabsTrigger>
-            <TabsTrigger value="pricing">Precios</TabsTrigger>
-            <TabsTrigger value="features">Características</TabsTrigger>
-            <TabsTrigger value="layout">Layout</TabsTrigger>
-            <TabsTrigger value="images">Imágenes</TabsTrigger>
-            <TabsTrigger value="media" className="flex items-center gap-1">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 h-auto gap-1 p-1">
+            <TabsTrigger value="hero" className="text-xs sm:text-sm px-2 py-1.5">Hero</TabsTrigger>
+            <TabsTrigger value="pricing" className="text-xs sm:text-sm px-2 py-1.5">Precios</TabsTrigger>
+            <TabsTrigger value="features" className="text-xs sm:text-sm px-2 py-1.5">Características</TabsTrigger>
+            <TabsTrigger value="layout" className="text-xs sm:text-sm px-2 py-1.5">Layout</TabsTrigger>
+            <TabsTrigger value="images" className="text-xs sm:text-sm px-2 py-1.5">Imágenes</TabsTrigger>
+            <TabsTrigger value="media" className="text-xs sm:text-sm px-2 py-1.5 flex items-center gap-1">
               <GalleryHorizontal className="h-3 w-3" />
               Media
             </TabsTrigger>
-            <TabsTrigger value="availability">Disponibilidad</TabsTrigger>
+            <TabsTrigger value="availability" className="text-xs sm:text-sm px-2 py-1.5 col-span-2 sm:col-span-1">Disponibilidad</TabsTrigger>
           </TabsList>
+
 
           {/* Hero Tab */}
           <TabsContent value="hero" className="space-y-4">
@@ -199,7 +200,7 @@ export const SpaceAdminEditor = () => {
                 <CardDescription>Título, subtítulo y texto destacado del hero</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Título del Hero</Label>
                     <Input 
@@ -217,7 +218,7 @@ export const SpaceAdminEditor = () => {
                     />
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Ubicación</Label>
                     <Input 
@@ -265,7 +266,7 @@ export const SpaceAdminEditor = () => {
                 <CardDescription>Configuración de bloques, precios y horarios</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label>Precio por Bloque ($)</Label>
                     <Input 
@@ -291,7 +292,7 @@ export const SpaceAdminEditor = () => {
                     />
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Horario entre semana</Label>
                     <Input 
@@ -468,7 +469,7 @@ export const SpaceAdminEditor = () => {
                 <CardDescription>Bloquea fechas cuando el espacio no esté disponible</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Fecha Inicio</Label>
                     <Input 

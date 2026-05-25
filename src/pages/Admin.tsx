@@ -996,12 +996,12 @@ const Admin = () => {
     }
   };
   return <div className="min-h-screen pt-16 bg-background">
-      <section className="gradient-none text-primary-background py-12">
+      <section className="gradient-none text-primary-background py-6 sm:py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h1 className="text-4xl font-heading font-bold mb-20">Panel de Administración</h1>
-              <p className="text-lg">Gestiona equipos, espacios y configuraciones</p>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-bold mb-4 sm:mb-10 lg:mb-20">Panel de Administración</h1>
+              <p className="text-sm sm:text-base lg:text-lg">Gestiona equipos, espacios y configuraciones</p>
             </div>
             <div className="flex flex-wrap gap-2 w-full sm:w-auto">
             </div>
@@ -1009,20 +1009,21 @@ const Admin = () => {
         </div>
       </section>
 
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <Tabs defaultValue="equipment" className="space-y-6">
-            <TabsList className="flex flex-wrap h-auto gap-1 w-full lg:w-auto">
-              <TabsTrigger value="equipment">
-                <ImageIcon className="h-4 w-4 mr-1" />
+      <section className="py-6 sm:py-12">
+        <div className="container mx-auto px-3 sm:px-4">
+          <Tabs defaultValue="equipment" className="space-y-4 sm:space-y-6">
+            <TabsList className="grid grid-cols-3 sm:grid-cols-6 h-auto gap-1 w-full p-1">
+              <TabsTrigger value="equipment" className="text-xs sm:text-sm px-2 py-1.5">
+                <ImageIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                 Equipos
               </TabsTrigger>
-              <TabsTrigger value="prices">Precios</TabsTrigger>
-              <TabsTrigger value="images">Subir</TabsTrigger>
-              <TabsTrigger value="spaces">Espacios</TabsTrigger>
-              <TabsTrigger value="config">Config</TabsTrigger>
-              <TabsTrigger value="backup">Backup</TabsTrigger>
+              <TabsTrigger value="prices" className="text-xs sm:text-sm px-2 py-1.5">Precios</TabsTrigger>
+              <TabsTrigger value="images" className="text-xs sm:text-sm px-2 py-1.5">Subir</TabsTrigger>
+              <TabsTrigger value="spaces" className="text-xs sm:text-sm px-2 py-1.5">Espacios</TabsTrigger>
+              <TabsTrigger value="config" className="text-xs sm:text-sm px-2 py-1.5">Config</TabsTrigger>
+              <TabsTrigger value="backup" className="text-xs sm:text-sm px-2 py-1.5">Backup</TabsTrigger>
             </TabsList>
+
 
             {/* Equipment Tab - Combined with Image Assignment */}
             <TabsContent value="equipment" className="space-y-6">
