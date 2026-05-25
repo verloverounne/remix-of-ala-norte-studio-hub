@@ -200,7 +200,7 @@ export const SpaceAdminEditor = () => {
                 <CardDescription>Título, subtítulo y texto destacado del hero</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Título del Hero</Label>
                     <Input 
@@ -218,7 +218,7 @@ export const SpaceAdminEditor = () => {
                     />
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Ubicación</Label>
                     <Input 
@@ -266,7 +266,7 @@ export const SpaceAdminEditor = () => {
                 <CardDescription>Configuración de bloques, precios y horarios</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label>Precio por Bloque ($)</Label>
                     <Input 
@@ -292,7 +292,7 @@ export const SpaceAdminEditor = () => {
                     />
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Horario entre semana</Label>
                     <Input 
@@ -469,7 +469,7 @@ export const SpaceAdminEditor = () => {
                 <CardDescription>Bloquea fechas cuando el espacio no esté disponible</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Fecha Inicio</Label>
                     <Input 
