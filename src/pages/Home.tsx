@@ -34,7 +34,7 @@ const FeaturedEquipmentSection = ({
     direction: "down",
   });
   return (
-    <section className=" bg-background overflow-hidden">
+    <section className="h-screen bg-background overflow-hidden">
       <div className="py-16 sm:py-20 bg-foreground lg:py-[32px]">
         <div
           ref={headerParallax.ref as any}
