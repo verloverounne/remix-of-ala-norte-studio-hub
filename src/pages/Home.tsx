@@ -104,7 +104,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
               <img
                 src={equipment.image_url}
                 alt={equipment.name}
-                className="image-duotone h-full object-fill py-32 bg-white text-center"
+                className="image-duotone h-full object-cover py-32 bg-white text-center"
               />
             </div>
           )}
