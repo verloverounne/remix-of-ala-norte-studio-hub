@@ -101,11 +101,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
               style={imageParallax.style}
               className="absolute inset-0 w-full h-[120%]"
             >
-              <img
-                src={equipment.image_url}
-                alt={equipment.name}
-                className="image-duotone w-full h-full object-cover"
-              />
+              <img src={equipment.image_url} alt={equipment.name} className="image-duotone w-full h-full object-fill" />
             </div>
           )}
           <div
@@ -285,7 +281,6 @@ const Home = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, [equipmentApi, featuredEquipment.length]);
-
 
   // Show preloader while videos are loading
   if (isLoading) {
