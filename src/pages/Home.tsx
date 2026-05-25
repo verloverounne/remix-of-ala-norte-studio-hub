@@ -104,14 +104,14 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
               <img
                 src={equipment.image_url}
                 alt={equipment.name}
-                className="image-duotone h-full object-fill py-32 bg-white"
+                className="image-duotone h-full object-fill py-32 bg-white text-center"
               />
             </div>
           )}
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="absolute inset-0 image-duotone flex items-end justify-center py-[64px]"
+            className="absolute inset-0 image-duotone py-[64px] flex items-end justify-center text-8xl"
           >
             <div className="text-center z-10 p-8 max-w-4xl">
               <h3
