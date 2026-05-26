@@ -113,7 +113,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="h-1/3 w-full flex flex-col items-center justify-center py-[16px] bg-transparent"
+            className="h-1/3 w-full flex flex-col items-center justify-center py-[16px] bg-transparent my-[24px]"
           >
             <div className="text-center z-10 p-4 max-w-2xl">
               <h3
@@ -122,7 +122,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
               >
                 {equipment.name}
               </h3>
-              <Button variant="hero" size="sm" className="group-hover:shadow-brutal-lg transition-shadow my-[16px]">
+              <Button variant="hero" size="sm" className="group-hover:shadow-brutal-lg transition-shadow my-[24px]">
                 VER DETALLES <ArrowRight className="ml-2" />
               </Button>
             </div>
