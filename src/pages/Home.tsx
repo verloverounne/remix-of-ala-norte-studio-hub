@@ -34,7 +34,7 @@ const FeaturedEquipmentSection = ({
     direction: "down",
   });
   return (
-    <section className="min-h-[80vh] bg-white overflow-hidden">
+    <section className="bg-white overflow-hidden">
       <div className="py-8 sm:py-12 lg:py-16 bg-white">
         <div
           ref={headerParallax.ref as any}
@@ -51,7 +51,7 @@ const FeaturedEquipmentSection = ({
           </div>
         </div>
 
-        <Carousel className="w-full h-screen" setApi={setEquipmentApi}>
+        <Carousel className="w-full" setApi={setEquipmentApi}>
           <CarouselContent className="-ml-0">
             {featuredEquipment.map((equipment) => (
               <EquipmentSlide key={equipment.id} equipment={equipment} />
@@ -60,7 +60,7 @@ const FeaturedEquipmentSection = ({
         </Carousel>
 
         {/* Navigation dots */}
-        <div className="flex justify-center gap-3 mt-4">
+        <div className="flex justify-center gap-3 mt-4 h-2">
           {featuredEquipment.map((_, index) => (
             <button
               key={index}
@@ -91,8 +91,9 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   return (
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
-        <div className="relative h-[90vh] overflow-hidden group cursor-pointer bg-white flex flex-col">
-          <div className="relative h-full  overflow-hidden duotone-hover-group bg-white">
+        <div className="relative h-[80vh] sm:h-[85vh] lg:h-[90vh] overflow-hidden group cursor-pointer bg-white">
+          {/* Imagen ocupando todo el alto del slide */}
+          <div className="absolute inset-0 overflow-hidden duotone-hover-group bg-white">
             {equipment.image_url && (
               <div
                 ref={imageParallax.ref as any}
@@ -107,19 +108,21 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
               </div>
             )}
           </div>
+
+          {/* Nombre + CTA superpuestos al fondo de la imagen */}
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="h-1/3 w-full flex flex-col items-center justify-center py-3 sm:py-4 bg-transparent my-4 sm:my-6"
+            className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end pb-6 sm:pb-10 lg:pb-14 pointer-events-none"
           >
-            <div className="text-center z-10 p-3 sm:p-4 max-w-2xl">
+            <div className="text-center p-3 sm:p-4 max-w-2xl pointer-events-auto">
               <h3
                 className="mb-3 sm:mb-4 uppercase text-center font-sans text-primary font-bold mt-0 line-clamp-2 tracking-tight leading-[1.2]"
                 style={{ fontSize: "clamp(1.25rem, 3.5vw, 2.5rem)" }}
               >
                 {equipment.name}
               </h3>
-              <Button variant="hero" size="sm" className="group-hover:shadow-brutal-lg transition-shadow my-3 sm:my-4">
+              <Button variant="hero" size="sm" className="group-hover:shadow-brutal-lg transition-shadow">
                 VER DETALLES <ArrowRight className="ml-2" />
               </Button>
             </div>
