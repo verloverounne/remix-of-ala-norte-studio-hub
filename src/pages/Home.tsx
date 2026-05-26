@@ -34,7 +34,7 @@ const FeaturedEquipmentSection = ({
     direction: "down",
   });
   return (
-    <section className="h-screen bg-background overflow-hidden">
+    <section className="h-[90vh] bg-background overflow-hidden">
       <div className="py-16 sm:py-20 bg-foreground lg:py-[32px]">
         <div
           ref={headerParallax.ref as any}
@@ -94,29 +94,31 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   return (
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
-        <div className="relative h-[60vh] overflow-hidden group cursor-pointer bg-white duotone-hover-group">
-          {equipment.image_url && (
-            <div ref={imageParallax.ref as any} style={imageParallax.style} className="absolute inset-0 w-full">
-              <img
-                src={equipment.image_url}
-                alt={equipment.name}
-                className="image-duotone h-full object-contain object-center py-32 bg-white"
-              />
-            </div>
-          )}
+        <div className="relative h-[60vh] overflow-hidden group cursor-pointer bg-white flex flex-col">
+          <div className="relative h-2/3 w-full overflow-hidden duotone-hover-group bg-white">
+            {equipment.image_url && (
+              <div ref={imageParallax.ref as any} style={imageParallax.style} className="absolute inset-0 w-full h-full flex items-center justify-center">
+                <img
+                  src={equipment.image_url}
+                  alt={equipment.name}
+                  className="image-duotone max-h-full max-w-full object-contain"
+                />
+              </div>
+            )}
+          </div>
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="absolute inset-0 items-center justify-center flex flex-col py-0"
+            className="h-1/3 w-full flex flex-col items-center justify-center bg-background"
           >
-            <div className="text-center backdrop-blur-lg z-10 p-8 max-w-2xl py-[8px] px-[8px]">
+            <div className="text-center z-10 p-4 max-w-2xl">
               <h3
-                className="mb-6 uppercase text-center font-sans text-primary my-[64px] font-bold leading-[1.5] mt-0 text-xs"
-                style={{ fontSize: "clamp(2rem, 5vw, 4rem)", lineHeight: 1.5 }}
+                className="mb-4 uppercase text-center font-sans text-primary font-bold leading-[1.5] mt-0 text-xs"
+                style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)", lineHeight: 1.5 }}
               >
                 {equipment.name}
               </h3>
-              <Button variant="hero" size="sm" className="group-hover:shadow-brutal-lg transition-shadow my-[78px]">
+              <Button variant="hero" size="sm" className="group-hover:shadow-brutal-lg transition-shadow">
                 VER DETALLES <ArrowRight className="ml-2" />
               </Button>
             </div>
