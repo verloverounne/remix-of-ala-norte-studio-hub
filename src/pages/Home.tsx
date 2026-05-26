@@ -34,12 +34,12 @@ const FeaturedEquipmentSection = ({
     direction: "down",
   });
   return (
-    <section className="min-h-[90vh] bg-background overflow-hidden">
+    <section className="min-h-[80vh] bg-white overflow-hidden">
       <div className="py-8 sm:py-12 lg:py-16 bg-white">
         <div
           ref={headerParallax.ref as any}
           style={headerParallax.style}
-          className="container mx-auto mb-6 sm:mb-10 lg:mb-12 border-background bg-white"
+          className="container mx-auto mb-6 sm:mb-10 lg:mb-12 bg-white"
         >
           <div className="bg-white">
             <h2
@@ -51,7 +51,7 @@ const FeaturedEquipmentSection = ({
           </div>
         </div>
 
-        <Carousel className="w-full" setApi={setEquipmentApi}>
+        <Carousel className="w-full h-screen" setApi={setEquipmentApi}>
           <CarouselContent className="-ml-0">
             {featuredEquipment.map((equipment) => (
               <EquipmentSlide key={equipment.id} equipment={equipment} />
@@ -60,7 +60,7 @@ const FeaturedEquipmentSection = ({
         </Carousel>
 
         {/* Navigation dots */}
-        <div className="flex justify-center gap-3 mt-8">
+        <div className="flex justify-center gap-3 mt-4">
           {featuredEquipment.map((_, index) => (
             <button
               key={index}
@@ -92,7 +92,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
         <div className="relative h-[90vh] overflow-hidden group cursor-pointer bg-white flex flex-col">
-          <div className="relative h-2/3 w-full overflow-hidden duotone-hover-group bg-white">
+          <div className="relative h-full  overflow-hidden duotone-hover-group bg-white">
             {equipment.image_url && (
               <div
                 ref={imageParallax.ref as any}
