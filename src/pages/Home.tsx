@@ -39,9 +39,9 @@ const FeaturedEquipmentSection = ({
         <div
           ref={headerParallax.ref as any}
           style={headerParallax.style}
-          className="container mx-auto mb-8 sm:mb-12 border-background bg-foreground border-white"
+          className="container mx-auto mb-8 sm:mb-12 border-background bg-white"
         >
-          <div className="bg-[#171a21]">
+          <div className="bg-white">
             <h2
               className="font-sans mb-2 text-center bg-muted-foreground font-semibold text-muted my-[60px] sm:mb-[60px] mt-[20px] py-0 bg-white"
               style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
@@ -97,7 +97,11 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
         <div className="relative h-[60vh] overflow-hidden group cursor-pointer bg-white flex flex-col">
           <div className="relative h-2/3 w-full overflow-hidden duotone-hover-group bg-white">
             {equipment.image_url && (
-              <div ref={imageParallax.ref as any} style={imageParallax.style} className="absolute inset-0 w-full h-full flex items-center justify-center">
+              <div
+                ref={imageParallax.ref as any}
+                style={imageParallax.style}
+                className="absolute inset-0 w-full h-full flex items-center justify-center"
+              >
                 <img
                   src={equipment.image_url}
                   alt={equipment.name}
