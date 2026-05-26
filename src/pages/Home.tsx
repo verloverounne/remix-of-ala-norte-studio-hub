@@ -100,7 +100,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
               <img
                 src={equipment.image_url}
                 alt={equipment.name}
-                className="image-duotone w-full h-full object-contain object-center py-32 bg-white"
+                className="image-duotone h-full object-contain object-center py-32 bg-white"
               />
             </div>
           )}
@@ -111,12 +111,12 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
           >
             <div className="text-center z-10 p-8 max-w-4xl">
               <h3
-                className="mb-6 uppercase text-center font-sans text-primary my-[64px] font-bold leading-[1.5] mt-0 text-sm"
+                className="mb-6 uppercase text-center font-sans text-primary my-[64px] font-bold leading-[1.5] mt-0 text-xs"
                 style={{ fontSize: "clamp(2rem, 5vw, 4rem)", lineHeight: 1.5 }}
               >
                 {equipment.name}
               </h3>
-              <Button variant="hero" size="lg" className="group-hover:shadow-brutal-lg transition-shadow my-[78px]">
+              <Button variant="hero" size="sm" className="group-hover:shadow-brutal-lg transition-shadow my-[78px]">
                 VER DETALLES <ArrowRight className="ml-2" />
               </Button>
             </div>
