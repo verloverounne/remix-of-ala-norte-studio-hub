@@ -93,7 +93,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
       <Link to={`/equipos?id=${equipment.id}`}>
         <div className="relative h-[80vh] sm:h-[85vh] lg:h-[90vh] overflow-hidden group cursor-pointer">
           {/* Imagen ocupando todo el alto del slide */}
-          <div className="absolute inset-0 overflow-hidden duotone-hover-group">
+          <div className="absolute inset-0 overflow-hidden duotone-hover-group duotone-invert">
             {equipment.image_url && (
               <div
                 ref={imageParallax.ref as any}
