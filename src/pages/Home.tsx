@@ -34,25 +34,23 @@ const FeaturedEquipmentSection = ({
     direction: "down",
   });
   return (
-    <section className="h-[90vh] bg-background overflow-hidden">
-      <div className="py-16 bg-foreground lg:py-[32px] sm:py-[16px] bg-white">
+    <section className="min-h-[90vh] bg-background overflow-hidden">
+      <div className="py-8 sm:py-12 lg:py-16 bg-white">
         <div
           ref={headerParallax.ref as any}
           style={headerParallax.style}
-          className="container mx-auto mb-8 sm:mb-12 border-background bg-white"
+          className="container mx-auto mb-6 sm:mb-10 lg:mb-12 border-background bg-white"
         >
           <div className="bg-white">
             <h2
-              className="font-sans mb-2 text-center bg-muted-foreground font-semibold text-muted sm:mb-[60px] mt-[20px] py-0 bg-white my-0"
-              style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+              className="font-sans text-center bg-muted-foreground font-semibold text-muted py-0 my-0 mt-4 sm:mt-6 mb-6 sm:mb-10 lg:mb-14 tracking-tight leading-[1.05]"
+              style={{ fontSize: "clamp(1.75rem, 5vw, 4rem)" }}
             >
               EQUIPOS DESTACADOS
             </h2>
-            {/*          <p className="text-sm sm:text-base lg:text-sm text-muted-foreground font-heading leading-tight">
-                                    TECNOLOGÍA DE PRIMER NIVEL PARA TUS PROYECTOS
-                                   </p> */}
           </div>
         </div>
+
 
         <Carousel className="w-full" setApi={setEquipmentApi}>
           <CarouselContent className="-ml-0">
@@ -113,20 +111,21 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="h-1/3 w-full flex flex-col items-center justify-center py-[16px] bg-transparent my-[24px]"
+            className="h-1/3 w-full flex flex-col items-center justify-center py-3 sm:py-4 bg-transparent my-4 sm:my-6"
           >
-            <div className="text-center z-10 p-4 max-w-2xl">
+            <div className="text-center z-10 p-3 sm:p-4 max-w-2xl">
               <h3
-                className="mb-4 uppercase text-center font-sans text-primary font-bold leading-[1.5] mt-0 text-xs line-clamp-2"
-                style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)", lineHeight: 1.5 }}
+                className="mb-3 sm:mb-4 uppercase text-center font-sans text-primary font-bold mt-0 line-clamp-2 tracking-tight leading-[1.2]"
+                style={{ fontSize: "clamp(1.25rem, 3.5vw, 2.5rem)" }}
               >
                 {equipment.name}
               </h3>
-              <Button variant="hero" size="sm" className="group-hover:shadow-brutal-lg transition-shadow my-[24px]">
+              <Button variant="hero" size="sm" className="group-hover:shadow-brutal-lg transition-shadow my-3 sm:my-4">
                 VER DETALLES <ArrowRight className="ml-2" />
               </Button>
             </div>
           </div>
+
         </div>
       </Link>
     </CarouselItem>
