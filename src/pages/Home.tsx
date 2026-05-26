@@ -51,7 +51,6 @@ const FeaturedEquipmentSection = ({
           </div>
         </div>
 
-
         <Carousel className="w-full" setApi={setEquipmentApi}>
           <CarouselContent className="-ml-0">
             {featuredEquipment.map((equipment) => (
@@ -92,7 +91,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   return (
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
-        <div className="relative h-[60vh] overflow-hidden group cursor-pointer bg-white flex flex-col">
+        <div className="relative h-[90vh] overflow-hidden group cursor-pointer bg-white flex flex-col">
           <div className="relative h-2/3 w-full overflow-hidden duotone-hover-group bg-white">
             {equipment.image_url && (
               <div
@@ -125,7 +124,6 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
               </Button>
             </div>
           </div>
-
         </div>
       </Link>
     </CarouselItem>
