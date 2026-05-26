@@ -91,7 +91,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   return (
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
-        <div className="relative h-[80vh] sm:h-[85vh] lg:h-[90vh] overflow-hidden group cursor-pointer bg-white">
+        <div className="relative h-[80vh] sm:h-[85vh] lg:h-[90vh] overflow-hidden group cursor-pointer bg-transparent">
           {/* Imagen ocupando todo el alto del slide */}
           <div className="absolute inset-0 overflow-hidden duotone-hover-group bg-white">
             {equipment.image_url && (
