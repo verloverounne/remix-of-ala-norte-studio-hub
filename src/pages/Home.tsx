@@ -35,7 +35,7 @@ const FeaturedEquipmentSection = ({
   });
   return (
     <section className="h-[90vh] bg-background overflow-hidden">
-      <div className="py-16 bg-foreground lg:py-[32px] sm:py-[16px] bg-white">
+      <div className="py-16 bg-foreground lg:py-[32px] sm:py-[16px] bg-[#f6f7fe]">
         <div
           ref={headerParallax.ref as any}
           style={headerParallax.style}
@@ -113,7 +113,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="h-1/3 w-full flex flex-col items-center justify-center bg-background py-[16px] bg-white"
+            className="h-1/3 w-full flex flex-col items-center justify-center bg-white py-[16px]"
           >
             <div className="text-center z-10 p-4 max-w-2xl">
               <h3
