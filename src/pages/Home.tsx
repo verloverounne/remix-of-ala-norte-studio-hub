@@ -107,9 +107,9 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="absolute inset-0 py-[64px] items-center justify-center flex flex-col"
+            className="absolute inset-0 flex items-end justify-center py-[64px]"
           >
-            <div className="text-center z-10 p-8 max-w-4xl">
+            <div className="text-center backdrop-blur-lg z-10 p-8 max-w-2xl">
               <h3
                 className="mb-6 uppercase text-center font-sans text-primary my-[64px] font-bold leading-[1.5] mt-0 text-xs"
                 style={{ fontSize: "clamp(2rem, 5vw, 4rem)", lineHeight: 1.5 }}
