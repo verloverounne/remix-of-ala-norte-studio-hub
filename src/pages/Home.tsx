@@ -109,7 +109,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="h-1/3 w-full flex flex-col items-center justify-center bg-background"
+            className="h-1/3 w-full flex flex-col items-center justify-center bg-background py-[16px]"
           >
             <div className="text-center z-10 p-4 max-w-2xl">
               <h3
