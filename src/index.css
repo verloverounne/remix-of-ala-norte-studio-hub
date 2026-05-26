@@ -496,6 +496,23 @@ All colors MUST be HSL.
   filter: none !important;
 }
 
+/* Invertido: por defecto a color, en hover/tap a duotono */
+.duotone-invert .video-duotone,
+.duotone-invert .image-duotone {
+  filter: none;
+}
+.duotone-invert:hover .video-duotone,
+.duotone-invert:hover .image-duotone,
+.duotone-invert.duotone-hover-group:hover .video-duotone,
+.duotone-invert.duotone-hover-group:hover .image-duotone {
+  filter: grayscale(1) contrast(1) brightness(1) !important;
+}
+.duotone-invert.duotone-tap-active .video-duotone,
+.duotone-invert.duotone-tap-active .image-duotone {
+  filter: grayscale(1) contrast(1) brightness(1) !important;
+}
+
+
 /* Ken Burns - Slow zoom-in for slideshow images */
 @keyframes ken-burns-zoom {
   0% {
