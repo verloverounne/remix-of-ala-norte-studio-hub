@@ -35,7 +35,7 @@ const FeaturedEquipmentSection = ({
   });
   return (
     <section className="h-[90vh] bg-background overflow-hidden">
-      <div className="py-16 bg-foreground lg:py-[32px] sm:py-[16px] bg-[#f6f7fe]">
+      <div className="py-16 bg-foreground lg:py-[32px] sm:py-[16px] bg-white">
         <div
           ref={headerParallax.ref as any}
           style={headerParallax.style}
