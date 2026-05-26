@@ -41,9 +41,9 @@ const FeaturedEquipmentSection = ({
           style={headerParallax.style}
           className="container mx-auto mb-6 sm:mb-10 lg:mb-12 bg-white"
         >
-          <div className="bg-white">
+          <div className="">
             <h2
-              className="font-sans text-center bg-muted-foreground text-muted py-0 my-0 mt-4 sm:mt-6 mb-6 sm:mb-10 lg:mb-14 tracking-tight leading-[1.05] bg-white font-extrabold text-3xl"
+              className="font-sans text-center text-muted py-0 my-0 mt-4 sm:mt-6 mb-6 sm:mb-10 lg:mb-14 tracking-tight leading-[1.05]  font-extrabold text-3xl"
               style={{ fontSize: "clamp(1.75rem, 5vw, 4rem)" }}
             >
               EQUIPOS DESTACADOS
@@ -91,7 +91,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   return (
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
-        <div className="relative h-[80vh] sm:h-[85vh] lg:h-[90vh] overflow-hidden group cursor-pointer bg-transparent">
+        <div className="relative h-[80vh] sm:h-[85vh] lg:h-[90vh] overflow-hidden group cursor-pointer">
           {/* Imagen ocupando todo el alto del slide */}
           <div className="absolute inset-0 overflow-hidden duotone-hover-group bg-white">
             {equipment.image_url && (
