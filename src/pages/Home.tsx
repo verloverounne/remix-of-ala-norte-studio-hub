@@ -93,7 +93,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   return (
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
-        <div className="relative h-[62vh] sm:h-[70vh] lg:h-[78vh] overflow-hidden group cursor-pointer flex flex-col items-center justify-center px-4 py-8 sm:py-10 lg:py-12 gap-6 sm:gap-8">
+        <div className="relative h-[62vh] sm:h-[70vh] lg:h-[78vh] overflow-hidden group cursor-pointer flex flex-col items-center justify-center px-4 sm:py-10 lg:py-12 gap-6 sm:gap-8 py-[16px]">
           {equipment.image_url && (
             <div
               ref={imageParallax.ref as any}
