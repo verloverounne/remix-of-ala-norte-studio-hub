@@ -81,47 +81,44 @@ interface EquipmentSlideProps {
 }
 const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   const imageParallax = useParallax({
-    speed: 0.1,
+    speed: 0.08,
     direction: "up",
   });
+
   const contentParallax = useParallax({
-    speed: 0.2,
+    speed: 0.12,
     direction: "down",
   });
+
   return (
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
-        <div className="relative h-[80vh] sm:h-[85vh] lg:h-[90vh] overflow-hidden group cursor-pointer">
-          {/* Imagen ocupando todo el alto del slide */}
-          <div className="absolute inset-0 overflow-hidden duotone-hover-group duotone-invert">
-            {equipment.image_url && (
-              <div
-                ref={imageParallax.ref as any}
-                style={imageParallax.style}
-                className="absolute inset-0 w-full h-full flex items-center justify-center"
-              >
-                <img
-                  src={equipment.image_url}
-                  alt={equipment.name}
-                  className="image-duotone max-h-full max-w-full object-contain"
-                />
-              </div>
-            )}
-          </div>
+        <div className="relative h-[62vh] sm:h-[70vh] lg:h-[78vh] overflow-hidden group cursor-pointer">
+          {equipment.image_url && (
+            <div ref={imageParallax.ref as any} style={imageParallax.style} className="absolute inset-0 z-0">
+              <img
+                src={equipment.image_url}
+                alt={equipment.name}
+                className="w-full h-full object-cover image-duotone"
+              />
+            </div>
+          )}
 
-          {/* Nombre + CTA superpuestos al fondo de la imagen */}
+          <div className="absolute inset-0 z-[1] bg-black/5 group-hover:bg-black/10 transition-colors duration-300" />
+
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end pb-6 sm:pb-10 lg:pb-14 pointer-events-none"
+            className="absolute inset-x-0 bottom-0 z-10 flex justify-center pb-6 sm:pb-10 lg:pb-14"
           >
-            <div className="text-center p-3 sm:p-4 max-w-2xl pointer-events-auto">
+            <div className="text-center px-4 py-3 sm:px-6 sm:py-4 max-w-2xl">
               <h3
-                className="mb-3 sm:mb-4 uppercase text-center font-sans text-primary font-bold mt-0 line-clamp-2 tracking-tight leading-[1.2]"
+                className="mb-3 sm:mb-4 uppercase text-white font-sans font-bold tracking-tight leading-[1.2]"
                 style={{ fontSize: "clamp(1.25rem, 3.5vw, 2.5rem)" }}
               >
                 {equipment.name}
               </h3>
+
               <Button variant="hero" size="sm" className="group-hover:shadow-brutal-lg transition-shadow">
                 VER DETALLES <ArrowRight className="ml-2" />
               </Button>
