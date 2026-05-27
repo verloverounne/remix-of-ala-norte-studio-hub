@@ -8,10 +8,10 @@ export const Footer = () => {
           {/* Brand  */}
           <div className="space-y-4">
             <h3 className="text-2xl font-heading font-bold text-primary">ALA NORTE</h3>
-            {/*     <p className="opacity-80 font-light text-xs">
+            <p className="opacity-80 font-light text-xs">
               Espacios profesionales, asesoramiento técnico dedicado y formación continua. Desde el norte hasta el
-              sur,acompañamos a proyectos con trato humano, calidad y empatía.
-            </p> */}
+              sur,acompañamos tus proyectos con trato humano, calidad y empatía.
+            </p>
           </div>
 
           {/* Links */}
