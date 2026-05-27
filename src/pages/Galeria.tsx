@@ -340,13 +340,13 @@ const Galeria = () => {
         </div>
       </div>
       {/* 360° Virtual Tour Section - Full bleed */}
-      <section className="py-12 sm:py-16 bg-background bg-neutral-300">
+      <section className="py-12 sm:py-16 bg-background bg-[#ba1c1c]">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-8">
           <div className="text-left">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 text-neutral-100">
               Ya conocés la galería ALA NORTE?
             </h2>
-            <p className="text-muted-foreground font-heading text-lg">
+            <p className="text-muted-foreground font-heading text-lg text-neutral-100">
               Explorá la galería antes de tu reserva. Arrastrá para moverte y conocer cada rincón del espacio.
             </p>
           </div>
@@ -365,7 +365,7 @@ const Galeria = () => {
       <ProductionsSlider />
 
       {/* CTA Section */}
-      <section className="py-12 sm:py-16 bg-background bg-neutral-300">
+      <section className="py-12 sm:py-16 bg-background bg-[#ba1c1c]">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3 sm:mb-4 text-center">
             ¿Querés reservar la galería?
