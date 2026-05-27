@@ -175,7 +175,7 @@ const Galeria = () => {
             {/* Right Column: Text Content */}
             <div className="flex flex-col justify-between h-full py-[64px] pt-0 pb-[24px] my-0 text-neutral-100">
               <div>
-                <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px] pt-0 mt-0 px-0 text-neutral-100">
+                <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px] pt-0 mt-0 px-0 text-[#ba1c1c]">
                   El espacio
                 </h2>
                 <p className="text-muted-foreground font-heading font-medium text-xl text-neutral-100">
