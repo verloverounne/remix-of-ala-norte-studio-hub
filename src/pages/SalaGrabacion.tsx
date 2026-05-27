@@ -28,7 +28,7 @@ const SalaGrabacion = () => {
   const isPlano = (img: { image_url?: string; title?: string | null }) =>
     img.image_url?.toLowerCase().includes("plano") || img.title?.toLowerCase().includes("plano");
   const GALERIA_PLANO_URL =
-    "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/assets/plano_galeria_v2.png";
+    "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/assets/plano_galeria_v3.png";
   const planoImage = { image_url: GALERIA_PLANO_URL, title: "Plano" };
   // Slideshow excludes the plano (it's shown separately as floor plan)
   const salaImages = allSalaImages.filter((img) => !isPlano(img));
