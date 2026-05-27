@@ -677,9 +677,23 @@ export const EquipmentManager = () => {
   if (loading) {
     return (
       <Card>
-        <CardContent className="py-12 text-center">
-          <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-muted-foreground" />
-          <p>Cargando datos...</p>
+        <CardContent className="py-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <Skeleton className="h-6 w-40" />
+            <Skeleton className="h-9 w-32" />
+          </div>
+          <Skeleton className="h-10 w-full" />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+          </div>
+          <div className="space-y-2">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-20 w-full" />
+            ))}
+          </div>
         </CardContent>
       </Card>
     );
