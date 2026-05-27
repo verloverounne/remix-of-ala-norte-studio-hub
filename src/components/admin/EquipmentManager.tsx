@@ -89,8 +89,10 @@ export const EquipmentManager = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [storageFiles, setStorageFiles] = useState<StorageFile[]>([]);
+  const [visibleStorageCount, setVisibleStorageCount] = useState(30);
   const [loading, setLoading] = useState(true);
   const [searchEquipment, setSearchEquipment] = useState("");
+  const debouncedSearch = useDebounce(searchEquipment, 300);
   const [selectedEquipment, setSelectedEquipment] = useState<Equipment | null>(null);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
