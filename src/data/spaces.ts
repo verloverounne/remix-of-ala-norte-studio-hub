@@ -9,7 +9,7 @@ export const GALERIA_SPACE: Space = {
   description: "Estudio de 150 m² con infinito blanco, negro y chroma verde incluidos.",
   detailed_description: "Espacio profesional de 150 m² totalmente equipado para producciones audiovisuales de alta calidad.",
   video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/hero_galeria_1768776126818_alanorte_galerias_hero.mp4",
-  featured_image: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/assets/plano_galeria_new.png",
+  featured_image: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/assets/plano_galeria_v2.png",
   features: [
     "11 m de tiro de cámara",
     "Infinito blanco 6 m de ancho x 3 m de alto",
