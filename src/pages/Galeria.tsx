@@ -175,10 +175,10 @@ const Galeria = () => {
             {/* Right Column: Text Content */}
             <div className="flex flex-col justify-between h-full py-[64px] pt-0 pb-[24px] my-0 text-neutral-100">
               <div>
-                <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px] pt-0 mt-0 px-0 text-[#ba1c1c]">
+                <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px] pt-0 mt-0 px-0 text-neutral-100">
                   El espacio
                 </h2>
-                <p className="text-muted-foreground font-heading font-medium text-xl text-neutral-100 my-[15px]">
+                <p className="text-muted-foreground font-heading font-medium text-xl text-neutral-100">
                   {space.detailed_description || space.description}
                 </p>
               </div>
@@ -191,7 +191,7 @@ const Galeria = () => {
                       className="text-muted-foreground font-heading flex items-start gap-2 text-xl font-thin text-neutral-100"
                     >
                       <span className="text-primary">•</span>
-                      <span className="text-base">{feature}</span>
+                      <span className="">{feature}</span>
                     </p>
                   ))}
                 </div>
@@ -329,7 +329,7 @@ const Galeria = () => {
                   <Badge
                     key={index}
                     variant="outline"
-                    className="inline-flex items-center rounded-md border px-3 py-1 text-xs uppercase tracking-wider transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer font-heading font-medium border-primary-light text-foreground bg-background"
+                    className="inline-flex items-center rounded-md border px-3 py-1 text-xs uppercase tracking-wider font-heading font-medium border-primary-light text-foreground bg-background"
                   >
                     {service}
                   </Badge>
