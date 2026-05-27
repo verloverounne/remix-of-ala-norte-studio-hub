@@ -1,4 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useDebounce } from "@/hooks/useDebounce";
+import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -87,8 +89,10 @@ export const EquipmentManager = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [storageFiles, setStorageFiles] = useState<StorageFile[]>([]);
+  const [visibleStorageCount, setVisibleStorageCount] = useState(30);
   const [loading, setLoading] = useState(true);
   const [searchEquipment, setSearchEquipment] = useState("");
+  const debouncedSearch = useDebounce(searchEquipment, 300);
   const [selectedEquipment, setSelectedEquipment] = useState<Equipment | null>(null);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
@@ -264,65 +268,78 @@ export const EquipmentManager = () => {
     }
   };
 
-  const getMainImageUrl = (eq: Equipment) => {
+  const getMainImageUrl = useCallback((eq: Equipment) => {
     // First check equipment_images table
     const featuredImage = eq.equipment_images?.find((img) => img.is_featured);
     if (featuredImage) return featuredImage.image_url;
 
     // Fallback to legacy image_url
     return eq.image_url;
-  };
+  }, []);
 
-  const hasImage = (eq: Equipment) => {
+  const hasImage = useCallback((eq: Equipment) => {
     const url = getMainImageUrl(eq);
-    return url && url.includes("equipment-images");
-  };
+    return !!url && url.includes("equipment-images");
+  }, [getMainImageUrl]);
 
-  const matchesSearch = (eq: Equipment): boolean => {
-    if (!searchEquipment.trim()) return true;
+  const filteredEquipment = useMemo(() => {
+    const term = debouncedSearch.toLowerCase().trim();
+    const searchWords = term ? term.split(/\s+/).filter((w) => w.length > 0) : [];
 
-    const searchTerm = searchEquipment.toLowerCase().trim();
-    const searchFields = [
-      eq.name?.toLowerCase() || "",
-      eq.brand?.toLowerCase() || "",
-      eq.model?.toLowerCase() || "",
-      eq.categories?.name?.toLowerCase() || "",
-    ];
+    const matchesSearch = (eq: Equipment): boolean => {
+      if (!term) return true;
+      const fields = [
+        eq.name?.toLowerCase() || "",
+        eq.brand?.toLowerCase() || "",
+        eq.model?.toLowerCase() || "",
+        eq.categories?.name?.toLowerCase() || "",
+      ];
+      if (searchWords.length > 1) {
+        return searchWords.every((word) => fields.some((field) => field.includes(word)));
+      }
+      return fields.some((field) => field.includes(term));
+    };
 
-    const searchWords = searchTerm.split(/\s+/).filter((w) => w.length > 0);
+    const matchesImageFilter = (eq: Equipment): boolean => {
+      if (imageFilter === "all") return true;
+      const hasImg = hasImage(eq);
+      return imageFilter === "with" ? hasImg : !hasImg;
+    };
 
-    if (searchWords.length > 1) {
-      return searchWords.every((word) => searchFields.some((field) => field.includes(word)));
-    }
+    const matchesCategoryFilter = (eq: Equipment): boolean =>
+      categoryFilter === "all" ? true : eq.category_id === categoryFilter;
 
-    return searchFields.some((field) => field.includes(searchTerm));
-  };
+    const matchesFeaturedFilter = (eq: Equipment): boolean => {
+      if (featuredFilter === "featured") return !!eq.featured;
+      if (featuredFilter === "not_featured") return !eq.featured;
+      return true;
+    };
 
-  const matchesImageFilter = (eq: Equipment): boolean => {
-    const hasImg = hasImage(eq);
-    if (imageFilter === "with") return hasImg;
-    if (imageFilter === "without") return !hasImg;
-    return true;
-  };
+    const filtered = equipment.filter(
+      (e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e) && matchesFeaturedFilter(e),
+    );
 
-  const matchesCategoryFilter = (eq: Equipment): boolean => {
-    if (categoryFilter === "all") return true;
-    return eq.category_id === categoryFilter;
-  };
+    if (priceSort === "none") return filtered;
+    return [...filtered].sort((a, b) =>
+      priceSort === "asc" ? a.price_per_day - b.price_per_day : b.price_per_day - a.price_per_day,
+    );
+  }, [equipment, debouncedSearch, imageFilter, categoryFilter, featuredFilter, priceSort, hasImage]);
 
-  const matchesFeaturedFilter = (eq: Equipment): boolean => {
-    if (featuredFilter === "featured") return !!eq.featured;
-    if (featuredFilter === "not_featured") return !eq.featured;
-    return true;
-  };
+  const filteredWithImageCount = useMemo(
+    () => filteredEquipment.filter((e) => hasImage(e)).length,
+    [filteredEquipment, hasImage],
+  );
 
-  const filteredEquipment = equipment
-    .filter((e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e) && matchesFeaturedFilter(e))
-    .sort((a, b) => {
-      if (priceSort === "asc") return a.price_per_day - b.price_per_day;
-      if (priceSort === "desc") return b.price_per_day - a.price_per_day;
-      return 0;
-    });
+  // O(1) lookups for storage gallery
+  const equipmentImageUrlSet = useMemo(
+    () => new Set(equipmentImages.map((img) => img.image_url)),
+    [equipmentImages],
+  );
+
+  const visibleStorageFiles = useMemo(
+    () => storageFiles.slice(0, visibleStorageCount),
+    [storageFiles, visibleStorageCount],
+  );
 
   const handleAddImage = async (imageUrl: string) => {
     if (!selectedEquipment) {
@@ -605,13 +622,21 @@ export const EquipmentManager = () => {
     }
   };
 
-  const editFilteredSubcategories = editingEquipment?.category_id
-    ? subcategories.filter((s) => s.category_id === editingEquipment.category_id)
-    : [];
+  const editFilteredSubcategories = useMemo(
+    () =>
+      editingEquipment?.category_id
+        ? subcategories.filter((s) => s.category_id === editingEquipment.category_id)
+        : [],
+    [editingEquipment?.category_id, subcategories],
+  );
 
-  const newFilteredSubcategories = newEquipment.category_id
-    ? subcategories.filter((s) => s.category_id === newEquipment.category_id)
-    : [];
+  const newFilteredSubcategories = useMemo(
+    () =>
+      newEquipment.category_id
+        ? subcategories.filter((s) => s.category_id === newEquipment.category_id)
+        : [],
+    [newEquipment.category_id, subcategories],
+  );
 
   // Download backup JSON
   const handleDownloadBackup = async () => {
@@ -652,9 +677,23 @@ export const EquipmentManager = () => {
   if (loading) {
     return (
       <Card>
-        <CardContent className="py-12 text-center">
-          <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-muted-foreground" />
-          <p>Cargando datos...</p>
+        <CardContent className="py-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <Skeleton className="h-6 w-40" />
+            <Skeleton className="h-9 w-32" />
+          </div>
+          <Skeleton className="h-10 w-full" />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+          </div>
+          <div className="space-y-2">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-20 w-full" />
+            ))}
+          </div>
         </CardContent>
       </Card>
     );
@@ -1228,7 +1267,7 @@ export const EquipmentManager = () => {
               </ScrollArea>
               <div className="flex items-center justify-between text-sm text-muted-foreground">
                 <span>
-                  {filteredEquipment.filter((e) => hasImage(e)).length} de {filteredEquipment.length} con imagen
+                  {filteredWithImageCount} de {filteredEquipment.length} con imagen
                 </span>
               </div>
             </div>
@@ -1358,33 +1397,46 @@ export const EquipmentManager = () => {
               {/* Storage Files */}
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  Galería de imágenes disponibles ({storageFiles.length})
+                  Galería de imágenes disponibles ({visibleStorageFiles.length} de {storageFiles.length})
                 </Label>
                 <ScrollArea className="h-[300px] border rounded-md">
                   <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 p-2">
-                    {storageFiles.map((file) => (
-                      <button
-                        key={file.name}
-                        onClick={() => handleAddImage(file.url)}
-                        disabled={!selectedEquipment || equipmentImages.some((img) => img.image_url === file.url)}
-                        className={cn(
-                          "relative aspect-square rounded-md overflow-hidden border-2 transition-all",
-                          selectedEquipment && !equipmentImages.some((img) => img.image_url === file.url)
-                            ? "hover:border-primary cursor-pointer"
-                            : "opacity-50 cursor-not-allowed",
-                          equipmentImages.some((img) => img.image_url === file.url) &&
-                            "border-primary ring-2 ring-primary",
-                        )}
-                      >
-                        <img src={file.url} alt={file.name} className="w-full h-full object-cover" loading="lazy" />
-                        {equipmentImages.some((img) => img.image_url === file.url) && (
-                          <div className="absolute inset-0 bg-primary/30 flex items-center justify-center">
-                            <Check className="h-6 w-6 text-primary-foreground" />
-                          </div>
-                        )}
-                      </button>
-                    ))}
+                    {visibleStorageFiles.map((file) => {
+                      const isAssigned = equipmentImageUrlSet.has(file.url);
+                      return (
+                        <button
+                          key={file.name}
+                          onClick={() => handleAddImage(file.url)}
+                          disabled={!selectedEquipment || isAssigned}
+                          className={cn(
+                            "relative aspect-square rounded-md overflow-hidden border-2 transition-all",
+                            selectedEquipment && !isAssigned
+                              ? "hover:border-primary cursor-pointer"
+                              : "opacity-50 cursor-not-allowed",
+                            isAssigned && "border-primary ring-2 ring-primary",
+                          )}
+                        >
+                          <img src={file.url} alt={file.name} className="w-full h-full object-cover" loading="lazy" />
+                          {isAssigned && (
+                            <div className="absolute inset-0 bg-primary/30 flex items-center justify-center">
+                              <Check className="h-6 w-6 text-primary-foreground" />
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
                   </div>
+                  {visibleStorageCount < storageFiles.length && (
+                    <div className="flex justify-center p-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setVisibleStorageCount((c) => c + 30)}
+                      >
+                        Cargar más ({storageFiles.length - visibleStorageCount} restantes)
+                      </Button>
+                    </div>
+                  )}
                 </ScrollArea>
               </div>
             </div>
