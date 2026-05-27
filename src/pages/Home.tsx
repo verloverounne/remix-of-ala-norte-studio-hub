@@ -73,7 +73,7 @@ const FeaturedEquipmentSection = ({
       </div>
     </section>
   );
-};CTASection = CTASection = 
+}; 
 
 // Componente para cada slide de equipo con parallax
 interface EquipmentSlideProps {
