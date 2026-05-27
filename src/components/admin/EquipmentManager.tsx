@@ -1267,7 +1267,7 @@ export const EquipmentManager = () => {
               </ScrollArea>
               <div className="flex items-center justify-between text-sm text-muted-foreground">
                 <span>
-                  {filteredEquipment.filter((e) => hasImage(e)).length} de {filteredEquipment.length} con imagen
+                  {filteredWithImageCount} de {filteredEquipment.length} con imagen
                 </span>
               </div>
             </div>
