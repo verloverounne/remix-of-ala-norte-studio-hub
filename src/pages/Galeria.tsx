@@ -233,33 +233,6 @@ const Galeria = () => {
         </div>
       </section>
 
-      {/* Schedule + Optional Services - two columns under the slideshow */}
-      <div className="mx-auto px-4 sm:px-6 my-[32px] mb-[64px] lg:px-[24px]">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-[32px]">
-          <div>
-            <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
-            <p className="font-heading text-2xl font-bold text-primary">{space.schedule_weekday}</p>
-            <p className="font-heading text-lg text-inherit font-light">{space.schedule_weekend}</p>
-          </div>
-
-          {space.optional_services && space.optional_services.length > 0 && (
-            <div>
-              <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
-              <div className="flex flex-wrap gap-2">
-                {space.optional_services.map((service, index) => (
-                  <Badge
-                    key={index}
-                    variant="outline"
-                    className="inline-flex items-center rounded-md border px-3 py-1 text-xs uppercase tracking-wider transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer font-heading font-medium border-primary-light text-foreground bg-background"
-                  >
-                    {service}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
       {/* Slideshow Block - Between details and 360 tour. Includes schedule + optional services below. */}
       <section className="py-12 space-y-8 bg-foreground text-background sm:py-0 pb-[64px]">
         <div className="w-full">
@@ -339,7 +312,33 @@ const Galeria = () => {
           </div>
         </div>
       </section>
+      {/* Schedule + Optional Services - two columns under the slideshow */}
+      <div className="mx-auto px-4 sm:px-6 my-[32px] mb-[64px] lg:px-[24px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-[32px]">
+          <div>
+            <h3 className="font-heading font-bold mb-2 flex items-center gap-2">HORARIOS</h3>
+            <p className="font-heading text-2xl font-bold text-primary">{space.schedule_weekday}</p>
+            <p className="font-heading text-lg text-inherit font-light">{space.schedule_weekend}</p>
+          </div>
 
+          {space.optional_services && space.optional_services.length > 0 && (
+            <div>
+              <h3 className="text-xl font-heading font-bold mb-3">Servicios adicionales</h3>
+              <div className="flex flex-wrap gap-2">
+                {space.optional_services.map((service, index) => (
+                  <Badge
+                    key={index}
+                    variant="outline"
+                    className="inline-flex items-center rounded-md border px-3 py-1 text-xs uppercase tracking-wider transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer font-heading font-medium border-primary-light text-foreground bg-background"
+                  >
+                    {service}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
       {/* 360° Virtual Tour Section - Full bleed */}
       <section className="py-12 sm:py-16 bg-background bg-neutral-300">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-8">
