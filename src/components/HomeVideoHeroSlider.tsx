@@ -337,7 +337,7 @@ export const HomeVideoHeroSlider = () => {
             className="object-contain w-50 md:w-1/4 lg:w-1/5 transition-transform duration-500 group-hover:scale-[1.06]"
             src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/logoVBlanco@2x.png"
           />
-          <span className="absolute -bottom-8 text-xs font-heading uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary text-primary-foreground px-4 py-1.5 rounded-sm">
+          <span className="absolute -bottom-8 text-xs font-heading uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary text-primary-foreground py-1.5 rounded-sm text-center px-[8px]">
             Ir al Rental
           </span>
         </Link>
