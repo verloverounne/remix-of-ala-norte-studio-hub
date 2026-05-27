@@ -43,7 +43,7 @@ const FeaturedEquipmentSection = ({
         >
           <div className="">
             <h2
-              className="font-sans text-center text-muted py-0 mt-4 sm:mt-6 mb-6 sm:mb-10 lg:mb-14 tracking-tight leading-[1.05] font-extrabold text-xl my-0 text-neutral-900"
+              className="font-sans text-center text-muted py-0 mt-4 sm:mt-6 mb-6 sm:mb-10 lg:mb-14 tracking-tight leading-[1.05] text-xl my-0 text-neutral-900 font-thin"
               style={{ fontSize: "clamp(1.75rem, 5vw, 4rem)" }}
             >
               EQUIPOS DESTACADOS
@@ -93,7 +93,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   return (
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
-        <div className="relative h-[62vh] sm:h-[70vh] lg:h-[78vh] overflow-hidden group cursor-pointer flex flex-col items-center justify-center px-4 sm:py-10 lg:py-12 gap-6 sm:gap-8 py-[16px]">
+        <div className="relative h-[62vh] sm:h-[70vh] lg:h-[78vh] overflow-hidden group cursor-pointer flex flex-col items-center justify-center px-4 sm:py-10 lg:py-12 gap-6 sm:gap-8 py-[8px]">
           {equipment.image_url && (
             <div
               ref={imageParallax.ref as any}
