@@ -152,7 +152,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
 
             {service.description && <p className="mb-4 leading-relaxed text-inherit text-xl">{service.description}</p>}
             <h3
-              className="uppercase leading-tight mb-3 font-sans font-thin text-inherit"
+              className="uppercase leading-tight mb-3 font-sans font-thin text-inherit text-6xl"
               style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)" }}
             >
               {service.title}
@@ -230,7 +230,7 @@ export const ServicesSection = () => {
   }
   return (
     <section className="relative bg-background">
-      <div className=" pb-[24px] px-8 lg:px-16 text-foreground sm:py-[24px] py-0 pt-[32px] border-0 bg-background">
+      <div className="pb-[24px] lg:px-16 text-foreground sm:py-[24px] py-0 pt-[32px] border-0 bg-background px-[16px]">
         <h2
           className="font-sans text-center my-[12px] text-3xl text-foreground font-thin"
           style={{ fontSize: "clamp(1rem, 3vw, 2rem)" }}
