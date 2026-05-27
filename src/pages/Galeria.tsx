@@ -191,7 +191,7 @@ const Galeria = () => {
                       className="text-muted-foreground font-heading flex items-start gap-2 text-xl font-thin text-neutral-100"
                     >
                       <span className="text-primary">•</span>
-                      <span className="">{feature}</span>
+                      <span className="text-base">{feature}</span>
                     </p>
                   ))}
                 </div>
