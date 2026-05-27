@@ -35,7 +35,7 @@ const FeaturedEquipmentSection = ({
   });
   return (
     <section className="bg-white overflow-hidden">
-      <div className="py-8 sm:py-12 lg:py-[32px]">
+      <div className="py-8 sm:py-12 lg:py-[16px]">
         <div
           ref={headerParallax.ref as any}
           style={headerParallax.style}
@@ -93,7 +93,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   return (
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
-        <div className="relative h-[62vh] sm:h-[70vh] lg:h-[78vh] overflow-hidden group cursor-pointer flex flex-col items-center justify-center px-4 sm:py-10 lg:py-12 gap-6 sm:gap-8 py-[8px]">
+        <div className="relative h-[62vh] sm:h-[70vh] lg:h-[78vh] overflow-hidden group cursor-pointer flex flex-col items-center justify-center px-4 sm:py-10 lg:py-12 gap-6 sm:gap-8 py-[8px] pt-[8px] pb-[8px]">
           {equipment.image_url && (
             <div
               ref={imageParallax.ref as any}
