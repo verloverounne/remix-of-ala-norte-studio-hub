@@ -178,7 +178,7 @@ const Galeria = () => {
                 <h2 className="text-2xl font-heading font-bold mb-4 sm:text-6xl py-[32px] pt-0 mt-0 px-0 text-[#ba1c1c]">
                   El espacio
                 </h2>
-                <p className="text-muted-foreground font-heading font-medium text-xl text-neutral-100">
+                <p className="text-muted-foreground font-heading font-medium text-xl text-neutral-100 my-[15px]">
                   {space.detailed_description || space.description}
                 </p>
               </div>
@@ -191,7 +191,7 @@ const Galeria = () => {
                       className="text-muted-foreground font-heading flex items-start gap-2 text-xl font-thin text-neutral-100"
                     >
                       <span className="text-primary">•</span>
-                      <span className="">{feature}</span>
+                      <span className="text-base">{feature}</span>
                     </p>
                   ))}
                 </div>
