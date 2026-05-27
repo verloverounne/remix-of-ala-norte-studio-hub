@@ -59,7 +59,7 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
     hero_video_url: null,
     section_media_type: "video",
     section_video_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/heros/equipos 2.mp4",
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/heros/equipos 2_1.mp4",
     button_text: null,
     button_link: null,
     bullets: [],
