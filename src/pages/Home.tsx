@@ -93,42 +93,43 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   return (
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
-        <div className="relative h-[62vh] sm:h-[70vh] lg:h-[78vh] overflow-hidden group cursor-pointer">
+        <div className="relative h-[62vh] sm:h-[70vh] lg:h-[78vh] overflow-hidden group cursor-pointer flex flex-col items-center justify-center px-4 py-8 sm:py-10 lg:py-12 gap-6 sm:gap-8">
           {equipment.image_url && (
-            <div ref={imageParallax.ref as any} style={imageParallax.style} className="absolute inset-0 z-0">
+            <div
+              ref={imageParallax.ref as any}
+              style={imageParallax.style}
+              className="flex-1 w-full flex items-center justify-center min-h-0"
+            >
               <img
                 src={equipment.image_url}
                 alt={equipment.name}
-                className="w-full h-auto sm:h-full sm:w-full object-contain sm:object-cover"
+                className="max-h-full max-w-full w-auto h-auto object-contain"
               />
             </div>
           )}
 
-          <div className="absolute inset-0 z-[1] transition-colors duration-300" />
-
           <div
             ref={contentParallax.ref as any}
             style={contentParallax.style}
-            className="absolute inset-x-0 bottom-0 z-10 flex justify-center pb-6 sm:pb-10 lg:pb-14"
+            className="relative z-10 flex flex-col items-center gap-3 sm:gap-4 text-center max-w-2xl"
           >
-            <div className="text-center px-4 py-3 sm:px-6 sm:py-4 max-w-2xl">
-              <h3
-                className="mb-3 sm:mb-4 uppercase text-white font-sans font-bold tracking-tight leading-[1.2]"
-                style={{ fontSize: "clamp(1.25rem, 3.5vw, 2.5rem)" }}
-              >
-                {equipment.name}
-              </h3>
+            <h3
+              className="uppercase font-sans font-bold tracking-tight leading-[1.2] text-[#dc2828]"
+              style={{ fontSize: "clamp(1.25rem, 3.5vw, 2.5rem)" }}
+            >
+              {equipment.name}
+            </h3>
 
-              <Button variant="hero" size="sm" className="group-hover:shadow-brutal-lg transition-shadow">
-                VER DETALLES <ArrowRight className="ml-2" />
-              </Button>
-            </div>
+            <Button variant="hero" size="sm" className="group-hover:shadow-brutal-lg transition-shadow">
+              VER DETALLES <ArrowRight className="ml-2" />
+            </Button>
           </div>
         </div>
       </Link>
     </CarouselItem>
   );
 };
+
 
 // Componente para la sección CTA con parallax
 import ctaBackground from "@/assets/cta-background.jpg";
