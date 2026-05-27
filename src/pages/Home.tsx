@@ -134,7 +134,6 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
 // Componente para la sección CTA con parallax
 import ctaBackground from "@/assets/cta-background.jpg";
 const CTASection = () => {
-const CTASection = () => {
   const contentParallax = useParallax({
     speed: 0.5,
     direction: "down",
