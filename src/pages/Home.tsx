@@ -96,7 +96,11 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
         <div className="relative h-[62vh] sm:h-[70vh] lg:h-[78vh] overflow-hidden group cursor-pointer">
           {equipment.image_url && (
             <div ref={imageParallax.ref as any} style={imageParallax.style} className="absolute inset-0 z-0">
-              <img src={equipment.image_url} alt={equipment.name} className="w-full h-full object-cover" />
+              <img
+                src={equipment.image_url}
+                alt={equipment.name}
+                className="w-full h-auto sm:h-full sm:w-full object-contain sm:object-cover"
+              />
             </div>
           )}
 
@@ -109,7 +113,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
           >
             <div className="text-center px-4 py-3 sm:px-6 sm:py-4 max-w-2xl">
               <h3
-                className="mb-3 sm:mb-4 uppercase font-sans font-bold tracking-tight leading-[1.2] text-[#dc2828] text-center"
+                className="mb-3 sm:mb-4 uppercase text-white font-sans font-bold tracking-tight leading-[1.2]"
                 style={{ fontSize: "clamp(1.25rem, 3.5vw, 2.5rem)" }}
               >
                 {equipment.name}
