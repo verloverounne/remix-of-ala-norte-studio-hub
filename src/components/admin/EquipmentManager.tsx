@@ -1397,33 +1397,46 @@ export const EquipmentManager = () => {
               {/* Storage Files */}
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  Galería de imágenes disponibles ({storageFiles.length})
+                  Galería de imágenes disponibles ({visibleStorageFiles.length} de {storageFiles.length})
                 </Label>
                 <ScrollArea className="h-[300px] border rounded-md">
                   <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 p-2">
-                    {storageFiles.map((file) => (
-                      <button
-                        key={file.name}
-                        onClick={() => handleAddImage(file.url)}
-                        disabled={!selectedEquipment || equipmentImages.some((img) => img.image_url === file.url)}
-                        className={cn(
-                          "relative aspect-square rounded-md overflow-hidden border-2 transition-all",
-                          selectedEquipment && !equipmentImages.some((img) => img.image_url === file.url)
-                            ? "hover:border-primary cursor-pointer"
-                            : "opacity-50 cursor-not-allowed",
-                          equipmentImages.some((img) => img.image_url === file.url) &&
-                            "border-primary ring-2 ring-primary",
-                        )}
-                      >
-                        <img src={file.url} alt={file.name} className="w-full h-full object-cover" loading="lazy" />
-                        {equipmentImages.some((img) => img.image_url === file.url) && (
-                          <div className="absolute inset-0 bg-primary/30 flex items-center justify-center">
-                            <Check className="h-6 w-6 text-primary-foreground" />
-                          </div>
-                        )}
-                      </button>
-                    ))}
+                    {visibleStorageFiles.map((file) => {
+                      const isAssigned = equipmentImageUrlSet.has(file.url);
+                      return (
+                        <button
+                          key={file.name}
+                          onClick={() => handleAddImage(file.url)}
+                          disabled={!selectedEquipment || isAssigned}
+                          className={cn(
+                            "relative aspect-square rounded-md overflow-hidden border-2 transition-all",
+                            selectedEquipment && !isAssigned
+                              ? "hover:border-primary cursor-pointer"
+                              : "opacity-50 cursor-not-allowed",
+                            isAssigned && "border-primary ring-2 ring-primary",
+                          )}
+                        >
+                          <img src={file.url} alt={file.name} className="w-full h-full object-cover" loading="lazy" />
+                          {isAssigned && (
+                            <div className="absolute inset-0 bg-primary/30 flex items-center justify-center">
+                              <Check className="h-6 w-6 text-primary-foreground" />
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
                   </div>
+                  {visibleStorageCount < storageFiles.length && (
+                    <div className="flex justify-center p-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setVisibleStorageCount((c) => c + 30)}
+                      >
+                        Cargar más ({storageFiles.length - visibleStorageCount} restantes)
+                      </Button>
+                    </div>
+                  )}
                 </ScrollArea>
               </div>
             </div>
