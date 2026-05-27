@@ -160,12 +160,7 @@ const Galeria = () => {
                 aria-label="Ampliar plano"
               >
                 <img
-                  src={
-                    featuredMediaImage ||
-                    space.featured_image ||
-                    (space.images && space.images[0]) ||
-                    "/placeholder.svg"
-                  }
+                  src="https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/assets/plano_galeria_new.png"
                   alt={space.name}
                   className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02] py-0 mb-0 my-0"
                 />
