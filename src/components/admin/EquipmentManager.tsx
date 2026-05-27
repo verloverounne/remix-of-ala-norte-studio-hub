@@ -622,13 +622,21 @@ export const EquipmentManager = () => {
     }
   };
 
-  const editFilteredSubcategories = editingEquipment?.category_id
-    ? subcategories.filter((s) => s.category_id === editingEquipment.category_id)
-    : [];
+  const editFilteredSubcategories = useMemo(
+    () =>
+      editingEquipment?.category_id
+        ? subcategories.filter((s) => s.category_id === editingEquipment.category_id)
+        : [],
+    [editingEquipment?.category_id, subcategories],
+  );
 
-  const newFilteredSubcategories = newEquipment.category_id
-    ? subcategories.filter((s) => s.category_id === newEquipment.category_id)
-    : [];
+  const newFilteredSubcategories = useMemo(
+    () =>
+      newEquipment.category_id
+        ? subcategories.filter((s) => s.category_id === newEquipment.category_id)
+        : [],
+    [newEquipment.category_id, subcategories],
+  );
 
   // Download backup JSON
   const handleDownloadBackup = async () => {
