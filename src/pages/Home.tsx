@@ -96,15 +96,11 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
         <div className="relative h-[62vh] sm:h-[70vh] lg:h-[78vh] overflow-hidden group cursor-pointer">
           {equipment.image_url && (
             <div ref={imageParallax.ref as any} style={imageParallax.style} className="absolute inset-0 z-0">
-              <img
-                src={equipment.image_url}
-                alt={equipment.name}
-                className="w-full h-full object-cover image-duotone"
-              />
+              <img src={equipment.image_url} alt={equipment.name} className="w-full h-full object-cover" />
             </div>
           )}
 
-          <div className="absolute inset-0 z-[1] bg-black/5 group-hover:bg-black/10 transition-colors duration-300" />
+          <div className="absolute inset-0 z-[1] transition-colors duration-300" />
 
           <div
             ref={contentParallax.ref as any}
