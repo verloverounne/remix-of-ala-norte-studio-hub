@@ -268,65 +268,78 @@ export const EquipmentManager = () => {
     }
   };
 
-  const getMainImageUrl = (eq: Equipment) => {
+  const getMainImageUrl = useCallback((eq: Equipment) => {
     // First check equipment_images table
     const featuredImage = eq.equipment_images?.find((img) => img.is_featured);
     if (featuredImage) return featuredImage.image_url;
 
     // Fallback to legacy image_url
     return eq.image_url;
-  };
+  }, []);
 
-  const hasImage = (eq: Equipment) => {
+  const hasImage = useCallback((eq: Equipment) => {
     const url = getMainImageUrl(eq);
-    return url && url.includes("equipment-images");
-  };
+    return !!url && url.includes("equipment-images");
+  }, [getMainImageUrl]);
 
-  const matchesSearch = (eq: Equipment): boolean => {
-    if (!searchEquipment.trim()) return true;
+  const filteredEquipment = useMemo(() => {
+    const term = debouncedSearch.toLowerCase().trim();
+    const searchWords = term ? term.split(/\s+/).filter((w) => w.length > 0) : [];
 
-    const searchTerm = searchEquipment.toLowerCase().trim();
-    const searchFields = [
-      eq.name?.toLowerCase() || "",
-      eq.brand?.toLowerCase() || "",
-      eq.model?.toLowerCase() || "",
-      eq.categories?.name?.toLowerCase() || "",
-    ];
+    const matchesSearch = (eq: Equipment): boolean => {
+      if (!term) return true;
+      const fields = [
+        eq.name?.toLowerCase() || "",
+        eq.brand?.toLowerCase() || "",
+        eq.model?.toLowerCase() || "",
+        eq.categories?.name?.toLowerCase() || "",
+      ];
+      if (searchWords.length > 1) {
+        return searchWords.every((word) => fields.some((field) => field.includes(word)));
+      }
+      return fields.some((field) => field.includes(term));
+    };
 
-    const searchWords = searchTerm.split(/\s+/).filter((w) => w.length > 0);
+    const matchesImageFilter = (eq: Equipment): boolean => {
+      if (imageFilter === "all") return true;
+      const hasImg = hasImage(eq);
+      return imageFilter === "with" ? hasImg : !hasImg;
+    };
 
-    if (searchWords.length > 1) {
-      return searchWords.every((word) => searchFields.some((field) => field.includes(word)));
-    }
+    const matchesCategoryFilter = (eq: Equipment): boolean =>
+      categoryFilter === "all" ? true : eq.category_id === categoryFilter;
 
-    return searchFields.some((field) => field.includes(searchTerm));
-  };
+    const matchesFeaturedFilter = (eq: Equipment): boolean => {
+      if (featuredFilter === "featured") return !!eq.featured;
+      if (featuredFilter === "not_featured") return !eq.featured;
+      return true;
+    };
 
-  const matchesImageFilter = (eq: Equipment): boolean => {
-    const hasImg = hasImage(eq);
-    if (imageFilter === "with") return hasImg;
-    if (imageFilter === "without") return !hasImg;
-    return true;
-  };
+    const filtered = equipment.filter(
+      (e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e) && matchesFeaturedFilter(e),
+    );
 
-  const matchesCategoryFilter = (eq: Equipment): boolean => {
-    if (categoryFilter === "all") return true;
-    return eq.category_id === categoryFilter;
-  };
+    if (priceSort === "none") return filtered;
+    return [...filtered].sort((a, b) =>
+      priceSort === "asc" ? a.price_per_day - b.price_per_day : b.price_per_day - a.price_per_day,
+    );
+  }, [equipment, debouncedSearch, imageFilter, categoryFilter, featuredFilter, priceSort, hasImage]);
 
-  const matchesFeaturedFilter = (eq: Equipment): boolean => {
-    if (featuredFilter === "featured") return !!eq.featured;
-    if (featuredFilter === "not_featured") return !eq.featured;
-    return true;
-  };
+  const filteredWithImageCount = useMemo(
+    () => filteredEquipment.filter((e) => hasImage(e)).length,
+    [filteredEquipment, hasImage],
+  );
 
-  const filteredEquipment = equipment
-    .filter((e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e) && matchesFeaturedFilter(e))
-    .sort((a, b) => {
-      if (priceSort === "asc") return a.price_per_day - b.price_per_day;
-      if (priceSort === "desc") return b.price_per_day - a.price_per_day;
-      return 0;
-    });
+  // O(1) lookups for storage gallery
+  const equipmentImageUrlSet = useMemo(
+    () => new Set(equipmentImages.map((img) => img.image_url)),
+    [equipmentImages],
+  );
+
+  const visibleStorageFiles = useMemo(
+    () => storageFiles.slice(0, visibleStorageCount),
+    [storageFiles, visibleStorageCount],
+  );
 
   const handleAddImage = async (imageUrl: string) => {
     if (!selectedEquipment) {
