@@ -35,15 +35,15 @@ const FeaturedEquipmentSection = ({
   });
   return (
     <section className="bg-white overflow-hidden">
-      <div className="py-8 sm:py-12 lg:py-16 bg-white">
+      <div className="py-8 sm:py-12 lg:py-16">
         <div
           ref={headerParallax.ref as any}
           style={headerParallax.style}
           className="container mx-auto mb-6 sm:mb-10 lg:mb-12 bg-white"
         >
-          <div className="bg-white">
+          <div className="">
             <h2
-              className="font-sans text-center bg-muted-foreground text-muted py-0 my-0 mt-4 sm:mt-6 mb-6 sm:mb-10 lg:mb-14 tracking-tight leading-[1.05] bg-white font-extrabold text-3xl"
+              className="font-sans text-center text-muted py-0 my-0 mt-4 sm:mt-6 mb-6 sm:mb-10 lg:mb-14 tracking-tight leading-[1.05]  font-extrabold text-3xl"
               style={{ fontSize: "clamp(1.75rem, 5vw, 4rem)" }}
             >
               EQUIPOS DESTACADOS
@@ -91,9 +91,9 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   return (
     <CarouselItem className="pl-0 basis-full">
       <Link to={`/equipos?id=${equipment.id}`}>
-        <div className="relative h-[80vh] sm:h-[85vh] lg:h-[90vh] overflow-hidden group cursor-pointer bg-transparent">
+        <div className="relative h-[80vh] sm:h-[85vh] lg:h-[90vh] overflow-hidden group cursor-pointer">
           {/* Imagen ocupando todo el alto del slide */}
-          <div className="absolute inset-0 overflow-hidden duotone-hover-group bg-white">
+          <div className="absolute inset-0 overflow-hidden duotone-hover-group duotone-invert">
             {equipment.image_url && (
               <div
                 ref={imageParallax.ref as any}
@@ -143,10 +143,10 @@ const CTASection = () => {
   return (
     <section className="relative border-y border-border overflow-hidden flex items-center duotone-hover-group">
       {/* Background image with duotone treatment */}
-      <div className="absolute inset-0 w-full">
+      <div className="absolute inset-0">
         <img
           alt=""
-          className="w-full h-full image-duotone object-cover mx-[8px] mr-0 ml-0 px-0"
+          className="h-full image-duotone object-cover mx-[8px] mr-0 ml-0 px-0"
           src="/lovable-uploads/7fc2168e-0efa-4479-96f7-31ea0af80766.jpg"
         />
       </div>
