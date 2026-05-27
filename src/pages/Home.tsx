@@ -73,7 +73,7 @@ const FeaturedEquipmentSection = ({
       </div>
     </section>
   );
-};
+};CTASection = CTASection = 
 
 // Componente para cada slide de equipo con parallax
 interface EquipmentSlideProps {
@@ -134,38 +134,46 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
 // Componente para la sección CTA con parallax
 import ctaBackground from "@/assets/cta-background.jpg";
 const CTASection = () => {
+const CTASection = () => {
   const contentParallax = useParallax({
     speed: 0.5,
     direction: "down",
   });
+
   return (
-    <section className="relative border-y border-border overflow-hidden flex items-center duotone-hover-group">
-      {/* Background image with duotone treatment */}
+    <section className="relative border-y border-border overflow-hidden duotone-hover-group min-h-[560px]">
+      {/* Background image */}
       <div className="absolute inset-0">
         <img
           alt=""
-          className="h-full image-duotone object-cover mx-[8px] mr-0 ml-0 px-0"
           src="/lovable-uploads/7fc2168e-0efa-4479-96f7-31ea0af80766.jpg"
+          className="w-full h-full object-cover image-duotone"
         />
       </div>
 
-      {/* Content overlay */}
-      <div className="relative z-10 container mx-auto flex px-[16px] py-[128px] my-0">
+      {/* Overlay opcional para mejorar lectura */}
+      <div className="absolute inset-0 bg-black/20" />
+
+      {/* Content */}
+      <div className="relative z-10 w-full min-h-[560px] flex items-center px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div
           ref={contentParallax.ref as any}
           style={contentParallax.style}
-          className="backdrop-blur-lg text-center text-background/ px-8 pl-[32px] pb-[32px] my-[16px] mx-[16px] pt-[64px] max-w-2xl rounded-sm bg-inherit"
+          className="backdrop-blur-lg text-center px-8 pt-16 pb-8 max-w-2xl rounded-sm bg-inherit"
         >
           <h2
-            className="mb-4 sm:mb-6 my-0 px-0 font-sans my-[64px] mb-[2px] mx-0 font-semibold text-[#fbf2ee]"
+            className="font-sans font-semibold text-[#fbf2ee] mb-4 sm:mb-6"
             style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
           >
             ¿TENÉS UN PROYECTO EN MENTE?
           </h2>
-          <p className="text-sm mb-6 font-heading leading-tight my-[6px] sm:mb-[57px] px-0 font-normal sm:text-lg text-[#fbf2ee]">
-            Contá con AL NORTE para la producción integral, armamos proyectos desde cero, presentación a fondos,
-            asesorías de proyectos en desarrollo, armado de equipo completo.
+
+          <p className="text-sm sm:text-lg text-[#fbf2ee] mb-6 sm:mb-10 font-normal leading-tight">
+            Contá con AL NORTE para la producción integral, armamos proyectos
+            desde cero, presentación a fondos, asesorías de proyectos en
+            desarrollo, armado de equipo completo.
           </p>
+
           <Button asChild variant="default" size="lg">
             <Link to="/cotizador">Hablemos de tu proyecto</Link>
           </Button>
