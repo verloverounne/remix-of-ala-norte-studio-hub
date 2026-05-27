@@ -93,7 +93,7 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
       <Link to={`/equipos?id=${equipment.id}`}>
         <div className="relative h-[80vh] sm:h-[85vh] lg:h-[90vh] overflow-hidden group cursor-pointer">
           {/* Imagen ocupando todo el alto del slide */}
-          <div className="absolute inset-0 overflow-hidden duotone-hover-group duotone-invert">
+          <div className="absolute inset-0 overflow-hidden duotone-hover-group">
             {equipment.image_url && (
               <div
                 ref={imageParallax.ref as any}
@@ -143,10 +143,10 @@ const CTASection = () => {
   return (
     <section className="relative border-y border-border overflow-hidden flex items-center duotone-hover-group">
       {/* Background image with duotone treatment */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 w-full">
         <img
           alt=""
-          className="h-full image-duotone object-cover mx-[8px] mr-0 ml-0 px-0"
+          className="w-full h-full image-duotone object-cover mx-[8px] mr-0 ml-0 px-0"
           src="/lovable-uploads/7fc2168e-0efa-4479-96f7-31ea0af80766.jpg"
         />
       </div>
