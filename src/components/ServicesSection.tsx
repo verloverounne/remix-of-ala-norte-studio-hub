@@ -152,7 +152,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
 
             {service.description && <p className="mb-4 leading-relaxed text-inherit text-xl">{service.description}</p>}
             <h3
-              className="uppercase leading-tight mb-3 font-sans font-thin text-inherit"
+              className="uppercase leading-tight mb-3 font-sans font-thin text-inherit text-6xl"
               style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)" }}
             >
               {service.title}
