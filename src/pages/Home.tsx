@@ -35,7 +35,7 @@ const FeaturedEquipmentSection = ({
   });
   return (
     <section className="bg-white overflow-hidden">
-      <div className="py-8 sm:py-12 lg:py-16">
+      <div className="py-8 sm:py-12 lg:py-[32px]">
         <div
           ref={headerParallax.ref as any}
           style={headerParallax.style}
@@ -43,7 +43,7 @@ const FeaturedEquipmentSection = ({
         >
           <div className="">
             <h2
-              className="font-sans text-center text-muted py-0 my-0 mt-4 sm:mt-6 mb-6 sm:mb-10 lg:mb-14 tracking-tight leading-[1.05] font-extrabold text-xl"
+              className="font-sans text-center text-muted py-0 mt-4 sm:mt-6 mb-6 sm:mb-10 lg:mb-14 tracking-tight leading-[1.05] font-extrabold text-xl my-0 text-neutral-900"
               style={{ fontSize: "clamp(1.75rem, 5vw, 4rem)" }}
             >
               EQUIPOS DESTACADOS
