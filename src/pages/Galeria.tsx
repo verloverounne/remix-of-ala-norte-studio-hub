@@ -34,8 +34,7 @@ const Galeria = () => {
   const homeHeroSlides = getByPageType("home_hero");
   const galeriaHomeSlide =
     homeHeroSlides.find((s) => (s.title || "").toUpperCase().includes("GALER")) || homeHeroSlides[1];
-  const heroVideoUrl =
-    galeriaHomeSlide?.vertical_video_url || galeriaHomeSlide?.image_url || space?.video_url;
+  const heroVideoUrl = galeriaHomeSlide?.vertical_video_url || galeriaHomeSlide?.image_url || space?.video_url;
   const spaceForHero = space ? { ...space, video_url: heroVideoUrl } : space;
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
@@ -187,9 +186,12 @@ const Galeria = () => {
               {space.features && Array.isArray(space.features) && space.features.length > 0 && (
                 <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-lg">
                   {(space.features as string[]).map((feature, index) => (
-                    <p key={index} className="text-muted-foreground font-heading flex items-start gap-2 text-xl font-thin text-neutral-100">
+                    <p
+                      key={index}
+                      className="text-muted-foreground font-heading flex items-start gap-2 text-xl font-thin text-neutral-100"
+                    >
                       <span className="text-primary">•</span>
-                      <span className="whitespace-pre-line">{feature}</span>
+                      <span className="">{feature}</span>
                     </p>
                   ))}
                 </div>
@@ -202,7 +204,10 @@ const Galeria = () => {
                   </h3>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-neutral-100">
                     {space.included_items.map((item, index) => (
-                      <li key={index} className="flex items-center gap-2 text-muted-foreground text-base text-neutral-100">
+                      <li
+                        key={index}
+                        className="flex items-center gap-2 text-muted-foreground text-base text-neutral-100"
+                      >
                         <span className="text-primary">•</span>
                         <span className="font-heading text-neutral-100">{item}</span>
                       </li>
@@ -440,9 +445,7 @@ const Galeria = () => {
             {galeriaImages.length > 1 && (
               <>
                 <button
-                  onClick={() =>
-                    setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)
-                  }
+                  onClick={() => setCarouselIndex((prev) => (prev - 1 + galeriaImages.length) % galeriaImages.length)}
                   className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-primary-foreground rounded-sm p-3 shadow-brutal hover:translate-x-[-2px] transition-transform"
                   aria-label="Anterior"
                 >
