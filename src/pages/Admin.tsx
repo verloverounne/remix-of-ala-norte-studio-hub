@@ -1210,7 +1210,8 @@ const Admin = () => {
                         Para obtener una copia del código fuente, conectá el proyecto a GitHub desde Lovable.  
                       </p>
                     </div>
-                  </div>*/}
+                  */}
+                  </div>
                 </CardContent> 
               </Card>
             </TabsContent>
