@@ -1,0 +1,1 @@
+UPDATE public.gallery_images SET image_url = '/uploads/galeria_un_plano.mp4', vertical_video_url = '/uploads/galeria_un_plano.mp4' WHERE id = '60f4be2f-e38f-4eb4-9018-d50fddd711b9';
