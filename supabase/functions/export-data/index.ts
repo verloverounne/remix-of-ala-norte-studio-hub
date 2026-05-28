@@ -52,46 +52,13 @@ Deno.serve(async (req) => {
     if (onlyTable) {
       tableNames = [onlyTable];
     } else {
-      const { data: tablesData, error: tablesErr } = await supabase
-        .rpc("exec_sql_list_tables")
-        .single();
-      // Fallback if RPC doesn't exist: query via PostgREST against pg_meta isn't available.
-      // We use a known query through the REST `?select` on information_schema via a tiny helper:
-      if (tablesErr || !tablesData) {
-        // Use direct PostgREST call to information_schema
-        const resp = await fetch(
-          `${SUPABASE_URL}/rest/v1/rpc/exec_sql_list_tables`,
-          {
-            method: "POST",
-            headers: {
-              apikey: SERVICE_ROLE,
-              Authorization: `Bearer ${SERVICE_ROLE}`,
-              "Content-Type": "application/json",
-            },
-            body: "{}",
-          },
-        );
-        if (resp.ok) {
-          tableNames = await resp.json();
-        } else {
-          // Hardcoded fallback: use known schema by querying each table existence via select
-          // Last resort: discover via pg_catalog through a SQL function we cannot create here.
-          // We'll just attempt a fixed list query through information_schema via PostgREST exposed schema.
-          // If neither works, return clear error.
-          return json(
-            {
-              error:
-                "Cannot list tables. Create helper SQL function `exec_sql_list_tables()` returning text[] of public tables, or pass ?table=<name>.",
-              hint:
-                "CREATE OR REPLACE FUNCTION public.exec_sql_list_tables() RETURNS text[] LANGUAGE sql SECURITY DEFINER SET search_path=public AS $$ SELECT coalesce(array_agg(tablename),'{}') FROM pg_tables WHERE schemaname='public'; $$;",
-            },
-            500,
-          );
-        }
-      } else {
-        tableNames = tablesData as unknown as string[];
+      const { data, error } = await supabase.rpc("exec_sql_list_tables");
+      if (error) {
+        return json({ error: "Cannot list tables: " + error.message }, 500);
       }
+      tableNames = (data as string[]) ?? [];
     }
+
 
     const tables: Record<string, { row_count: number; rows: unknown[] }> = {};
     const tableErrors: Record<string, string> = {};
