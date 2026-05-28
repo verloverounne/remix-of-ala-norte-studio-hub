@@ -89,7 +89,8 @@ const Admin = () => {
     whatsapp: "",
     email: "",
     quote_message: "",
-    instagram: ""
+    instagram: "",
+    facebook: ""
   });
   const {
     toast
