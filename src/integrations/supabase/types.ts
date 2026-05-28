@@ -1068,6 +1068,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      exec_sql_list_tables: { Args: never; Returns: string[] }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
