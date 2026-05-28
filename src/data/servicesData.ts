@@ -82,7 +82,7 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
       "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/heros/multicamara jaiteba.mp4",
     section_media_type: "video",
     section_video_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//multicamara.mp4",
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/heros/multicamara jaiteba.mp4",
     button_text: null,
     button_link: null,
     bullets: [],
