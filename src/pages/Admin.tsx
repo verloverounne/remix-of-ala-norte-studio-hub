@@ -1164,7 +1164,7 @@ const Admin = () => {
                         </Button>
                       </div>
                     </div>
-
+ {/* eliminasr truido de la pestaña backup 
                     <div className="border-l-4 border-accent pl-4 py-2">
                       <h3 className="font-heading font-bold text-lg mb-2">Importar desde CSV (Excel)</h3>
                       <p className="text-sm text-muted-foreground mb-4">
@@ -1207,11 +1207,11 @@ const Admin = () => {
                     <div className="border-l-4 border-muted pl-4 py-2 bg-muted/20">
                       <h3 className="font-heading font-bold text-lg mb-2">Código Fuente del Sitio</h3>
                       <p className="text-sm text-muted-foreground mb-4">
-                        Para obtener una copia del código fuente, conectá el proyecto a GitHub desde Lovable.
+                        Para obtener una copia del código fuente, conectá el proyecto a GitHub desde Lovable.  
                       </p>
                     </div>
-                  </div>
-                </CardContent>
+                  </div>*/}
+                </CardContent> 
               </Card>
             </TabsContent>
           </Tabs>
