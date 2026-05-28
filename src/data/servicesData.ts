@@ -97,13 +97,16 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
     title: "Técnicos",
     description:
       "Sumanos a tu equipo técnico!\n Directores de fotografía, operadores de cámara (steadycam, grúa), sonidistas o coordinadores técnicos. Si necesitás completar el equipo con otros profesionales, también te ayudamos con eso.",
-    image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
-    hero_image_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
+    image_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/heros/ACNUR CONCIERTO.mp4",
+    hero_image_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/heros/ACNUR CONCIERTO.mp4",
     hero_media_type: "video",
-    hero_video_url: "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
+    hero_video_url:
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/heros/ACNUR CONCIERTO.mp4",
     section_media_type: "video",
     section_video_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//tecnicos.mp4",
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/heros/ACNUR CONCIERTO.mp4",
     button_text: null,
     button_link: null,
     bullets: [
