@@ -89,7 +89,8 @@ const Admin = () => {
     whatsapp: "",
     email: "",
     quote_message: "",
-    instagram: ""
+    instagram: "",
+    facebook: ""
   });
   const {
     toast
@@ -167,7 +168,8 @@ const Admin = () => {
         whatsapp: data.whatsapp || "",
         email: data.email || "",
         quote_message: data.quote_message || "",
-        instagram: data.instagram || ""
+        instagram: data.instagram || "",
+        facebook: data.facebook || ""
       });
     }
   };
@@ -1117,13 +1119,20 @@ const Admin = () => {
                   </div>
 
                   <div className="border-t-2 border-foreground pt-4 mt-6">
-                    <h3 className="font-heading font-bold text-lg mb-4">Configuración de Instagram</h3>
+                    <h3 className="font-heading font-bold text-lg mb-4">Redes sociales</h3>
                     <div className="space-y-4">
                       <div className="space-y-2">
                         <Label>Usuario de Instagram</Label>
                         <Input placeholder="@alanortecinedigital" value={contactInfo.instagram} onChange={e => setContactInfo({
                         ...contactInfo,
                         instagram: e.target.value
+                      })} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>URL o usuario de Facebook</Label>
+                        <Input placeholder="https://facebook.com/alanortecinedigital" value={contactInfo.facebook} onChange={e => setContactInfo({
+                        ...contactInfo,
+                        facebook: e.target.value
                       })} />
                       </div>
                     </div>
