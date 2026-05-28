@@ -168,7 +168,8 @@ const Admin = () => {
         whatsapp: data.whatsapp || "",
         email: data.email || "",
         quote_message: data.quote_message || "",
-        instagram: data.instagram || ""
+        instagram: data.instagram || "",
+        facebook: data.facebook || ""
       });
     }
   };
