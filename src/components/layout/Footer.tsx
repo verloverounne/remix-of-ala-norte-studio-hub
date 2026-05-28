@@ -1,6 +1,28 @@
 import { Link } from "react-router-dom";
-import { Instagram, Mail, Phone, MapPin } from "lucide-react";
+import { Instagram, Facebook, Mail, Phone, MapPin } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+
 export const Footer = () => {
+  const [facebookUrl, setFacebookUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase
+      .from("contact_info")
+      .select("facebook")
+      .limit(1)
+      .single()
+      .then(({ data }) => {
+        if (data?.facebook) {
+          const raw = data.facebook.trim();
+          const url = raw.startsWith("http")
+            ? raw
+            : `https://facebook.com/${raw.replace(/^@/, "")}`;
+          setFacebookUrl(url);
+        }
+      });
+  }, []);
+
   return (
     <footer className="bg-foreground text-background border-t border-foreground">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -38,17 +60,6 @@ export const Footer = () => {
                   Sala de Sonido y Postproducción
                 </Link>
               </li>
-              {/*         <li>
-                <Link to="/blog" className="text-sm hover:text-primary transition-brutal">
-                  Blog
-                </Link>
-               </li>
-               <li>
-                <Link to="/nosotros" className="text-sm hover:text-primary transition-brutal">
-                  Nosotros
-                </Link>
-               </li>
-               */}
             </ul>
           </div>
 
@@ -91,7 +102,7 @@ export const Footer = () => {
           {/* Social */}
           <div className="space-y-4">
             <h4 className="font-semibold">Seguinos</h4>
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center">
               <a
                 href="https://www.instagram.com/alanortecinedigital/"
                 target="_blank"
@@ -101,6 +112,17 @@ export const Footer = () => {
               >
                 <Instagram className="h-5 w-5" />
               </a>
+              {facebookUrl && (
+                <a
+                  href={facebookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-primary transition-brutal"
+                  aria-label="Facebook"
+                >
+                  <Facebook className="h-5 w-5" />
+                </a>
+              )}
               <a
                 href="https://taplink.cc/alanortecinedigital"
                 target="_blank"
