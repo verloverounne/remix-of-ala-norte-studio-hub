@@ -75,11 +75,11 @@ export const STATIC_HOME_SERVICES: StaticHomeService[] = [
     description:
       "Coordinamos producciones multicámara con unidades móviles equipadas en alta definición. Ya sea para eventos en vivo, streaming o contenido multipantalla, armamos el operativo técnico y te acompañamos en todo el proceso de captura.",
     image_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images/1768795408801_ACNUR_CONCIERTO.mp4",
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/heros/multicamara jaiteba.mp4",
     hero_image_url: null,
     hero_media_type: "video",
     hero_video_url:
-      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//multicamara.mp4",
+      "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/heros/multicamara jaiteba.mp4",
     section_media_type: "video",
     section_video_url:
       "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/equipment-images//multicamara.mp4",
