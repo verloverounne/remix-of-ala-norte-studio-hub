@@ -257,8 +257,8 @@ const SalaGrabacion = () => {
       <section className="py-12 sm:py-16 bg-background bg-[#171a21] text-neutral-100">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-8">
           <div className="text-left">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">Ya conocés la sala?</h2>
-            <p className="text-muted-foreground font-heading text-lg text-neutral-100">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 text-neutral-900">Ya conocés la sala?</h2>
+            <p className="text-muted-foreground font-heading text-lg text-neutral-950">
               Explorá la sala antes de tu reserva. Arrastrá para moverte y conocer cada rincón del espacio.
             </p>
           </div>
