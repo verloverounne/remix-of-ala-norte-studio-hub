@@ -175,14 +175,14 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
             <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-background">
               Servicio {String(index + 1).padStart(2, "0")}
             </span>
-
-            {service.description && <p className="mb-4 leading-relaxed text-inherit text-xl">{service.description}</p>}
             <h3
               className="uppercase leading-tight mb-3 font-sans font-thin text-inherit text-6xl"
               style={{ fontSize: "clamp(3rem, 6vw, 6rem)" }}
             >
               {service.title}
             </h3>
+            {service.description && <p className="mb-4 leading-relaxed text-inherit text-xl">{service.description}</p>}
+
             {service.bullets && service.bullets.length > 0 && (
               <ul className="space-y-2 mb-4">
                 {service.bullets.map((bullet, i) => (
