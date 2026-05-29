@@ -53,11 +53,16 @@ const FeaturedEquipmentSection = ({
 
         <Carousel className="w-full" setApi={setEquipmentApi}>
           <CarouselContent className="-ml-0">
-            {featuredEquipment.map((equipment) => (
-              <EquipmentSlide key={equipment.id} equipment={equipment} />
+            {featuredEquipment.map((equipment, index) => (
+              <EquipmentSlide
+                key={equipment.id}
+                equipment={equipment}
+                isActive={index === currentEquipmentSlide}
+              />
             ))}
           </CarouselContent>
         </Carousel>
+
 
         {/* Navigation dots */}
         <div className="flex justify-center gap-3 mt-4 h-2">
@@ -78,8 +83,9 @@ const FeaturedEquipmentSection = ({
 // Componente para cada slide de equipo con parallax
 interface EquipmentSlideProps {
   equipment: any;
+  isActive?: boolean;
 }
-const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
+const EquipmentSlide = ({ equipment, isActive }: EquipmentSlideProps) => {
   const imageParallax = useParallax({
     speed: 0.08,
     direction: "up",
@@ -89,6 +95,12 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
     speed: 0.12,
     direction: "down",
   });
+
+  // Counter to re-trigger the squash-bounce animation each time the slide becomes active
+  const [animKey, setAnimKey] = useState(0);
+  useEffect(() => {
+    if (isActive) setAnimKey((k) => k + 1);
+  }, [isActive]);
 
   return (
     <CarouselItem className="pl-0 basis-full">
@@ -101,12 +113,14 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
               className="flex-1 w-full min-h-0 flex items-center justify-center"
             >
               <img
+                key={animKey}
                 src={equipment.image_url}
                 alt={equipment.name}
-                className="max-h-full max-w-full w-auto h-auto object-contain"
+                className="max-h-full max-w-full w-auto h-auto object-contain animate-squash-bounce origin-center will-change-transform"
               />
             </div>
           )}
+
 
           <div
             ref={contentParallax.ref as any}

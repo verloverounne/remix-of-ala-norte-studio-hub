@@ -274,7 +274,27 @@ export default {
   				'100%': {
   					boxShadow: '0 0 0 0 hsl(var(--primary) / 0)'
   				}
+  			},
+  			'squash-bounce': {
+  				'0%': {
+  					transform: 'scaleX(0.25) scaleY(1.08)',
+  					opacity: '0'
+  				},
+  				'45%': {
+  					transform: 'scaleX(1.12) scaleY(0.93)',
+  					opacity: '1'
+  				},
+  				'65%': {
+  					transform: 'scaleX(0.94) scaleY(1.03)'
+  				},
+  				'82%': {
+  					transform: 'scaleX(1.04) scaleY(0.98)'
+  				},
+  				'100%': {
+  					transform: 'scaleX(1) scaleY(1)'
+  				}
   			}
+
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.3s ease-out',
@@ -290,7 +310,9 @@ export default {
   			'battery-load': 'battery-load 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards',
   			'reveal-scan': 'reveal-scan 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards',
   			'aperture-open': 'aperture-open 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards',
-  			'interactive-pulse': 'interactive-pulse 1.5s ease-out'
+  			'interactive-pulse': 'interactive-pulse 1.5s ease-out',
+  			'squash-bounce': 'squash-bounce 0.95s cubic-bezier(0.34, 1.56, 0.64, 1) both'
+
   		}
   	}
   },
