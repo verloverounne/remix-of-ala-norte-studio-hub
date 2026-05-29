@@ -181,7 +181,9 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
             >
               {service.title}
             </h3>
-            {service.description && <p className="mb-4 leading-relaxed text-inherit text-xl">{service.description}</p>}
+            {service.description && (
+              <p className="mb-4 leading-relaxed text-foreground text-xl">{service.description}</p>
+            )}
 
             {service.bullets && service.bullets.length > 0 && (
               <ul className="space-y-2 mb-4">
