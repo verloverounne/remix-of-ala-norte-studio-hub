@@ -142,9 +142,35 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
           </div>
         </div>
       </div>
-      {/* Mobile/Tablet: Fondo sólido sin video */}
-      <div className="lg:hidden bg-foreground">
-        <div className="min-h-screen-1/2 px-4 flex items-start justify-center text-foreground bg-background py-0">
+      {/* Mobile/Tablet: Media arriba + texto debajo */}
+      <div className="lg:hidden bg-foreground flex flex-col h-full">
+        <div className="relative w-full h-[40vh] bg-muted overflow-hidden duotone-hover-group">
+          {hasMedia ? (
+            isVideo ? (
+              <video
+                src={mediaUrl!}
+                className="video-duotone absolute inset-0 w-full h-full object-cover bg-[#2e2c29]"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <img
+                src={mediaUrl!}
+                alt={service.title}
+                className="image-duotone absolute inset-0 w-full h-full object-cover"
+              />
+            )
+          ) : (
+            <div className="w-full h-full bg-muted flex items-center justify-center">
+              <span className="font-heading text-6xl text-muted-foreground/30">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+            </div>
+          )}
+        </div>
+        <div className="flex-1 px-4 flex items-start justify-center text-foreground bg-background py-6">
           <div className="max-w-2xl mx-0 px-0 py-0">
             <span className="text-xs font-heading uppercase tracking-wider mb-2 block text-background">
               Servicio {String(index + 1).padStart(2, "0")}
@@ -177,6 +203,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
           </div>
         </div>
       </div>
+
     </div>
   );
 };
