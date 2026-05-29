@@ -73,7 +73,7 @@ const FeaturedEquipmentSection = ({
       </div>
     </section>
   );
-}; 
+};
 
 // Componente para cada slide de equipo con parallax
 interface EquipmentSlideProps {
@@ -130,7 +130,6 @@ const EquipmentSlide = ({ equipment }: EquipmentSlideProps) => {
   );
 };
 
-
 // Componente para la sección CTA con parallax
 import ctaBackground from "@/assets/cta-background.jpg";
 const CTASection = () => {
@@ -168,13 +167,12 @@ const CTASection = () => {
           </h2>
 
           <p className="text-sm sm:text-lg text-[#fbf2ee] mb-6 sm:mb-10 font-normal leading-tight">
-            Contá con AL NORTE para la producción integral, armamos proyectos
-            desde cero, presentación a fondos, asesorías de proyectos en
-            desarrollo, armado de equipo completo.
+            Contá con AL NORTE para la producción integral, armamos proyectos desde cero, presentación a fondos,
+            asesorías de proyectos en desarrollo, armado de equipo completo.
           </p>
 
           <Button asChild variant="default" size="lg">
-            <Link to="/cotizador">Hablemos de tu proyecto</Link>
+            <Link to="/contacto">Hablemos de tu proyecto</Link>
           </Button>
         </div>
       </div>
