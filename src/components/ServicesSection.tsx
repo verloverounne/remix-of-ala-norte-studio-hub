@@ -144,7 +144,7 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
       </div>
       {/* Mobile/Tablet: Media arriba + texto debajo */}
       <div className="lg:hidden bg-foreground flex flex-col h-full">
-        <div className="relative w-full h-[40vh] bg-muted overflow-hidden duotone-hover-group">
+        <div className="relative w-full h-[60vh] bg-muted overflow-hidden duotone-hover-group">
           {hasMedia ? (
             isVideo ? (
               <video
@@ -203,7 +203,6 @@ const ServiceSlide = ({ service, index }: ServiceSlideProps) => {
           </div>
         </div>
       </div>
-
     </div>
   );
 };
