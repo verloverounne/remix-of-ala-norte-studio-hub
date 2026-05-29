@@ -275,25 +275,25 @@ export default {
   					boxShadow: '0 0 0 0 hsl(var(--primary) / 0)'
   				}
   			},
-  			'squash-bounce': {
-  				'0%': {
-  					transform: 'scaleX(0.25) scaleY(1.08)',
-  					opacity: '0'
-  				},
-  				'45%': {
-  					transform: 'scaleX(1.12) scaleY(0.93)',
-  					opacity: '1'
-  				},
-  				'65%': {
-  					transform: 'scaleX(0.94) scaleY(1.03)'
-  				},
-  				'82%': {
-  					transform: 'scaleX(1.04) scaleY(0.98)'
-  				},
-  				'100%': {
-  					transform: 'scaleX(1) scaleY(1)'
-  				}
-  			}
+			'squash-bounce': {
+				'0%': {
+					transform: 'scaleX(0.7) scaleY(1.02)',
+					opacity: '0'
+				},
+				'40%': {
+					transform: 'scaleX(1.04) scaleY(0.98)',
+					opacity: '1'
+				},
+				'65%': {
+					transform: 'scaleX(0.97) scaleY(1.01)'
+				},
+				'85%': {
+					transform: 'scaleX(1.015) scaleY(0.995)'
+				},
+				'100%': {
+					transform: 'scaleX(1) scaleY(1)'
+				}
+			}
 
   		},
   		animation: {
@@ -310,8 +310,8 @@ export default {
   			'battery-load': 'battery-load 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards',
   			'reveal-scan': 'reveal-scan 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards',
   			'aperture-open': 'aperture-open 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards',
-  			'interactive-pulse': 'interactive-pulse 1.5s ease-out',
-  			'squash-bounce': 'squash-bounce 0.95s cubic-bezier(0.34, 1.56, 0.64, 1) both'
+			'interactive-pulse': 'interactive-pulse 1.5s ease-out',
+			'squash-bounce': 'squash-bounce 1.1s cubic-bezier(0.4, 0, 0.2, 1) both'
 
   		}
   	}
