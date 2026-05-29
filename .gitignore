@@ -24,8 +24,12 @@ dist-ssr
 *.sw?
 
 
-# Variables de entorno - NUNCA commitear
-.env
+# Variables de entorno
+# IMPORTANTE: NO ignorar .env — Lovable Cloud lo gestiona automáticamente
+# con las claves PÚBLICAS de Supabase (URL + anon/publishable key).
+# Si se ignora, el build de producción no las recibe y la app falla con
+# "supabaseUrl is required". Las claves privadas (service_role, etc.) viven
+# en los secrets de Edge Functions, no en este archivo.
 .env.local
 .env.production
 .env.*.local
