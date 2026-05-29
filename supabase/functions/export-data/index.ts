@@ -1,138 +1,17 @@
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type, x-export-secret",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
-  "Content-Type": "application/json",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
 };
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const EXPORT_SECRET = Deno.env.get("EXPORT_SECRET")!;
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false,
-  },
-});
-
-function json(data: unknown, status = 200) {
-  return new Response(JSON.stringify(data, null, 2), {
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), {
     status,
-    headers: corsHeaders,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
-}
-
-async function listAllRows(table: string, pageSize = 1000) {
-  const rows: unknown[] = [];
-  let from = 0;
-
-  while (true) {
-    const to = from + pageSize - 1;
-
-    const { data, error } = await supabase
-      .from(table)
-      .select("*")
-      .range(from, to);
-
-    if (error) {
-      throw new Error(`Error exporting table "${table}": ${error.message}`);
-    }
-
-    if (!data || data.length === 0) break;
-
-    rows.push(...data);
-
-    if (data.length < pageSize) break;
-    from += pageSize;
-  }
-
-  return rows;
-}
-
-async function getPublicTables() {
-  const { data, error } = await supabase.rpc("exec_sql", {
-    sql: `
-      select table_name
-      from information_schema.tables
-      where table_schema = 'public'
-        and table_type = 'BASE TABLE'
-      order by table_name;
-    `,
-  });
-
-  if (!error && Array.isArray(data)) {
-    return data.map((row: Record<string, unknown>) => String(row.table_name));
-  }
-
-  const fallbackTables = [
-    "profiles",
-    "users",
-    "reservations",
-    "quotes",
-    "equipment",
-    "categories",
-    "assets",
-  ];
-
-  return fallbackTables;
-}
-
-async function listAllAuthUsers(perPage = 100) {
-  const users: unknown[] = [];
-  let page = 1;
-
-  while (true) {
-    const { data, error } = await supabase.auth.admin.listUsers({
-      page,
-      perPage,
-    });
-
-    if (error) {
-      throw new Error(`Error listing auth users: ${error.message}`);
-    }
-
-    const batch = data?.users ?? [];
-    users.push(...batch);
-
-    if (batch.length < perPage) break;
-    page += 1;
-  }
-
-  return users;
-}
-
-async function listStorageObjects(bucketName: string, limit = 1000) {
-  const allObjects: unknown[] = [];
-  let offset = 0;
-
-  while (true) {
-    const { data, error } = await supabase.storage
-      .from(bucketName)
-      .list("", {
-        limit,
-        offset,
-        sortBy: { column: "name", order: "asc" },
-      });
-
-    if (error) {
-      throw new Error(
-        `Error listing storage objects for bucket "${bucketName}": ${error.message}`,
-      );
-    }
-
-    const batch = data ?? [];
-    allObjects.push(...batch);
-
-    if (batch.length < limit) break;
-    offset += limit;
-  }
-
-  return allObjects;
-}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -140,101 +19,137 @@ Deno.serve(async (req) => {
   }
 
   try {
-    if (req.method !== "GET") {
-      return json({ error: "Method not allowed" }, 405);
+    const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+    const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    const EXPORT_SECRET = Deno.env.get("EXPORT_SECRET");
+
+    if (!SUPABASE_URL || !SERVICE_ROLE) {
+      return json({ error: "Missing SUPABASE_URL or SERVICE_ROLE_KEY" }, 500);
+    }
+    if (!EXPORT_SECRET) {
+      return json({ error: "EXPORT_SECRET not configured" }, 500);
     }
 
-    const secret = req.headers.get("x-export-secret");
-    if (!EXPORT_SECRET || secret !== EXPORT_SECRET) {
+    const provided =
+      req.headers.get("x-export-secret") ?? req.headers.get("X-EXPORT-SECRET");
+    if (provided !== EXPORT_SECRET) {
       return json({ error: "Unauthorized" }, 401);
     }
 
     const url = new URL(req.url);
     const onlyTable = url.searchParams.get("table");
+    const pageSize = Math.min(
+      Number(url.searchParams.get("page_size") ?? 1000),
+      1000,
+    );
 
-    const exportData: Record<string, unknown> = {
-      exported_at: new Date().toISOString(),
-      project_url: SUPABASE_URL,
-      tables: {},
-      auth_users: [],
-      storage: {
-        buckets: [],
-        objects_by_bucket: {},
-      },
-    };
+    const supabase = createClient(SUPABASE_URL, SERVICE_ROLE, {
+      auth: { persistSession: false },
+    });
 
-    const tableNames = onlyTable ? [onlyTable] : await getPublicTables();
+    // Discover tables in public schema
+    let tableNames: string[] = [];
+    if (onlyTable) {
+      tableNames = [onlyTable];
+    } else {
+      const { data, error } = await supabase.rpc("exec_sql_list_tables");
+      if (error) {
+        return json({ error: "Cannot list tables: " + error.message }, 500);
+      }
+      tableNames = (data as string[]) ?? [];
+    }
 
-    for (const table of tableNames) {
+
+    const tables: Record<string, { row_count: number; rows: unknown[] }> = {};
+    const tableErrors: Record<string, string> = {};
+
+    for (const t of tableNames) {
       try {
-        const rows = await listAllRows(table);
-        (exportData.tables as Record<string, unknown>)[table] = {
-          row_count: rows.length,
-          rows,
-        };
-      } catch (err) {
-        (exportData.tables as Record<string, unknown>)[table] = {
-          error: err instanceof Error ? err.message : String(err),
-        };
+        const rows: unknown[] = [];
+        let from = 0;
+        while (true) {
+          const { data, error } = await supabase
+            .from(t)
+            .select("*")
+            .range(from, from + pageSize - 1);
+          if (error) throw error;
+          if (!data || data.length === 0) break;
+          rows.push(...data);
+          if (data.length < pageSize) break;
+          from += pageSize;
+        }
+        tables[t] = { row_count: rows.length, rows };
+      } catch (e) {
+        tableErrors[t] = (e as Error).message;
       }
     }
 
+    // Auth users
+    let authUsers: unknown[] = [];
+    const authErrors: string[] = [];
     try {
-      const authUsers = await listAllAuthUsers();
-      exportData.auth_users = authUsers;
-    } catch (err) {
-      exportData.auth_users = [
-        {
-          error: err instanceof Error ? err.message : String(err),
-        },
-      ];
+      let page = 1;
+      const perPage = 1000;
+      while (true) {
+        const { data, error } = await supabase.auth.admin.listUsers({
+          page,
+          perPage,
+        });
+        if (error) throw error;
+        const users = data?.users ?? [];
+        authUsers.push(...users);
+        if (users.length < perPage) break;
+        page += 1;
+      }
+    } catch (e) {
+      authErrors.push((e as Error).message);
     }
 
+    // Storage
+    const storage: {
+      buckets: unknown[];
+      objects_by_bucket: Record<string, unknown[]>;
+    } = { buckets: [], objects_by_bucket: {} };
+    const storageErrors: string[] = [];
     try {
       const { data: buckets, error } = await supabase.storage.listBuckets();
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      exportData.storage = {
-        buckets: buckets ?? [],
-        objects_by_bucket: {},
-      };
-
-      for (const bucket of buckets ?? []) {
+      if (error) throw error;
+      storage.buckets = buckets ?? [];
+      for (const b of buckets ?? []) {
         try {
-          const objects = await listStorageObjects(bucket.name);
-          (
-            exportData.storage as {
-              buckets: unknown[];
-              objects_by_bucket: Record<string, unknown>;
-            }
-          ).objects_by_bucket[bucket.name] = objects;
-        } catch (err) {
-          (
-            exportData.storage as {
-              buckets: unknown[];
-              objects_by_bucket: Record<string, unknown>;
-            }
-          ).objects_by_bucket[bucket.name] = {
-            error: err instanceof Error ? err.message : String(err),
-          };
+          const all: unknown[] = [];
+          let offset = 0;
+          const limit = 1000;
+          while (true) {
+            const { data: objs, error: lerr } = await supabase.storage
+              .from(b.name)
+              .list("", { limit, offset, sortBy: { column: "name", order: "asc" } });
+            if (lerr) throw lerr;
+            if (!objs || objs.length === 0) break;
+            all.push(...objs);
+            if (objs.length < limit) break;
+            offset += limit;
+          }
+          storage.objects_by_bucket[b.name] = all;
+        } catch (e) {
+          storageErrors.push(`${b.name}: ${(e as Error).message}`);
         }
       }
-    } catch (err) {
-      exportData.storage = {
-        error: err instanceof Error ? err.message : String(err),
-      };
+    } catch (e) {
+      storageErrors.push((e as Error).message);
     }
 
-    return json(exportData, 200);
-  } catch (err) {
-    return json(
-      {
-        error: err instanceof Error ? err.message : "Unknown error",
-      },
-      500,
-    );
+    return json({
+      exported_at: new Date().toISOString(),
+      project_url: SUPABASE_URL,
+      tables,
+      table_errors: tableErrors,
+      auth_users: authUsers,
+      auth_errors: authErrors,
+      storage,
+      storage_errors: storageErrors,
+    });
+  } catch (e) {
+    return json({ error: (e as Error).message }, 500);
   }
 });
