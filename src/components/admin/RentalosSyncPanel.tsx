@@ -423,6 +423,8 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
       addLog(`   Actualizados: ${syncResult.updated}`);
       addLog(`   Nuevos: ${syncResult.created}`);
       addLog(`   Desactivados: ${syncResult.deactivated}`);
+      addLog(`   ↪ Subcategoría inferida por similitud: ${inferredCount}`);
+      if (unresolvedCount > 0) addLog(`   ⚠ Sin subcategoría inferible: ${unresolvedCount}`);
       if (syncResult.errors.length > 0) {
         addLog(`   ⚠️ Errores: ${syncResult.errors.length}`);
         syncResult.errors.forEach((e) => addLog(`   ❌ ${e}`));
