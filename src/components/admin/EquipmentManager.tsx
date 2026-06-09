@@ -317,15 +317,21 @@ export const EquipmentManager = () => {
       return true;
     };
 
+    const matchesSubcatFilter = (eq: Equipment): boolean => {
+      if (subcatFilter === "with") return !!eq.subcategory_id;
+      if (subcatFilter === "without") return !eq.subcategory_id;
+      return true;
+    };
+
     const filtered = equipment.filter(
-      (e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e) && matchesFeaturedFilter(e),
+      (e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e) && matchesFeaturedFilter(e) && matchesSubcatFilter(e),
     );
 
     if (priceSort === "none") return filtered;
     return [...filtered].sort((a, b) =>
       priceSort === "asc" ? a.price_per_day - b.price_per_day : b.price_per_day - a.price_per_day,
     );
-  }, [equipment, debouncedSearch, imageFilter, categoryFilter, featuredFilter, priceSort, hasImage]);
+  }, [equipment, debouncedSearch, imageFilter, categoryFilter, featuredFilter, subcatFilter, priceSort, hasImage]);
 
   const filteredWithImageCount = useMemo(
     () => filteredEquipment.filter((e) => hasImage(e)).length,
