@@ -1355,7 +1355,8 @@ export const EquipmentManager = () => {
                         </div>
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </ScrollArea>
               <div className="flex items-center justify-between text-sm text-muted-foreground">
