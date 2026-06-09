@@ -1048,7 +1048,30 @@ export const EquipmentManager = () => {
               {/* Equipment List */}
               <ScrollArea className="h-[400px] sm:h-[500px] border rounded-md">
                 <div className="p-2 space-y-2">
-                  {filteredEquipment.map((eq) => (
+                  {groupedListItems.map((item) => {
+                    if (item.kind === "category-header") {
+                      return (
+                        <div key={item.key} className="pt-3 pb-1 px-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground border-b sticky top-0 bg-background z-[1]">
+                          {item.label}
+                        </div>
+                      );
+                    }
+                    if (item.kind === "uncategorized-sub-header") {
+                      return (
+                        <div key={item.key} className="pt-2 pb-1 px-1 text-[10px] font-medium uppercase tracking-wider text-amber-600 dark:text-amber-400 border-t border-dashed">
+                          Sin categorizar
+                        </div>
+                      );
+                    }
+                    if (item.kind === "uncategorized-final-header") {
+                      return (
+                        <div key={item.key} className="mt-4 pt-2 pb-1 px-1 text-[10px] font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400 border-t-2 border-amber-600/40">
+                          Sin categorizar
+                        </div>
+                      );
+                    }
+                    const eq = item.eq;
+                    return (
                     <div
                       key={eq.id}
                       className={cn(
