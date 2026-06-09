@@ -1011,6 +1011,21 @@ export const EquipmentManager = () => {
                     </SelectContent>
                   </Select>
                 </div>
+                <div className="space-y-1">
+                  <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Filter className="h-3 w-3" />
+                    Subcategoría
+                  </Label>
+                  <Select value={subcatFilter} onValueChange={(v) => setSubcatFilter(v as SubcatFilter)}>
+                    <SelectTrigger className="h-9 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todas</SelectItem>
+                      <SelectItem value="with">Con subcategoría</SelectItem>
+                      <SelectItem value="without">Sin subcategoría</SelectItem>
+                    </SelectContent>
+                  </Select>
                 <div className="space-y-1 col-span-2 sm:col-span-1">
                   <Label className="text-xs text-muted-foreground flex items-center gap-1">
                     <ArrowUpDown className="h-3 w-3" />
