@@ -350,21 +350,59 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
         };
         if (mergedDescription !== undefined) updateFields.description = mergedDescription;
 
+        // Regla de prevalencia de subcategoría:
+        // - CSV con categoría mapeada → prevalece sobre la asignación manual/inferida previa.
+        // - CSV con categoría vacía o no mapeada → NO tocar subcategoría existente.
+        //   Solo inferir por similitud si el equipo es nuevo o no tiene subcategoría aún.
+        const existingFull = existing
+          ? ((existingEquipment || []).find((e) => e.id === existing.id) as any)
+          : null;
+        const existingHasSubcat = !!existingFull?.subcategory_id;
+
         if (subcatInfo) {
           updateFields.subcategory_id = subcatInfo.id;
           updateFields.category_id = subcatInfo.category_id;
+        } else if (csvCatNorm && csvCatNorm !== "sonido") {
+          // CSV trae categoría no vacía pero no mapeada: no tocar subcategoría existente.
+          if (!existingHasSubcat) {
+            const inferred = inferSubcategory(csvItem.nombre);
+            if (inferred) {
+              updateFields.subcategory_id = inferred.subcategory_id;
+              if (inferred.category_id) updateFields.category_id = inferred.category_id;
+              inferredCount++;
+              const subName = subNameById.get(inferred.subcategory_id) || inferred.subcategory_id;
+              syncResult.details.push(`↪ Inferido por similitud: ${csvItem.nombre} → ${subName}`);
+            } else {
+              unresolvedCount++;
+            }
+          }
+        } else if (csvCatNorm === "sonido") {
+          // Sonido: si no hay subcat previa, intentar inferir; si no, forzar categoría Sonido.
+          if (!existingHasSubcat) {
+            const inferred = inferSubcategory(csvItem.nombre);
+            if (inferred) {
+              updateFields.subcategory_id = inferred.subcategory_id;
+              if (inferred.category_id) updateFields.category_id = inferred.category_id;
+              inferredCount++;
+              const subName = subNameById.get(inferred.subcategory_id) || inferred.subcategory_id;
+              syncResult.details.push(`↪ Inferido por similitud: ${csvItem.nombre} → ${subName}`);
+            } else {
+              updateFields.category_id = SONIDO_CATEGORY_ID;
+            }
+          }
         } else {
-          const inferred = inferSubcategory(csvItem.nombre);
-          if (inferred) {
-            updateFields.subcategory_id = inferred.subcategory_id;
-            if (inferred.category_id) updateFields.category_id = inferred.category_id;
-            inferredCount++;
-            const subName = subNameById.get(inferred.subcategory_id) || inferred.subcategory_id;
-            syncResult.details.push(`↪ Inferido por similitud: ${csvItem.nombre} → ${subName}`);
-          } else if (csvCatNorm === "sonido") {
-            updateFields.category_id = SONIDO_CATEGORY_ID;
-          } else {
-            unresolvedCount++;
+          // CSV con categoría vacía → preservar subcat existente. Inferir solo si no hay.
+          if (!existingHasSubcat) {
+            const inferred = inferSubcategory(csvItem.nombre);
+            if (inferred) {
+              updateFields.subcategory_id = inferred.subcategory_id;
+              if (inferred.category_id) updateFields.category_id = inferred.category_id;
+              inferredCount++;
+              const subName = subNameById.get(inferred.subcategory_id) || inferred.subcategory_id;
+              syncResult.details.push(`↪ Inferido por similitud: ${csvItem.nombre} → ${subName}`);
+            } else {
+              unresolvedCount++;
+            }
           }
         }
 
