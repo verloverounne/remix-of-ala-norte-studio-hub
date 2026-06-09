@@ -353,10 +353,19 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
         if (subcatInfo) {
           updateFields.subcategory_id = subcatInfo.id;
           updateFields.category_id = subcatInfo.category_id;
-        } else if (csvCatNorm === "sonido") {
-          // Fallback: si no hay subcategoría mapeada pero el CSV lo declara
-          // como "sonido", al menos garantizamos la categoría Sonido.
-          updateFields.category_id = SONIDO_CATEGORY_ID;
+        } else {
+          const inferred = inferSubcategory(csvItem.nombre);
+          if (inferred) {
+            updateFields.subcategory_id = inferred.subcategory_id;
+            if (inferred.category_id) updateFields.category_id = inferred.category_id;
+            inferredCount++;
+            const subName = subNameById.get(inferred.subcategory_id) || inferred.subcategory_id;
+            syncResult.details.push(`↪ Inferido por similitud: ${csvItem.nombre} → ${subName}`);
+          } else if (csvCatNorm === "sonido") {
+            updateFields.category_id = SONIDO_CATEGORY_ID;
+          } else {
+            unresolvedCount++;
+          }
         }
 
         if (existing) {
