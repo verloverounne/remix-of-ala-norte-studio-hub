@@ -1026,6 +1026,7 @@ export const EquipmentManager = () => {
                       <SelectItem value="without">Sin subcategoría</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
                 <div className="space-y-1 col-span-2 sm:col-span-1">
                   <Label className="text-xs text-muted-foreground flex items-center gap-1">
                     <ArrowUpDown className="h-3 w-3" />
