@@ -83,6 +83,7 @@ interface StorageFile {
 type ImageFilter = "all" | "with" | "without";
 type PriceSort = "none" | "asc" | "desc";
 type FeaturedFilter = "all" | "featured" | "not_featured";
+type SubcatFilter = "all" | "with" | "without";
 
 export const EquipmentManager = () => {
   const [equipment, setEquipment] = useState<Equipment[]>([]);
@@ -101,6 +102,7 @@ export const EquipmentManager = () => {
   const [priceSort, setPriceSort] = useState<PriceSort>("none");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [featuredFilter, setFeaturedFilter] = useState<FeaturedFilter>("all");
+  const [subcatFilter, setSubcatFilter] = useState<SubcatFilter>("all");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingEquipment, setEditingEquipment] = useState<Equipment | null>(null);
   const [savingEquipment, setSavingEquipment] = useState(false);
@@ -315,20 +317,72 @@ export const EquipmentManager = () => {
       return true;
     };
 
+    const matchesSubcatFilter = (eq: Equipment): boolean => {
+      if (subcatFilter === "with") return !!eq.subcategory_id;
+      if (subcatFilter === "without") return !eq.subcategory_id;
+      return true;
+    };
+
     const filtered = equipment.filter(
-      (e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e) && matchesFeaturedFilter(e),
+      (e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e) && matchesFeaturedFilter(e) && matchesSubcatFilter(e),
     );
 
     if (priceSort === "none") return filtered;
     return [...filtered].sort((a, b) =>
       priceSort === "asc" ? a.price_per_day - b.price_per_day : b.price_per_day - a.price_per_day,
     );
-  }, [equipment, debouncedSearch, imageFilter, categoryFilter, featuredFilter, priceSort, hasImage]);
+  }, [equipment, debouncedSearch, imageFilter, categoryFilter, featuredFilter, subcatFilter, priceSort, hasImage]);
 
   const filteredWithImageCount = useMemo(
     () => filteredEquipment.filter((e) => hasImage(e)).length,
     [filteredEquipment, hasImage],
   );
+
+  // Group filtered equipment by category; within each category, items with
+  // subcategory first and items without subcategory appended under a
+  // "Sin categorizar" sub-section. Items without a category at all go into
+  // a final standalone "Sin categorizar" section at the end of the list.
+  type ListItem =
+    | { kind: "category-header"; key: string; label: string }
+    | { kind: "uncategorized-sub-header"; key: string }
+    | { kind: "uncategorized-final-header"; key: string }
+    | { kind: "equipment"; key: string; eq: Equipment };
+
+  const groupedListItems = useMemo<ListItem[]>(() => {
+    if (priceSort !== "none") {
+      // If user explicitly sorts by price, keep flat output (no grouping)
+      return filteredEquipment.map((eq) => ({ kind: "equipment" as const, key: eq.id, eq }));
+    }
+    const byCat = new Map<string, { name: string; order: number; withSub: Equipment[]; withoutSub: Equipment[] }>();
+    const orphans: Equipment[] = [];
+    for (const eq of filteredEquipment) {
+      if (!eq.category_id) {
+        orphans.push(eq);
+        continue;
+      }
+      const catName = eq.categories?.name || "Categoría";
+      const catOrder = (eq.categories as any)?.order_index ?? 999;
+      const bucket = byCat.get(eq.category_id) || { name: catName, order: catOrder, withSub: [], withoutSub: [] };
+      if (eq.subcategory_id) bucket.withSub.push(eq);
+      else bucket.withoutSub.push(eq);
+      byCat.set(eq.category_id, bucket);
+    }
+    const items: ListItem[] = [];
+    const sortedCats = Array.from(byCat.entries()).sort((a, b) => a[1].order - b[1].order || a[1].name.localeCompare(b[1].name));
+    for (const [catId, bucket] of sortedCats) {
+      items.push({ kind: "category-header", key: `cat-${catId}`, label: bucket.name });
+      for (const eq of bucket.withSub) items.push({ kind: "equipment", key: eq.id, eq });
+      if (bucket.withoutSub.length > 0) {
+        items.push({ kind: "uncategorized-sub-header", key: `uncat-${catId}` });
+        for (const eq of bucket.withoutSub) items.push({ kind: "equipment", key: eq.id, eq });
+      }
+    }
+    if (orphans.length > 0) {
+      items.push({ kind: "uncategorized-final-header", key: "uncat-final" });
+      for (const eq of orphans) items.push({ kind: "equipment", key: eq.id, eq });
+    }
+    return items;
+  }, [filteredEquipment, priceSort]);
 
   // O(1) lookups for storage gallery
   const equipmentImageUrlSet = useMemo(
@@ -957,6 +1011,22 @@ export const EquipmentManager = () => {
                     </SelectContent>
                   </Select>
                 </div>
+                <div className="space-y-1">
+                  <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Filter className="h-3 w-3" />
+                    Subcategoría
+                  </Label>
+                  <Select value={subcatFilter} onValueChange={(v) => setSubcatFilter(v as SubcatFilter)}>
+                    <SelectTrigger className="h-9 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todas</SelectItem>
+                      <SelectItem value="with">Con subcategoría</SelectItem>
+                      <SelectItem value="without">Sin subcategoría</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div className="space-y-1 col-span-2 sm:col-span-1">
                   <Label className="text-xs text-muted-foreground flex items-center gap-1">
                     <ArrowUpDown className="h-3 w-3" />
@@ -978,7 +1048,30 @@ export const EquipmentManager = () => {
               {/* Equipment List */}
               <ScrollArea className="h-[400px] sm:h-[500px] border rounded-md">
                 <div className="p-2 space-y-2">
-                  {filteredEquipment.map((eq) => (
+                  {groupedListItems.map((item) => {
+                    if (item.kind === "category-header") {
+                      return (
+                        <div key={item.key} className="pt-3 pb-1 px-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground border-b sticky top-0 bg-background z-[1]">
+                          {item.label}
+                        </div>
+                      );
+                    }
+                    if (item.kind === "uncategorized-sub-header") {
+                      return (
+                        <div key={item.key} className="pt-2 pb-1 px-1 text-[10px] font-medium uppercase tracking-wider text-amber-600 dark:text-amber-400 border-t border-dashed">
+                          Sin categorizar
+                        </div>
+                      );
+                    }
+                    if (item.kind === "uncategorized-final-header") {
+                      return (
+                        <div key={item.key} className="mt-4 pt-2 pb-1 px-1 text-[10px] font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400 border-t-2 border-amber-600/40">
+                          Sin categorizar
+                        </div>
+                      );
+                    }
+                    const eq = item.eq;
+                    return (
                     <div
                       key={eq.id}
                       className={cn(
@@ -1262,7 +1355,8 @@ export const EquipmentManager = () => {
                         </div>
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </ScrollArea>
               <div className="flex items-center justify-between text-sm text-muted-foreground">
