@@ -217,12 +217,13 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
       addLog("Cargando subcategorías...");
       const { data: subcategories } = await supabase.from("subcategories").select("id, name, category_id");
       const subMap = new Map((subcategories || []).map((s) => [s.name, { id: s.id, category_id: s.category_id }]));
+      const subNameById = new Map((subcategories || []).map((s) => [s.id, s.name]));
 
       // Fetch all existing equipment (incluyendo description para append de anexos)
       addLog("Cargando equipos existentes...");
       const { data: existingEquipment, error: eqError } = await supabase
         .from("equipment")
-        .select("id, name, status, description")
+        .select("id, name, status, description, brand, model, subcategory_id, category_id")
         .limit(10000);
       if (eqError) throw eqError;
 
@@ -232,8 +233,72 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
       }
       addLog(`✓ ${existingMap.size} equipos existentes en la base de datos`);
 
+      // ── Índices para inferencia de subcategoría por similitud ──
+      const STOPWORDS = new Set(["de","del","la","el","los","las","para","con","kit","set","pack","tipo","modelo","y","a","en","por"]);
+      const tokenize = (s: string): string[] => normalizeName(s)
+        .split(/\s+/)
+        .filter((t) => t.length >= 3 && !STOPWORDS.has(t) && !/^\d+$/.test(t));
+
+      type SimEntry = { tokens: string[]; subcategory_id: string; category_id: string | null };
+      const simEntries: SimEntry[] = [];
+      const brandModelMap = new Map<string, { subcategory_id: string; category_id: string | null }>();
+      const brandModelPrefixMap = new Map<string, { subcategory_id: string; category_id: string | null }>();
+      for (const eq of (existingEquipment || []) as any[]) {
+        if (!eq.subcategory_id) continue;
+        simEntries.push({
+          tokens: tokenize(eq.name),
+          subcategory_id: eq.subcategory_id,
+          category_id: eq.category_id,
+        });
+        if (eq.brand && eq.model) {
+          const bm = `${normalizeName(eq.brand)}|${normalizeName(eq.model)}`;
+          if (!brandModelMap.has(bm)) brandModelMap.set(bm, { subcategory_id: eq.subcategory_id, category_id: eq.category_id });
+          const prefix = normalizeName(eq.model).split(/\s+/)[0];
+          if (prefix) {
+            const bmp = `${normalizeName(eq.brand)}|${prefix}`;
+            if (!brandModelPrefixMap.has(bmp)) brandModelPrefixMap.set(bmp, { subcategory_id: eq.subcategory_id, category_id: eq.category_id });
+          }
+        }
+      }
+
+      const inferSubcategory = (name: string): { subcategory_id: string; category_id: string | null } | null => {
+        const tokens = tokenize(name);
+        if (tokens.length === 0) return null;
+        const rawTokens = normalizeName(name).split(/\s+/).filter(Boolean);
+        const guessedBrand = rawTokens[0];
+        const guessedModel = rawTokens[1];
+        if (guessedBrand && guessedModel) {
+          const hit = brandModelMap.get(`${guessedBrand}|${guessedModel}`);
+          if (hit) return hit;
+          const hit2 = brandModelPrefixMap.get(`${guessedBrand}|${guessedModel}`);
+          if (hit2) return hit2;
+        }
+        const tokenSet = new Set(tokens);
+        const counts = new Map<string, { score: number; category_id: string | null }>();
+        let bestScore = 0;
+        for (const entry of simEntries) {
+          let shared = 0;
+          for (const t of entry.tokens) if (tokenSet.has(t)) shared++;
+          if (shared < 2) continue;
+          if (shared > bestScore) bestScore = shared;
+          const prev = counts.get(entry.subcategory_id);
+          if (prev) prev.score += shared;
+          else counts.set(entry.subcategory_id, { score: shared, category_id: entry.category_id });
+        }
+        if (bestScore < 2 || counts.size === 0) return null;
+        let bestSub: string | null = null;
+        let bestSubScore = -1;
+        let bestCat: string | null = null;
+        for (const [sid, v] of counts) {
+          if (v.score > bestSubScore) { bestSubScore = v.score; bestSub = sid; bestCat = v.category_id; }
+        }
+        return bestSub ? { subcategory_id: bestSub, category_id: bestCat } : null;
+      };
+
       const syncResult: SyncResult = { updated: 0, created: 0, deactivated: 0, errors: [], details: [] };
       const matchedIds = new Set<string>();
+      let inferredCount = 0;
+      let unresolvedCount = 0;
 
       // Process each grouped CSV item
       addLog("Iniciando sincronización...");
@@ -288,10 +353,19 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
         if (subcatInfo) {
           updateFields.subcategory_id = subcatInfo.id;
           updateFields.category_id = subcatInfo.category_id;
-        } else if (csvCatNorm === "sonido") {
-          // Fallback: si no hay subcategoría mapeada pero el CSV lo declara
-          // como "sonido", al menos garantizamos la categoría Sonido.
-          updateFields.category_id = SONIDO_CATEGORY_ID;
+        } else {
+          const inferred = inferSubcategory(csvItem.nombre);
+          if (inferred) {
+            updateFields.subcategory_id = inferred.subcategory_id;
+            if (inferred.category_id) updateFields.category_id = inferred.category_id;
+            inferredCount++;
+            const subName = subNameById.get(inferred.subcategory_id) || inferred.subcategory_id;
+            syncResult.details.push(`↪ Inferido por similitud: ${csvItem.nombre} → ${subName}`);
+          } else if (csvCatNorm === "sonido") {
+            updateFields.category_id = SONIDO_CATEGORY_ID;
+          } else {
+            unresolvedCount++;
+          }
         }
 
         if (existing) {
@@ -349,6 +423,8 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
       addLog(`   Actualizados: ${syncResult.updated}`);
       addLog(`   Nuevos: ${syncResult.created}`);
       addLog(`   Desactivados: ${syncResult.deactivated}`);
+      addLog(`   ↪ Subcategoría inferida por similitud: ${inferredCount}`);
+      if (unresolvedCount > 0) addLog(`   ⚠ Sin subcategoría inferible: ${unresolvedCount}`);
       if (syncResult.errors.length > 0) {
         addLog(`   ⚠️ Errores: ${syncResult.errors.length}`);
         syncResult.errors.forEach((e) => addLog(`   ❌ ${e}`));
