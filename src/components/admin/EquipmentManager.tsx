@@ -102,6 +102,7 @@ export const EquipmentManager = () => {
   const [priceSort, setPriceSort] = useState<PriceSort>("none");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [featuredFilter, setFeaturedFilter] = useState<FeaturedFilter>("all");
+  const [subcatFilter, setSubcatFilter] = useState<SubcatFilter>("all");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingEquipment, setEditingEquipment] = useState<Equipment | null>(null);
   const [savingEquipment, setSavingEquipment] = useState(false);
