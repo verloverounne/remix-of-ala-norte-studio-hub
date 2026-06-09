@@ -338,6 +338,52 @@ export const EquipmentManager = () => {
     [filteredEquipment, hasImage],
   );
 
+  // Group filtered equipment by category; within each category, items with
+  // subcategory first and items without subcategory appended under a
+  // "Sin categorizar" sub-section. Items without a category at all go into
+  // a final standalone "Sin categorizar" section at the end of the list.
+  type ListItem =
+    | { kind: "category-header"; key: string; label: string }
+    | { kind: "uncategorized-sub-header"; key: string }
+    | { kind: "uncategorized-final-header"; key: string }
+    | { kind: "equipment"; key: string; eq: Equipment };
+
+  const groupedListItems = useMemo<ListItem[]>(() => {
+    if (priceSort !== "none") {
+      // If user explicitly sorts by price, keep flat output (no grouping)
+      return filteredEquipment.map((eq) => ({ kind: "equipment" as const, key: eq.id, eq }));
+    }
+    const byCat = new Map<string, { name: string; order: number; withSub: Equipment[]; withoutSub: Equipment[] }>();
+    const orphans: Equipment[] = [];
+    for (const eq of filteredEquipment) {
+      if (!eq.category_id) {
+        orphans.push(eq);
+        continue;
+      }
+      const catName = eq.categories?.name || "Categoría";
+      const catOrder = (eq.categories as any)?.order_index ?? 999;
+      const bucket = byCat.get(eq.category_id) || { name: catName, order: catOrder, withSub: [], withoutSub: [] };
+      if (eq.subcategory_id) bucket.withSub.push(eq);
+      else bucket.withoutSub.push(eq);
+      byCat.set(eq.category_id, bucket);
+    }
+    const items: ListItem[] = [];
+    const sortedCats = Array.from(byCat.entries()).sort((a, b) => a[1].order - b[1].order || a[1].name.localeCompare(b[1].name));
+    for (const [catId, bucket] of sortedCats) {
+      items.push({ kind: "category-header", key: `cat-${catId}`, label: bucket.name });
+      for (const eq of bucket.withSub) items.push({ kind: "equipment", key: eq.id, eq });
+      if (bucket.withoutSub.length > 0) {
+        items.push({ kind: "uncategorized-sub-header", key: `uncat-${catId}` });
+        for (const eq of bucket.withoutSub) items.push({ kind: "equipment", key: eq.id, eq });
+      }
+    }
+    if (orphans.length > 0) {
+      items.push({ kind: "uncategorized-final-header", key: "uncat-final" });
+      for (const eq of orphans) items.push({ kind: "equipment", key: eq.id, eq });
+    }
+    return items;
+  }, [filteredEquipment, priceSort]);
+
   // O(1) lookups for storage gallery
   const equipmentImageUrlSet = useMemo(
     () => new Set(equipmentImages.map((img) => img.image_url)),
