@@ -486,6 +486,7 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
       addLog(`✅ Sincronización completada:`);
       addLog(`   Actualizados: ${syncResult.updated}`);
       addLog(`   Nuevos: ${syncResult.created}`);
+      addLog(`   Eliminados (Externo): ${syncResult.deleted}`);
       addLog(`   Desactivados: ${syncResult.deactivated}`);
       addLog(`   ↪ Subcategoría inferida por similitud: ${inferredCount}`);
       if (unresolvedCount > 0) addLog(`   ⚠ Sin subcategoría inferible: ${unresolvedCount}`);
@@ -497,8 +498,9 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
       setResult(syncResult);
       toast({
         title: "✓ Sincronización Rentalos completada",
-        description: `${syncResult.updated} actualizados, ${syncResult.created} nuevos, ${syncResult.deactivated} desactivados`,
+        description: `${syncResult.updated} actualizados · ${syncResult.created} nuevos · ${syncResult.deleted} eliminados · ${syncResult.deactivated} desactivados`,
       });
+
       onSyncComplete?.();
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Error desconocido";
