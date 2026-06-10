@@ -531,7 +531,10 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
           <p className="font-semibold">¿Qué hace exactamente esta sincronización?</p>
           <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
             <li>Lee el CSV de Rentalos y agrupa filas por <strong>nombre normalizado</strong> (mismo equipo en varias filas se unifica en un solo registro).</li>
-            <li><strong>Disponibilidad por tipo:</strong> <em>Propio</em> y <em>Estacionado</em> (compartido que duerme en Ala Norte) quedan <code>available</code>; <em>Compartido</em> también <code>available</code>; solo <em>Externo</em> pasa a <code>maintenance</code> (no disponible).</li>
+            <li><strong>Eliminación por Externo:</strong> los equipos cuyo tipo dominante en el CSV es <em>Externo</em> se <strong>eliminan de la base</strong> (no se crean si no existen).</li>
+            <li><strong>No funcional</strong>: si el campo <em>Funcional</em> es <code>No</code> (o el stock efectivo queda en 0), el equipo se marca como <code>maintenance</code> (no disponible).</li>
+            <li><strong>Disponibilidad por tipo:</strong> <em>Propio</em>, <em>Estacionado</em> y <em>Compartido</em> quedan <code>available</code>.</li>
+
             <li><strong>Orden de aparición</strong> (<code>order_index</code>): 1 = Propio, 2 = Estacionado, 3 = Compartido, 4 = Externo. Así los Propios aparecen primero y los Estacionados en segundo lugar.</li>
             <li><strong>Stock disponible</strong> (<code>stock_quantity</code>): suma de cantidades por nombre, descontando las filas <em>Externo</em>. El campo <strong>Funcional</strong> ajusta la cantidad de cada fila: <code>Funcional</code> / <code>Si</code> / vacío usa la cantidad declarada; <code>Parcial (n/m)</code> cuenta solo <code>n</code> unidades (ej. 2/4 = 2 disponibles en el cotizador); <code>No</code> cuenta 0.</li>
             <li>Actualiza también: <strong>price_per_day</strong>, <strong>functional_status</strong>, <strong>ownership_type</strong> (Propio/Estacionado/Compartido/Externo) y <strong>serial_number</strong> (concatenando todos los números de serie con " | ").</li>
