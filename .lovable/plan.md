@@ -1,44 +1,34 @@
-# Auto-asignar subcategoría por equipos similares (Rentalos sync)
-
-## Problema
-En `RentalosSyncPanel.tsx`, cuando una fila del CSV tiene una `categoria` que no está en `CATEGORY_MAP` (o está vacía), el equipo se crea/actualiza **sin** `subcategory_id` (y a veces sin `category_id`), salvo el fallback duro de "sonido". Resultado: equipos huérfanos en el listado del rental.
-
 ## Objetivo
-Cuando no haya match directo de subcategoría desde el CSV, **inferirla a partir de equipos similares ya existentes en la base** (que sí tengan `subcategory_id`).
+Reemplazar el buscador custom de `src/pages/Equipos.tsx` (Levenshtein + subsequence manual) por **Fuse.js**, igual que el `SearchBar` del header, para tener búsqueda difusa real tolerante a errores tipográficos.
 
-## Estrategia de similitud (en orden, primer match gana)
+## Cambios en `src/pages/Equipos.tsx`
 
-Para cada equipo sin subcategoría resuelta:
+1. **Importar Fuse**: `import Fuse from "fuse.js";` (ya está instalado, lo usa el header).
+2. **Eliminar** `fuzzyMatch` y `levenshteinDistance` (líneas 121-158).
+3. **Crear instancia memoizada de Fuse** sobre el `equipment` ya filtrado por `status === "available"`, con las mismas opciones que el header para que el comportamiento sea idéntico:
+   ```ts
+   const fuse = useMemo(() => new Fuse(availableEquipment, {
+     keys: ["name", "brand", "model", "description"],
+     threshold: 0.45,
+     ignoreLocation: true,
+     minMatchCharLength: 2,
+     includeScore: true,
+   }), [availableEquipment]);
+   ```
+4. **Reescribir `filteredEquipment`**: 
+   - Si `searchTerm.trim().length < 2` → devolver todos los disponibles (aplicando solo el filtro de subcategoría).
+   - Si hay búsqueda → `fuse.search(searchTerm)` ordenado por score, mapear a items, y luego aplicar el filtro de subcategoría seleccionada.
+5. **Preservar el resto del comportamiento** ya existente:
+   - Cuando hay búsqueda activa, ignorar la categoría seleccionada y mostrar resultados de todas las categorías (igual que ahora).
+   - `subcategoriesWithResults`, `categoriesWithResults`, agrupado "Otros" y orden de tarjetas se siguen calculando a partir de `filteredEquipment`, sin cambios.
+   - `searchTerm` sigue siendo controlado por el input existente; no se toca el UI.
 
-1. **Marca + modelo exactos**: buscar en `equipment` existente otro registro cuyo `brand`+`model` (normalizados) coincidan y tenga `subcategory_id`. Heredar esa subcategoría.
-2. **Marca + primer token del modelo**: ej. "Aputure 600D Pro" → matchea con "Aputure 600x Pro" si comparten "Aputure" + "600".
-3. **Tokens significativos del nombre normalizado**: tokenizar el `name` (quitando stopwords como "de", "kit", "para", números sueltos), y buscar el equipo existente que comparta más tokens (≥2) y tenga subcategoría. Elegir la subcategoría más frecuente entre los top matches.
-4. **Fallback final**: si nada matchea, dejar el equipo como hoy (sin subcategoría) y registrarlo en el log/errores como "⚠ sin subcategoría inferible".
+## Notas técnicas
+- Mismo umbral (`threshold: 0.45`) e `ignoreLocation` que el header → tolerancia a errores y matches en cualquier parte del texto.
+- `minMatchCharLength: 2` evita ruido con 1 sola letra (el input ya muestra todo cuando hay <2 chars).
+- Se respeta la regla de visibilidad pública: solo equipos con `status === "available"` entran al índice.
+- No se modifica `SearchBar.tsx` ni ningún otro componente.
 
-Si el match aporta subcategoría, también se asigna su `category_id` (consistencia).
-
-## Cambios en código
-
-Archivo único: `src/components/admin/RentalosSyncPanel.tsx`
-
-1. Ampliar el SELECT de equipos existentes para traer `brand, model, subcategory_id, category_id` además de lo actual.
-2. Construir, después del fetch, un índice en memoria de equipos **con subcategoría asignada**:
-   - Map por `brand|model` normalizados.
-   - Map por `brand|modelPrefix`.
-   - Lista tokenizada `{tokens, subcategory_id, category_id}` para el fuzzy.
-3. Nueva función `inferSubcategoryFromSimilar(name, brand?, model?)` que devuelve `{ subcategory_id, category_id } | null` aplicando los 3 niveles.
-4. En el loop de sync, si `subcatInfo` es null y tampoco aplica el fallback "sonido", llamar a `inferSubcategoryFromSimilar` con el nombre/brand/model derivados del CSV (brand/model no vienen en el CSV — se derivan del nombre por heurística simple: primer token = brand, segundo = model).
-5. Si se infiere, setear `updateFields.subcategory_id` y `category_id`, y agregar a `syncResult.details` un mensaje "↪ Inferido por similitud: {nombre} → {subcategoría}".
-6. Actualizar el bloque de "¿Qué hace exactamente esta sincronización?" en el card para describir el nuevo paso.
-
-## Detalles técnicos
-
-- Normalización reutiliza `normalizeName` existente.
-- Stopwords mínimas en castellano/inglés: `["de","del","la","el","para","con","kit","set","pack","tipo","modelo"]`.
-- Umbral fuzzy: mínimo 2 tokens compartidos de ≥3 chars; si empate, gana la subcategoría con más ocurrencias entre los matches.
-- Todo en memoria, sin queries extra por equipo (rendimiento).
-- No toca: imágenes, specs, featured, lógica de stock/status/ownership.
-
-## Validación
-- Probar con el CSV actual: contar cuántos equipos quedan sin subcategoría antes vs después, visible en el log del panel.
-- Revisar manualmente algunos casos inferidos desde el listado de rental.
+## Fuera de alcance
+- No tocar el panel admin ni el header.
+- No cambiar el diseño del input de búsqueda en Equipos.
