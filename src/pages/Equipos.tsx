@@ -200,7 +200,9 @@ const Equipos = () => {
     if (!isSearching) return new Set<string>();
     const catIds = new Set<string>();
     filteredEquipment.forEach((item) => {
-      if (item.category_id) {
+      if (!item.subcategory_id) {
+        catIds.add("otros-virtual");
+      } else if (item.category_id) {
         catIds.add(item.category_id);
       }
     });
