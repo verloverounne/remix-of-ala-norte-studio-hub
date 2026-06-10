@@ -200,7 +200,9 @@ const Equipos = () => {
     if (!isSearching) return new Set<string>();
     const catIds = new Set<string>();
     filteredEquipment.forEach((item) => {
-      if (item.category_id) {
+      if (!item.subcategory_id) {
+        catIds.add("otros-virtual");
+      } else if (item.category_id) {
         catIds.add(item.category_id);
       }
     });
@@ -242,26 +244,40 @@ const Equipos = () => {
     });
     return sorted;
   }, [filteredEquipment, sortOption, subcategories]);
+  // Virtual "Otros" category for equipment without subcategory
+  const OTROS_CATEGORY_ID = "otros-virtual";
+  const displayCategories = useMemo(() => {
+    const otros: typeof categories[number] = {
+      id: OTROS_CATEGORY_ID,
+      name: "Otros",
+      slug: "otros",
+      order_index: 9999,
+    } as any;
+    return [...categories, otros];
+  }, [categories]);
+
   const equipmentByCategory = useMemo(() => {
     const grouped: Record<string, EquipmentWithStock[]> = {};
     categories.forEach((cat) => {
-      grouped[cat.id] = sortedEquipment.filter((e) => e.category_id === cat.id);
+      // Items in a real category must have a subcategory_id; otherwise they go to "Otros"
+      grouped[cat.id] = sortedEquipment.filter((e) => e.category_id === cat.id && e.subcategory_id);
     });
+    grouped[OTROS_CATEGORY_ID] = sortedEquipment.filter((e) => !e.subcategory_id);
     return grouped;
   }, [sortedEquipment, categories]);
   const orderedCategories = useMemo(() => {
-    if (!activeCategory) return categories;
-    const active = categories.find((c) => c.id === activeCategory);
-    const rest = categories.filter((c) => c.id !== activeCategory);
-    return active ? [active, ...rest] : categories;
-  }, [categories, activeCategory]);
+    if (!activeCategory) return displayCategories;
+    const active = displayCategories.find((c) => c.id === activeCategory);
+    const rest = displayCategories.filter((c) => c.id !== activeCategory);
+    return active ? [active, ...rest] : displayCategories;
+  }, [displayCategories, activeCategory]);
   const equipmentCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    categories.forEach((cat) => {
+    displayCategories.forEach((cat) => {
       counts[cat.id] = equipmentByCategory[cat.id]?.length || 0;
     });
     return counts;
-  }, [equipmentByCategory, categories]);
+  }, [equipmentByCategory, displayCategories]);
 
   // Subcategories filtered by active category
   const filteredSubcategories = useMemo(() => {
@@ -357,7 +373,7 @@ const Equipos = () => {
       />
       {/* Hero Carousel - Now simplified, only shows slides */}
       <HeroCarouselRental
-        categories={categories}
+        categories={displayCategories}
         onCategoryChange={handleCategoryClick}
         activeCategory={activeCategory}
       />
@@ -373,7 +389,7 @@ const Equipos = () => {
           {/* Row 1: Category chips */}
           <div className="flex items-center gap-2 mb-2">
             <div className="min-w-screen flex-wrap flex-1 pt-4 flex items-center justify-center py-0 my-0 pb-[16px] gap-[24px] pl-[16px] pr-[16px] px-[16px] bg-inherit">
-              {categories.map((category) => {
+              {displayCategories.map((category) => {
                 const count = equipmentCounts[category.id] || 0;
                 const isActive = activeCategory === category.id;
                 return (
