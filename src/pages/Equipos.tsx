@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Fuse from "fuse.js";
 type EquipmentWithStock = EquipmentWithCategory;
 type SortOption = "alphabetic" | "price-asc" | "price-desc" | "available-first" | "unavailable-first";
 const Equipos = () => {
