@@ -119,70 +119,40 @@ const Equipos = () => {
     },
     [getCartQuantity],
   );
-  const fuzzyMatch = (text: string, search: string): boolean => {
-    if (!search) return true;
-    text = text.toLowerCase();
-    search = search.toLowerCase();
-    if (text.includes(search)) return true;
-    let searchIdx = 0;
-    for (let i = 0; i < text.length && searchIdx < search.length; i++) {
-      if (text[i] === search[searchIdx]) {
-        searchIdx++;
-      }
-    }
-    if (searchIdx === search.length) return true;
-    const words = text.split(/\s+/);
-    for (const word of words) {
-      if (levenshteinDistance(word, search) <= Math.max(1, Math.floor(search.length * 0.3))) {
-        return true;
-      }
-    }
-    return false;
-  };
-  const levenshteinDistance = (str1: string, str2: string): number => {
-    const len1 = str1.length;
-    const len2 = str2.length;
-    const matrix: number[][] = [];
-    for (let i = 0; i <= len1; i++) {
-      matrix[i] = [i];
-    }
-    for (let j = 0; j <= len2; j++) {
-      matrix[0][j] = j;
-    }
-    for (let i = 1; i <= len1; i++) {
-      for (let j = 1; j <= len2; j++) {
-        const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
-        matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
-      }
-    }
-    return matrix[len1][len2];
-  };
+  // Solo equipos públicamente visibles
+  const availableEquipment = useMemo(
+    () => equipment.filter((item) => item.status === "available"),
+    [equipment],
+  );
+
+  // Índice Fuse con las mismas opciones que el SearchBar del header
+  const fuse = useMemo(
+    () =>
+      new Fuse(availableEquipment, {
+        keys: ["name", "brand", "model", "description"],
+        threshold: 0.45,
+        ignoreLocation: true,
+        minMatchCharLength: 2,
+        includeScore: true,
+      }),
+    [availableEquipment],
+  );
 
   // When searching, search across ALL categories
-  const isSearching = searchTerm.length > 0;
+  const isSearching = searchTerm.trim().length >= 2;
   const filteredEquipment = useMemo(() => {
-    return equipment.filter((item) => {
-      // Hide non-available equipment from public listing
-      if (item.status !== "available") return false;
+    const base = isSearching
+      ? fuse.search(searchTerm.trim()).map((r) => r.item)
+      : availableEquipment;
 
-      const matchesSearch =
-        fuzzyMatch(item.name, searchTerm) ||
-        fuzzyMatch(item.brand || "", searchTerm) ||
-        fuzzyMatch(item.model || "", searchTerm);
-
-      // When searching, ignore category filter - search across all
-      if (isSearching) {
-        const matchesSubcategory =
-          selectedSubcategories.length === 0 ||
-          (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
-        return matchesSearch && matchesSubcategory;
-      }
+    return base.filter((item) => {
       const matchesSubcategory =
         selectedSubcategories.length === 0 ||
         (item.subcategory_id && selectedSubcategories.includes(item.subcategory_id));
-      return matchesSearch && matchesSubcategory;
+      return matchesSubcategory;
     });
-  }, [equipment, searchTerm, selectedSubcategories, isSearching]);
+  }, [availableEquipment, fuse, searchTerm, selectedSubcategories, isSearching]);
+
 
   // Get subcategories that have matching equipment when searching
   const subcategoriesWithResults = useMemo(() => {
