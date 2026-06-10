@@ -58,9 +58,11 @@ interface SyncResult {
   updated: number;
   created: number;
   deactivated: number;
+  deleted: number;
   errors: string[];
   details: string[];
 }
+
 
 
 // Mapea "Tipo" de Rentalos a status + prioridad de orden.
