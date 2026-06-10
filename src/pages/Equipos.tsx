@@ -373,7 +373,7 @@ const Equipos = () => {
       />
       {/* Hero Carousel - Now simplified, only shows slides */}
       <HeroCarouselRental
-        categories={categories}
+        categories={displayCategories}
         onCategoryChange={handleCategoryClick}
         activeCategory={activeCategory}
       />
