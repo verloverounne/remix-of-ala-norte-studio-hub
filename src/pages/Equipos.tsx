@@ -389,7 +389,7 @@ const Equipos = () => {
           {/* Row 1: Category chips */}
           <div className="flex items-center gap-2 mb-2">
             <div className="min-w-screen flex-wrap flex-1 pt-4 flex items-center justify-center py-0 my-0 pb-[16px] gap-[24px] pl-[16px] pr-[16px] px-[16px] bg-inherit">
-              {categories.map((category) => {
+              {displayCategories.map((category) => {
                 const count = equipmentCounts[category.id] || 0;
                 const isActive = activeCategory === category.id;
                 return (
