@@ -461,26 +461,26 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
         }
       }
 
-      // Deactivate equipment NOT in CSV
-      addLog("Marcando equipos ausentes como no disponibles...");
-      const idsToDeactivate = (existingEquipment || [])
-        .filter((eq) => !matchedIds.has(eq.id) && eq.status !== "maintenance")
+      // Delete equipment NOT in CSV
+      addLog("Eliminando equipos ausentes del CSV...");
+      const idsToDelete = (existingEquipment || [])
+        .filter((eq) => !matchedIds.has(eq.id))
         .map((eq) => eq.id);
 
-      if (idsToDeactivate.length > 0) {
-        // Batch deactivate in chunks
+      if (idsToDelete.length > 0) {
         const chunkSize = 50;
-        for (let i = 0; i < idsToDeactivate.length; i += chunkSize) {
-          const chunk = idsToDeactivate.slice(i, i + chunkSize);
+        for (let i = 0; i < idsToDelete.length; i += chunkSize) {
+          const chunk = idsToDelete.slice(i, i + chunkSize);
           const { error } = await supabase
             .from("equipment")
-            .update({ status: "maintenance" as const })
+            .delete()
             .in("id", chunk);
           if (error) {
-            syncResult.errors.push(`Error desactivando lote: ${error.message}`);
+            syncResult.errors.push(`Error eliminando lote: ${error.message}`);
+          } else {
+            syncResult.deleted += chunk.length;
           }
         }
-        syncResult.deactivated = idsToDeactivate.length;
       }
 
       addLog(`✅ Sincronización completada:`);
