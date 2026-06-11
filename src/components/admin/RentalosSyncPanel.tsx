@@ -541,7 +541,7 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
             <li>El <strong>tipo dominante</strong> de un grupo se decide por prioridad: Propio &gt; Estacionado &gt; Compartido &gt; Externo. Tipos no reconocidos se guardan como "Propio" y se reportan como error.</li>
             <li>Los <strong>Anexos</strong> del CSV se unen con " • " y se agregan a la descripción existente como bloque <code>Anexos: ...</code>. Si ya había un bloque previo lo reemplaza; el resto de la descripción se conserva.</li>
             <li>Si el equipo <strong>no existe</strong> en la base, lo <strong>crea</strong> con todos esos campos.</li>
-            <li>Los equipos existentes que <strong>no aparecen en el CSV</strong> se marcan en <code>status = maintenance</code> (no se borran). Los que ya estaban en maintenance no se tocan.</li>
+            <li>Los equipos existentes que <strong>no aparecen en el CSV</strong> se <strong>eliminan</strong> de la base.</li>
             <li><strong>No modifica</strong>: <code>image_url</code>, <code>images</code>, <code>specs</code>, <code>detailed_specs</code> ni <code>featured</code>.</li>
           </ol>
         </div>
