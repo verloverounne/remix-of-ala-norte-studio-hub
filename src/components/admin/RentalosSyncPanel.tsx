@@ -461,33 +461,32 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
         }
       }
 
-      // Deactivate equipment NOT in CSV
-      addLog("Marcando equipos ausentes como no disponibles...");
-      const idsToDeactivate = (existingEquipment || [])
-        .filter((eq) => !matchedIds.has(eq.id) && eq.status !== "maintenance")
+      // Delete equipment NOT in CSV
+      addLog("Eliminando equipos ausentes del CSV...");
+      const idsToDelete = (existingEquipment || [])
+        .filter((eq) => !matchedIds.has(eq.id))
         .map((eq) => eq.id);
 
-      if (idsToDeactivate.length > 0) {
-        // Batch deactivate in chunks
+      if (idsToDelete.length > 0) {
         const chunkSize = 50;
-        for (let i = 0; i < idsToDeactivate.length; i += chunkSize) {
-          const chunk = idsToDeactivate.slice(i, i + chunkSize);
+        for (let i = 0; i < idsToDelete.length; i += chunkSize) {
+          const chunk = idsToDelete.slice(i, i + chunkSize);
           const { error } = await supabase
             .from("equipment")
-            .update({ status: "maintenance" as const })
+            .delete()
             .in("id", chunk);
           if (error) {
-            syncResult.errors.push(`Error desactivando lote: ${error.message}`);
+            syncResult.errors.push(`Error eliminando lote: ${error.message}`);
+          } else {
+            syncResult.deleted += chunk.length;
           }
         }
-        syncResult.deactivated = idsToDeactivate.length;
       }
 
       addLog(`✅ Sincronización completada:`);
       addLog(`   Actualizados: ${syncResult.updated}`);
       addLog(`   Nuevos: ${syncResult.created}`);
-      addLog(`   Eliminados (Externo): ${syncResult.deleted}`);
-      addLog(`   Desactivados: ${syncResult.deactivated}`);
+      addLog(`   Eliminados (Externo + ausentes): ${syncResult.deleted}`);
       addLog(`   ↪ Subcategoría inferida por similitud: ${inferredCount}`);
       if (unresolvedCount > 0) addLog(`   ⚠ Sin subcategoría inferible: ${unresolvedCount}`);
       if (syncResult.errors.length > 0) {
@@ -498,7 +497,7 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
       setResult(syncResult);
       toast({
         title: "✓ Sincronización Rentalos completada",
-        description: `${syncResult.updated} actualizados · ${syncResult.created} nuevos · ${syncResult.deleted} eliminados · ${syncResult.deactivated} desactivados`,
+        description: `${syncResult.updated} actualizados · ${syncResult.created} nuevos · ${syncResult.deleted} eliminados`,
       });
 
       onSyncComplete?.();
@@ -542,7 +541,7 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
             <li>El <strong>tipo dominante</strong> de un grupo se decide por prioridad: Propio &gt; Estacionado &gt; Compartido &gt; Externo. Tipos no reconocidos se guardan como "Propio" y se reportan como error.</li>
             <li>Los <strong>Anexos</strong> del CSV se unen con " • " y se agregan a la descripción existente como bloque <code>Anexos: ...</code>. Si ya había un bloque previo lo reemplaza; el resto de la descripción se conserva.</li>
             <li>Si el equipo <strong>no existe</strong> en la base, lo <strong>crea</strong> con todos esos campos.</li>
-            <li>Los equipos existentes que <strong>no aparecen en el CSV</strong> se marcan en <code>status = maintenance</code> (no se borran). Los que ya estaban en maintenance no se tocan.</li>
+            <li>Los equipos existentes que <strong>no aparecen en el CSV</strong> se <strong>eliminan</strong> de la base.</li>
             <li><strong>No modifica</strong>: <code>image_url</code>, <code>images</code>, <code>specs</code>, <code>detailed_specs</code> ni <code>featured</code>.</li>
           </ol>
         </div>
@@ -574,7 +573,6 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
             </Badge>
             <Badge variant="secondary" className="gap-1">+ {result.created} nuevos</Badge>
             <Badge variant="destructive" className="gap-1">🗑 {result.deleted} eliminados</Badge>
-            <Badge variant="outline" className="gap-1">{result.deactivated} desactivados</Badge>
 
             {result.errors.length > 0 && (
               <Badge variant="destructive" className="gap-1">
