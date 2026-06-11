@@ -486,8 +486,7 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
       addLog(`✅ Sincronización completada:`);
       addLog(`   Actualizados: ${syncResult.updated}`);
       addLog(`   Nuevos: ${syncResult.created}`);
-      addLog(`   Eliminados (Externo): ${syncResult.deleted}`);
-      addLog(`   Desactivados: ${syncResult.deactivated}`);
+      addLog(`   Eliminados (Externo + ausentes): ${syncResult.deleted}`);
       addLog(`   ↪ Subcategoría inferida por similitud: ${inferredCount}`);
       if (unresolvedCount > 0) addLog(`   ⚠ Sin subcategoría inferible: ${unresolvedCount}`);
       if (syncResult.errors.length > 0) {
