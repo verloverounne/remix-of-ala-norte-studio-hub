@@ -573,7 +573,6 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
             </Badge>
             <Badge variant="secondary" className="gap-1">+ {result.created} nuevos</Badge>
             <Badge variant="destructive" className="gap-1">🗑 {result.deleted} eliminados</Badge>
-            <Badge variant="outline" className="gap-1">{result.deactivated} desactivados</Badge>
 
             {result.errors.length > 0 && (
               <Badge variant="destructive" className="gap-1">
