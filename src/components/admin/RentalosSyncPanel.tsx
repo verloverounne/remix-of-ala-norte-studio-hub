@@ -497,7 +497,7 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
       setResult(syncResult);
       toast({
         title: "✓ Sincronización Rentalos completada",
-        description: `${syncResult.updated} actualizados · ${syncResult.created} nuevos · ${syncResult.deleted} eliminados · ${syncResult.deactivated} desactivados`,
+        description: `${syncResult.updated} actualizados · ${syncResult.created} nuevos · ${syncResult.deleted} eliminados`,
       });
 
       onSyncComplete?.();
