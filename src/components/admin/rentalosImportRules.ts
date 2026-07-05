@@ -241,7 +241,7 @@ export const KEYWORD_RULES: Array<{ keyword: string; subcategory: string }> = [
   { keyword: "megafono", subcategory: "Accesorios Sonido" },
   // Cámara adicionales
   { keyword: "cenital", subcategory: "Accesorios Cámara" },
-  { keyword: "kit de camara cenital", subcategory: "Accesorios Cámara" },"Trípodes Cámara" },
+  { keyword: "kit de camara cenital", subcategory: "Accesorios Cámara" },
 ];
 
 
