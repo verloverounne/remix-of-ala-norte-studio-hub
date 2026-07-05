@@ -91,6 +91,53 @@ export function AutoAssignedReviewPanel() {
     setRows((prev) => prev.filter((r) => r.id !== row.id));
   };
 
+  const runBulkRecategorization = async () => {
+    if (bulkRunning) return;
+    setBulkRunning(true);
+    let resolved = 0;
+    let unresolved = 0;
+    const errors: string[] = [];
+
+    // Snapshot local para no depender del orden async.
+    const targets = rows.filter(
+      (r) => r.subcategory_id === null || (r as unknown as { subcategory_auto_assigned?: boolean }).subcategory_auto_assigned === true
+    );
+
+    for (const row of targets) {
+      const matched = matchKeyword(normalizeImportName(row.name));
+      if (!matched) {
+        unresolved++;
+        continue;
+      }
+      const sub = subsByName.get(matched);
+      if (!sub) {
+        unresolved++;
+        continue;
+      }
+      const { error } = await supabase
+        .from("equipment")
+        .update({
+          subcategory_id: sub.id,
+          category_id: sub.category_id,
+          subcategory_auto_assigned: false,
+        } as never)
+        .eq("id", row.id);
+      if (error) {
+        errors.push(`${row.name}: ${error.message}`);
+      } else {
+        resolved++;
+      }
+    }
+
+    setBulkRunning(false);
+    toast({
+      title: "Recategorización comodines",
+      description: `Resueltos: ${resolved} · Pendientes: ${unresolved}${errors.length ? ` · Errores: ${errors.length}` : ""}`,
+      variant: errors.length ? "destructive" : "default",
+    });
+    await fetchAll();
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -99,13 +146,23 @@ export function AutoAssignedReviewPanel() {
           <div>
             <CardTitle>Revisión de subcategorías autoasignadas</CardTitle>
             <CardDescription>
-              Equipos cuya subcategoría fue asignada automáticamente por la última importación.
-              Al guardar una corrección, se apaga el flag y no vuelven a aparecer acá.
+              Equipos autoasignados o sin subcategoría. Usá "Recategorizar comodines" para
+              aplicar reglas por keyword; los que no matcheen quedan para corrección manual.
             </CardDescription>
           </div>
           <Badge variant="secondary" className="ml-auto">{rows.length}</Badge>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={runBulkRecategorization}
+            disabled={bulkRunning || rows.length === 0}
+          >
+            <Wand2 className="h-4 w-4 mr-2" />
+            {bulkRunning ? "Procesando…" : "Recategorizar comodines"}
+          </Button>
         </div>
       </CardHeader>
+
       <CardContent>
         {loading ? (
           <p className="text-sm text-muted-foreground">Cargando…</p>
