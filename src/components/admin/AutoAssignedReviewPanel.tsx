@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CheckCircle, ClipboardList } from "lucide-react";
+import { CheckCircle, ClipboardList, Wand2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { normalizeImportName, matchKeyword } from "./rentalosImportRules";
+
 
 interface Row {
   id: string;
@@ -35,9 +37,12 @@ export function AutoAssignedReviewPanel() {
   const [selection, setSelection] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [bulkRunning, setBulkRunning] = useState(false);
   const { toast } = useToast();
 
   const subsById = useMemo(() => new Map(subs.map((s) => [s.id, s])), [subs]);
+  const subsByName = useMemo(() => new Map(subs.map((s) => [s.name, s])), [subs]);
+
 
   const fetchAll = async () => {
     setLoading(true);
@@ -45,13 +50,14 @@ export function AutoAssignedReviewPanel() {
       supabase
         .from("equipment")
         .select("id, name, category_id, subcategory_id, categories(id, name), subcategories(id, name, category_id)")
-        // La columna es nueva y aún no está en los tipos generados.
-        .eq("subcategory_auto_assigned" as never, true as never)
+        // Incluye equipos autoasignados y equipos sin subcategoría.
+        .or("subcategory_auto_assigned.eq.true,subcategory_id.is.null" as never)
         .order("updated_at", { ascending: false })
-        .limit(500),
+        .limit(1000),
       supabase.from("subcategories").select("id, name, category_id").order("name"),
       supabase.from("categories").select("id, name").order("order_index"),
     ]);
+
     setRows(((eqRes.data as unknown) as Row[]) || []);
     setSubs((subRes.data as Sub[]) || []);
     setCats((catRes.data as Cat[]) || []);
@@ -85,6 +91,53 @@ export function AutoAssignedReviewPanel() {
     setRows((prev) => prev.filter((r) => r.id !== row.id));
   };
 
+  const runBulkRecategorization = async () => {
+    if (bulkRunning) return;
+    setBulkRunning(true);
+    let resolved = 0;
+    let unresolved = 0;
+    const errors: string[] = [];
+
+    // Snapshot local para no depender del orden async.
+    const targets = rows.filter(
+      (r) => r.subcategory_id === null || (r as unknown as { subcategory_auto_assigned?: boolean }).subcategory_auto_assigned === true
+    );
+
+    for (const row of targets) {
+      const matched = matchKeyword(normalizeImportName(row.name));
+      if (!matched) {
+        unresolved++;
+        continue;
+      }
+      const sub = subsByName.get(matched);
+      if (!sub) {
+        unresolved++;
+        continue;
+      }
+      const { error } = await supabase
+        .from("equipment")
+        .update({
+          subcategory_id: sub.id,
+          category_id: sub.category_id,
+          subcategory_auto_assigned: false,
+        } as never)
+        .eq("id", row.id);
+      if (error) {
+        errors.push(`${row.name}: ${error.message}`);
+      } else {
+        resolved++;
+      }
+    }
+
+    setBulkRunning(false);
+    toast({
+      title: "Recategorización comodines",
+      description: `Resueltos: ${resolved} · Pendientes: ${unresolved}${errors.length ? ` · Errores: ${errors.length}` : ""}`,
+      variant: errors.length ? "destructive" : "default",
+    });
+    await fetchAll();
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -93,13 +146,23 @@ export function AutoAssignedReviewPanel() {
           <div>
             <CardTitle>Revisión de subcategorías autoasignadas</CardTitle>
             <CardDescription>
-              Equipos cuya subcategoría fue asignada automáticamente por la última importación.
-              Al guardar una corrección, se apaga el flag y no vuelven a aparecer acá.
+              Equipos autoasignados o sin subcategoría. Usá "Recategorizar comodines" para
+              aplicar reglas por keyword; los que no matcheen quedan para corrección manual.
             </CardDescription>
           </div>
           <Badge variant="secondary" className="ml-auto">{rows.length}</Badge>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={runBulkRecategorization}
+            disabled={bulkRunning || rows.length === 0}
+          >
+            <Wand2 className="h-4 w-4 mr-2" />
+            {bulkRunning ? "Procesando…" : "Recategorizar comodines"}
+          </Button>
         </div>
       </CardHeader>
+
       <CardContent>
         {loading ? (
           <p className="text-sm text-muted-foreground">Cargando…</p>
@@ -119,11 +182,17 @@ export function AutoAssignedReviewPanel() {
                     className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] items-center gap-3 border rounded-sm p-3"
                   >
                     <div className="min-w-0">
-                      <p className="font-medium truncate">{row.name}</p>
+                      <div className="flex items-center gap-2 min-w-0">
+                        <p className="font-medium truncate">{row.name}</p>
+                        {row.subcategory_id === null && (
+                          <Badge variant="destructive" className="shrink-0">Sin subcategoría</Badge>
+                        )}
+                      </div>
                       <p className="text-xs text-muted-foreground truncate">
                         Actual: {currentCatName} · {currentSubName}
                       </p>
                     </div>
+
                     <Select
                       value={selection[row.id] ?? row.subcategory_id ?? ""}
                       onValueChange={(v) => setSelection((prev) => ({ ...prev, [row.id]: v }))}
