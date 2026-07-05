@@ -182,11 +182,17 @@ export function AutoAssignedReviewPanel() {
                     className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] items-center gap-3 border rounded-sm p-3"
                   >
                     <div className="min-w-0">
-                      <p className="font-medium truncate">{row.name}</p>
+                      <div className="flex items-center gap-2 min-w-0">
+                        <p className="font-medium truncate">{row.name}</p>
+                        {row.subcategory_id === null && (
+                          <Badge variant="destructive" className="shrink-0">Sin subcategoría</Badge>
+                        )}
+                      </div>
                       <p className="text-xs text-muted-foreground truncate">
                         Actual: {currentCatName} · {currentSubName}
                       </p>
                     </div>
+
                     <Select
                       value={selection[row.id] ?? row.subcategory_id ?? ""}
                       onValueChange={(v) => setSelection((prev) => ({ ...prev, [row.id]: v }))}
