@@ -235,6 +235,7 @@ export type Database = {
           specs: Json | null
           status: Database["public"]["Enums"]["equipment_status"] | null
           stock_quantity: number
+          subcategory_auto_assigned: boolean
           subcategory_id: string | null
           updated_at: string
         }
@@ -260,6 +261,7 @@ export type Database = {
           specs?: Json | null
           status?: Database["public"]["Enums"]["equipment_status"] | null
           stock_quantity?: number
+          subcategory_auto_assigned?: boolean
           subcategory_id?: string | null
           updated_at?: string
         }
@@ -285,6 +287,7 @@ export type Database = {
           specs?: Json | null
           status?: Database["public"]["Enums"]["equipment_status"] | null
           stock_quantity?: number
+          subcategory_auto_assigned?: boolean
           subcategory_id?: string | null
           updated_at?: string
         }
