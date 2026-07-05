@@ -50,13 +50,14 @@ export function AutoAssignedReviewPanel() {
       supabase
         .from("equipment")
         .select("id, name, category_id, subcategory_id, categories(id, name), subcategories(id, name, category_id)")
-        // La columna es nueva y aún no está en los tipos generados.
-        .eq("subcategory_auto_assigned" as never, true as never)
+        // Incluye equipos autoasignados y equipos sin subcategoría.
+        .or("subcategory_auto_assigned.eq.true,subcategory_id.is.null" as never)
         .order("updated_at", { ascending: false })
-        .limit(500),
+        .limit(1000),
       supabase.from("subcategories").select("id, name, category_id").order("name"),
       supabase.from("categories").select("id, name").order("order_index"),
     ]);
+
     setRows(((eqRes.data as unknown) as Row[]) || []);
     setSubs((subRes.data as Sub[]) || []);
     setCats((catRes.data as Cat[]) || []);
