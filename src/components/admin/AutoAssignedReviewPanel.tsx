@@ -134,7 +134,7 @@ export function AutoAssignedReviewPanel() {
         .update({
           subcategory_id: sub.id,
           category_id: sub.category_id,
-          subcategory_auto_assigned: false,
+          subcategory_auto_assigned: true,
         } as never)
         .eq("id", row.id);
       if (error) {
