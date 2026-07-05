@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CheckCircle, ClipboardList } from "lucide-react";
+import { CheckCircle, ClipboardList, Wand2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { normalizeImportName, matchKeyword } from "./rentalosImportRules";
+
 
 interface Row {
   id: string;
