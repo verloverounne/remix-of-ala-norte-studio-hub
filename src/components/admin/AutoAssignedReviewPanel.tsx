@@ -14,6 +14,7 @@ interface Row {
   name: string;
   category_id: string | null;
   subcategory_id: string | null;
+  subcategory_auto_assigned: boolean | null;
   categories: { id: string; name: string } | null;
   subcategories: { id: string; name: string; category_id: string } | null;
 }
@@ -47,7 +48,9 @@ export function AutoAssignedReviewPanel() {
     const [eqRes, subRes, catRes] = await Promise.all([
       supabase
         .from("equipment")
-        .select("id, name, category_id, subcategory_id, categories(id, name), subcategories(id, name, category_id)")
+        .select(
+          "id, name, category_id, subcategory_id, categories(id, name), subcategories(id, name, category_id), subcategory_auto_assigned",
+        )
         // Incluye equipos autoasignados y equipos sin subcategoría.
         .or("subcategory_auto_assigned.eq.true,subcategory_id.is.null" as never)
         .order("updated_at", { ascending: false })
