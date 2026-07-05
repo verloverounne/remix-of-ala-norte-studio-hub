@@ -119,7 +119,125 @@ export const KEYWORD_RULES: Array<{ keyword: string; subcategory: string }> = [
   { keyword: "alargue", subcategory: "Distribución Eléctrica" },
   { keyword: "zapatilla", subcategory: "Distribución Eléctrica" },
   { keyword: "distribuidor", subcategory: "Distribución Eléctrica" },
+
+  // === Ampliación para recategorización masiva (equipos NULL / auto-asignados) ===
+  // Orden importante: específicos antes que genéricos.
+
+  // Sonido - inalámbricos (modelos)
+  { keyword: "sennheiser ew", subcategory: "Micrófonos Inalámbricos" },
+  { keyword: "sennheiser g3", subcategory: "Micrófonos Inalámbricos" },
+  { keyword: "sennheiser g4", subcategory: "Micrófonos Inalámbricos" },
+  { keyword: "ew 100", subcategory: "Micrófonos Inalámbricos" },
+  { keyword: "ew500", subcategory: "Micrófonos Inalámbricos" },
+  { keyword: "plug on", subcategory: "Micrófonos Inalámbricos" },
+  { keyword: "shure pcm", subcategory: "Micrófonos Inalámbricos" },
+
+  // Sonido - micrófonos (Boom/Micrófonos) - específicos antes de "microfono"
+  { keyword: "sm 58", subcategory: "Boom/Micrófonos" },
+  { keyword: "md46", subcategory: "Boom/Micrófonos" },
+  { keyword: "md 46", subcategory: "Boom/Micrófonos" },
+  { keyword: "me66", subcategory: "Boom/Micrófonos" },
+  { keyword: "sennheiser k6", subcategory: "Boom/Micrófonos" },
+  { keyword: "rode video", subcategory: "Boom/Micrófonos" },
+  { keyword: "microfofono", subcategory: "Boom/Micrófonos" },
+  { keyword: "micrófono", subcategory: "Boom/Micrófonos" },
+
+  // Sonido - accesorios
+  { keyword: "rycote", subcategory: "Accesorios Sonido" },
+  { keyword: "zepellin", subcategory: "Accesorios Sonido" },
+  { keyword: "zeppelin", subcategory: "Accesorios Sonido" },
+  { keyword: "pistol grip", subcategory: "Accesorios Sonido" },
+  { keyword: "vincha mic", subcategory: "Accesorios Sonido" },
+  { keyword: "pie de micrófono", subcategory: "Accesorios Sonido" },
+  { keyword: "pie de microfono", subcategory: "Accesorios Sonido" },
+  { keyword: "deneke", subcategory: "Accesorios Sonido" },
+  { keyword: "beachtek", subcategory: "Accesorios Sonido" },
+  { keyword: "phanton", subcategory: "Accesorios Sonido" },
+  { keyword: "phantom 48", subcategory: "Accesorios Sonido" },
+  { keyword: "megafono", subcategory: "Accesorios Sonido" },
+  { keyword: "megáfono", subcategory: "Accesorios Sonido" },
+  { keyword: "placa de sonido", subcategory: "Accesorios Sonido" },
+  { keyword: "microphone arm", subcategory: "Accesorios Sonido" },
+  { keyword: "maono", subcategory: "Accesorios Sonido" },
+
+  // Sonido - mixers
+  { keyword: "mixer", subcategory: "Mixers" },
+  { keyword: "mackie", subcategory: "Mixers" },
+  { keyword: "wharfedale", subcategory: "Mixers" },
+  { keyword: "presonus", subcategory: "Mixers" },
+  { keyword: "samson", subcategory: "Mixers" },
+  { keyword: "wendt", subcategory: "Mixers" },
+
+  // Sonido - grabadoras
+  { keyword: "zoom f", subcategory: "Grabadoras" },
+  { keyword: "tascam", subcategory: "Grabadoras" },
+
+  // Iluminación - máquinas de humo
+  { keyword: "maquina de humo", subcategory: "Máquinas de Humo" },
+  { keyword: "máquina de humo", subcategory: "Máquinas de Humo" },
+  { keyword: "maquina de niebla", subcategory: "Máquinas de Humo" },
+  { keyword: "máquina de niebla", subcategory: "Máquinas de Humo" },
+  { keyword: "fazer", subcategory: "Máquinas de Humo" },
+  { keyword: "crackera", subcategory: "Máquinas de Humo" },
+  { keyword: "glicerina", subcategory: "Máquinas de Humo" },
+  { keyword: "crack oil", subcategory: "Máquinas de Humo" },
+  { keyword: "carga 1 litro", subcategory: "Máquinas de Humo" },
+  { keyword: "haze", subcategory: "Máquinas de Humo" },
+  { keyword: "antari", subcategory: "Máquinas de Humo" },
+
+  // Iluminación - kino (antes que LED genérico)
+  { keyword: "kino flo", subcategory: "Kino/Fluorescente" },
+  { keyword: "kino", subcategory: "Kino/Fluorescente" },
+
+  // Iluminación - LED por marca/modelo
+  { keyword: "dracast", subcategory: "LED" },
+  { keyword: "amaran", subcategory: "LED" },
+  { keyword: "nanlink", subcategory: "LED" },
+  { keyword: "evoke", subcategory: "LED" },
+  { keyword: "bola china", subcategory: "LED" },
+  { keyword: "lantern", subcategory: "LED" },
+  { keyword: "tubo godox", subcategory: "LED" },
+  { keyword: "tubos godox", subcategory: "LED" },
+  { keyword: "godox tl", subcategory: "LED" },
+
+  // Iluminación - accesorios varios
+  { keyword: "dimmer", subcategory: "Accesorios Iluminación" },
+  { keyword: "chimera", subcategory: "Accesorios Iluminación" },
+  { keyword: "snoot", subcategory: "Accesorios Iluminación" },
+
+  // Energía
+  { keyword: "chicote", subcategory: "Distribución Eléctrica" },
+  { keyword: "ups", subcategory: "Distribución Eléctrica" },
+
+  // Grip - travelling
+  { keyword: "vias tramo", subcategory: "Carros Travelling" },
+  { keyword: "vías tramo", subcategory: "Carros Travelling" },
+  { keyword: "carro travelling", subcategory: "Carros Travelling" },
+
+  // Grip general
+  { keyword: "bolsa de arena", subcategory: "Grip General" },
+  { keyword: "perno", subcategory: "Grip General" },
+  { keyword: "flag kit", subcategory: "Grip General" },
+  { keyword: "manta aislante", subcategory: "Grip General" },
+  { keyword: "sin fin", subcategory: "Grip General" },
+  { keyword: "mesa de producto", subcategory: "Grip General" },
+  { keyword: "base giratoria", subcategory: "Grip General" },
+  { keyword: "practicable", subcategory: "Grip General" },
+  { keyword: "tres medidas", subcategory: "Grip General" },
+  { keyword: "cuña", subcategory: "Grip General" },
+  { keyword: "cuñas", subcategory: "Grip General" },
+  { keyword: "pintura piso", subcategory: "Grip General" },
+
+  // Cámara - accesorios trípode específicos (antes que "tripode" genérico ya definido arriba)
+  { keyword: "ruedas trípode", subcategory: "Accesorios Cámara" },
+  { keyword: "ruedas tripode", subcategory: "Accesorios Cámara" },
+  { keyword: "barra extension", subcategory: "Accesorios Cámara" },
+  { keyword: "galera", subcategory: "Accesorios Cámara" },
+
+  // Cámara - trípode con acento (existente "tripode" sin acento)
+  { keyword: "trípode", subcategory: "Trípodes Cámara" },
 ];
+
 
 export function matchKeyword(normalizedName: string): string | null {
   for (const rule of KEYWORD_RULES) {
