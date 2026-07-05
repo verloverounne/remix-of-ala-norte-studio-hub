@@ -9,7 +9,6 @@ import { CheckCircle, ClipboardList, Wand2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { normalizeImportName, matchKeyword } from "./rentalosImportRules";
 
-
 interface Row {
   id: string;
   name: string;
@@ -43,7 +42,6 @@ export function AutoAssignedReviewPanel() {
   const subsById = useMemo(() => new Map(subs.map((s) => [s.id, s])), [subs]);
   const subsByName = useMemo(() => new Map(subs.map((s) => [s.name, s])), [subs]);
 
-
   const fetchAll = async () => {
     setLoading(true);
     const [eqRes, subRes, catRes] = await Promise.all([
@@ -58,7 +56,7 @@ export function AutoAssignedReviewPanel() {
       supabase.from("categories").select("id, name").order("order_index"),
     ]);
 
-    setRows(((eqRes.data as unknown) as Row[]) || []);
+    setRows((eqRes.data as unknown as Row[]) || []);
     setSubs((subRes.data as Sub[]) || []);
     setCats((catRes.data as Cat[]) || []);
     setLoading(false);
@@ -100,7 +98,9 @@ export function AutoAssignedReviewPanel() {
 
     // Snapshot local para no depender del orden async.
     const targets = rows.filter(
-      (r) => r.subcategory_id === null || (r as unknown as { subcategory_auto_assigned?: boolean }).subcategory_auto_assigned === true
+      (r) =>
+        r.subcategory_id === null ||
+        (r as unknown as { subcategory_auto_assigned?: boolean }).subcategory_auto_assigned === true,
     );
 
     for (const row of targets) {
@@ -109,7 +109,14 @@ export function AutoAssignedReviewPanel() {
         unresolved++;
         continue;
       }
-      const sub = subsByName.get(matched);
+      const norm = (s: string) =>
+        s
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/\p{Diacritic}/gu, "")
+          .trim();
+      const subsByNameNorm = new Map(subs.map((s) => [norm(s.name), s]));
+      const sub = subsByName.get(matched) ?? subsByNameNorm.get(norm(matched));
       if (!sub) {
         unresolved++;
         continue;
@@ -146,11 +153,13 @@ export function AutoAssignedReviewPanel() {
           <div>
             <CardTitle>Revisión de subcategorías autoasignadas</CardTitle>
             <CardDescription>
-              Equipos autoasignados o sin subcategoría. Usá "Recategorizar comodines" para
-              aplicar reglas por keyword; los que no matcheen quedan para corrección manual.
+              Equipos autoasignados o sin subcategoría. Usá "Recategorizar comodines" para aplicar reglas por keyword;
+              los que no matcheen quedan para corrección manual.
             </CardDescription>
           </div>
-          <Badge variant="secondary" className="ml-auto">{rows.length}</Badge>
+          <Badge variant="secondary" className="ml-auto">
+            {rows.length}
+          </Badge>
           <Button
             size="sm"
             variant="outline"
@@ -185,7 +194,9 @@ export function AutoAssignedReviewPanel() {
                       <div className="flex items-center gap-2 min-w-0">
                         <p className="font-medium truncate">{row.name}</p>
                         {row.subcategory_id === null && (
-                          <Badge variant="destructive" className="shrink-0">Sin subcategoría</Badge>
+                          <Badge variant="destructive" className="shrink-0">
+                            Sin subcategoría
+                          </Badge>
                         )}
                       </div>
                       <p className="text-xs text-muted-foreground truncate">
@@ -206,9 +217,7 @@ export function AutoAssignedReviewPanel() {
                           if (items.length === 0) return null;
                           return (
                             <div key={c.id}>
-                              <div className="px-2 py-1 text-xs font-semibold text-muted-foreground">
-                                {c.name}
-                              </div>
+                              <div className="px-2 py-1 text-xs font-semibold text-muted-foreground">{c.name}</div>
                               {items.map((s) => (
                                 <SelectItem key={s.id} value={s.id}>
                                   {s.name}
@@ -222,11 +231,7 @@ export function AutoAssignedReviewPanel() {
                     <Button
                       size="sm"
                       onClick={() => save(row)}
-                      disabled={
-                        savingId === row.id ||
-                        !selection[row.id] ||
-                        selection[row.id] === row.subcategory_id
-                      }
+                      disabled={savingId === row.id || !selection[row.id] || selection[row.id] === row.subcategory_id}
                     >
                       Guardar
                     </Button>
