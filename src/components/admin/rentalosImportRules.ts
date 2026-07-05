@@ -235,7 +235,13 @@ export const KEYWORD_RULES: Array<{ keyword: string; subcategory: string }> = [
   { keyword: "galera", subcategory: "Accesorios Cámara" },
 
   // Cámara - trípode con acento (existente "tripode" sin acento)
-  { keyword: "trípode", subcategory: "Trípodes Cámara" },
+  { keyword: "trípode", subcategory: 
+      // Accesorios Sonido adicionales
+  { keyword: "maono", subcategory: "Accesorios Sonido" },
+  { keyword: "megafono", subcategory: "Accesorios Sonido" },
+  // Cámara adicionales
+  { keyword: "cenital", subcategory: "Accesorios Cámara" },
+  { keyword: "kit de camara cenital", subcategory: "Accesorios Cámara" },"Trípodes Cámara" },
 ];
 
 
