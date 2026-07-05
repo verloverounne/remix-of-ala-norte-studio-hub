@@ -18,24 +18,24 @@ export const CATEGORY_MAP: Record<string, string> = {
   "baterias y cargadores de camara": "Baterías",
   "cabezales - trípodes - monopies": "Trípodes Cámara",
   "cabezales - tripodes - monopies": "Trípodes Cámara",
-  "camaras": "Cuerpos de Cámara",
+  camaras: "Cuerpos de Cámara",
   "energía y distribución": "Distribución Eléctrica",
   "energia y distribucion": "Distribución Eléctrica",
   "estabilizadores / gimbals / sliders / pluma": "Estabilizadores/Gimbals",
-  "filtros": "Filtros",
+  filtros: "Filtros",
   "flashes / fotómetro / proyector": "Flashes/Fotómetro",
   "flashes / fotometro / proyector": "Flashes/Fotómetro",
   "grabadores externos": "Grabadores Externos",
-  "grip": "Grip General",
+  grip: "Grip General",
   "grip de cámara": "Grip General",
   "grip de camara": "Grip General",
-  "lentes": "Lentes",
-  "luces": "LED",
+  lentes: "Lentes",
+  luces: "LED",
   "monitoreo / evf / transmisores wireless": "Monitoreo/EVF/Transmisores",
-  "sonido": "Accesorios Sonido",
+  sonido: "Accesorios Sonido",
   "tripodes (iluminación)": "Trípodes Iluminación",
   "tripodes (iluminacion)": "Trípodes Iluminación",
-  "insumos": "Grip General",
+  insumos: "Grip General",
 };
 
 // CSV category (ya normalizada) → subcategoría fallback si el mapeo directo no
@@ -50,24 +50,24 @@ export const CATEGORY_FAMILY_FALLBACK: Record<string, string> = {
   "baterias y cargadores de camara": "Baterías",
   "cabezales - trípodes - monopies": "Trípodes Cámara",
   "cabezales - tripodes - monopies": "Trípodes Cámara",
-  "camaras": "Accesorios Cámara",
+  camaras: "Accesorios Cámara",
   "energía y distribución": "Energía Varios",
   "energia y distribucion": "Energía Varios",
   "estabilizadores / gimbals / sliders / pluma": "Accesorios Cámara",
-  "filtros": "Accesorios Cámara",
+  filtros: "Accesorios Cámara",
   "flashes / fotómetro / proyector": "Accesorios Iluminación",
   "flashes / fotometro / proyector": "Accesorios Iluminación",
   "grabadores externos": "Accesorios Cámara",
-  "grip": "Grip General",
+  grip: "Grip General",
   "grip de cámara": "Grip General",
   "grip de camara": "Grip General",
-  "lentes": "Accesorios Cámara",
-  "luces": "Accesorios Iluminación",
+  lentes: "Accesorios Cámara",
+  luces: "Accesorios Iluminación",
   "monitoreo / evf / transmisores wireless": "Accesorios Cámara",
-  "sonido": "Accesorios Sonido",
+  sonido: "Accesorios Sonido",
   "tripodes (iluminación)": "Accesorios Iluminación",
   "tripodes (iluminacion)": "Accesorios Iluminación",
-  "insumos": "Grip General",
+  insumos: "Grip General",
 };
 
 // Reglas por keyword sobre normalizeImportName(nombre). Orden importa:
@@ -225,7 +225,9 @@ export const KEYWORD_RULES: Array<{ keyword: string; subcategory: string }> = [
   { keyword: "practicable", subcategory: "Grip General" },
   { keyword: "tres medidas", subcategory: "Grip General" },
   { keyword: "cuña", subcategory: "Grip General" },
+  ,
   { keyword: "cuñas", subcategory: "Grip General" },
+  ,
   { keyword: "pintura piso", subcategory: "Grip General" },
 
   // Cámara - accesorios trípode específicos (antes que "tripode" genérico ya definido arriba)
@@ -240,7 +242,6 @@ export const KEYWORD_RULES: Array<{ keyword: string; subcategory: string }> = [
   { keyword: "cenital", subcategory: "Accesorios Cámara" },
   { keyword: "kit de camara cenital", subcategory: "Accesorios Cámara" },
 ];
-
 
 export function matchKeyword(normalizedName: string): string | null {
   for (const rule of KEYWORD_RULES) {
