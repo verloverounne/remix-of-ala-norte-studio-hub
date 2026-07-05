@@ -99,7 +99,12 @@ export function AutoAssignedReviewPanel() {
     let unresolved = 0;
     const errors: string[] = [];
 
-    // Fetch directo de TODOS los equipos sin subcategoría desde la DB (sin depender del panel paginado).         const { data: allNullData } = await supabase           .from("equipment")           .select("id, name, category_id, subcategory_id, subcategory_auto_assigned")           .or("subcategory_id.is.null,subcategory_auto_assigned.eq.true")           .limit(5000);
+    // Fetch directo de TODOS los equipos sin subcategoría desde la DB (sin depender del panel paginado).
+    const { data: allNullData } = await supabase
+      .from("equipment")
+      .select("id, name, category_id, subcategory_id, subcategory_auto_assigned")
+      .or("subcategory_id.is.null,subcategory_auto_assigned.eq.true")
+      .limit(5000);
     const targets = (allNullData || []).filter(
       (r) =>
         r.subcategory_id === null ||
