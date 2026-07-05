@@ -37,9 +37,12 @@ export function AutoAssignedReviewPanel() {
   const [selection, setSelection] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [bulkRunning, setBulkRunning] = useState(false);
   const { toast } = useToast();
 
   const subsById = useMemo(() => new Map(subs.map((s) => [s.id, s])), [subs]);
+  const subsByName = useMemo(() => new Map(subs.map((s) => [s.name, s])), [subs]);
+
 
   const fetchAll = async () => {
     setLoading(true);
