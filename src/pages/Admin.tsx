@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Edit, Trash2, Percent, Download, Upload, Calendar as CalendarIcon, X, Image as ImageIcon, RefreshCw } from "lucide-react";
 import { RentalosSyncPanel } from "@/components/admin/RentalosSyncPanel";
+import { AutoAssignedReviewPanel } from "@/components/admin/AutoAssignedReviewPanel";
 import { ImageUploader } from "@/components/ImageUploader";
 import { StorageImageSelector } from "@/components/StorageImageSelector";
 import { EquipmentImageUploader } from "@/components/EquipmentImageUploader";
@@ -1149,6 +1150,10 @@ const Admin = () => {
             <TabsContent value="backup" className="space-y-6">
               {/* Rentalos Sync - Most prominent */}
               <RentalosSyncPanel onSyncComplete={fetchAll} />
+
+              <AutoAssignedReviewPanel />
+
+
 
               <Card>
                 <CardHeader>
