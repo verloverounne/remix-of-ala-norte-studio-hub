@@ -161,3 +161,6 @@ export function matchKeyword(normalizedName: string): string | null {
   }
   return null;
 }
+
+// Alias para compatibilidad con imports existentes
+export const CATEGORY_FAMILY_FALLBACK = CATEGORY_FALLBACK;
