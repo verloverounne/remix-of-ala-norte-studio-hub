@@ -12,7 +12,17 @@ import { CategorySection, CategorySectionRef } from "@/components/rental/Categor
 import { CartSidebar } from "@/components/rental/CartSidebar";
 import { ViewModeToggle, ViewMode } from "@/components/rental/ViewModeToggle";
 import { cn } from "@/lib/utils";
-import { Search, Filter, X, ArrowUpDown, ChevronDown, ChevronRight, ChevronLeft, ShoppingCart, Download } from "lucide-react";
+import {
+  Search,
+  Filter,
+  X,
+  ArrowUpDown,
+  ChevronDown,
+  ChevronRight,
+  ChevronLeft,
+  ShoppingCart,
+  Download,
+} from "lucide-react";
 import { exportEquipmentPdf } from "@/lib/exportEquipmentPdf";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -121,7 +131,7 @@ const Equipos = () => {
   );
   // Solo equipos públicamente visibles
   const availableEquipment = useMemo(
-    () => equipment.filter((item) => item.status === "available"),
+    () => equipment.filter((item) => item.status === "available" || item.ownership_type === "Estacionado"),
     [equipment],
   );
 
@@ -141,9 +151,7 @@ const Equipos = () => {
   // When searching, search across ALL categories
   const isSearching = searchTerm.trim().length >= 2;
   const filteredEquipment = useMemo(() => {
-    const base = isSearching
-      ? fuse.search(searchTerm.trim()).map((r) => r.item)
-      : availableEquipment;
+    const base = isSearching ? fuse.search(searchTerm.trim()).map((r) => r.item) : availableEquipment;
 
     return base.filter((item) => {
       const matchesSubcategory =
@@ -152,7 +160,6 @@ const Equipos = () => {
       return matchesSubcategory;
     });
   }, [availableEquipment, fuse, searchTerm, selectedSubcategories, isSearching]);
-
 
   // Get subcategories that have matching equipment when searching
   const subcategoriesWithResults = useMemo(() => {
@@ -218,7 +225,7 @@ const Equipos = () => {
   // Virtual "Otros" category for equipment without subcategory
   const OTROS_CATEGORY_ID = "otros-virtual";
   const displayCategories = useMemo(() => {
-    const otros: typeof categories[number] = {
+    const otros: (typeof categories)[number] = {
       id: OTROS_CATEGORY_ID,
       name: "Otros",
       slug: "otros",
