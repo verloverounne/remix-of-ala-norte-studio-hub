@@ -131,7 +131,7 @@ const Equipos = () => {
   );
   // Solo equipos públicamente visibles
   const availableEquipment = useMemo(
-    () => equipment.filter((item) => item.status === "available" || item.ownership_type === "Estacionado"),
+    () => equipment.filter((item) => item.status === "available" || (item as any).ownership_type === "Estacionado"),
     [equipment],
   );
 
