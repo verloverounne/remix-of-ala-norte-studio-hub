@@ -628,6 +628,9 @@ export const EquipmentManager = () => {
   ) => {
     const updateData: Record<string, any> = {};
     updateData[field] = value;
+    if (field === "subcategory_id") {
+      updateData.subcategory_manually_edited = true;
+    }
 
     const { error } = await supabase
       .from("equipment")
@@ -642,8 +645,8 @@ export const EquipmentManager = () => {
       });
     } else {
       // Update local state
-      setEquipment(prev => prev.map(eq => 
-        eq.id === equipmentId ? { ...eq, [field]: value } : eq
+      setEquipment(prev => prev.map(eq =>
+        eq.id === equipmentId ? { ...eq, ...updateData } : eq
       ));
       toast({
         title: "Actualizado",
