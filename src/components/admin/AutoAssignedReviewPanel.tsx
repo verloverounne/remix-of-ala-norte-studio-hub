@@ -49,7 +49,7 @@ export function AutoAssignedReviewPanel() {
       supabase
         .from("equipment")
         .select(
-          "id, name, category_id, subcategory_id, categories(id, name), subcategories(id, name, category_id), subcategory_auto_assigned",
+          "id, name, category_id, subcategory_id, categories:category_id(id, name), subcategories(id, name, category_id), subcategory_auto_assigned",
         )
         // Incluye equipos autoasignados y equipos sin subcategoría.
         .or("subcategory_auto_assigned.eq.true,subcategory_id.is.null" as never)
