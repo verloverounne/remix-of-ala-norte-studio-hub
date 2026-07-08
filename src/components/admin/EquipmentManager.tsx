@@ -68,6 +68,7 @@ interface Equipment {
   subcategory_id: string | null;
   manual_category_id: string | null;
   category_manually_edited: boolean;
+  subcategory_manually_edited: boolean;
   featured: boolean;
   status: 'available' | 'rented' | 'maintenance';
   stock_quantity: number;
@@ -85,7 +86,8 @@ interface StorageFile {
 type ImageFilter = "all" | "with" | "without";
 type PriceSort = "none" | "asc" | "desc";
 type FeaturedFilter = "all" | "featured" | "not_featured";
-type SubcatFilter = "all" | "with" | "without";
+type CategorizationStatus = "all" | "auto" | "manual" | "missing";
+type OwnershipFilter = "all" | "Propio" | "Estacionado" | "Externo";
 
 export const EquipmentManager = () => {
   const [equipment, setEquipment] = useState<Equipment[]>([]);
