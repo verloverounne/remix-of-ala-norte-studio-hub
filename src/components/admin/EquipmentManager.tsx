@@ -1217,8 +1217,34 @@ export const EquipmentManager = () => {
                             className="h-7 text-sm font-medium w-full"
                             placeholder="Nombre del equipo"
                           />
-                          {/* Inline subcategory selector */}
+                          {/* Inline category + subcategory selectors */}
                           <div className="flex items-center gap-1 flex-wrap">
+                            <Select
+                              value={eq.category_id || "none"}
+                              onValueChange={(v) => {
+                                const newVal = v === "none" ? null : v;
+                                handleManualCategoryChange(eq.id, newVal);
+                              }}
+                            >
+                              <SelectTrigger
+                                className={cn(
+                                  "h-6 text-xs w-auto min-w-[120px] max-w-[180px]",
+                                  eq.category_manually_edited && "border-primary",
+                                )}
+                                title={eq.category_manually_edited ? "Categoría editada manualmente (no se sobreescribe en imports)" : "Categoría (auto)"}
+                              >
+                                <SelectValue placeholder="Categoría" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="none">Sin categoría</SelectItem>
+                                {categories.map((c) => (
+                                  <SelectItem key={c.id} value={c.id}>
+                                    {c.name}
+                                    {eq.category_manually_edited && c.id === eq.category_id ? " ✓" : ""}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                             <Select
                               value={eq.subcategory_id || "none"}
                               onValueChange={(v) => {
