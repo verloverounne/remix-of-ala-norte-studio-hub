@@ -548,6 +548,7 @@ export const EquipmentManager = () => {
         ownership_type: data.ownership_type ?? null,
         manual_category_id: (data as any).manual_category_id ?? null,
         category_manually_edited: (data as any).category_manually_edited ?? false,
+        subcategory_manually_edited: (data as any).subcategory_manually_edited ?? false,
         categories: data.categories as Category | null,
         subcategories: data.subcategories as Subcategory | null,
       };
