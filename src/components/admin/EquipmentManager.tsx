@@ -322,21 +322,34 @@ export const EquipmentManager = () => {
       return true;
     };
 
-    const matchesSubcatFilter = (eq: Equipment): boolean => {
-      if (subcatFilter === "with") return !!eq.subcategory_id;
-      if (subcatFilter === "without") return !eq.subcategory_id;
-      return true;
+    const matchesStatusFilter = (eq: Equipment): boolean => {
+      if (statusFilter === "all") return true;
+      const missing = !eq.category_id || !eq.subcategory_id;
+      if (statusFilter === "missing") return missing;
+      const manual = !!eq.category_manually_edited || !!eq.subcategory_manually_edited;
+      if (statusFilter === "manual") return !missing && manual;
+      // auto
+      return !missing && !manual;
     };
 
+    const matchesOwnershipFilter = (eq: Equipment): boolean =>
+      ownershipFilter === "all" ? true : (eq.ownership_type || "Propio") === ownershipFilter;
+
     const filtered = equipment.filter(
-      (e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e) && matchesFeaturedFilter(e) && matchesSubcatFilter(e),
+      (e) =>
+        matchesSearch(e) &&
+        matchesImageFilter(e) &&
+        matchesCategoryFilter(e) &&
+        matchesFeaturedFilter(e) &&
+        matchesStatusFilter(e) &&
+        matchesOwnershipFilter(e),
     );
 
     if (priceSort === "none") return filtered;
     return [...filtered].sort((a, b) =>
       priceSort === "asc" ? a.price_per_day - b.price_per_day : b.price_per_day - a.price_per_day,
     );
-  }, [equipment, debouncedSearch, imageFilter, categoryFilter, featuredFilter, subcatFilter, priceSort, hasImage]);
+  }, [equipment, debouncedSearch, imageFilter, categoryFilter, featuredFilter, statusFilter, ownershipFilter, priceSort, hasImage]);
 
   const filteredWithImageCount = useMemo(
     () => filteredEquipment.filter((e) => hasImage(e)).length,
