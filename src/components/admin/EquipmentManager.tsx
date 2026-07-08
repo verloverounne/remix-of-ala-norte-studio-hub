@@ -1075,16 +1075,34 @@ export const EquipmentManager = () => {
                 <div className="space-y-1">
                   <Label className="text-xs text-muted-foreground flex items-center gap-1">
                     <Filter className="h-3 w-3" />
-                    Subcategoría
+                    Estado de categorización
                   </Label>
-                  <Select value={subcatFilter} onValueChange={(v) => setSubcatFilter(v as SubcatFilter)}>
+                  <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as CategorizationStatus)}>
                     <SelectTrigger className="h-9 text-xs">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Todas</SelectItem>
-                      <SelectItem value="with">Con subcategoría</SelectItem>
-                      <SelectItem value="without">Sin subcategoría</SelectItem>
+                      <SelectItem value="all">Todos</SelectItem>
+                      <SelectItem value="auto">Categorizados automáticamente</SelectItem>
+                      <SelectItem value="manual">Editados manualmente</SelectItem>
+                      <SelectItem value="missing">Sin categoría / sin subcategoría</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Filter className="h-3 w-3" />
+                    Tipo
+                  </Label>
+                  <Select value={ownershipFilter} onValueChange={(v) => setOwnershipFilter(v as OwnershipFilter)}>
+                    <SelectTrigger className="h-9 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos</SelectItem>
+                      <SelectItem value="Propio">Propio</SelectItem>
+                      <SelectItem value="Estacionado">Estacionado</SelectItem>
+                      <SelectItem value="Externo">Externo</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
