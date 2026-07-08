@@ -170,14 +170,14 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
       addLog("Cargando equipos existentes...");
       const { data: existingEquipment, error: eqError } = await supabase
         .from("equipment")
-        .select("id, name, status, description, subcategory_id, category_id")
+        .select("id, name, status, description, subcategory_id, category_id, category_manually_edited, manual_category_id")
         .limit(10000);
       if (eqError) throw eqError;
 
       // Índice por nombre normalizado. Detecta colisiones históricas.
       const existingMap = new Map<
         string,
-        { id: string; name: string; description: string | null; subcategory_id: string | null }
+        { id: string; name: string; description: string | null; subcategory_id: string | null; category_manually_edited: boolean; manual_category_id: string | null }
       >();
       let collisions = 0;
       for (const eq of (existingEquipment || []) as Array<{
@@ -185,6 +185,8 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
         name: string;
         description: string | null;
         subcategory_id: string | null;
+        category_manually_edited: boolean | null;
+        manual_category_id: string | null;
       }>) {
         const key = normalizeImportName(eq.name);
         const prev = existingMap.get(key);
@@ -200,6 +202,8 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
           name: eq.name,
           description: eq.description,
           subcategory_id: eq.subcategory_id,
+          category_manually_edited: !!eq.category_manually_edited,
+          manual_category_id: eq.manual_category_id,
         });
       }
       addLog(`✓ ${existingMap.size} equipos existentes indexados`);
