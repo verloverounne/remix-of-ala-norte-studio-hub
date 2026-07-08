@@ -66,6 +66,8 @@ interface Equipment {
   price_per_day: number;
   category_id: string | null;
   subcategory_id: string | null;
+  manual_category_id: string | null;
+  category_manually_edited: boolean;
   featured: boolean;
   status: 'available' | 'rented' | 'maintenance';
   stock_quantity: number;
@@ -156,7 +158,7 @@ export const EquipmentManager = () => {
       const { data, error } = await supabase
         .from("equipment")
         .select(
-          "id, name, name_en, image_url, images, brand, model, description, price_per_day, category_id, subcategory_id, featured, status, stock_quantity, serial_number, ownership_type, functional_status, categories (*), subcategories (*)",
+          "id, name, name_en, image_url, images, brand, model, description, price_per_day, category_id, subcategory_id, manual_category_id, category_manually_edited, featured, status, stock_quantity, serial_number, ownership_type, functional_status, categories!category_id (*), subcategories (*)",
         )
         .order("name")
         .range(from, from + PAGE_SIZE - 1);
@@ -510,7 +512,7 @@ export const EquipmentManager = () => {
   const handleEditEquipment = async (eq: Equipment) => {
     const { data, error } = await supabase
       .from("equipment")
-      .select("*, categories (*), subcategories (*)")
+      .select("*, categories!category_id (*), subcategories (*)")
       .eq("id", eq.id)
       .single();
 
@@ -542,6 +544,8 @@ export const EquipmentManager = () => {
         status: data.status || 'available',
         stock_quantity: data.stock_quantity ?? 1,
         ownership_type: data.ownership_type ?? null,
+        manual_category_id: (data as any).manual_category_id ?? null,
+        category_manually_edited: (data as any).category_manually_edited ?? false,
         categories: data.categories as Category | null,
         subcategories: data.subcategories as Subcategory | null,
       };
@@ -630,6 +634,45 @@ export const EquipmentManager = () => {
       });
     }
   };
+
+  // Manual category override: sets manual_category_id + category_manually_edited=true,
+  // pisa category_id y limpia subcategory_id si no pertenece a la nueva categoría.
+  const handleManualCategoryChange = async (equipmentId: string, newCategoryId: string | null) => {
+    const eq = equipment.find((e) => e.id === equipmentId);
+    const currentSub = eq?.subcategory_id ? subcategories.find((s) => s.id === eq.subcategory_id) : null;
+    const subBelongs = currentSub && newCategoryId ? currentSub.category_id === newCategoryId : false;
+    const clearSub = !!currentSub && !subBelongs;
+
+    const updateData: Record<string, any> = {
+      manual_category_id: newCategoryId,
+      category_manually_edited: true,
+      category_id: newCategoryId,
+    };
+    if (clearSub) updateData.subcategory_id = null;
+
+    const { error } = await supabase.from("equipment").update(updateData).eq("id", equipmentId);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+      return;
+    }
+    setEquipment((prev) =>
+      prev.map((item) =>
+        item.id === equipmentId
+          ? {
+              ...item,
+              manual_category_id: newCategoryId,
+              category_manually_edited: true,
+              category_id: newCategoryId,
+              categories: newCategoryId ? (categories.find((c) => c.id === newCategoryId) as Category | null) : null,
+              subcategory_id: clearSub ? null : item.subcategory_id,
+              subcategories: clearSub ? null : item.subcategories,
+            }
+          : item,
+      ),
+    );
+    toast({ title: "Categoría manual guardada", description: "No se sobreescribirá en futuras importaciones" });
+  };
+
 
   const handleCreateEquipment = async () => {
     if (!newEquipment.name || !newEquipment.price_per_day) {
@@ -1174,8 +1217,34 @@ export const EquipmentManager = () => {
                             className="h-7 text-sm font-medium w-full"
                             placeholder="Nombre del equipo"
                           />
-                          {/* Inline subcategory selector */}
+                          {/* Inline category + subcategory selectors */}
                           <div className="flex items-center gap-1 flex-wrap">
+                            <Select
+                              value={eq.category_id || "none"}
+                              onValueChange={(v) => {
+                                const newVal = v === "none" ? null : v;
+                                handleManualCategoryChange(eq.id, newVal);
+                              }}
+                            >
+                              <SelectTrigger
+                                className={cn(
+                                  "h-6 text-xs w-auto min-w-[120px] max-w-[180px]",
+                                  eq.category_manually_edited && "border-primary",
+                                )}
+                                title={eq.category_manually_edited ? "Categoría editada manualmente (no se sobreescribe en imports)" : "Categoría (auto)"}
+                              >
+                                <SelectValue placeholder="Categoría" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="none">Sin categoría</SelectItem>
+                                {categories.map((c) => (
+                                  <SelectItem key={c.id} value={c.id}>
+                                    {c.name}
+                                    {eq.category_manually_edited && c.id === eq.category_id ? " ✓" : ""}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                             <Select
                               value={eq.subcategory_id || "none"}
                               onValueChange={(v) => {
