@@ -81,6 +81,7 @@ export function AutoAssignedReviewPanel() {
         subcategory_id: sub.id,
         category_id: sub.category_id,
         subcategory_auto_assigned: false,
+        subcategory_manually_edited: true,
       } as never)
       .eq("id", row.id);
     setSavingId(null);
