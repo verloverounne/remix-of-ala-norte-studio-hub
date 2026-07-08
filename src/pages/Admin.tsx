@@ -125,7 +125,7 @@ const Admin = () => {
   const fetchEquipment = async () => {
     const {
       data
-    } = await supabase.from("equipment").select(`*, categories (*), subcategories (*)`).order("name");
+    } = await supabase.from("equipment").select(`*, categories:category_id (*), subcategories:category_id (*)`).order("name");
     if (data) {
       const transformed = data.map((item: any) => ({
         ...item,
@@ -568,7 +568,7 @@ const Admin = () => {
       // Fetch ALL equipment with no limit
       const { data: allEquipment, error } = await supabase
         .from("equipment")
-        .select(`*, categories(*), subcategories(*)`)
+        .select(`*, categories:category_id(*), subcategories:category_id(*)`)
         .order("name")
         .limit(10000);
       if (error) throw error;

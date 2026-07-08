@@ -48,8 +48,8 @@ export const RelatedEquipment = ({
         reason,
         equipment:recommended_id (
           *,
-          categories (*),
-          subcategories (*)
+          categories:category_id (*),
+          subcategories:category_id (*)
         )
       `)
       .eq("equipment_id", equipmentId)
@@ -74,8 +74,8 @@ export const RelatedEquipment = ({
       .from("equipment")
       .select(`
         *,
-        categories (*),
-        subcategories (*)
+        categories:category_id (*),
+        subcategories:category_id (*)
       `)
       .eq("status", "available")
       .neq("id", equipmentId);
