@@ -68,6 +68,7 @@ interface Equipment {
   subcategory_id: string | null;
   manual_category_id: string | null;
   category_manually_edited: boolean;
+  subcategory_manually_edited: boolean;
   featured: boolean;
   status: 'available' | 'rented' | 'maintenance';
   stock_quantity: number;
@@ -85,7 +86,8 @@ interface StorageFile {
 type ImageFilter = "all" | "with" | "without";
 type PriceSort = "none" | "asc" | "desc";
 type FeaturedFilter = "all" | "featured" | "not_featured";
-type SubcatFilter = "all" | "with" | "without";
+type CategorizationStatus = "all" | "auto" | "manual" | "missing";
+type OwnershipFilter = "all" | "Propio" | "Estacionado" | "Externo";
 
 export const EquipmentManager = () => {
   const [equipment, setEquipment] = useState<Equipment[]>([]);
@@ -104,7 +106,8 @@ export const EquipmentManager = () => {
   const [priceSort, setPriceSort] = useState<PriceSort>("none");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [featuredFilter, setFeaturedFilter] = useState<FeaturedFilter>("all");
-  const [subcatFilter, setSubcatFilter] = useState<SubcatFilter>("all");
+  const [statusFilter, setStatusFilter] = useState<CategorizationStatus>("all");
+  const [ownershipFilter, setOwnershipFilter] = useState<OwnershipFilter>("all");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingEquipment, setEditingEquipment] = useState<Equipment | null>(null);
   const [savingEquipment, setSavingEquipment] = useState(false);
@@ -158,7 +161,7 @@ export const EquipmentManager = () => {
       const { data, error } = await supabase
         .from("equipment")
         .select(
-          "id, name, name_en, image_url, images, brand, model, description, price_per_day, category_id, subcategory_id, manual_category_id, category_manually_edited, featured, status, stock_quantity, serial_number, ownership_type, functional_status, categories!category_id (*), subcategories (*)",
+          "id, name, name_en, image_url, images, brand, model, description, price_per_day, category_id, subcategory_id, manual_category_id, category_manually_edited, subcategory_manually_edited, featured, status, stock_quantity, serial_number, ownership_type, functional_status, categories!category_id (*), subcategories (*)",
         )
         .order("name")
         .range(from, from + PAGE_SIZE - 1);
@@ -319,21 +322,34 @@ export const EquipmentManager = () => {
       return true;
     };
 
-    const matchesSubcatFilter = (eq: Equipment): boolean => {
-      if (subcatFilter === "with") return !!eq.subcategory_id;
-      if (subcatFilter === "without") return !eq.subcategory_id;
-      return true;
+    const matchesStatusFilter = (eq: Equipment): boolean => {
+      if (statusFilter === "all") return true;
+      const missing = !eq.category_id || !eq.subcategory_id;
+      if (statusFilter === "missing") return missing;
+      const manual = !!eq.category_manually_edited || !!eq.subcategory_manually_edited;
+      if (statusFilter === "manual") return !missing && manual;
+      // auto
+      return !missing && !manual;
     };
 
+    const matchesOwnershipFilter = (eq: Equipment): boolean =>
+      ownershipFilter === "all" ? true : (eq.ownership_type || "Propio") === ownershipFilter;
+
     const filtered = equipment.filter(
-      (e) => matchesSearch(e) && matchesImageFilter(e) && matchesCategoryFilter(e) && matchesFeaturedFilter(e) && matchesSubcatFilter(e),
+      (e) =>
+        matchesSearch(e) &&
+        matchesImageFilter(e) &&
+        matchesCategoryFilter(e) &&
+        matchesFeaturedFilter(e) &&
+        matchesStatusFilter(e) &&
+        matchesOwnershipFilter(e),
     );
 
     if (priceSort === "none") return filtered;
     return [...filtered].sort((a, b) =>
       priceSort === "asc" ? a.price_per_day - b.price_per_day : b.price_per_day - a.price_per_day,
     );
-  }, [equipment, debouncedSearch, imageFilter, categoryFilter, featuredFilter, subcatFilter, priceSort, hasImage]);
+  }, [equipment, debouncedSearch, imageFilter, categoryFilter, featuredFilter, statusFilter, ownershipFilter, priceSort, hasImage]);
 
   const filteredWithImageCount = useMemo(
     () => filteredEquipment.filter((e) => hasImage(e)).length,
@@ -546,6 +562,7 @@ export const EquipmentManager = () => {
         ownership_type: data.ownership_type ?? null,
         manual_category_id: (data as any).manual_category_id ?? null,
         category_manually_edited: (data as any).category_manually_edited ?? false,
+        subcategory_manually_edited: (data as any).subcategory_manually_edited ?? false,
         categories: data.categories as Category | null,
         subcategories: data.subcategories as Subcategory | null,
       };
@@ -611,6 +628,9 @@ export const EquipmentManager = () => {
   ) => {
     const updateData: Record<string, any> = {};
     updateData[field] = value;
+    if (field === "subcategory_id") {
+      updateData.subcategory_manually_edited = true;
+    }
 
     const { error } = await supabase
       .from("equipment")
@@ -625,8 +645,8 @@ export const EquipmentManager = () => {
       });
     } else {
       // Update local state
-      setEquipment(prev => prev.map(eq => 
-        eq.id === equipmentId ? { ...eq, [field]: value } : eq
+      setEquipment(prev => prev.map(eq =>
+        eq.id === equipmentId ? { ...eq, ...updateData } : eq
       ));
       toast({
         title: "Actualizado",
@@ -1002,7 +1022,8 @@ export const EquipmentManager = () => {
               </div>
 
               {/* Filters */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+
                 <div className="space-y-1">
                   <Label className="text-xs text-muted-foreground flex items-center gap-1">
                     <Filter className="h-3 w-3" />
@@ -1057,16 +1078,34 @@ export const EquipmentManager = () => {
                 <div className="space-y-1">
                   <Label className="text-xs text-muted-foreground flex items-center gap-1">
                     <Filter className="h-3 w-3" />
-                    Subcategoría
+                    Estado de categorización
                   </Label>
-                  <Select value={subcatFilter} onValueChange={(v) => setSubcatFilter(v as SubcatFilter)}>
+                  <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as CategorizationStatus)}>
                     <SelectTrigger className="h-9 text-xs">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Todas</SelectItem>
-                      <SelectItem value="with">Con subcategoría</SelectItem>
-                      <SelectItem value="without">Sin subcategoría</SelectItem>
+                      <SelectItem value="all">Todos</SelectItem>
+                      <SelectItem value="auto">Categorizados automáticamente</SelectItem>
+                      <SelectItem value="manual">Editados manualmente</SelectItem>
+                      <SelectItem value="missing">Sin categoría / sin subcategoría</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Filter className="h-3 w-3" />
+                    Tipo
+                  </Label>
+                  <Select value={ownershipFilter} onValueChange={(v) => setOwnershipFilter(v as OwnershipFilter)}>
+                    <SelectTrigger className="h-9 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos</SelectItem>
+                      <SelectItem value="Propio">Propio</SelectItem>
+                      <SelectItem value="Estacionado">Estacionado</SelectItem>
+                      <SelectItem value="Externo">Externo</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
