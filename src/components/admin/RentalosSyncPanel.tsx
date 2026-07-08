@@ -319,7 +319,11 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
 
         if (existing) {
           // UPDATE — preservar subcategoría si ya existía; jamás pisar category_id automáticamente.
-          if (existing.subcategory_id) {
+          // Si la categoría fue editada manualmente en admin, NO tocar category_id ni subcategory_id.
+          if (existing.category_manually_edited) {
+            syncResult.counters.updated_existing_preserved_subcategory++;
+            syncResult.details.push(`= Categoría manual preservada: ${existing.name}`);
+          } else if (existing.subcategory_id) {
             syncResult.counters.updated_existing_preserved_subcategory++;
             syncResult.details.push(`= Preservada subcategoría: ${existing.name}`);
           } else {
