@@ -635,6 +635,45 @@ export const EquipmentManager = () => {
     }
   };
 
+  // Manual category override: sets manual_category_id + category_manually_edited=true,
+  // pisa category_id y limpia subcategory_id si no pertenece a la nueva categoría.
+  const handleManualCategoryChange = async (equipmentId: string, newCategoryId: string | null) => {
+    const eq = equipment.find((e) => e.id === equipmentId);
+    const currentSub = eq?.subcategory_id ? subcategories.find((s) => s.id === eq.subcategory_id) : null;
+    const subBelongs = currentSub && newCategoryId ? currentSub.category_id === newCategoryId : false;
+    const clearSub = !!currentSub && !subBelongs;
+
+    const updateData: Record<string, any> = {
+      manual_category_id: newCategoryId,
+      category_manually_edited: true,
+      category_id: newCategoryId,
+    };
+    if (clearSub) updateData.subcategory_id = null;
+
+    const { error } = await supabase.from("equipment").update(updateData).eq("id", equipmentId);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+      return;
+    }
+    setEquipment((prev) =>
+      prev.map((item) =>
+        item.id === equipmentId
+          ? {
+              ...item,
+              manual_category_id: newCategoryId,
+              category_manually_edited: true,
+              category_id: newCategoryId,
+              categories: newCategoryId ? (categories.find((c) => c.id === newCategoryId) as Category | null) : null,
+              subcategory_id: clearSub ? null : item.subcategory_id,
+              subcategories: clearSub ? null : item.subcategories,
+            }
+          : item,
+      ),
+    );
+    toast({ title: "Categoría manual guardada", description: "No se sobreescribirá en futuras importaciones" });
+  };
+
+
   const handleCreateEquipment = async () => {
     if (!newEquipment.name || !newEquipment.price_per_day) {
       toast({ title: "Error", description: "Nombre y precio son requeridos", variant: "destructive" });
