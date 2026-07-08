@@ -239,6 +239,7 @@ export type Database = {
           stock_quantity: number
           subcategory_auto_assigned: boolean
           subcategory_id: string | null
+          subcategory_manually_edited: boolean
           updated_at: string
         }
         Insert: {
@@ -267,6 +268,7 @@ export type Database = {
           stock_quantity?: number
           subcategory_auto_assigned?: boolean
           subcategory_id?: string | null
+          subcategory_manually_edited?: boolean
           updated_at?: string
         }
         Update: {
@@ -295,6 +297,7 @@ export type Database = {
           stock_quantity?: number
           subcategory_auto_assigned?: boolean
           subcategory_id?: string | null
+          subcategory_manually_edited?: boolean
           updated_at?: string
         }
         Relationships: [

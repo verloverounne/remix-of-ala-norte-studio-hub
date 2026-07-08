@@ -1,0 +1,1 @@
+ALTER TABLE public.equipment ADD COLUMN IF NOT EXISTS subcategory_manually_edited boolean NOT NULL DEFAULT false;
