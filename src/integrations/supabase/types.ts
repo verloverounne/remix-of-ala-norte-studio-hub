@@ -216,6 +216,7 @@ export type Database = {
         Row: {
           brand: string | null
           category_id: string | null
+          category_manually_edited: boolean
           created_at: string
           description: string | null
           detailed_specs: Json | null
@@ -225,6 +226,7 @@ export type Database = {
           id_original: number | null
           image_url: string | null
           images: Json | null
+          manual_category_id: string | null
           model: string | null
           name: string
           name_en: string | null
@@ -242,6 +244,7 @@ export type Database = {
         Insert: {
           brand?: string | null
           category_id?: string | null
+          category_manually_edited?: boolean
           created_at?: string
           description?: string | null
           detailed_specs?: Json | null
@@ -251,6 +254,7 @@ export type Database = {
           id_original?: number | null
           image_url?: string | null
           images?: Json | null
+          manual_category_id?: string | null
           model?: string | null
           name: string
           name_en?: string | null
@@ -268,6 +272,7 @@ export type Database = {
         Update: {
           brand?: string | null
           category_id?: string | null
+          category_manually_edited?: boolean
           created_at?: string
           description?: string | null
           detailed_specs?: Json | null
@@ -277,6 +282,7 @@ export type Database = {
           id_original?: number | null
           image_url?: string | null
           images?: Json | null
+          manual_category_id?: string | null
           model?: string | null
           name?: string
           name_en?: string | null
@@ -295,6 +301,13 @@ export type Database = {
           {
             foreignKeyName: "equipment_category_id_fkey"
             columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_manual_category_id_fkey"
+            columns: ["manual_category_id"]
             isOneToOne: false
             referencedRelation: "categories"
             referencedColumns: ["id"]
