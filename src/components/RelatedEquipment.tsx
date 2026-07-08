@@ -48,7 +48,7 @@ export const RelatedEquipment = ({
         reason,
         equipment:recommended_id (
           *,
-          categories:category_id (*),
+          categories!category_id (*),
           subcategories (*)
         )
       `)
@@ -74,7 +74,7 @@ export const RelatedEquipment = ({
       .from("equipment")
       .select(`
         *,
-        categories:category_id (*),
+        categories!category_id (*),
         subcategories (*)
       `)
       .eq("status", "available")

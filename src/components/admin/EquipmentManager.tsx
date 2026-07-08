@@ -156,7 +156,7 @@ export const EquipmentManager = () => {
       const { data, error } = await supabase
         .from("equipment")
         .select(
-          "id, name, name_en, image_url, images, brand, model, description, price_per_day, category_id, subcategory_id, featured, status, stock_quantity, serial_number, ownership_type, functional_status, categories:category_id (*), subcategories (*)",
+          "id, name, name_en, image_url, images, brand, model, description, price_per_day, category_id, subcategory_id, featured, status, stock_quantity, serial_number, ownership_type, functional_status, categories!category_id (*), subcategories (*)",
         )
         .order("name")
         .range(from, from + PAGE_SIZE - 1);
@@ -510,7 +510,7 @@ export const EquipmentManager = () => {
   const handleEditEquipment = async (eq: Equipment) => {
     const { data, error } = await supabase
       .from("equipment")
-      .select("*, categories:category_id (*), subcategories (*)")
+      .select("*, categories!category_id (*), subcategories (*)")
       .eq("id", eq.id)
       .single();
 
