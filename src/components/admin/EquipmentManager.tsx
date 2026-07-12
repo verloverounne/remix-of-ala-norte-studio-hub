@@ -97,6 +97,12 @@ function getEquipmentStatus(eq: Equipment): CategorizationStatus {
   return "auto";
 }
 
+function getSubcategoryStatus(eq: Equipment): CategorizationStatus {
+  if (!eq.subcategory_id) return "missing";
+  if (eq.subcategory_manually_edited) return "manual";
+  return "auto";
+}
+
 
 export const EquipmentManager = () => {
   const [equipment, setEquipment] = useState<Equipment[]>([]);
@@ -116,6 +122,7 @@ export const EquipmentManager = () => {
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [featuredFilter, setFeaturedFilter] = useState<FeaturedFilter>("all");
   const [statusFilter, setStatusFilter] = useState<CategorizationStatus>("all");
+  const [subcategoryStatusFilter, setSubcategoryStatusFilter] = useState<CategorizationStatus>("all");
   const [ownershipFilter, setOwnershipFilter] = useState<OwnershipFilter>("all");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingEquipment, setEditingEquipment] = useState<Equipment | null>(null);
@@ -336,6 +343,10 @@ export const EquipmentManager = () => {
       return getEquipmentStatus(eq) === statusFilter;
     };
 
+    const matchesSubcategoryStatusFilter = (eq: Equipment): boolean => {
+      if (subcategoryStatusFilter === "all") return true;
+      return getSubcategoryStatus(eq) === subcategoryStatusFilter;
+    };
 
     const matchesOwnershipFilter = (eq: Equipment): boolean =>
       ownershipFilter === "all" ? true : (eq.ownership_type || "Propio") === ownershipFilter;
@@ -347,6 +358,7 @@ export const EquipmentManager = () => {
         matchesCategoryFilter(e) &&
         matchesFeaturedFilter(e) &&
         matchesStatusFilter(e) &&
+        matchesSubcategoryStatusFilter(e) &&
         matchesOwnershipFilter(e),
     );
 
@@ -354,7 +366,7 @@ export const EquipmentManager = () => {
     return [...filtered].sort((a, b) =>
       priceSort === "asc" ? a.price_per_day - b.price_per_day : b.price_per_day - a.price_per_day,
     );
-  }, [equipment, debouncedSearch, imageFilter, categoryFilter, featuredFilter, statusFilter, ownershipFilter, priceSort, hasImage]);
+  }, [equipment, debouncedSearch, imageFilter, categoryFilter, featuredFilter, statusFilter, subcategoryStatusFilter, ownershipFilter, priceSort, hasImage]);
 
   const filteredWithImageCount = useMemo(
     () => filteredEquipment.filter((e) => hasImage(e)).length,
@@ -365,6 +377,14 @@ export const EquipmentManager = () => {
     const counts: Record<CategorizationStatus, number> = { all: equipment.length, auto: 0, manual: 0, missing: 0 };
     for (const eq of equipment) {
       counts[getEquipmentStatus(eq)] += 1;
+    }
+    return counts;
+  }, [equipment]);
+
+  const subcategoryStatusCounts = useMemo(() => {
+    const counts: Record<CategorizationStatus, number> = { all: equipment.length, auto: 0, manual: 0, missing: 0 };
+    for (const eq of equipment) {
+      counts[getSubcategoryStatus(eq)] += 1;
     }
     return counts;
   }, [equipment]);
@@ -1127,6 +1147,32 @@ export const EquipmentManager = () => {
                         <span className="font-semibold tabular-nums">{statusCounts[opt.key]}</span>
                       </button>
                     ))}
+                  </div>
+                  <div className="pt-1">
+                    <Label className="text-[10px] text-muted-foreground uppercase tracking-wider">Subcategoría</Label>
+                    <div className="flex flex-wrap gap-1 pt-0.5">
+                      {[
+                        { key: "all" as CategorizationStatus, label: "Todos" },
+                        { key: "auto" as CategorizationStatus, label: "Auto" },
+                        { key: "manual" as CategorizationStatus, label: "Manual" },
+                        { key: "missing" as CategorizationStatus, label: "Sin sub." },
+                      ].map((opt) => (
+                        <button
+                          key={opt.key}
+                          type="button"
+                          onClick={() => setSubcategoryStatusFilter(opt.key)}
+                          className={cn(
+                            "inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm text-[10px] leading-tight border transition-colors",
+                            subcategoryStatusFilter === opt.key
+                              ? "bg-primary text-primary-foreground border-primary"
+                              : "bg-background hover:bg-muted border-border text-muted-foreground",
+                          )}
+                        >
+                          <span>{opt.label}</span>
+                          <span className="font-semibold tabular-nums">{subcategoryStatusCounts[opt.key]}</span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
