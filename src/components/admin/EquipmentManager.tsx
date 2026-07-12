@@ -1105,7 +1105,31 @@ export const EquipmentManager = () => {
                       <SelectItem value="missing">Sin categoría / sin subcategoría</SelectItem>
                     </SelectContent>
                   </Select>
+                  <div className="flex flex-wrap gap-1 pt-1">
+                    {[
+                      { key: "all" as CategorizationStatus, label: "Todos", variant: "secondary" as const },
+                      { key: "auto" as CategorizationStatus, label: "Auto", variant: "default" as const },
+                      { key: "manual" as CategorizationStatus, label: "Manual", variant: "outline" as const },
+                      { key: "missing" as CategorizationStatus, label: "Sin cat.", variant: "destructive" as const },
+                    ].map((opt) => (
+                      <button
+                        key={opt.key}
+                        type="button"
+                        onClick={() => setStatusFilter(opt.key)}
+                        className={cn(
+                          "inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm text-[10px] leading-tight border transition-colors",
+                          statusFilter === opt.key
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : "bg-background hover:bg-muted border-border text-muted-foreground",
+                        )}
+                      >
+                        <span>{opt.label}</span>
+                        <span className="font-semibold tabular-nums">{statusCounts[opt.key]}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
+
                 <div className="space-y-1">
                   <Label className="text-xs text-muted-foreground flex items-center gap-1">
                     <Filter className="h-3 w-3" />
