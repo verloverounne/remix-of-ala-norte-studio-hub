@@ -333,13 +333,9 @@ export const EquipmentManager = () => {
 
     const matchesStatusFilter = (eq: Equipment): boolean => {
       if (statusFilter === "all") return true;
-      const missing = !eq.category_id || !eq.subcategory_id;
-      if (statusFilter === "missing") return missing;
-      const manual = !!eq.category_manually_edited || !!eq.subcategory_manually_edited;
-      if (statusFilter === "manual") return !missing && manual;
-      // auto
-      return !missing && !manual;
+      return getEquipmentStatus(eq) === statusFilter;
     };
+
 
     const matchesOwnershipFilter = (eq: Equipment): boolean =>
       ownershipFilter === "all" ? true : (eq.ownership_type || "Propio") === ownershipFilter;
