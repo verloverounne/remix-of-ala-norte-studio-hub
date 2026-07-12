@@ -361,6 +361,15 @@ export const EquipmentManager = () => {
     [filteredEquipment, hasImage],
   );
 
+  const statusCounts = useMemo(() => {
+    const counts: Record<CategorizationStatus, number> = { all: equipment.length, auto: 0, manual: 0, missing: 0 };
+    for (const eq of equipment) {
+      counts[getEquipmentStatus(eq)] += 1;
+    }
+    return counts;
+  }, [equipment]);
+
+
   // Group filtered equipment by category; within each category, items with
   // subcategory first and items without subcategory appended under a
   // "Sin categorizar" sub-section. Items without a category at all go into
