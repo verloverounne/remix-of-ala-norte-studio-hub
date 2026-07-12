@@ -97,6 +97,12 @@ function getEquipmentStatus(eq: Equipment): CategorizationStatus {
   return "auto";
 }
 
+function getSubcategoryStatus(eq: Equipment): CategorizationStatus {
+  if (!eq.subcategory_id) return "missing";
+  if (eq.subcategory_manually_edited) return "manual";
+  return "auto";
+}
+
 
 export const EquipmentManager = () => {
   const [equipment, setEquipment] = useState<Equipment[]>([]);
