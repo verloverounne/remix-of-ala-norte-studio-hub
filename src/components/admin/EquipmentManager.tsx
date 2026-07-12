@@ -89,6 +89,15 @@ type FeaturedFilter = "all" | "featured" | "not_featured";
 type CategorizationStatus = "all" | "auto" | "manual" | "missing";
 type OwnershipFilter = "all" | "Propio" | "Estacionado" | "Externo";
 
+function getEquipmentStatus(eq: Equipment): CategorizationStatus {
+  const missing = !eq.category_id || !eq.subcategory_id;
+  if (missing) return "missing";
+  const manual = !!eq.category_manually_edited || !!eq.subcategory_manually_edited;
+  if (manual) return "manual";
+  return "auto";
+}
+
+
 export const EquipmentManager = () => {
   const [equipment, setEquipment] = useState<Equipment[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
