@@ -366,7 +366,7 @@ export const EquipmentManager = () => {
     return [...filtered].sort((a, b) =>
       priceSort === "asc" ? a.price_per_day - b.price_per_day : b.price_per_day - a.price_per_day,
     );
-  }, [equipment, debouncedSearch, imageFilter, categoryFilter, featuredFilter, statusFilter, ownershipFilter, priceSort, hasImage]);
+  }, [equipment, debouncedSearch, imageFilter, categoryFilter, featuredFilter, statusFilter, subcategoryStatusFilter, ownershipFilter, priceSort, hasImage]);
 
   const filteredWithImageCount = useMemo(
     () => filteredEquipment.filter((e) => hasImage(e)).length,
@@ -377,6 +377,14 @@ export const EquipmentManager = () => {
     const counts: Record<CategorizationStatus, number> = { all: equipment.length, auto: 0, manual: 0, missing: 0 };
     for (const eq of equipment) {
       counts[getEquipmentStatus(eq)] += 1;
+    }
+    return counts;
+  }, [equipment]);
+
+  const subcategoryStatusCounts = useMemo(() => {
+    const counts: Record<CategorizationStatus, number> = { all: equipment.length, auto: 0, manual: 0, missing: 0 };
+    for (const eq of equipment) {
+      counts[getSubcategoryStatus(eq)] += 1;
     }
     return counts;
   }, [equipment]);
