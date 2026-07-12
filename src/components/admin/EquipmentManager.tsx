@@ -343,6 +343,10 @@ export const EquipmentManager = () => {
       return getEquipmentStatus(eq) === statusFilter;
     };
 
+    const matchesSubcategoryStatusFilter = (eq: Equipment): boolean => {
+      if (subcategoryStatusFilter === "all") return true;
+      return getSubcategoryStatus(eq) === subcategoryStatusFilter;
+    };
 
     const matchesOwnershipFilter = (eq: Equipment): boolean =>
       ownershipFilter === "all" ? true : (eq.ownership_type || "Propio") === ownershipFilter;
