@@ -1148,6 +1148,32 @@ export const EquipmentManager = () => {
                       </button>
                     ))}
                   </div>
+                  <div className="pt-1">
+                    <Label className="text-[10px] text-muted-foreground uppercase tracking-wider">Subcategoría</Label>
+                    <div className="flex flex-wrap gap-1 pt-0.5">
+                      {[
+                        { key: "all" as CategorizationStatus, label: "Todos" },
+                        { key: "auto" as CategorizationStatus, label: "Auto" },
+                        { key: "manual" as CategorizationStatus, label: "Manual" },
+                        { key: "missing" as CategorizationStatus, label: "Sin sub." },
+                      ].map((opt) => (
+                        <button
+                          key={opt.key}
+                          type="button"
+                          onClick={() => setSubcategoryStatusFilter(opt.key)}
+                          className={cn(
+                            "inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm text-[10px] leading-tight border transition-colors",
+                            subcategoryStatusFilter === opt.key
+                              ? "bg-primary text-primary-foreground border-primary"
+                              : "bg-background hover:bg-muted border-border text-muted-foreground",
+                          )}
+                        >
+                          <span>{opt.label}</span>
+                          <span className="font-semibold tabular-nums">{subcategoryStatusCounts[opt.key]}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
                 <div className="space-y-1">
