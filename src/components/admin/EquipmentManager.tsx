@@ -358,6 +358,7 @@ export const EquipmentManager = () => {
         matchesCategoryFilter(e) &&
         matchesFeaturedFilter(e) &&
         matchesStatusFilter(e) &&
+        matchesSubcategoryStatusFilter(e) &&
         matchesOwnershipFilter(e),
     );
 
