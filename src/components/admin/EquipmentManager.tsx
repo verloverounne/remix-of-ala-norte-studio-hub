@@ -89,6 +89,15 @@ type FeaturedFilter = "all" | "featured" | "not_featured";
 type CategorizationStatus = "all" | "auto" | "manual" | "missing";
 type OwnershipFilter = "all" | "Propio" | "Estacionado" | "Externo";
 
+function getEquipmentStatus(eq: Equipment): CategorizationStatus {
+  const missing = !eq.category_id || !eq.subcategory_id;
+  if (missing) return "missing";
+  const manual = !!eq.category_manually_edited || !!eq.subcategory_manually_edited;
+  if (manual) return "manual";
+  return "auto";
+}
+
+
 export const EquipmentManager = () => {
   const [equipment, setEquipment] = useState<Equipment[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -324,13 +333,9 @@ export const EquipmentManager = () => {
 
     const matchesStatusFilter = (eq: Equipment): boolean => {
       if (statusFilter === "all") return true;
-      const missing = !eq.category_id || !eq.subcategory_id;
-      if (statusFilter === "missing") return missing;
-      const manual = !!eq.category_manually_edited || !!eq.subcategory_manually_edited;
-      if (statusFilter === "manual") return !missing && manual;
-      // auto
-      return !missing && !manual;
+      return getEquipmentStatus(eq) === statusFilter;
     };
+
 
     const matchesOwnershipFilter = (eq: Equipment): boolean =>
       ownershipFilter === "all" ? true : (eq.ownership_type || "Propio") === ownershipFilter;
@@ -355,6 +360,15 @@ export const EquipmentManager = () => {
     () => filteredEquipment.filter((e) => hasImage(e)).length,
     [filteredEquipment, hasImage],
   );
+
+  const statusCounts = useMemo(() => {
+    const counts: Record<CategorizationStatus, number> = { all: equipment.length, auto: 0, manual: 0, missing: 0 };
+    for (const eq of equipment) {
+      counts[getEquipmentStatus(eq)] += 1;
+    }
+    return counts;
+  }, [equipment]);
+
 
   // Group filtered equipment by category; within each category, items with
   // subcategory first and items without subcategory appended under a
@@ -1091,7 +1105,31 @@ export const EquipmentManager = () => {
                       <SelectItem value="missing">Sin categoría / sin subcategoría</SelectItem>
                     </SelectContent>
                   </Select>
+                  <div className="flex flex-wrap gap-1 pt-1">
+                    {[
+                      { key: "all" as CategorizationStatus, label: "Todos", variant: "secondary" as const },
+                      { key: "auto" as CategorizationStatus, label: "Auto", variant: "default" as const },
+                      { key: "manual" as CategorizationStatus, label: "Manual", variant: "outline" as const },
+                      { key: "missing" as CategorizationStatus, label: "Sin cat.", variant: "destructive" as const },
+                    ].map((opt) => (
+                      <button
+                        key={opt.key}
+                        type="button"
+                        onClick={() => setStatusFilter(opt.key)}
+                        className={cn(
+                          "inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm text-[10px] leading-tight border transition-colors",
+                          statusFilter === opt.key
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : "bg-background hover:bg-muted border-border text-muted-foreground",
+                        )}
+                      >
+                        <span>{opt.label}</span>
+                        <span className="font-semibold tabular-nums">{statusCounts[opt.key]}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
+
                 <div className="space-y-1">
                   <Label className="text-xs text-muted-foreground flex items-center gap-1">
                     <Filter className="h-3 w-3" />
