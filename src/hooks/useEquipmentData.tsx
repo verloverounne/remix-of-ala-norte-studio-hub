@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { getCache, setCache, CACHE_KEYS } from '@/lib/cache';
-import type { EquipmentWithCategory } from '@/types/supabase';
+import { useState, useEffect, useCallback } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { getCache, setCache, CACHE_KEYS } from "@/lib/cache";
+import type { EquipmentWithCategory } from "@/types/supabase";
 
 interface Category {
   id: string;
@@ -52,15 +52,19 @@ export function useEquipmentData(): UseEquipmentDataReturn {
 
     // Fetch all data in parallel
     const [categoriesResult, subcategoriesResult, equipmentResult] = await Promise.all([
-      cachedCategories 
+      cachedCategories
         ? Promise.resolve({ data: cachedCategories, error: null })
-        : supabase.from('categories').select('*').order('order_index'),
+        : supabase.from("categories").select("*").order("order_index"),
       cachedSubcategories
         ? Promise.resolve({ data: cachedSubcategories, error: null })
-        : supabase.from('subcategories').select('*').order('order_index'),
+        : supabase.from("subcategories").select("*").order("order_index"),
       cachedEquipment
         ? Promise.resolve({ data: cachedEquipment, error: null })
-        : supabase.from('equipment').select(`*, categories!category_id (*), subcategories (*)`).in('ownership_type', ['Propio', 'Estacionado']).order('order_index'),
+        : supabase
+            .from("equipment")
+            .select(`*, categories!category_id (*), subcategories (*)`)
+            .in("ownership_type", ["Propio", "Estacionado", "Compartido"])
+            .order("order_index"),
     ]);
 
     // Process categories
