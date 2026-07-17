@@ -14,8 +14,7 @@ interface Subcategory {
   order_index?: number;
 }
 
-const LOGO_URL =
-  "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/publicimages/uiu/Logo_Horizontal_blanco.png";
+const LOGO_URL = "https://svpfonykqarvvghanoaa.supabase.co/storage/v1/object/public/assets//logoHblanco@2x.png";
 
 async function fetchLogoAsDataUrl(): Promise<{ data: string; w: number; h: number } | null> {
   try {
@@ -39,7 +38,6 @@ async function fetchLogoAsDataUrl(): Promise<{ data: string; w: number; h: numbe
   }
 }
 
-
 function formatPrice(value: number | null | undefined): string {
   if (!value || value <= 0 || value === 1000) return "";
   return `$ ${value.toLocaleString("es-AR")}`;
@@ -53,11 +51,11 @@ export async function exportEquipmentPdf(
   const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
-  const marginX = 48;
+  const marginX = 64;
 
   // --- Header ---
   const logo = await fetchLogoAsDataUrl();
-  const headerHeight = 90;
+  const headerHeight = 120;
   // Dark bg behind logo
   doc.setFillColor(15, 17, 19);
   doc.rect(0, 0, pageWidth, headerHeight, "F");
@@ -66,13 +64,13 @@ export async function exportEquipmentPdf(
     const targetH = 36;
     const ratio = logo.w / logo.h;
     const targetW = targetH * ratio;
-    doc.addImage(logo.data, "PNG", marginX, 24, targetW, targetH);
+    doc.addImage(logo.data, "PNG", marginX, 64, targetW, targetH);
   }
 
   // Title + date on right
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(14);
+  doc.setFontSize(16);
   doc.text("Lista de equipos", pageWidth - marginX, 42, { align: "right" });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
@@ -87,9 +85,7 @@ export async function exportEquipmentPdf(
   doc.setTextColor(20, 20, 20);
 
   // --- Group equipment ---
-  const sortedCats = [...categories].sort(
-    (a, b) => (a.order_index ?? 999) - (b.order_index ?? 999),
-  );
+  const sortedCats = [...categories].sort((a, b) => (a.order_index ?? 999) - (b.order_index ?? 999));
 
   type Row = { name: string; price: string };
   type SubGroup = { sub: Subcategory | null; rows: Row[] };
@@ -131,9 +127,7 @@ export async function exportEquipmentPdf(
       subGroups.push({ sub, rows: sortRows(subItems) });
     }
 
-    const orphan = catItems.filter(
-      (e) => !e.subcategory_id || !catSubs.find((s) => s.id === e.subcategory_id),
-    );
+    const orphan = catItems.filter((e) => !e.subcategory_id || !catSubs.find((s) => s.id === e.subcategory_id));
     if (orphan.length > 0) {
       subGroups.push({ sub: null, rows: sortRows(orphan) });
     }
@@ -161,8 +155,8 @@ export async function exportEquipmentPdf(
       cursorY = 56;
     }
 
-    // Category title bar: red-600 bg, white text
-    doc.setFillColor(220, 38, 38);
+    // Category title bar: red-800 bg, white text
+    doc.setFillColor(153, 27, 27);
     doc.rect(0, cursorY - 4, pageWidth, CAT_BAR_H, "F");
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16);
@@ -180,10 +174,10 @@ export async function exportEquipmentPdf(
         doc.setFillColor(229, 231, 235);
         doc.rect(marginX, cursorY - 4, pageWidth - marginX * 2, SUB_BAR_H, "F");
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(11);
+        doc.setFontSize(12);
         doc.setTextColor(153, 27, 27);
         doc.text(sg.sub.name.toUpperCase(), marginX + 8, cursorY + SUB_BAR_H / 2 + 1);
-        cursorY += SUB_BAR_H + 6;
+        cursorY += SUB_BAR_H + 16;
       }
 
       autoTable(doc, {
