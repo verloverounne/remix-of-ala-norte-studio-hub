@@ -662,8 +662,9 @@ const Admin = () => {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
       toast({ title: "✓ CSV EXPORTADO", description: `${allEquipment.length} equipos exportados` });
-    } catch (error) {
-      toast({ title: "ERROR", description: "Error al exportar CSV", variant: "destructive" });
+    } catch (error: any) {
+      console.error("CSV export error:", error);
+      toast({ title: "ERROR", description: error?.message || "Error al exportar CSV", variant: "destructive" });
     }
   };
 
