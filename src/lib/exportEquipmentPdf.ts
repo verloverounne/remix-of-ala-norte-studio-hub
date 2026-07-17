@@ -2,6 +2,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import type { EquipmentWithCategory } from "@/types/supabase";
 import { filterPubliclyVisible } from "@/lib/equipmentVisibility";
+import { sortSubcategoriesByPrice } from "@/lib/subcategoryOrder";
 
 interface Category {
   id: string;
