@@ -9,6 +9,7 @@ import type { EquipmentWithCategory } from "@/types/supabase";
 import { EquipmentListView } from "./EquipmentListView";
 import { CollapsibleSubcategory } from "./CollapsibleSubcategory";
 import type { ViewMode } from "./ViewModeToggle";
+import { sortSubcategoriesByPrice } from "@/lib/subcategoryOrder";
 import {
   DropdownMenu,
   DropdownMenuContent,
