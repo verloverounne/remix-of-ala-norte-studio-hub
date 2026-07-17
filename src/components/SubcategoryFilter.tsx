@@ -19,6 +19,7 @@ export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [subcategoryCounts, setSubcategoryCounts] = useState<Record<string, number>>({});
+  const [subcategoryItems, setSubcategoryItems] = useState<Record<string, { price_per_day: number }[]>>({});
   const [openCategories, setOpenCategories] = useState<Set<string>>(new Set());
 
   useEffect(() => {
@@ -31,16 +32,21 @@ export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange
       supabase.from('subcategories').select('*').order('order_index'),
       supabase
         .from('equipment')
-        .select('subcategory_id')
+        .select('subcategory_id, price_per_day')
         .in('ownership_type', PUBLIC_OWNERSHIP_TYPES as unknown as string[])
         .eq('status', 'available'),
     ]);
 
     const counts: Record<string, number> = {};
-    (equipmentData || []).forEach((e: { subcategory_id: string | null }) => {
-      if (e.subcategory_id) counts[e.subcategory_id] = (counts[e.subcategory_id] || 0) + 1;
+    const bySub: Record<string, { price_per_day: number }[]> = {};
+    (equipmentData || []).forEach((e: { subcategory_id: string | null; price_per_day: number | null }) => {
+      if (e.subcategory_id) {
+        counts[e.subcategory_id] = (counts[e.subcategory_id] || 0) + 1;
+        (bySub[e.subcategory_id] ||= []).push({ price_per_day: e.price_per_day || 0 });
+      }
     });
     setSubcategoryCounts(counts);
+    setSubcategoryItems(bySub);
 
     if (categoriesData) setCategories(categoriesData);
     if (subcategoriesData) setSubcategories(subcategoriesData);
