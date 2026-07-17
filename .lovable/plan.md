@@ -1,34 +1,27 @@
-## Objetivo
-Reemplazar el buscador custom de `src/pages/Equipos.tsx` (Levenshtein + subsequence manual) por **Fuse.js**, igual que el `SearchBar` del header, para tener búsqueda difusa real tolerante a errores tipográficos.
 
-## Cambios en `src/pages/Equipos.tsx`
+## Ajuste
 
-1. **Importar Fuse**: `import Fuse from "fuse.js";` (ya está instalado, lo usa el header).
-2. **Eliminar** `fuzzyMatch` y `levenshteinDistance` (líneas 121-158).
-3. **Crear instancia memoizada de Fuse** sobre el `equipment` ya filtrado por `status === "available"`, con las mismas opciones que el header para que el comportamiento sea idéntico:
-   ```ts
-   const fuse = useMemo(() => new Fuse(availableEquipment, {
-     keys: ["name", "brand", "model", "description"],
-     threshold: 0.45,
-     ignoreLocation: true,
-     minMatchCharLength: 2,
-     includeScore: true,
-   }), [availableEquipment]);
-   ```
-4. **Reescribir `filteredEquipment`**: 
-   - Si `searchTerm.trim().length < 2` → devolver todos los disponibles (aplicando solo el filtro de subcategoría).
-   - Si hay búsqueda → `fuse.search(searchTerm)` ordenado por score, mapear a items, y luego aplicar el filtro de subcategoría seleccionada.
-5. **Preservar el resto del comportamiento** ya existente:
-   - Cuando hay búsqueda activa, ignorar la categoría seleccionada y mostrar resultados de todas las categorías (igual que ahora).
-   - `subcategoriesWithResults`, `categoriesWithResults`, agrupado "Otros" y orden de tarjetas se siguen calculando a partir de `filteredEquipment`, sin cambios.
-   - `searchTerm` sigue siendo controlado por el input existente; no se toca el UI.
+Items 11 y 13 se tratan como existentes → **no se insertan** (ya están en la base con nombre con `"` extra; no se toca ese nombre).
 
-## Notas técnicas
-- Mismo umbral (`threshold: 0.45`) e `ignoreLocation` que el header → tolerancia a errores y matches en cualquier parte del texto.
-- `minMatchCharLength: 2` evita ruido con 1 sola letra (el input ya muestra todo cuando hay <2 chars).
-- Se respeta la regla de visibilidad pública: solo equipos con `status === "available"` entran al índice.
-- No se modifica `SearchBar.tsx` ni ningún otro componente.
+## Equipos a insertar (11)
 
-## Fuera de alcance
-- No tocar el panel admin ni el header.
-- No cambiar el diseño del input de búsqueda en Equipos.
+| # | Nombre | Categoría CSV | Stock | Status | Subcategoría resuelta |
+|---|---|---|---|---|---|
+| 1 | Mattebox Clip on Kondor Blue Triple Stage 4x5.65" | Accesorios de camara | 3 | available | Accesorios Cámara (mapeo) |
+| 2 | Maquina de humo mediana 1200w | Accesorios iluminación y grip | 1 | available | — (revisión manual) |
+| 3 | Softbox Bowens Aputure Light Dome III 35.1" | Accesorios iluminación y grip | 1 | available | LED (keyword `softbox`) |
+| 4 | Softbox Bowens Aputure Light Dome Mini III 22.8" | Accesorios iluminación y grip | 1 | available | LED (keyword `softbox`) |
+| 5 | Cámara RED Epic Dragon 6K | Camaras | 1 | available | Cuerpos de Cámara (mapeo) |
+| 6 | Sony FX9 (1) | Camaras | 2 | available | Cuerpos de Cámara (mapeo) |
+| 7 | HMI Desisti 575 Par | Faroles HMI | 3 | available | LED (keyword `hmi`) |
+| 8 | Dto Kit valija Leica R x 7 lentes | Lentes | 1 | available | Lentes (mapeo) |
+| 9 | Lente Leica R 180mm f/2.8 | Lentes | 1 | available | Lentes (mapeo) |
+| 10 | Monitor 32" HDMI | Monitoreo / EVF / Transmisores Wireless | 0 | maintenance | Monitoreo/EVF/Transmisores (mapeo) |
+| 12 | Monitor Panasonic HD 17" Wave Form SDI | Monitoreo / EVF / Transmisores Wireless | 2 | available | Monitoreo/EVF/Transmisores (mapeo) |
+
+## Ejecución
+
+1. Resolver `category_id` / `subcategory_id` leyendo `categories` y `subcategories` (script en modo build).
+2. `INSERT` batch en `equipment` con: `name`, `category_id`, `subcategory_id`, `price_per_day` (primera fila del grupo), `stock_quantity`, `status`, `ownership_type` (tipo dominante), `subcategory_auto_assigned = true`, `category_manually_edited = false`.
+3. No se modifica ni borra ningún equipo existente.
+4. Reporte al finalizar: cuántos insertados y cuáles quedaron sin subcategoría (item 2) para revisar en `Admin → Autoasignados`.
