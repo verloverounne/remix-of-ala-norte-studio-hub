@@ -72,7 +72,7 @@ export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange
   };
 
   const getSubcategoriesForCategory = (categoryId: string) => {
-    return subcategories.filter(sub => sub.category_id === categoryId);
+    return subcategories.filter(sub => sub.category_id === categoryId && (subcategoryCounts[sub.id] || 0) > 0);
   };
 
   return (
