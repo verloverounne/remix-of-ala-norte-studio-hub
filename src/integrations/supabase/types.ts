@@ -746,21 +746,6 @@ export type Database = {
         }
         Relationships: []
       }
-      rentalos_stage: {
-        Row: {
-          csv_cat: string
-          nkey: string
-        }
-        Insert: {
-          csv_cat: string
-          nkey: string
-        }
-        Update: {
-          csv_cat?: string
-          nkey?: string
-        }
-        Relationships: []
-      }
       reservations: {
         Row: {
           created_at: string | null

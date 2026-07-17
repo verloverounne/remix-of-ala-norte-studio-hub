@@ -16,6 +16,7 @@ interface SubcategoryFilterProps {
 export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange, selectedCategories, onCategoriesChange }: SubcategoryFilterProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
+  const [subcategoryCounts, setSubcategoryCounts] = useState<Record<string, number>>({});
   const [openCategories, setOpenCategories] = useState<Set<string>>(new Set());
 
   useEffect(() => {
@@ -23,15 +24,21 @@ export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange
   }, []);
 
   const fetchCategoriesAndSubcategories = async () => {
-    const { data: categoriesData } = await supabase
-      .from('categories')
-      .select('*')
-      .order('order_index');
+    const [{ data: categoriesData }, { data: subcategoriesData }, { data: equipmentData }] = await Promise.all([
+      supabase.from('categories').select('*').order('order_index'),
+      supabase.from('subcategories').select('*').order('order_index'),
+      supabase
+        .from('equipment')
+        .select('subcategory_id')
+        .in('ownership_type', ['Propio', 'Estacionado', 'Compartido'])
+        .eq('status', 'available'),
+    ]);
 
-    const { data: subcategoriesData } = await supabase
-      .from('subcategories')
-      .select('*')
-      .order('order_index');
+    const counts: Record<string, number> = {};
+    (equipmentData || []).forEach((e: { subcategory_id: string | null }) => {
+      if (e.subcategory_id) counts[e.subcategory_id] = (counts[e.subcategory_id] || 0) + 1;
+    });
+    setSubcategoryCounts(counts);
 
     if (categoriesData) setCategories(categoriesData);
     if (subcategoriesData) setSubcategories(subcategoriesData);
