@@ -63,9 +63,9 @@ export function clearCache(key?: string): void {
 
 // Cache keys constants
 export const CACHE_KEYS = {
-  CATEGORIES: 'categories',
-  SUBCATEGORIES: 'subcategories',
-  EQUIPMENT: 'equipment',
+  CATEGORIES: 'categories_v2',
+  SUBCATEGORIES: 'subcategories_v2',
+  EQUIPMENT: 'equipment_v2',
   HOME_HERO_SLIDES: 'home_hero_slides',
   HOME_SERVICES: 'home_services',
   GALLERY_IMAGES: 'gallery_images_v3',
