@@ -31,7 +31,7 @@ export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange
       supabase
         .from('equipment')
         .select('subcategory_id')
-        .in('ownership_type', ['Propio', 'Estacionado', 'Compartido'])
+        .in('ownership_type', PUBLIC_OWNERSHIP_TYPES as unknown as string[])
         .eq('status', 'available'),
     ]);
 
