@@ -1,27 +1,24 @@
-## Mejoras al PDF de lista de equipos
+## Objetivo
+En la página Equipos, reordenar las subcategorías dentro de cada categoría para que aparezcan primero las que contienen equipos con precios más altos.
 
-Editar `src/lib/exportEquipmentPdf.ts` con los siguientes cambios visuales y de contenido:
+## Criterio de orden
+- Ordenar subcategorías por el **precio máximo (`price_per_day`) del equipo más caro** dentro de cada subcategoría, de mayor a menor.
+- Solo se consideran equipos visibles (los ya filtrados por disponibilidad/ownership).
+- Equipos con precio 0 o 1000 (considerados "sin precio" según regla del proyecto) se ignoran para el cálculo.
+- "Sin subcategoría" queda siempre al final.
+- Empates: desempate por precio promedio desc, y luego por `order_index` como fallback estable.
 
-### Contenido
-- **Filtrar equipos**: excluir del PDF los items con `status !== "available"` (no listar los "no disponibles" / mantenimiento).
-- **Eliminar columna Cantidad**: la tabla queda con 2 columnas: Nombre y Precio.
+## Alcance
+Aplica al listado de equipos en `src/pages/Equipos.tsx` → renderizado dentro de `CategorySection`.
 
-### Layout de categorías
-- Cada categoría **inicia en página nueva** (salto de página antes del título, excepto la primera).
-- Título de categoría renderizado como una **barra completa de ancho de página**:
-  - Fondo: rojo (equivalente Tailwind `red-600` → RGB `220, 38, 38`).
-  - Texto: blanco, bold, mayúsculas.
-  - Padding vertical generoso, sin línea subrayada (se elimina la línea actual).
+## Cambios técnicos
+1. **`src/components/rental/CategorySection.tsx`** — en `groupedBySubcategory()`, reemplazar el `sort` por `order_index` por un sort basado en el precio máximo de los `items` agrupados por cada subcategoría (desc), aplicando el mismo criterio en vistas card y list (ambas usan esta función).
+2. **`src/components/SubcategoryFilter.tsx`** *(a confirmar)* — el menú de chips de subcategorías actualmente ordena por `order_index`. Para mantener coherencia con el listado, aplicar el mismo orden por precio máximo desc.
 
-### Subcategorías
-- Título de subcategoría renderizado como **barra de ancho completo**:
-  - Fondo: gris claro (equivalente `gray-200` → RGB `229, 231, 235`).
-  - Texto: rojo oscuro (equivalente `red-800` → RGB `153, 27, 27`), bold, mayúsculas.
-- **Espacio superior de 8pt** antes de cada bloque de subcategoría (spacer previo al header).
+## Fuera de alcance
+- No se modifica el orden de las categorías principales.
+- No se modifica el PDF export ni la base de datos.
+- No se cambia `order_index` almacenado en la DB (el orden es solo de presentación en runtime).
 
-### Detalles técnicos
-- Ajustar `ensureSpace` para que el salto por categoría siempre agregue `doc.addPage()` (excepto en el primer grupo).
-- Recalcular anchos de columna de `autoTable` al quitar la columna de cantidad (Nombre auto, Precio 90pt derecha).
-- Mantener header, footer, logo y orden alfabético existentes.
-
-No se tocan otros archivos.
+## Pregunta pendiente
+¿Aplico el mismo reordenamiento también al menú/chips de subcategorías (`SubcategoryFilter`), o solo al listado de tarjetas dentro de cada categoría?
