@@ -5,6 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { PUBLIC_OWNERSHIP_TYPES } from '@/lib/equipmentVisibility';
 
 interface SubcategoryFilterProps {
   selectedSubcategories: string[];
