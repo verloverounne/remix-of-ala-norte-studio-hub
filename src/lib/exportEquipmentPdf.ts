@@ -1,6 +1,7 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import type { EquipmentWithCategory } from "@/types/supabase";
+import { filterPubliclyVisible } from "@/lib/equipmentVisibility";
 
 interface Category {
   id: string;
