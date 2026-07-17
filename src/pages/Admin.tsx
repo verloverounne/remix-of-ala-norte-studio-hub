@@ -610,7 +610,7 @@ const Admin = () => {
     try {
       const { data: allEquipment, error } = await supabase
         .from("equipment")
-        .select(`*, categories(name), subcategories(name)`)
+        .select(`*, categories!category_id(name), subcategories!subcategory_id(name)`)
         .order("name")
         .limit(10000);
       if (error) throw error;
