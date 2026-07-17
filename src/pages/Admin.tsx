@@ -610,7 +610,7 @@ const Admin = () => {
     try {
       const { data: allEquipment, error } = await supabase
         .from("equipment")
-        .select(`*, categories(name), subcategories(name)`)
+        .select(`*, categories!category_id(name), subcategories!subcategory_id(name)`)
         .order("name")
         .limit(10000);
       if (error) throw error;
@@ -662,8 +662,9 @@ const Admin = () => {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
       toast({ title: "✓ CSV EXPORTADO", description: `${allEquipment.length} equipos exportados` });
-    } catch (error) {
-      toast({ title: "ERROR", description: "Error al exportar CSV", variant: "destructive" });
+    } catch (error: any) {
+      console.error("CSV export error:", error);
+      toast({ title: "ERROR", description: error?.message || "Error al exportar CSV", variant: "destructive" });
     }
   };
 
