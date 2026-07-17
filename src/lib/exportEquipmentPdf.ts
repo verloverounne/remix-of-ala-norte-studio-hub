@@ -2,6 +2,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import type { EquipmentWithCategory } from "@/types/supabase";
 import { filterPubliclyVisible } from "@/lib/equipmentVisibility";
+import { sortSubcategoriesByPrice } from "@/lib/subcategoryOrder";
 
 interface Category {
   id: string;
@@ -102,9 +103,11 @@ export async function exportEquipmentPdf(
     const catItems = availableEquipment.filter((e) => e.category_id === cat.id);
     if (catItems.length === 0) continue;
 
-    const catSubs = subcategories
-      .filter((s) => s.category_id === cat.id)
-      .sort((a, b) => (a.order_index ?? 999) - (b.order_index ?? 999));
+    const catSubs = sortSubcategoriesByPrice(
+      subcategories.filter((s) => s.category_id === cat.id),
+      (id) => catItems.filter((e) => e.subcategory_id === id),
+      cat,
+    );
 
     const subGroups: SubGroup[] = [];
 

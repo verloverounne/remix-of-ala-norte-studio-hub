@@ -9,6 +9,7 @@ import type { EquipmentWithCategory } from "@/types/supabase";
 import { EquipmentListView } from "./EquipmentListView";
 import { CollapsibleSubcategory } from "./CollapsibleSubcategory";
 import type { ViewMode } from "./ViewModeToggle";
+import { sortSubcategoriesByPrice } from "@/lib/subcategoryOrder";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -154,23 +155,12 @@ export const CategorySection = forwardRef<CategorySectionRef, CategorySectionPro
         }
       });
 
-      // Sort subcategories by max equipment price (desc). Ignore unpriced (0/1000).
-      const isPriced = (p: number) => p > 0 && p !== 1000;
-      const subStats = (items: EquipmentWithStock[]) => {
-        const priced = items.map((i) => i.price_per_day || 0).filter(isPriced);
-        const max = priced.length ? Math.max(...priced) : -1;
-        const avg = priced.length ? priced.reduce((a, b) => a + b, 0) / priced.length : -1;
-        return { max, avg };
-      };
-      const sortedSubs = [...subcategories]
-        .filter((sub) => (subcategoryMap.get(sub.id)?.length ?? 0) > 0)
-        .sort((a, b) => {
-          const sa = subStats(subcategoryMap.get(a.id)!);
-          const sb = subStats(subcategoryMap.get(b.id)!);
-          if (sb.max !== sa.max) return sb.max - sa.max;
-          if (sb.avg !== sa.avg) return sb.avg - sa.avg;
-          return (a.order_index ?? 0) - (b.order_index ?? 0);
-        });
+      // Sort subcategories by max price desc, with "Cámaras > Cámaras" pinned first.
+      const sortedSubs = sortSubcategoriesByPrice(
+        subcategories.filter((sub) => (subcategoryMap.get(sub.id)?.length ?? 0) > 0),
+        (id) => subcategoryMap.get(id) ?? [],
+        category,
+      );
       sortedSubs.forEach((sub) => {
         const items = subcategoryMap.get(sub.id)!;
         groups.push({ subcategory: sub, items });
