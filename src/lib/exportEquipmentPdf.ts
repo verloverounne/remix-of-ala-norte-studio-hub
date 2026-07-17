@@ -91,14 +91,17 @@ export async function exportEquipmentPdf(
     (a, b) => (a.order_index ?? 999) - (b.order_index ?? 999),
   );
 
-  type Row = { name: string; qty: string; price: string };
+  type Row = { name: string; price: string };
   type SubGroup = { sub: Subcategory | null; rows: Row[] };
   type CatGroup = { cat: Category; subs: SubGroup[] };
+
+  // Only available equipment
+  const availableEquipment = equipment.filter((e) => e.status === "available");
 
   const groups: CatGroup[] = [];
 
   for (const cat of sortedCats) {
-    const catItems = equipment.filter((e) => e.category_id === cat.id);
+    const catItems = availableEquipment.filter((e) => e.category_id === cat.id);
     if (catItems.length === 0) continue;
 
     const catSubs = subcategories
@@ -119,7 +122,6 @@ export async function exportEquipmentPdf(
         })
         .map((e) => ({
           name: e.name || "",
-          qty: e.stock_quantity != null ? String(e.stock_quantity) : "",
           price: formatPrice(e.price_per_day),
         }));
 
@@ -149,34 +151,45 @@ export async function exportEquipmentPdf(
     }
   };
 
-  for (const group of groups) {
-    ensureSpace(40);
-    // Category title
+  const CAT_BAR_H = 30;
+  const SUB_BAR_H = 20;
+
+  groups.forEach((group, idx) => {
+    // Category always starts on a new page (except first)
+    if (idx > 0) {
+      doc.addPage();
+      cursorY = 56;
+    }
+
+    // Category title bar: red-600 bg, white text
+    doc.setFillColor(220, 38, 38);
+    doc.rect(0, cursorY - 4, pageWidth, CAT_BAR_H, "F");
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16);
-    doc.setTextColor(20, 20, 20);
-    doc.text(group.cat.name.toUpperCase(), marginX, cursorY);
-    cursorY += 6;
-    // Thin accent underline
-    doc.setDrawColor(20, 20, 20);
-    doc.setLineWidth(0.6);
-    doc.line(marginX, cursorY, pageWidth - marginX, cursorY);
-    cursorY += 14;
+    doc.setTextColor(255, 255, 255);
+    doc.text(group.cat.name.toUpperCase(), marginX, cursorY + CAT_BAR_H / 2 + 2);
+    cursorY += CAT_BAR_H + 12;
 
     for (const sg of group.subs) {
-      ensureSpace(30);
+      // 8pt spacer before subcategory
+      cursorY += 8;
+      ensureSpace(SUB_BAR_H + 30);
+
       if (sg.sub) {
+        // Subcategory bar: gray-200 bg, red-800 text
+        doc.setFillColor(229, 231, 235);
+        doc.rect(marginX, cursorY - 4, pageWidth - marginX * 2, SUB_BAR_H, "F");
         doc.setFont("helvetica", "bold");
         doc.setFontSize(11);
-        doc.setTextColor(80, 80, 80);
-        doc.text(sg.sub.name.toUpperCase(), marginX, cursorY);
-        cursorY += 10;
+        doc.setTextColor(153, 27, 27);
+        doc.text(sg.sub.name.toUpperCase(), marginX + 8, cursorY + SUB_BAR_H / 2 + 1);
+        cursorY += SUB_BAR_H + 6;
       }
 
       autoTable(doc, {
         startY: cursorY,
         margin: { left: marginX, right: marginX },
-        body: sg.rows.map((r) => [r.name, r.qty, r.price]),
+        body: sg.rows.map((r) => [r.name, r.price]),
         theme: "plain",
         styles: {
           font: "helvetica",
@@ -187,20 +200,14 @@ export async function exportEquipmentPdf(
         },
         columnStyles: {
           0: { cellWidth: "auto" },
-          1: { cellWidth: 60, halign: "right" },
-          2: { cellWidth: 90, halign: "right" },
-        },
-        didDrawPage: () => {
-          // no header redraw on subsequent pages (clean editorial look)
+          1: { cellWidth: 90, halign: "right" },
         },
       });
 
       // @ts-expect-error lastAutoTable
-      cursorY = (doc.lastAutoTable?.finalY ?? cursorY) + 16;
+      cursorY = (doc.lastAutoTable?.finalY ?? cursorY) + 10;
     }
-
-    cursorY += 6;
-  }
+  });
 
   // Footer page numbers
   const pageCount = doc.getNumberOfPages();
