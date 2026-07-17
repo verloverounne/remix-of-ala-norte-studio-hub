@@ -746,6 +746,51 @@ export type Database = {
         }
         Relationships: []
       }
+      rentalos_staging: {
+        Row: {
+          cat_id: string | null
+          dsc: string | null
+          func: string | null
+          key: string
+          nm: string
+          ord: number | null
+          price: number | null
+          qty: number | null
+          ser: string | null
+          st: string | null
+          sub_id: string | null
+          tp: string | null
+        }
+        Insert: {
+          cat_id?: string | null
+          dsc?: string | null
+          func?: string | null
+          key: string
+          nm: string
+          ord?: number | null
+          price?: number | null
+          qty?: number | null
+          ser?: string | null
+          st?: string | null
+          sub_id?: string | null
+          tp?: string | null
+        }
+        Update: {
+          cat_id?: string | null
+          dsc?: string | null
+          func?: string | null
+          key?: string
+          nm?: string
+          ord?: number | null
+          price?: number | null
+          qty?: number | null
+          ser?: string | null
+          st?: string | null
+          sub_id?: string | null
+          tp?: string | null
+        }
+        Relationships: []
+      }
       reservations: {
         Row: {
           created_at: string | null
