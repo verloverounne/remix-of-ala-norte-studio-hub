@@ -80,7 +80,9 @@ export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange
   };
 
   const getSubcategoriesForCategory = (categoryId: string) => {
-    return subcategories.filter(sub => sub.category_id === categoryId && (subcategoryCounts[sub.id] || 0) > 0);
+    const filtered = subcategories.filter(sub => sub.category_id === categoryId && (subcategoryCounts[sub.id] || 0) > 0);
+    const category = categories.find(c => c.id === categoryId);
+    return sortSubcategoriesByPrice(filtered, (id) => subcategoryItems[id] ?? [], category);
   };
 
   return (
