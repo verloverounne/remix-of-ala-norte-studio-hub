@@ -91,8 +91,11 @@ export async function exportEquipmentPdf(
   type SubGroup = { sub: Subcategory | null; rows: Row[] };
   type CatGroup = { cat: Category; subs: SubGroup[] };
 
-  // Only available equipment
-  const availableEquipment = equipment.filter((e) => e.status === "available");
+  // Only available equipment, same visibility rules as public subcategory filter
+  const ALLOWED_OWNERSHIP = new Set(["Propio", "Estacionado", "Compartido"]);
+  const availableEquipment = equipment.filter(
+    (e) => e.status === "available" && ALLOWED_OWNERSHIP.has((e as { ownership_type?: string }).ownership_type ?? ""),
+  );
 
   const groups: CatGroup[] = [];
 
