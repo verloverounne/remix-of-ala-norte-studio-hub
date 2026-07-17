@@ -1,6 +1,7 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import type { EquipmentWithCategory } from "@/types/supabase";
+import { filterPubliclyVisible } from "@/lib/equipmentVisibility";
 
 interface Category {
   id: string;
@@ -92,10 +93,8 @@ export async function exportEquipmentPdf(
   type CatGroup = { cat: Category; subs: SubGroup[] };
 
   // Only available equipment, same visibility rules as public subcategory filter
-  const ALLOWED_OWNERSHIP = new Set(["Propio", "Estacionado", "Compartido"]);
-  const availableEquipment = equipment.filter(
-    (e) => e.status === "available" && ALLOWED_OWNERSHIP.has((e as { ownership_type?: string }).ownership_type ?? ""),
-  );
+  // Same visibility rules as public subcategory filter
+  const availableEquipment = filterPubliclyVisible(equipment);
 
   const groups: CatGroup[] = [];
 

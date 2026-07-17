@@ -5,6 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { PUBLIC_OWNERSHIP_TYPES } from '@/lib/equipmentVisibility';
 
 interface SubcategoryFilterProps {
   selectedSubcategories: string[];
@@ -30,7 +31,7 @@ export const SubcategoryFilter = ({ selectedSubcategories, onSubcategoriesChange
       supabase
         .from('equipment')
         .select('subcategory_id')
-        .in('ownership_type', ['Propio', 'Estacionado', 'Compartido'])
+        .in('ownership_type', PUBLIC_OWNERSHIP_TYPES as unknown as string[])
         .eq('status', 'available'),
     ]);
 
