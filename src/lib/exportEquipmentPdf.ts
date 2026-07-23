@@ -158,7 +158,7 @@ export async function exportEquipmentPdf(
 
     // Category title bar: red-800 bg, white text
     doc.setFillColor(153, 27, 27);
-    doc.rect(0, pageWidth, CAT_BAR_H, "F");
+    doc.rect(0, cursorY, pageWidth, CAT_BAR_H, "F");
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16);
     doc.setTextColor(255, 255, 255);
