@@ -73,15 +73,15 @@ export async function exportEquipmentPdf(
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(16);
-  doc.text("Lista de equipos", pageWidth - marginX, 42, { align: "right" });
+  doc.text("Lista de equipos", pageWidth - marginX, 64, { align: "right" });
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
+  doc.setFontSize(12);
   const today = new Date().toLocaleDateString("es-AR", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
   });
-  doc.text(today, pageWidth - marginX, 60, { align: "right" });
+  doc.text(today, pageWidth - marginX, 64, { align: "right" });
 
   // Reset text color
   doc.setTextColor(20, 20, 20);
@@ -141,7 +141,7 @@ export async function exportEquipmentPdf(
   }
 
   // --- Render ---
-  let cursorY = headerHeight + 28;
+  let cursorY = headerHeight + 64;
 
   const ensureSpace = (needed: number) => {
     if (cursorY + needed > pageHeight - 48) {
