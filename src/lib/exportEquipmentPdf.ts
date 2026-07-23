@@ -57,16 +57,16 @@ export async function exportEquipmentPdf(
 
   // --- Header ---
   const logo = await fetchLogoAsDataUrl();
-  const headerHeight = 120;
+  const headerHeight = 100;
   // Dark bg behind logo
   doc.setFillColor(15, 17, 19);
   doc.rect(0, 0, pageWidth, headerHeight, "F");
 
   if (logo) {
-    const targetH = 24;
+    const targetH = 32;
     const ratio = logo.w / logo.h;
     const targetW = targetH * ratio;
-    doc.addImage(logo.data, "PNG", marginX, 32, targetW, targetH);
+    doc.addImage(logo.data, "PNG", marginX, 16, targetW, targetH);
   }
 
   // Title + date on right
