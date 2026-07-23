@@ -66,7 +66,7 @@ export async function exportEquipmentPdf(
     const targetH = 36;
     const ratio = logo.w / logo.h;
     const targetW = targetH * ratio;
-    doc.addImage(logo.data, "PNG", marginX, 64, targetW, targetH);
+    doc.addImage(logo.data, "PNG", marginX, 32, targetW, targetH);
   }
 
   // Title + date on right
@@ -81,7 +81,7 @@ export async function exportEquipmentPdf(
     month: "2-digit",
     year: "numeric",
   });
-  doc.text(today, pageWidth - marginX, 16, { align: "right" });
+  doc.text(today, pageWidth - marginX, 32, { align: "right" });
 
   // Reset text color
   doc.setTextColor(20, 20, 20);
