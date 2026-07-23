@@ -141,16 +141,16 @@ export async function exportEquipmentPdf(
   }
 
   // --- Render ---
-  let cursorY = headerHeight + 64;
+  let cursorY = headerHeight + 16;
 
   const ensureSpace = (needed: number) => {
     if (cursorY + needed > pageHeight - 48) {
       doc.addPage();
-      cursorY = 56;
+      cursorY = 16;
     }
   };
 
-  const CAT_BAR_H = 30;
+  const CAT_BAR_H = 60;
   const SUB_BAR_H = 20;
 
   groups.forEach((group, idx) => {
@@ -160,15 +160,15 @@ export async function exportEquipmentPdf(
     doc.setFillColor(153, 27, 27);
     doc.rect(0, cursorY - 4, pageWidth, CAT_BAR_H, "F");
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(24);
+    doc.setFontSize(16);
     doc.setTextColor(255, 255, 255);
     doc.text(group.cat.name.toUpperCase(), marginX, cursorY + CAT_BAR_H / 2 + 2);
     cursorY += CAT_BAR_H + 12;
 
     for (const sg of group.subs) {
       // 8pt spacer before subcategory
-      cursorY += 8;
-      ensureSpace(SUB_BAR_H + 30);
+      cursorY += 4;
+      ensureSpace(SUB_BAR_H + 20);
 
       if (sg.sub) {
         // Subcategory bar: gray-200 bg, red-800 text
