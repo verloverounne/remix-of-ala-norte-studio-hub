@@ -75,13 +75,13 @@ export async function exportEquipmentPdf(
   doc.setFontSize(16);
   doc.text("Lista de equipos", pageWidth - marginX, 64, { align: "right" });
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(12);
+  doc.setFontSize(8);
   const today = new Date().toLocaleDateString("es-AR", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
   });
-  doc.text(today, pageWidth - marginX, 64, { align: "right" });
+  doc.text(today, pageWidth - marginX, 16, { align: "right" });
 
   // Reset text color
   doc.setTextColor(20, 20, 20);
