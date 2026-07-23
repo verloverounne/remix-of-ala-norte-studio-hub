@@ -155,16 +155,12 @@ export async function exportEquipmentPdf(
 
   groups.forEach((group, idx) => {
     // Category always starts on a new page (except first)
-    if (idx > 0) {
-      doc.addPage();
-      cursorY = 56;
-    }
 
     // Category title bar: red-800 bg, white text
     doc.setFillColor(153, 27, 27);
     doc.rect(0, cursorY - 4, pageWidth, CAT_BAR_H, "F");
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
+    doc.setFontSize(24);
     doc.setTextColor(255, 255, 255);
     doc.text(group.cat.name.toUpperCase(), marginX, cursorY + CAT_BAR_H / 2 + 2);
     cursorY += CAT_BAR_H + 12;
