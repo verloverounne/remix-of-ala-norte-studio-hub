@@ -57,7 +57,7 @@ export async function exportEquipmentPdf(
 
   // --- Header ---
   const logo = await fetchLogoAsDataUrl();
-  const headerHeight = 120;
+  const headerHeight = 180;
   // Dark bg behind logo
   doc.setFillColor(15, 17, 19);
   doc.rect(0, 0, pageWidth, headerHeight, "F");
@@ -72,8 +72,8 @@ export async function exportEquipmentPdf(
   // Title + date on right
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(16);
-  doc.text("Lista de equipos", pageWidth - marginX, 64, { align: "right" });
+  doc.setFontSize(9);
+  doc.text("Lista de equipos", pageWidth - marginX, 16, { align: "right" });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
   const today = new Date().toLocaleDateString("es-AR", {
