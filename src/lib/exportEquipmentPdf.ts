@@ -156,7 +156,7 @@ export async function exportEquipmentPdf(
   groups.forEach((group, idx) => {
     // Category always starts on a new page (except first)
 
-    // Category title bar: red-800 bg, white text
+    // Category title bar: red-600 bg, white text
     doc.setFillColor(153, 27, 27);
     doc.rect(0, cursorY, pageWidth, CAT_BAR_H, "F");
     doc.setFont("helvetica", "bold");
@@ -177,8 +177,8 @@ export async function exportEquipmentPdf(
         doc.setFont("helvetica", "bold");
         doc.setFontSize(12);
         doc.setTextColor(153, 27, 27);
-        doc.text(sg.sub.name.toUpperCase(), marginX + 8, cursorY + SUB_BAR_H / 2 + 1);
-        cursorY += SUB_BAR_H + 16;
+        doc.text(sg.sub.name.toUpperCase(), marginX + 4, cursorY + SUB_BAR_H / 2 + 1);
+        cursorY += SUB_BAR_H + 8;
       }
 
       autoTable(doc, {
