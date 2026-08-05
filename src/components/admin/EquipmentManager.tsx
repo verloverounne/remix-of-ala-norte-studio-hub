@@ -1109,7 +1109,7 @@ export const EquipmentManager = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="space-y-1">
+             {/* Filters      <div className="space-y-1">
                   <Label className="text-xs text-muted-foreground flex items-center gap-1">
                     <Filter className="h-3 w-3" />
                     Estado de categorización
@@ -1147,7 +1147,8 @@ export const EquipmentManager = () => {
                         <span className="font-semibold tabular-nums">{statusCounts[opt.key]}</span>
                       </button>
                     ))}
-                  </div>
+                  </div> */}
+                
                   <div className="pt-1">
                     <Label className="text-[10px] text-muted-foreground uppercase tracking-wider">Subcategoría</Label>
                     <div className="flex flex-wrap gap-1 pt-0.5">
