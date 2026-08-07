@@ -220,40 +220,26 @@ const Equipos = () => {
     });
     return sorted;
   }, [filteredEquipment, sortOption, subcategories]);
-  // Virtual "Otros" category for equipment without subcategory
-  const OTROS_CATEGORY_ID = "otros-virtual";
-  const displayCategories = useMemo(() => {
-    const otros: (typeof categories)[number] = {
-      id: OTROS_CATEGORY_ID,
-      name: "Otros",
-      slug: "otros",
-      order_index: 9999,
-    } as any;
-    return [...categories, otros];
-  }, [categories]);
-
   const equipmentByCategory = useMemo(() => {
     const grouped: Record<string, EquipmentWithStock[]> = {};
     categories.forEach((cat) => {
-      // Items in a real category must have a subcategory_id; otherwise they go to "Otros"
-      grouped[cat.id] = sortedEquipment.filter((e) => e.category_id === cat.id && e.subcategory_id);
+      grouped[cat.id] = sortedEquipment.filter((e) => e.category_id === cat.id);
     });
-    grouped[OTROS_CATEGORY_ID] = sortedEquipment.filter((e) => !e.subcategory_id);
     return grouped;
   }, [sortedEquipment, categories]);
   const orderedCategories = useMemo(() => {
-    if (!activeCategory) return displayCategories;
-    const active = displayCategories.find((c) => c.id === activeCategory);
-    const rest = displayCategories.filter((c) => c.id !== activeCategory);
-    return active ? [active, ...rest] : displayCategories;
-  }, [displayCategories, activeCategory]);
+    if (!activeCategory) return categories;
+    const active = categories.find((c) => c.id === activeCategory);
+    const rest = categories.filter((c) => c.id !== activeCategory);
+    return active ? [active, ...rest] : categories;
+  }, [categories, activeCategory]);
   const equipmentCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    displayCategories.forEach((cat) => {
+    categories.forEach((cat) => {
       counts[cat.id] = equipmentByCategory[cat.id]?.length || 0;
     });
     return counts;
-  }, [equipmentByCategory, displayCategories]);
+  }, [equipmentByCategory, categories]);
 
   // Subcategories filtered by active category
   const filteredSubcategories = useMemo(() => {
