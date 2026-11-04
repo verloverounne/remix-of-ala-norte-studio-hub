@@ -139,8 +139,8 @@ Fin: ${format(new Date(formData.endDate), "dd/MM/yyyy", {
 Días totales: ${days}
 
 🚚 RETIRO / DEVOLUCIÓN:
-Fecha de retiro: ${formData.pickupDate ? format(new Date(formData.pickupDate + "T00:00:00"), "dd/MM/yyyy", { locale: es }) : "-"}
-Fecha de devolución: ${formData.returnDate ? format(new Date(formData.returnDate + "T00:00:00"), "dd/MM/yyyy", { locale: es }) : "-"}
+Fecha de retiro: ${formData.pickupDate ? format(new Date(formData.pickupDate), "dd/MM/yyyy HH:mm", { locale: es }) : "-"}
+Fecha de devolución: ${formData.returnDate ? format(new Date(formData.returnDate), "dd/MM/yyyy HH:mm", { locale: es }) : "-"}
 
 🎬 EQUIPOS SOLICITADOS:
 ${equipmentList}
@@ -480,12 +480,12 @@ Contactar cliente para coordinar entrega/retiro.
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="pickupDate">
-                    Fecha de retiro <span className="text-destructive">*</span>
+                    Fecha y hora de retiro <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="pickupDate"
                     name="pickupDate"
-                    type="date"
+                    type="datetime-local"
                     value={formData.pickupDate}
                     onChange={handleChange}
                     required
@@ -494,12 +494,12 @@ Contactar cliente para coordinar entrega/retiro.
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="returnDate">
-                    Fecha de devolución <span className="text-destructive">*</span>
+                    Fecha y hora de devolución <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="returnDate"
                     name="returnDate"
-                    type="date"
+                    type="datetime-local"
                     value={formData.returnDate}
                     onChange={handleChange}
                     min={formData.pickupDate}
