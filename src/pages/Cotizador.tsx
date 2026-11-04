@@ -36,6 +36,8 @@ const Cotizador = () => {
     company: "",
     startDate: "",
     endDate: "",
+    pickupDate: "",
+    returnDate: "",
     comments: "",
   });
   const [unavailableEquipment, setUnavailableEquipment] = useState<Set<string>>(new Set());
@@ -93,7 +95,7 @@ const Cotizador = () => {
       });
       return;
     }
-    if (!formData.startDate || !formData.endDate) {
+    if (!formData.startDate || !formData.endDate || !formData.pickupDate || !formData.returnDate) {
       toast({
         title: "Error",
         description: "Por favor selecciona las fechas de reserva.",
@@ -135,6 +137,10 @@ Fin: ${format(new Date(formData.endDate), "dd/MM/yyyy", {
       locale: es,
     })}
 Días totales: ${days}
+
+🚚 RETIRO / DEVOLUCIÓN:
+Fecha de retiro: ${formData.pickupDate ? format(new Date(formData.pickupDate + "T00:00:00"), "dd/MM/yyyy", { locale: es }) : "-"}
+Fecha de devolución: ${formData.returnDate ? format(new Date(formData.returnDate + "T00:00:00"), "dd/MM/yyyy", { locale: es }) : "-"}
 
 🎬 EQUIPOS SOLICITADOS:
 ${equipmentList}
@@ -468,6 +474,35 @@ Contactar cliente para coordinar entrega/retiro.
                     value={formData.endDate}
                     onChange={handleChange}
                     min={formData.startDate}
+                    required
+                    className="w-full"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="pickupDate">
+                    Fecha de retiro <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="pickupDate"
+                    name="pickupDate"
+                    type="date"
+                    value={formData.pickupDate}
+                    onChange={handleChange}
+                    required
+                    className="w-full"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="returnDate">
+                    Fecha de devolución <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="returnDate"
+                    name="returnDate"
+                    type="date"
+                    value={formData.returnDate}
+                    onChange={handleChange}
+                    min={formData.pickupDate}
                     required
                     className="w-full"
                   />
