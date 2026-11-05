@@ -165,6 +165,12 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
       const subMap = new Map(
         (subcategories || []).map((s) => [s.name, { id: s.id, category_id: s.category_id }]),
       );
+      const subByNorm = new Map(
+        (subcategories || []).map((s) => [
+          normalizeImportName(s.name),
+          { name: s.name, info: { id: s.id, category_id: s.category_id } },
+        ]),
+      );
       const subNameById = new Map((subcategories || []).map((s) => [s.id, s.name]));
 
       addLog("Cargando equipos existentes...");
@@ -234,6 +240,9 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
         | { source: "unresolved" };
 
       const resolveSubcategory = (csvCatNorm: string, nombre: string): Resolution => {
+        // 0) coincidencia exacta: categoría CSV == nombre de subcategoría en la base
+        const exact = subByNorm.get(csvCatNorm);
+        if (exact) return { source: "direct_mapping", sub: exact.info, subName: exact.name };
         // 1) mapeo directo
         const directName = CATEGORY_MAP[csvCatNorm];
         if (directName) {
@@ -442,6 +451,23 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
     }
   };
 
+  const downloadLog = (format: "txt" | "md") => {
+    const stamp = new Date().toISOString().slice(0, 19).replace(/[T:]/g, "-");
+    const body =
+      format === "md"
+        ? `# Log sincronización Rentalos\n\nFecha: ${new Date().toLocaleString("es-AR")}\n\n\`\`\`\n${log.join("\n")}\n\`\`\`\n`
+        : log.join("\n");
+    const blob = new Blob([body], { type: format === "md" ? "text/markdown;charset=utf-8" : "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `sync-rentalos-${stamp}.${format}`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+  };
+
   return (
     <Card className="border-2 border-primary">
       <CardHeader className="bg-primary/5">
@@ -505,6 +531,17 @@ export function RentalosSyncPanel({ onSyncComplete }: { onSyncComplete?: () => v
                 <AlertTriangle className="h-3 w-3" /> {result.errors.length} errores
               </Badge>
             )}
+          </div>
+        )}
+
+        {log.length > 0 && !syncing && (
+          <div className="flex gap-2">
+            <button type="button" onClick={() => downloadLog("txt")} className="h-8 px-3 rounded-sm border text-xs hover:bg-foreground hover:text-background">
+              Descargar log .txt
+            </button>
+            <button type="button" onClick={() => downloadLog("md")} className="h-8 px-3 rounded-sm border text-xs hover:bg-foreground hover:text-background">
+              Descargar log .md
+            </button>
           </div>
         )}
 
